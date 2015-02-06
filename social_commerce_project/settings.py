@@ -28,6 +28,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_env_variable("SOCIAL_COMMERCE_SECRET_KEY")
+FACEBOOK_APP_ID = get_env_variable("FACEBOOK_APP_ID")
+FACEBOOK_APP_SECRET = get_env_variable("FACEBOOK_APP_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -89,10 +91,21 @@ USE_L10N = True
 USE_TZ = True
 
 
+MEDIA_URL = '/media/'
+#absolute path to the media directory
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
+STATIC_PATH = os.path.join(BASE_DIR,'static')
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+        STATIC_PATH,
+        )
+
 
 # Our template directory path
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')

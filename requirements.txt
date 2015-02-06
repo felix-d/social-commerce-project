@@ -1,1 +1,4 @@
 Django==1.7.4
+django-facebook==6.0.2
+Pillow==2.7.0
+Unidecode==0.4.17

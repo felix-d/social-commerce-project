@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Friendship',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
             ],
             options={
             },
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Session',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('destroyed_at', models.DateTimeField()),
             ],
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('oauth_uid', models.CharField(max_length=255)),
                 ('oauth_provider', models.CharField(max_length=255)),
                 ('username', models.CharField(max_length=255)),
@@ -45,20 +45,20 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='session',
-            name='user_id',
+            name='user',
             field=models.ForeignKey(to='users.User'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='friendship',
-            name='friend_id',
-            field=models.ForeignKey(related_name='the_friend', to='users.User'),
+            name='friend',
+            field=models.ForeignKey(to='users.User', related_name='the_friend'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='friendship',
-            name='user_id',
-            field=models.ForeignKey(related_name='the_user', to='users.User'),
+            name='user',
+            field=models.ForeignKey(to='users.User', related_name='the_user'),
             preserve_default=True,
         ),
     ]
