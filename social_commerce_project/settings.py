@@ -80,7 +80,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Montreal'
 
 USE_I18N = True
 
@@ -93,3 +93,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Our template directory path
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+
+#Where django looks up for templates, in order
+TEMPLATE_DIRS = (
+        TEMPLATE_PATH,
+        )
