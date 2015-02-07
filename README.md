@@ -12,4 +12,4 @@ Contains the routing and the view for phase 1 of the project
 
 ### TODO
 * Creating User objects when logging in with Facebook API 
-* *In progress*
+*In progress*
