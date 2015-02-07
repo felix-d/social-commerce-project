@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include('phase1.urls')),
+    url(r'^(phase1/|$)', include('phase1.urls')),
+    url(r'^accounts/', include('allauth.urls')),
 )

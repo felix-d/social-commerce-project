@@ -4,5 +4,7 @@ from django.shortcuts import render
 def step1(request):
     context_dict = {}
     return render(request, 'phase1/step1.html', context_dict)
-    
 
+def step2(request):
+    context_dict = {}
+    return render(request, 'phase1/step2.html', context_dict)

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Friendship',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('friend', models.ForeignKey(related_name='the_friend', to=settings.AUTH_USER_MODEL)),
                 ('user', models.ForeignKey(related_name='the_user', to=settings.AUTH_USER_MODEL)),
             ],

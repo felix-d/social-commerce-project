@@ -1,23 +1,12 @@
 <!DOCTYPE html>
-{% load staticfiles %}
 <html>
 <head>
-<title>Facebook Login JavaScript Example</title>
 <meta charset="UTF-8">
 </head>
 <body>
-<script src='{% static "js/facebooksdk.js" %}' type="text/javascript"></script>
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-<fb:login-button scope="public_profile,email,user_friends,read_friendlists" onlogin="checkLoginState();" autologoutlink="true">
-</fb:login-button>
-
-<div id="status">
-</div>
+{% load socialaccount %}
+{% providers_media_js %}
+<a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
 
 </body>
 </html>
