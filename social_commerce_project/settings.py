@@ -92,7 +92,6 @@ SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 LOGIN_REDIRECT_URL = '/phase1/step2/'
-SOCIALACCOUNT_ADAPTER = "users.models.MyAdapter"
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'SCOPE': ['email', 'publish_actions', 'user_friends'],
