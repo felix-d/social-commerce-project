@@ -5,6 +5,7 @@ An experimental platform built with Django to study social influence in e-commer
 #### ~~Creating User objects when logging in with Facebook API~~
 Currently using [django-allauth](https://github.com/pennersr/django-allauth).
 Adding more authentication methods would be a walk in the park
+<<<<<<< HEAD
 #### extend user model with step field and redirect after login depending on step count
 *In progress*
 #### ~~Getting the products to fill the database~~
@@ -13,6 +14,8 @@ The images are stored in tools/images/
 The information is stored in tools/movies.csv 
 The retrieved information is of the form:
 `movie_title,overview,image_url,tags`
-#### ~~Extend user model with step field to allow redirect after login depending on step count~~
+=======
+#### Extend user model with step field and redirect after login depending on step count
 #### Getting the products to fill the database
 #### Add share dialog with javascript sdk and ajax callback to update step count
+>>>>>>> 4d26cae4ce52ce6a26f660ebcaf2b194373806aa

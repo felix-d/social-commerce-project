@@ -1,49 +1,26 @@
 from django.db import models
+from django.dispatch import receiver
+from allauth.account.signals import user_signed_up
 from django.contrib.auth.models import User
 
-#TO SEE THE GENERATED SQL TYPE
-#python manage.py sqlmigrate phase1 {migration_number}
+@receiver (user_signed_up)
+def complete_social_signup(sender, **kwargs):
+    """We start step to 0"""
+    user = kwargs.pop('user')
+    us = UserStep(user=user)
+    us.save()
+    return
 
-# # Create your models here.
-# class User(models.Model):
-#     """The model for our users"""
-#
-#     #The uid provided by the provider
-#     oauth_uid = models.CharField(max_length=255)
-#
-#     #The oauth provider (e.g. Facebook, etc.)
-#     oauth_provider = models.CharField(max_length=255)
-#
-#     #The name of the user
-#     username = models.CharField(max_length=255)
-#
-#     #DateTime when the user was created
-#     created_at = models.DateTimeField(auto_now_add=True)
+
+class UserStep(models.Model):
+    """This model holds the user step count"""
+    user = models.OneToOneField(User)
+    step = models.IntegerField(default=0)
 
 
 class Friendship(models.Model):
     """Many to many cyclic relationship"""
-    
     #id of the user
     user = models.ForeignKey(User, related_name="the_user")
-
     #id of its friend
     friend = models.ForeignKey(User, related_name="the_friend")
-
-
-# class Session(models.Model):
-#     """The model for user sessions"""
-#
-#     #The id of the user
-#     user = models.ForeignKey(User)
-#
-#     #DateTime when the session was created
-#     created_at = models.DateTimeField(auto_now_add=True)
-#
-#     #DateTime when the session was destroyed
-#     destroyed_at = models.DateTimeField()
-
-
-
-
-

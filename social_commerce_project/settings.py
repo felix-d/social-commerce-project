@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.core.exceptions import ImproperlyConfigured
+# from users.models import MyAdapter
 
 def get_env_variable(var_name):
     """Get the environment variable or return an exception"""
@@ -91,6 +92,7 @@ SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 LOGIN_REDIRECT_URL = '/phase1/step2/'
+SOCIALACCOUNT_ADAPTER = "users.models.MyAdapter"
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'SCOPE': ['email', 'publish_actions', 'user_friends'],
