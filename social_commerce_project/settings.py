@@ -64,9 +64,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'phase1.middleware.Middleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'phase1.middleware.Middleware'
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
@@ -92,7 +92,7 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-LOGIN_REDIRECT_URL = '/phase1/step2/'
+LOGIN_REDIRECT_URL = '/phase1/step1/'
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'SCOPE': ['email', 'publish_actions', 'user_friends'],

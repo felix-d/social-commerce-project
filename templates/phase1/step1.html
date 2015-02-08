@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
-{% load socialaccount %}
-{% providers_media_js %}
-<a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
-
+ <p>LoggedIn!</p>
+<p><a href="{% url 'auth_logout' %}">Logout</a></p>
 </body>
 </html>
