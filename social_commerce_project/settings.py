@@ -93,7 +93,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 LOGIN_REDIRECT_URL = '/phase1/step2/'
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
-       {'SCOPE': ['email', 'publish_stream'],
+       {'SCOPE': ['email', 'publish_actions', 'user_friends'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'METHOD': 'oauth2',
         'VERIFIED_EMAIL': False,
