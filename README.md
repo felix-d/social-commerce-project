@@ -10,6 +10,7 @@ The script [tools/get_movies.py](https://github.com/felix-d/social-commerce-proj
 The images are stored in [tools/images/](https://github.com/felix-d/social-commerce-project/tree/master/tools/images)
 The information is stored in [tools/movies.csv](https://github.com/felix-d/social-commerce-project/blob/master/tools/movies.csv#L9) 
 #### Writing a script to fill the database from the csv file
-#### ~~Extend user model with step field to allow redirect after login depending on step count~~
+#### ~~Extend user model with step field~~
+#### ~~Implement a middleware to intercept http requests and redirect the user depending on his status and step count~~
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...
