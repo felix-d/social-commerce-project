@@ -17,9 +17,10 @@ def step1(request):
     context_dict = {}
 
     #move to model
-    current_user = User.objects.find(request.user)
-    current_user_step = UserStep.objects.find(user=current_user)
-    if current_user_step.step == 0: current_user_step.step = 1
+    current_user_step = UserStep.objects.filter(user=request.user)[0]
+    if current_user_step.step == 0:
+        current_user_step.step = 1
+        current_user_step.save()
 
     return render(request, 'phase1/step1.html', context_dict)
 
