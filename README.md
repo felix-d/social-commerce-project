@@ -13,3 +13,6 @@ The images are stored in tools/images/
 The information is stored in tools/movies.csv 
 The retrieved information is of the form:
 `movie_title,overview,image_url,tags`
+#### Extend user model with step field and redirect after login depending on step count
+#### Getting the products to fill the database
+#### Add share dialog with javascript sdk and ajax callback to update step count
