@@ -52,6 +52,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'phase1',
     'users',
+    'products',
+    'questionnaires',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
