@@ -1,14 +1,10 @@
 #! /usr/bin/env python
-import sys
-import pprint
 import json
 import os
 import csv
 from urllib.request import urlopen
-from io import BytesIO
 
 def main():
-    pp = pprint.PrettyPrinter(indent=4)
 
     #we initialize the api manager
     tmdbApi =ApiManager('http://api.themoviedb.org/3', get_env_variable('TMDB_API_KEY'))

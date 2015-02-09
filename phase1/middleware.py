@@ -8,18 +8,7 @@ class Middleware():
     """
     def __init__(self):
         self.url_check = "/accounts/facebook/login/token/"
-        self.allowed_pattern = re.compile("^(/|/admin/.*|/accounts/facebook/login/token/)$")
-
-    def process_request(self, request, **kwargs):
-        """
-        The only allowed url are '/' and facebook login
-        """
-        print(str(self.allowed_pattern.match(request.path)))
-        if not request.user.is_authenticated() and\
-                not self.allowed_pattern.match(request.path):
-                print("User is not authenticated and the url matches the allowed_patterns")
-                return redirect('/')
-        return None
+        self.allowed_pattern = re.compile("^(/|/admin/.*)$")
 
     def process_response(self, request, response):
         """
@@ -27,9 +16,21 @@ class Middleware():
         facebook login.
         We redirect to home if authentication failed.
         """
+        
+        #response will be ran again so don't worry here
+        #CommonMiddleware has to set the trailing slash
+        #The first run, user won't be there
+        if not hasattr(request, 'user'):
+            return response
+
         #if url is of the form /stepX, get X
         step_reg = re.compile('^/step(\d)(?:\w|/)*$')
         step = step_reg.search(request.path)
+
+        if request.user and\
+            not request.user.is_authenticated() and\
+                not self.allowed_pattern.match(request.path):
+                    return redirect('/')
 
         #if user is authenticated, we check his current step
         #and relocate him if he's not at the right step
