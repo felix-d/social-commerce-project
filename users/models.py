@@ -3,6 +3,8 @@ from django.dispatch import receiver
 from allauth.account.signals import user_signed_up
 from django.contrib.auth.models import User
 
+#we create a user step bound to the user
+#and set its value to 0
 @receiver (user_signed_up)
 def complete_social_signup(sender, **kwargs):
     """We start step to 0"""
@@ -11,11 +13,22 @@ def complete_social_signup(sender, **kwargs):
     us.save()
     return
 
+#A manager to increment the step count depending on
+#current step
+class UserStepManager(models.Manager):
+    def setUserStep(self, user, conditional_step, step):
+        #move to model
+        current_user_step = UserStep.objects.filter(user=user)[0]
+        if current_user_step.step == conditional_step:
+            current_user_step.step = step
+            current_user_step.save()
 
 class UserStep(models.Model):
     """This model holds the user step count"""
     user = models.OneToOneField(User)
     step = models.IntegerField(default=0)
+    #we set the custom manager
+    objects = UserStepManager()
 
 
 class Friendship(models.Model):
