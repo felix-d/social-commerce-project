@@ -11,6 +11,10 @@ The images are stored in [tools/images/](https://github.com/felix-d/social-comme
 The information is stored in [tools/movies.csv](https://github.com/felix-d/social-commerce-project/blob/master/tools/movies.csv#L9) 
 #### Writing a script to fill the database from the csv file
 #### ~~Extend user model with step field~~
+The user model was extended with a one to one relationship to UserStep. This is the clean and recommended way of extending the User model
+according to Django docs.
 #### ~~Implement a middleware to intercept http requests and redirect the user depending on his status and step count~~
+#### Creating the review model
+#### Create templates for basic interactions
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...
