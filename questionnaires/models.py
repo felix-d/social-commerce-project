@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Questionnaire(models.Model):
     name = models.CharField(max_length=255)
 
@@ -25,7 +26,7 @@ class QuestionChoice(models.Model):
 class Question(models.Model):
     text = models.TextField()
     qtype = models.SmallIntegerField()
-    qgroup  = models.ForeignKey(QuestionGroup)
+    qgroup = models.ForeignKey(QuestionGroup)
     qchoices = models.ManyToManyField(QuestionChoice)
 
     def __str__(self):

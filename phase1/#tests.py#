@@ -1,0 +1,25 @@
+from django.test import TestCase
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from django.test import Client
+
+
+
+
+class SimpleTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user('test','test@gmail.com', 'test')
+        login(testcase_user=user)
+
+
+
+    def testSecurePage(self):
+        c = Client()
+        # self.client.login(username='test', password='test')
+        response = c.get('/phase1/step2/')
+        print("Before login in, status for step2: "+ str(response.status_code))
+
+        c.login(username='test', password='test')
+
+        response = c.get('/phase1/step2/')
+        print("After login in, the status for step2: " + str(response.status_code))
