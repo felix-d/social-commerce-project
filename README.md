@@ -15,12 +15,12 @@ Database was filled!
 The user model was extended with a one to one relationship to UserStep. This is the clean and recommended way of extending the User model
 according to Django docs.
 #### ~~Implement a middleware to intercept http requests and redirect the user depending on his status and step count~~
-#### ~~Creating the product model~~
+#### ~~Creating products app model~~
 
 * Product
 * Tag
 
-#### ~~Creating the questionnaire model~~
+#### ~~Creating questionnaires app model~~
 
 * Questionnaire
 * QuestionGroup
@@ -29,13 +29,24 @@ according to Django docs.
 * QuestionnaireAnswering
 * QuestionAnswer
 
-#### ~~Creating the review model~~
+#### ~~Creating reviews app models~~
 
 * Reviewing
 * ReviewRootElement
 * ReviewChildGroup
 * ReviewElement
 * ReviewAnswer
+
+#### ~~Creating users app models~~
+
+* FriendShip
+* Wish
+* UserStep
+
+#### ~~Creating analytics app models~~
+
+* Session
+* PageVisit
 
 #### Updating friendships on logging
 #### Create templates for basic interactions

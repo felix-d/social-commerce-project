@@ -12,23 +12,23 @@ class Reviewing(models.Model):
 
 class ReviewRootElement(models.Model):
     order = models.SmallIntegerField()
-    name = models.CharField(maxlength=255)
-    has_child = models.BooleanField()
+    name = models.CharField(max_length=255)
+    has_child = models.BooleanField(default=None)
 
 
 class ReviewChildGroup(models.Model):
     review_root_element = models.ForeignKey(ReviewRootElement)
-    name = models.CharField(maxlength=255)
+    name = models.CharField(max_length=255)
     order = models.SmallIntegerField()
 
 
 class ReviewElement(models.Model):
     review_child_group = models.ForeignKey(ReviewChildGroup)
-    name = models.CharField(maxlength=255)
+    name = models.CharField(max_length=255)
 
 
 class ReviewAnswer(models.Model):
     review = models.ForeignKey(Reviewing)
     review_element = models.ForeignKey(ReviewElement)
     text_value = models.TextField()
-    boolean_value = models.BooleanField()
+    boolean_value = models.BooleanField(default=None)

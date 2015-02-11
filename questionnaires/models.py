@@ -43,4 +43,4 @@ class QuestionAnswer(models.Model):
     questionnaire_answering = models.ForeignKey(QuestionnaireAnswering)
     question = models.ForeignKey(Question)
     text_value = models.TextField()
-    boolean_value = models.BooleanField()
+    boolean_value = models.BooleanField(default=None)
