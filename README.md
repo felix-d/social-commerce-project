@@ -16,8 +16,6 @@ The user model was extended with a one to one relationship to UserStep. This is 
 according to Django docs.
 #### ~~Implement a middleware to intercept http requests and redirect the user depending on his status and step count~~
 #### ~~Creating the product model~~
-#### Creating the review model
-### Updating friendships on logging
 
 * Product
 * Tag
@@ -30,6 +28,7 @@ according to Django docs.
 * QuestionChoice
 
 #### Creating the review model
+### Updating friendships on logging
 #### Create templates for basic interactions
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...
