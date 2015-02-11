@@ -4,36 +4,44 @@ from users.models import UserStep
 from django.test import Client
 
 
-class MyTests(TestCase):
+class Phase1Tests(TestCase):
     fixtures = ['data.json']
 
     def setUp(self):
-        self.test_user = User.objects.create_user(username="test2",
-                                                  email="test2@test2.ca",
-                                                  password="test2")
+        self.test_user = User.objects.create_user(username="test",
+                                                  email="test@test.com",
+                                                  password="test")
         us = UserStep(user=self.test_user)
         us.save()
         self.c = Client()
 
-    def test_we_can_access_home(self):
+    def test_we_can_access_home_if_logout(self):
         response = self.c.get('/')
         self.assertEqual(response.status_code, 200)
 
-    def test_we_can_access_admin(self):
+    def test_we_can_access_admin_if_logout(self):
         response = self.c.get('/admin/', follow=True)
         self.assertEqual(response.status_code, 200)
 
-    def test_we_cant_access_step1(self):
+    def test_we_cant_access_steps_if_logout(self):
         response = self.c.get('/phase1/step1/')
         self.assertEqual(response.status_code, 302)
+        response = self.c.get('/phase1/step2/')
+        self.assertEqual(response.status_code, 302)
 
-    def test_we_can_login(self):
-        assert(self.c.login(username="test2", password="test2"))
+    def test_we_can_access_step1_if_login(self):
+        self.c.login(username="test", password="test")
+        response = self.c.get('/phase1/step1/', follow=True)
+        self.assertEqual(response.status_code, 200)
 
-        def test_we_can_access_step1(self):
-            response = self.c.get('/phase1/step1/', follow=True)
-            self.assertEqual(response.status_code, 200)
+    def test_step_was_incremented_on_step1(self):
+        self.c.login(username="test", password="test")
+        self.c.get('/phase1/step1/')
+        userstep = UserStep.objects.get(user=self.test_user)
+        self.assertEqual(userstep.step, 1)
 
-        def test_step_is_incremented(self):
-            current_user_step = self.test_user.userstep.step
-            self.assertEqual(current_user_step, 1)
+    def test_we_cant_access_step2_from_step1_without_condition(self):
+        self.c.login(username="test", password="test")
+        self.c.get('/phase1/step1/')
+        response = self.c.get('/phase1/step2/')
+        self.assertEqual(response.status_code, 302)

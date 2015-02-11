@@ -12,7 +12,6 @@ def complete_social_signup(sender, **kwargs):
     user = kwargs.pop('user')
     us = UserStep(user=user)
     us.save()
-    return
 
 
 # A manager to increment the step count depending on
@@ -22,6 +21,7 @@ class UserStepManager(models.Manager):
         # move to model
         if user.userstep.step == conditional_step:
             user.userstep.step = step
+            user.userstep.save()
 
 
 class UserStep(models.Model):
