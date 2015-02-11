@@ -26,9 +26,18 @@ according to Django docs.
 * QuestionGroup
 * Question
 * QuestionChoice
+* QuestionnaireAnswering
+* QuestionAnswer
 
-#### Creating the review model
-### Updating friendships on logging
+#### ~~Creating the review model~~
+
+* Reviewing
+* ReviewRootElement
+* ReviewChildGroup
+* ReviewElement
+* ReviewAnswer
+
+#### Updating friendships on logging
 #### Create templates for basic interactions
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...

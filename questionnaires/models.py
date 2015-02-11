@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 
 
 class Questionnaire(models.Model):
@@ -31,3 +32,15 @@ class Question(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class QuestionnaireAnswering(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User)
+
+
+class QuestionAnswer(models.Model):
+    questionnaire_answering = models.ForeignKey(QuestionnaireAnswering)
+    question = models.ForeignKey(Question)
+    text_value = models.TextField()
+    boolean_value = models.BooleanField()

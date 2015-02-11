@@ -17,3 +17,8 @@ def step1(request):
     context_dict = {}
     UserStep.objects.setUserStep(request.user, 0, 1)
     return render(request, 'phase1/step1.html', context_dict)
+
+
+@login_required
+def step2(request):
+    return render(request, 'phase1/step2.html')
