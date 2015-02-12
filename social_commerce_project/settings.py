@@ -101,7 +101,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 LOGIN_REDIRECT_URL = '/phase1/step1/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
-                  ['email', 'publish_actions', 'user_friends'],
+                  ['email', 'user_friends'],
                   'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
                   'METHOD': 'js_sdk',
                   'VERIFIED_EMAIL': False,

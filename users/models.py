@@ -1,8 +1,43 @@
 from django.db import models
 from products.models import Product
 from django.dispatch import receiver
-from allauth.account.signals import user_signed_up
+from allauth.account.signals import user_signed_up, user_logged_in
 from django.contrib.auth.models import User
+from allauth.socialaccount.models import SocialAccount, SocialToken
+import requests
+
+
+def is_friendship_exists(a, b):
+    if Friendship.objects.filter(user=a, friend=b):
+        return True
+    if Friendship.objects.filter(user=b, friend=a):
+        return True
+    return False
+
+
+@receiver(user_logged_in)
+def check_for_friends(sender, **kwargs):
+    # We start by getting the token
+    user = kwargs.pop('user')
+    social_account = SocialAccount.objects.get(user=user)
+    token = SocialToken.objects.get(account=social_account)
+    userid = SocialAccount.objects.get(user=user).uid
+
+    # We do an api call
+    base_url = "https://graph.facebook.com/v2.2/"
+    # Then we get his friends
+    full_url = base_url + userid + "/friends?access_token=" + str(token)
+    friends_using_app = requests.get(full_url).json()['data']
+
+    for f in friends_using_app:
+
+        friend_id = f['id']
+        friend = SocialAccount.objects.get(uid=friend_id).user
+        if not is_friendship_exists(friend, user):
+            Friendship.objects.get_or_create(
+                user=user,
+                friend=friend
+            )
 
 
 # we create a user step bound to the user
@@ -40,6 +75,11 @@ class Friendship(models.Model):
     # id of its friend
     friend = models.ForeignKey(User, related_name="the_friend")
 
+    def __str__(self):
+        return """
+    {} {} and {} {}
+    """.format(self.user.first_name, self.user.last_name,
+               self.friend.first_name, self.friend.last_name)
 
 class Wish(models.Model):
     user = models.ForeignKey(User)

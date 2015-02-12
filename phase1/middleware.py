@@ -16,7 +16,7 @@ class Middleware():
         facebook login.
         We redirect to home if authentication failed.
         """
-        
+
         #response will be ran again so don't worry here
         #CommonMiddleware has to set the trailing slash
         #The first run, user won't be there
@@ -47,4 +47,5 @@ class Middleware():
                     return redirect('/')
 
         #To check the step and redirect on bad step
-        return response 
+        return response
+

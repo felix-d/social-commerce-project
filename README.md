@@ -48,7 +48,10 @@ according to Django docs.
 * Session
 * PageVisit
 
-#### Updating friendships on logging
+#### ~~Updating friendships on logging~~
+
+Now when a user logs in, a new friendship is created in the database if it doesn't exist yet
+
 #### Create templates for basic interactions
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...

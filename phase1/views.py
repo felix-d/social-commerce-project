@@ -8,7 +8,7 @@ from users.models import UserStep
 def step0(request):
     context_dict = {}
     # Disconnect user on step1
-    logout(request)
+    # logout(request)
     return render(request, 'phase1/step0.html', context_dict)
 
 
