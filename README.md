@@ -1,5 +1,9 @@
 # Social Commerce Project
 An experimental platform built with Django to study social influence in e-commerce
+
+### Reminders
+**Fetching django-nested-inline**
+pip install git+git://github.com/s-block/django-nested-inline.git
 * * *
 ### TODO
 #### ~~Creating User objects when logging in with Facebook API~~

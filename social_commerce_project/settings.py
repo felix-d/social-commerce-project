@@ -33,6 +33,7 @@ SECRET_KEY = get_env_variable("SOCIAL_COMMERCE_SECRET_KEY")
 FACEBOOK_APP_ID = get_env_variable("FACEBOOK_APP_ID")
 FACEBOOK_APP_SECRET = get_env_variable("FACEBOOK_APP_SECRET")
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -62,6 +63,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
+    'nested_inline',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,6 +89,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # allauth specific context processors
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
+    "django.core.context_processors.request",
 )
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -102,7 +105,9 @@ LOGIN_REDIRECT_URL = '/phase1/step1/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],
-                  'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+                  'AUTH_PARAMS': {
+                      # 'auth_type': 'reauthenticate'
+                  },
                   'METHOD': 'js_sdk',
                   'VERIFIED_EMAIL': False,
                   'VERSION': 'v2.2'}}

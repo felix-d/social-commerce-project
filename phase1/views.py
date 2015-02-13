@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from users.models import UserStep
 
 
 # Create your views here.
 def step0(request):
     context_dict = {}
-    # Disconnect user on step1
+    # IF REAUTHENTICATE IS ADDED TO FACEBOOK SETTINGS, UNCOMMENT!!
     # logout(request)
     return render(request, 'phase1/step0.html', context_dict)
 

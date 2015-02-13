@@ -13,19 +13,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=255)),
                 ('description', models.TextField()),
                 ('image_path', models.URLField()),
+                ('caracteristic_1', models.CharField(default=None, max_length=255)),
+                ('caracteristic_2', models.CharField(default=None, max_length=255)),
             ],
             options={
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='Tags',
+            name='Tag',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=255)),
             ],
             options={
@@ -35,7 +37,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='tags',
-            field=models.ManyToManyField(to='products.Tags'),
+            field=models.ManyToManyField(to='products.Tag'),
             preserve_default=True,
         ),
     ]

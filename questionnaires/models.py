@@ -1,12 +1,9 @@
 from django.db import models
 from users.models import User
 
-
 class Questionnaire(models.Model):
     name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
+    primary = models.BooleanField(default=None)
 
 
 class QuestionGroup(models.Model):
@@ -17,8 +14,16 @@ class QuestionGroup(models.Model):
         return self.name
 
 
+class QuestionType(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 class QuestionChoice(models.Model):
     name = models.CharField(max_length=255)
+    question_choice_group = models.ForeignKey(QuestionType)
 
     def __str__(self):
         return self.name
@@ -26,9 +31,9 @@ class QuestionChoice(models.Model):
 
 class Question(models.Model):
     text = models.TextField()
-    qtype = models.SmallIntegerField()
     qgroup = models.ForeignKey(QuestionGroup)
-    qchoices = models.ManyToManyField(QuestionChoice)
+    qtype = models.ForeignKey(QuestionType, blank=True, null=True,
+                              help_text="Keep blank for open answer question.")
 
     def __str__(self):
         return self.text

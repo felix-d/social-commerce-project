@@ -1,6 +1,7 @@
 defusedxml==0.4.1
 Django==1.7.4
 django-allauth==0.19.1
+-e git://github.com/felix-d/django-nested-inline.git@68c86ffadbb84112747260f193288641810c97d7#egg=django_nested_inline-master
 oauthlib==0.7.2
 python3-openid==3.0.5
 requests==2.5.1

@@ -33,14 +33,16 @@ def populate():
         csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for i, row in enumerate(csvreader):
             if i > 0:
-                add_product(row[0], row[1], row[2], row[3:])
+                add_product(row[0], row[1], row[2], row[3], row[4], row[5:])
 
 
 # Add a product to the database
-def add_product(title, overview, img, tags):
+def add_product(title, overview, img, release_date, popularity, tags):
     p = Product.objects.get_or_create(name=title,
                                       description=overview,
-                                      image_path=img[1:])[0]
+                                      image_path=img[1:],
+                                      caracteristic_1=release_date,
+                                      caracteristic_2=popularity)[0]
     for t in tags:
         if t not in tag_list:
             print("\n**** Tag " + t + " was added to the database..\n")

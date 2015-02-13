@@ -1,0 +1,8 @@
+defusedxml==0.4.1
+Django==1.7.4
+django-allauth==0.19.1
+django-nested-inline==0.3.3
+oauthlib==0.7.2
+python3-openid==3.0.5
+requests==2.5.1
+requests-oauthlib==0.4.2
