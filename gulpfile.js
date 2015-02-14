@@ -76,14 +76,18 @@ gulp.task('compile-sass', function() {
         pipe(gzip(gzip_options)).
         pipe(gulp.dest('build/css'));
 });
-
-gulp.task('concat-sass-css', ['compile-css', 'compile-sass'], function() {
+gulp.task('clean-concat-css', function(){
     del('build/css/all.min.css');
+    return;
+});
+gulp.task('concat-sass-css', ['compile-css', 'compile-sass', 'clean-concat-css'], function() {
+        del('build/css/all.min.css');
+        console.log("deleted");
     return gulp.src('build/css/*.css').
-    pipe(concat('all.min.css')).
-    pipe(gulp.dest('build/css')).
-    pipe(gzip(gzip_options)).
-    pipe(gulp.dest('build/css'));
+        pipe(concat('all.min.css')).
+        pipe(gulp.dest('build/css')).
+        pipe(gzip(gzip_options)).
+        pipe(gulp.dest('build/css'));
 });
 
 gulp.task('compile-styles', [
@@ -100,6 +104,7 @@ gulp.task('compress-images', function(){
                   pipe(imagemin({progressive: true, optimizationLevel: 7})).
                   pipe(gulp.dest('build/images/'));
 });
+
 gulp.task('watch', function() {
     livereload.listen();
     gulp.watch('src/scss/*.scss', ['compile-styles']);
