@@ -29,6 +29,10 @@ class Phase1Tests(TestCase):
         response = self.c.get('/phase1/step2/')
         self.assertEqual(response.status_code, 302)
 
+    def test_we_cant_access_random_string(self):
+        response = self.c.get('/fssjijijllnnfg/')
+        self.assertEqual(response.status_code, 302)
+
     def test_we_can_access_step1_if_login(self):
         self.c.login(username="test", password="test")
         response = self.c.get('/phase1/step1/', follow=True)
@@ -44,4 +48,14 @@ class Phase1Tests(TestCase):
         self.c.login(username="test", password="test")
         self.c.get('/phase1/step1/')
         response = self.c.get('/phase1/step2/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_we_get_redirected_to_step_if_going_to_root(self):
+        self.c.login(username="test", password="test")
+        response = self.c.get('/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_we_get_redirected_to_step_if_going_random(self):
+        self.c.login(username="test", password="test")
+        response = self.c.get('/irteroiroeiureote/')
         self.assertEqual(response.status_code, 302)

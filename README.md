@@ -2,8 +2,8 @@
 An experimental platform built with Django to study social influence in e-commerce
 
 ### Reminders
-**Fetching django-nested-inline**
-pip install git+git://github.com/s-block/django-nested-inline.git
+**Fetching django-nested-inline from my fork**
+pip install -e git+git://github.com/felix-d/django-nested-inline.git#egg=django-nested-inline
 * * *
 ### TODO
 #### ~~Creating User objects when logging in with Facebook API~~

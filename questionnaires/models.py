@@ -1,9 +1,13 @@
 from django.db import models
 from users.models import User
 
+
 class Questionnaire(models.Model):
     name = models.CharField(max_length=255)
     primary = models.BooleanField(default=None)
+
+    def __str__(self):
+        return self.name
 
 
 class QuestionGroup(models.Model):

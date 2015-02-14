@@ -1,16 +1,17 @@
 from django.shortcuts import redirect
-from users.models import UserStep
 import re
 
 
 class Middleware():
     """
-    A middleware to override allauth user flow
+    A middleware to implement a custom user flow
     """
     def __init__(self):
-        self.url_check = "/accounts/facebook/login/token/"
+        self.url_facebook = "/accounts/facebook/login/token/"
         self.allowed_pattern = re.compile("^(/|/admin/.*)$")
-        self.step_reg = re.compile('^/step(\d)(?:\w|/)*$')
+        self.step_reg = re.compile('^/phase1/step(\d)(?:\w|/)*$')
+        self.url_admin = re.compile("^/admin/.*$")
+        self.url_root = re.compile("^/$")
 
     def process_response(self, request, response):
         """
@@ -19,32 +20,33 @@ class Middleware():
         We redirect to home if authentication failed.
         """
 
-        # response will be ran again so don't worry here
-        # CommonMiddleware has to set the trailing slash
-        # The first run, user won't be there
+        """NO USER BECAUSE WE NEED TO APPEND A SLASH"""
         if not hasattr(request, 'user'):
             return response
 
-        # If the user is not authenticated and if he's not on allowed patterns
-        if not request.user.is_authenticated() and\
-                not self.allowed_pattern.match(request.path):
-            return redirect('/')
-        # if url is of the form /stepX, get X
-        step = self.step_reg.search(request.path)
+        """URL IS ADMIN/*, FULL ACCESS GRANTED"""
+        if self.url_admin.match(request.path):
+            return response
 
-        # if user is authenticated, we check his current step
-        # and relocate him if he's not at the right step
-        if step and\
-                str(UserStep.objects.filter(user=request.user)[0].step) !=\
-                step.group(1):
-            print("User is authenticated but not at the right step")
-            return redirect('/step'+step+'/')
+        """USER IS NOT AUTHENTICATED AND SOMEWHERE RESTRICTED"""
+        # If the user is anonymous and the path is allowed we return
+        if request.user.is_anonymous() and\
+                not self.url_root.match(request.path):
+            return redirect("/")
 
-        # In case of failed faceboook login
-        if request.path == self.url_check and\
-                not request.user.is_authenticated():
-                    print("Facebook loggin failed")
-                    return redirect('/')
+        """USER IS AUTHENTICATED AND NO STEP IN URL OR NOT GOOD STEP"""
+        # step from url
+        url_step = self.step_reg.search(request.path)
 
-        # To check the step and redirect on bad step
+        # step from user model
+        user_step = str(request.user.userstep.step) if\
+            hasattr(request.user, "userstep") else\
+            False
+
+        if user_step and request.user.is_authenticated() and\
+                (not url_step or user_step !=
+                 url_step.group(1)):
+            return redirect('/phase1/step'+user_step+'/')
+
+        """OTHERWISE"""
         return response
