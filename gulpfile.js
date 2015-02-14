@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var rimraf = require('gulp-rimraf');
+var del = require('del');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
@@ -31,51 +31,65 @@ sass_sources = [
     'src/scss/*.scss'
 ];
 
-gulp.task('compile-js', function() {
+gulp.task('compress-js', function() {
     return gulp.src(js_sources)
         .pipe(uglify())
-        .pipe(concat('all.min.js'))
+        .pipe(rename(function(path){
+            if(!/\.min$/.test(path.basename)){
+                path.extname = ".min.js";
+            }
+        }))
         .pipe(gulp.dest('build/js'))
         .pipe(gzip(gzip_options))
-        .pipe(gulp.dest('build/js'))
-        .pipe(livereload());
+        .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('concat-js', ['compress-js'], function(){
+    return gulp.src('build/js/*.js').
+        pipe(concat('all.min.js')).
+        pipe(gulp.dest('build/js')).
+        pipe(gzip(gzip_options)).
+        pipe(gulp.dest('build/js')).
+        pipe(livereload());
+});
+
+gulp.task('compile-js', ['compress-js', 'concat-js'], function(){
+    return;
 });
 
 gulp.task('compile-css', function() {
-    return gulp.src(css_sources)
-        .pipe(minifycss())
-        .pipe(concat('allcss.min.css'))
-        .pipe(gulp.dest('build/css'));
-});
-gulp.task('compile-sass', function() {
-    return gulp.src(sass_sources)
-        .pipe(sass())
-        .pipe(minifycss())
-        .pipe(concat('allsass.min.css'))
-        .pipe(gulp.dest('build/css'));
+    return gulp.src(css_sources).
+        //they are already minified
+        pipe(gulp.dest('build/css')).
+        pipe(gzip(gzip_options)).
+        pipe(gulp.dest('build/css'));
 });
 
-gulp.task('concat-sass-css', function() {
-    return gulp.src(['build/css/allcss.min.css', 'build/css/allsass.min.css']).
+gulp.task('compile-sass', function() {
+    return gulp.src(sass_sources).
+        pipe(sass()).
+        pipe(minifycss()).
+        pipe(rename({
+            extname: ".min.css"
+        })).
+        pipe(gulp.dest('build/css')).
+        pipe(gzip(gzip_options)).
+        pipe(gulp.dest('build/css'));
+});
+
+gulp.task('concat-sass-css', ['compile-css', 'compile-sass'], function() {
+    del('build/css/all.min.css');
+    return gulp.src('build/css/*.css').
     pipe(concat('all.min.css')).
     pipe(gulp.dest('build/css')).
     pipe(gzip(gzip_options)).
     pipe(gulp.dest('build/css'));
 });
 
-gulp.task('clean-styles', function() {
-    return gulp.src([
-        'build/css/allcss.min.css',
-        'build/css/allsass.min.css'
-    ]).pipe(rimraf(), {
-        read: false
-    });
-});
 gulp.task('compile-styles', [
     'compile-css',
     'compile-sass',
-    'concat-sass-css',
-    'clean-styles'
+    'concat-sass-css'
 ], function() {
     return gulp.src('build/css/all.min.css')
         .pipe(livereload());

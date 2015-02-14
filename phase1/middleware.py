@@ -28,7 +28,7 @@ class Middleware():
         if self.url_admin.match(request.path):
             return response
 
-        """USER IS NOT AUTHENTICATED AND SOMEWHERE RESTRICTED"""
+        """USER IS NOT AUTHENTICATED AND URL IS NOT ROOT"""
         # If the user is anonymous and the path is allowed we return
         if request.user.is_anonymous() and\
                 not self.url_root.match(request.path):
@@ -43,7 +43,7 @@ class Middleware():
             hasattr(request.user, "userstep") else\
             False
 
-        if user_step and request.user.is_authenticated() and\
+        if user_step and\
                 (not url_step or user_step !=
                  url_step.group(1)):
             return redirect('/phase1/step'+user_step+'/')

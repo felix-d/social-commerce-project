@@ -9,9 +9,24 @@ An experimental platform built with Django to study social influence in e-commer
 
 ### Reminders
 **Fetching django-nested-inline from my fork**
+
 `pip install -e git+git://github.com/felix-d/django-nested-inline.git#egg=django-nested-inline`
+
 **Dumping db data**
+
 `python manage.py dumpdata --indent=4 -n >! data.json`
+
+**GULP TASKS**
+
+`gulp` compiles js and css/sass sources
+
+`gulp compile-js` compiles js
+
+`gulp compile-styles` compiles css and sass
+
+`gulp compress-images` compresses images
+
+`gulp watch` watch for new scripts and styles, compile and live reload
 
 * * *
 ### TODO
