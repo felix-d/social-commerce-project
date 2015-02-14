@@ -1,9 +1,18 @@
 # Social Commerce Project
 An experimental platform built with Django to study social influence in e-commerce
 
+## Structure info
+
+* `src/` contains raw source files (sass, uncompressed images etc.)
+* `build/` contains source files compiled with *gulp*
+* `static/` contains source files collected by Django for production
+
 ### Reminders
 **Fetching django-nested-inline from my fork**
-pip install -e git+git://github.com/felix-d/django-nested-inline.git#egg=django-nested-inline
+`pip install -e git+git://github.com/felix-d/django-nested-inline.git#egg=django-nested-inline`
+**Dumping db data**
+`python manage.py dumpdata --indent=4 -n >! data.json`
+
 * * *
 ### TODO
 #### ~~Creating User objects when logging in with Facebook API~~

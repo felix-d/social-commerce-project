@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'nested_inline',
+    'django_react'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'phase1.middleware.Middleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
@@ -126,7 +128,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -147,8 +148,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
-STATIC_PATH = os.path.join(BASE_DIR, 'static')
+STATIC_PATH = os.path.join(BASE_DIR, 'build')
 
 STATIC_URL = '/static/'
 
@@ -156,7 +156,7 @@ STATICFILES_DIRS = (
     STATIC_PATH,
 )
 
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Our template directory path
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 
