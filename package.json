@@ -1,0 +1,32 @@
+{
+  "name": "social_commerce_project",
+  "version": "1.0.0",
+  "description": "An experimental platform built with Django to study social influence in e-commerce",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felix-d/social-commerce-project.git"
+  },
+  "author": "Felix Descoteaux",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felix-d/social-commerce-project/issues"
+  },
+  "homepage": "https://github.com/felix-d/social-commerce-project",
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.4.3",
+    "gulp-gzip": "0.0.8",
+    "gulp-imagemin": "^2.2.0",
+    "gulp-livereload": "^3.7.0",
+    "gulp-minify-css": "^0.4.5",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^1.3.3",
+    "gulp-uglify": "^1.1.0",
+    "gulp-watch": "^4.1.1"
+  }
+}

@@ -4,7 +4,7 @@ An experimental platform built with Django to study social influence in e-commer
 ## Structure info
 
 * `src/` contains raw source files (sass, uncompressed images etc.)
-* `build/` contains source files compiled with *gulp*
+* `build/` contains source files compiled with *gulp*, including bower components
 * `static/` contains source files collected by Django for production
 
 ### Reminders
