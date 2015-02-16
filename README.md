@@ -1,6 +1,10 @@
 # Social Commerce Project
 An experimental platform built with Django to study social influence in e-commerce
 
+## Prototype for reviewing widget with REACTjs
+
+http://plnkr.co/edit/NFiS9nEBZyeSSLGhOaUH?p=preview
+
 ## Structure info
 
 * `src/` contains raw source files (sass, uncompressed images etc.)

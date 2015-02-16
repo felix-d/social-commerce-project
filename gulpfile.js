@@ -13,7 +13,6 @@ var gzip_options = {
     threshold: '1kb',
     gzipOptions: {
         level: 9
-
     }
 };
 
@@ -30,7 +29,12 @@ css_sources = [
 sass_sources = [
     'src/scss/*.scss'
 ];
-
+gulp.task('clean-js', function(){
+    del('build/js/*');
+});
+gulp.task('clean-css', function(){
+    del('build/css/*');
+});
 gulp.task('compress-js', function() {
     return gulp.src(js_sources)
         .pipe(uglify())
@@ -53,13 +57,12 @@ gulp.task('concat-js', ['compress-js'], function(){
         pipe(livereload());
 });
 
-gulp.task('compile-js', ['compress-js', 'concat-js'], function(){
+gulp.task('compile-js', ['clean-js', 'compress-js', 'concat-js'], function(){
     return;
 });
 
 gulp.task('compile-css', function() {
     return gulp.src(css_sources).
-        //they are already minified
         pipe(gulp.dest('build/css')).
         pipe(gzip(gzip_options)).
         pipe(gulp.dest('build/css'));
@@ -76,13 +79,9 @@ gulp.task('compile-sass', function() {
         pipe(gzip(gzip_options)).
         pipe(gulp.dest('build/css'));
 });
-gulp.task('clean-concat-css', function(){
+gulp.task('concat-sass-css', ['compile-css', 'compile-sass'], function() {
     del('build/css/all.min.css');
-    return;
-});
-gulp.task('concat-sass-css', ['compile-css', 'compile-sass', 'clean-concat-css'], function() {
-        del('build/css/all.min.css');
-        console.log("deleted");
+    console.log("deleted");
     return gulp.src('build/css/*.css').
         pipe(concat('all.min.css')).
         pipe(gulp.dest('build/css')).
@@ -91,6 +90,7 @@ gulp.task('concat-sass-css', ['compile-css', 'compile-sass', 'clean-concat-css']
 });
 
 gulp.task('compile-styles', [
+    'clean-css',
     'compile-css',
     'compile-sass',
     'concat-sass-css'
@@ -100,9 +100,9 @@ gulp.task('compile-styles', [
 });
 
 gulp.task('compress-images', function(){
-  return gulp.src('src/images/**').
-                  pipe(imagemin({progressive: true, optimizationLevel: 7})).
-                  pipe(gulp.dest('build/images/'));
+    return gulp.src('src/images/**').
+        pipe(imagemin({progressive: true, optimizationLevel: 7})).
+        pipe(gulp.dest('build/images/'));
 });
 
 gulp.task('watch', function() {
