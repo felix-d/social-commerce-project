@@ -3,7 +3,7 @@ An experimental platform built with Django to study social influence in e-commer
 
 ## Prototype for reviewing widget with REACTjs
 
-http://plnkr.co/edit/NFiS9nEBZyeSSLGhOaUH?p=preview
+http://plnkr.co/edit/HIqqdeQUvPfrc7eOOvfx?p=preview
 
 ## Structure info
 
