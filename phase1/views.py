@@ -5,16 +5,16 @@ from users.models import UserStep
 
 def step0(request):
     context_dict = {}
-    return render(request, 'phase1/step0.html', context_dict)
+    return render(request, 'phase1/step0.djhtml', context_dict)
 
 
 @login_required
 def step1(request):
     context_dict = {}
     UserStep.objects.setUserStep(request.user, 0, 1)
-    return render(request, 'phase1/step1.html', context_dict)
+    return render(request, 'phase1/step1.djhtml', context_dict)
 
 
 @login_required
 def step2(request):
-    return render(request, 'phase1/step2.html')
+    return render(request, 'phase1/step2.djhtml')

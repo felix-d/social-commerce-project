@@ -1,5 +1,3 @@
-#branding h1 a:link,#branding h1 a:visited{color:#fff;font-family:"Helvetica Neue";font-weight:lighter;font-size:1.4em}#header{color:#fff;background-color:#022844;border-bottom:1px solid #006dc8}#header #user-tools{font-size:1em}#header a:link,#header a:visited{color:#96E7FF}#content{padding-top:20px;padding-left:15px}
-.example-enter{opacity:.01;transition:opacity .5s ease-in}.example-enter.example-enter-active{opacity:1}.example-leave{opacity:1;transition:opacity .5s ease-in}.example-leave.example-leave-active{opacity:.01}
 /*!
  * Bootstrap v3.3.2 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
