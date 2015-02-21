@@ -24,7 +24,16 @@ var gzip_options = {
 };
 
 var browserify_sources = [
-    "./src/js/review-widget/review-widget.js",
+    {
+        taskName: 'browserify-app',
+        src: './src/js/app.js',
+        bundleName: 'bundle-app.js'
+    },
+    {
+        taskName: 'browserify-widget',
+        src: './src/js/review-widget/review-widget.js',
+        bundleName: 'bundle-widget.js'
+    }
 ];
 var js_sources = [
     'bower_components/jquery/dist/jquery.min.js',
@@ -70,24 +79,29 @@ gulp.task('move-js', ['clean-js'], function(){
         pipe(gulp.dest('./build/js/tmp'));
 });
 
-//browserify given files and move them into tmp
-function browserifyFactory(taskName, path, bundleName){
-    if(!arguments.callee.browserifyTasks) arguments.callee.tasks = [];
-    arguments.callee.tasks.push(taskName);
-    return gulp.task(taskName, ['clean-js'], function(){
-        return browserify(path)
-            .bundle()
-            .pipe(source(bundleName))
-            .pipe(gulp.dest('./build/js/tmp'));
+(function browserifyit(){
+    //browserify given files and move them into tmp
+    function browserifyFactory(taskName, path, bundleName){
+        if(!arguments.callee.tasks) arguments.callee.tasks = [];
+        arguments.callee.tasks.push(taskName);
+        return gulp.task(taskName, ['clean-js'], function(){
+            return browserify(path)
+                .bundle()
+                .pipe(source(bundleName))
+                .pipe(gulp.dest('./build/js/tmp')).pipe(livereload());
 
-    });
-}
+        });
+    }
 
-//we create browserify tasks cause browserify takes one entry point
-browserifyFactory('browserify-widget', './src/js/review-widget/review-widget.js', 'bundle-widget.js');
-
+    for(var i=0,l=browserify_sources.length; i< l; i++){
+        browserifyFactory(browserify_sources[i].taskName,
+                          browserify_sources[i].src,
+                          browserify_sources[i].bundleName);
+    }
 //we register the tasks in one task
 gulp.task('browserify', browserifyFactory.tasks, function(){});
+})();
+
 
 //Move bower js files and browserify to tmp
 gulp.task('build-js', ['move-js', 'browserify'], function(){
@@ -152,9 +166,16 @@ gulp.task('compress-images', function(){
 gulp.task('watch', function() {
     livereload.listen();
     gulp.watch('src/scss/*.scss', ['prod-styles']);
-    gulp.watch(browserify_sources, ['prod-js']);
+    gulp.watch('src/js/**/*.js', ['prod-js']);
     /* Trigger a live reload on any Django template changes */
     gulp.watch('**/templates/*').on('change', livereload.changed);
+});
+
+gulp.task('watch-browserify', function(){
+    livereload.listen();
+    gulp.watch("src/js/**", ['browserify']);
+    /* Trigger a live reload on any Django template changes */
+    gulp.watch('./templates/*').on('change', livereload.changed);
 });
 
 gulp.task('default', ['compile-styles', 'prod-js']);
