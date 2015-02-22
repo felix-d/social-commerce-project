@@ -31,7 +31,7 @@ var browserify_sources = [
     },
     {
         taskName: 'browserify-widget',
-        src: './src/js/review-widget/review-widget.js',
+        src: './src/js/review-widget/review-widget.jsx',
         bundleName: 'bundle-widget.js'
     }
 ];
@@ -85,8 +85,11 @@ gulp.task('move-js', ['clean-js'], function(){
         if(!arguments.callee.tasks) arguments.callee.tasks = [];
         arguments.callee.tasks.push(taskName);
         return gulp.task(taskName, ['clean-js'], function(){
-            return browserify(path)
-                .bundle()
+            var b = browserify();
+            b.transform(reactify);
+            b.require(path, {expose: bundleName.replace(".js", "")});
+            b.add(path);
+            return b.bundle()
                 .pipe(source(bundleName))
                 .pipe(gulp.dest('./build/js/tmp')).pipe(livereload());
 
@@ -171,9 +174,9 @@ gulp.task('watch', function() {
     gulp.watch('**/templates/*').on('change', livereload.changed);
 });
 
-gulp.task('watch-browserify', function(){
+gulp.task('watch:browserify', function(){
     livereload.listen();
-    gulp.watch("src/js/**", ['browserify']);
+    gulp.watch("./src/js/review-widget/*.jsx", ['browserify']);
     /* Trigger a live reload on any Django template changes */
     gulp.watch('./templates/*').on('change', livereload.changed);
 });

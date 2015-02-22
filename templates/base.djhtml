@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load socialaccount %}
+{% providers_media_js %}
+<html>
+    <head>
+    <link href="{% static "css/base.min.css" %}" type="text/css" rel="stylesheet"/>
+    <meta charset="UTF-8">
+        <title>{% block head_title %}{% endblock %}</title>
+        {% block extra_head %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

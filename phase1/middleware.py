@@ -9,9 +9,11 @@ class Middleware():
     def __init__(self):
         self.url_facebook = "/accounts/facebook/login/token/"
         self.allowed_pattern = re.compile("^(/|/admin/.*)$")
-        self.step_reg = re.compile('^/phase1/step(\d)(?:\w|/)*$')
+        self.step_reg = re.compile('^/phase1/step(\d)+/$')
         self.url_admin = re.compile("^/admin/.*$")
+        self.url_logout = re.compile("^/logout/$")
         self.url_root = re.compile("^/$")
+        self.url_root_or_login = re.compile("^(/|/phase1/login/)$")
 
     def process_response(self, request, response):
         """
@@ -25,13 +27,14 @@ class Middleware():
             return response
 
         """URL IS ADMIN/*, FULL ACCESS GRANTED"""
-        if self.url_admin.match(request.path):
+        if self.url_admin.match(request.path)\
+           or self.url_logout.match(request.path):
             return response
 
-        """USER IS NOT AUTHENTICATED AND URL IS NOT ROOT"""
+        """USER IS NOT AUTHENTICATED AND URL IS NOT ROOT OR STEP0"""
         # If the user is anonymous and the path is allowed we return
-        if request.user.is_anonymous() and\
-                not self.url_root.match(request.path):
+        if not request.user.is_authenticated() and\
+                not self.url_root_or_login.match(request.path):
             return redirect("/")
 
         """USER IS AUTHENTICATED AND NO STEP IN URL OR NOT GOOD STEP"""
