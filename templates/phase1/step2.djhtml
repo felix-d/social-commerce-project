@@ -1,0 +1,5 @@
+{% extends "base.djhtml" %}
+{% block body %}
+    <h1>This is the form page</h1>
+    <p><a href="{% url 'auth_logout' %}">Logout</a></p>
+{% endblock %}
