@@ -84,6 +84,7 @@ according to Django docs.
 
 Now when a user logs in, a new friendship is created in the database if it doesn't exist yet
 
+#### Create a model for agreements and create uniqid to store in a cookie for additionnal security
 #### Create templates for basic interactions
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...

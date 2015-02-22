@@ -6,41 +6,56 @@ from django import forms
 
 
 class AgreementForm(forms.Form):
-    your_email = forms.EmailField(label="Your email", required=True)
+    email = forms.EmailField(label="Your email", required=True)
     i_agree = forms.BooleanField(label="I agree", required=True)
 
 
 def agreement(request):
+    """This view controls the agreement form and related user flow"""
     # this is just used to controll access to the agreement
-    # if "agreed" in request.session or "agreed" in request.COOKIES:
-    #     return HttpResponseRedirect('/phase1/login/')
-    if "logout" in request.GET:
-        return HttpResponseRedirect("/phase1/login/")
-
     if request.method == "POST":
+
         agreement_form = AgreementForm(request.POST)
+
         if agreement_form.is_valid():
+
             response = HttpResponseRedirect("/phase1/login/")
-            request.session["agreed"] = True
-            response.set_cookie("agreed", "true")
+
+            # we set the session and a cookie for data persistance
+            request.session["agreed"] = request.POST['email']
+            response.set_cookie("agreed", request.POST['email'])
+
             return response
 
-    # if its a simple get without GET['logout']
+    # if agreed is set in session or in cookie, we can jump straight to login
+    # but newuser cant be set cause that mean we want the user to agree again
+    if ("agreed" in request.session or
+       "agreed" in request.COOKIES) and "newuser" not in request.GET:
+        return HttpResponseRedirect("/phase1/login/")
+
     agreement_form = AgreementForm()
     response = render(request, "phase1/agreement.djhtml",
                       {"form": agreement_form})
-    if "agreed" in request.session:
-        del request.session["agreed"]
-    response.delete_cookie('agreed')
+
+    # because new user might be set, we delete agreed from cookie and email
+    response.delete_cookie("agreed")
+    if 'agreed' in request.session:
+        del request.session['agreed']
+
     return response
 
 
 def login_page(request):
-    # if the user hasn't agreed, we redirect him to root page
+    """This view controls the login page"""
+
+    # we cant access login page without first agreeing
     if "agreed" not in request.session and "agreed" not in request.COOKIES:
         return HttpResponseRedirect('/')
 
-    context_dict = {}
+    # we get the email from the session or cookie
+    email = request.session.get('agreed', request.COOKIES.get("agreed", ""))
+    context_dict = {'email': email}
+
     return render(request, 'phase1/login_page.djhtml', context_dict)
 
 
