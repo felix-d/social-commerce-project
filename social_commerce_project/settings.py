@@ -24,6 +24,7 @@ def get_env_variable(var_name):
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+CURRENT_PHASE = 1
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -55,6 +56,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'phase1',
     'users',
+    'custom_user_flow',
     'products',
     'questionnaires',
     'reviews',
@@ -73,7 +75,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'phase1.middleware.AllauthOverrideMiddleware',
+    # 'phase1.middleware.AllauthOverrideMiddleware',
+    'custom_user_flow.custom_user_flow.AllauthOverrideMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.gzip.GZipMiddleware',
