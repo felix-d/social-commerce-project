@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var watchify = require('watchify');
 var debug = require('gulp-debug');
 var _ = require('underscore');
 var source = require('vinyl-source-stream');
@@ -25,14 +26,9 @@ var gzip_options = {
 
 var browserify_sources = [
     {
-        taskName: 'browserify-app',
-        src: './src/js/app.js',
-        bundleName: 'bundle-app.js'
-    },
-    {
-        taskName: 'browserify-widget',
-        src: './src/js/review-widget/review-widget.jsx',
-        bundleName: 'bundle-widget.js'
+        taskName: 'browserify-review',
+        src: './src/js/review_app/app.jsx',
+        bundleName: 'review_app_bundle.js'
     }
 ];
 var js_sources = [
@@ -85,13 +81,24 @@ gulp.task('move-js', ['clean-js'], function(){
         if(!arguments.callee.tasks) arguments.callee.tasks = [];
         arguments.callee.tasks.push(taskName);
         return gulp.task(taskName, ['clean-js'], function(){
-            var b = browserify();
+            var b = browserify({
+                cache: {},
+                packageCache: {},
+                fullPaths: true
+            });
             b.transform(reactify);
             b.require(path, {expose: bundleName.replace(".js", "")});
+            b = watchify(b);
+            b.on('update', function(){
+                bundleShare(b);
+            });
             b.add(path);
-            return b.bundle()
+            bundleShare(b);
+            function bundleShare(b){
+                return b.bundle()
                 .pipe(source(bundleName))
                 .pipe(gulp.dest('./build/js/tmp')).pipe(livereload());
+            }
 
         });
     }
@@ -176,7 +183,7 @@ gulp.task('watch', function() {
 
 gulp.task('watch:browserify', function(){
     livereload.listen();
-    gulp.watch("./src/js/review-widget/*.jsx", ['browserify']);
+    gulp.watch("./src/js/review_app/**/*.js*", ['browserify']);
     /* Trigger a live reload on any Django template changes */
     gulp.watch('./templates/*').on('change', livereload.changed);
 });

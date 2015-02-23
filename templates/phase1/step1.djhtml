@@ -1,6 +1,13 @@
 {% extends "base.djhtml" %}
+{% load static %}
 {% block body %}
     <h1>This is the reviewing page</h1>
+    <div id="reviewapp"></div>
     <p>LoggedIn!</p>
     <p><a href="{% url 'auth_logout' %}">Logout</a></p>
 {% endblock %}
+{% block extrafooter %}
+    <script src="{% static "js/tmp/review_app_bundle.js" %}" type="text/javascript"></script>
+{% endblock %}
+
+

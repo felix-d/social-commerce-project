@@ -8,11 +8,13 @@
     <h1>This is the login page</h1>
     <a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
     <p><a href="/phase1/?resetagreement=true">Go back to agreement</a></p>
-    <script src="{% static "js/jquery.min.js" %}" type="text/javascript"></script>
-    <script src="{%static "js/tmp/bundle-widget.js"%}" type="text/javascript"></script>
-    <script>
-     var logServerResponse = require('bundle-widget');
-     logServerResponse("test");
-    </script>
+
+    {% block extrafooter %}
+        <script src="{%static "js/tmp/bundle-widget.js"%}" type="text/javascript"></script>
+        <script>
+         var logServerResponse = require('bundle-widget');
+         logServerResponse("test");
+        </script>
+    {% endblock %}
 
 {% endblock %}

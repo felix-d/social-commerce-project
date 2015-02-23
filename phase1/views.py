@@ -4,9 +4,25 @@ from django.contrib.auth.decorators import login_required
 from users.models import UserStep
 from django import forms
 from .phase1_user_flow import redirect_user_to_current_step
+from django.forms.utils import ErrorList
+
+
+class DivErrorList(ErrorList):
+    """A custom div error list for the agreement form"""
+    def __str__(self):
+        return self.as_divs()
+
+    def as_divs(self):
+        if not self:
+            return ''
+        return '<div class="errorlist">{}</div>'.format(''.join([
+            '<div class="error alert alert-danger">{}</div>'
+            .format(e) for e in self
+        ]))
 
 
 class AgreementForm(forms.Form):
+    """The agreement form"""
     i_agree = forms.BooleanField(label="I agree", required=True)
 
 
@@ -26,18 +42,18 @@ def agreement(request):
     # this is just used to controll access to the agreement
     if request.method == "POST":
 
-        agreement_form = AgreementForm(request.POST)
+        agreement_form = AgreementForm(request.POST,
+                                       error_class=DivErrorList)
 
         if agreement_form.is_valid():
             response = HttpResponseRedirect("/phase1/login/")
             request.session["agreed"] = True
             return response
 
-    agreement_form = AgreementForm()
-    response = render(request, "phase1/agreement.djhtml",
-                      {"form": agreement_form})
-
-    return response
+    else:
+        agreement_form = AgreementForm()
+    context = {"form": agreement_form}
+    return render(request, "phase1/agreement.djhtml", context)
 
 
 def login_page(request):
@@ -64,7 +80,6 @@ def step1(request):
         return redirect_user_to_current_step(request.user)
 
     context_dict = {}
-    UserStep.objects.setUserStep(request.user, 0, 1)
     return render(request, 'phase1/step1.djhtml', context_dict)
 
 

@@ -47,6 +47,7 @@ def complete_social_signup(sender, **kwargs):
     """We start step to 0"""
     user = kwargs.pop('user')
     us = UserStep(user=user)
+    us.step = 1
     us.save()
 
 
