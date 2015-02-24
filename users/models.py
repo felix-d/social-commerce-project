@@ -1,11 +1,9 @@
 from django.db import models
 from products.models import Product
-from reviews.models import Reviewing
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up, user_logged_in
 from django.contrib.auth.models import User
 from allauth.socialaccount.models import SocialAccount, SocialToken
-import json
 import requests
 
 
@@ -51,28 +49,6 @@ def complete_social_signup(sender, **kwargs):
     us = UserStep(user=user)
     us.step = 1
     us.save()
-
-
-def get_user_movies(user):
-    """
-    Get user movies. This method adds a property 'reviewd'
-    reviewed movies
-    """
-    # get all the products
-    products = list(Product.objects.values())
-    # the set that will contain ids of reviewed products
-    reviewed_product_ids = set()
-
-    # add ids of reviewed products to set
-    for e in Reviewing.objects.filter(
-            user=user).select_related('product'):
-        reviewed_product_ids.add(e.product.id)
-
-    # if the movie id is in the set, add reviewd=true
-    for p in products:
-        p['reviewed'] = True if p['id'] in reviewed_product_ids else False
-
-    return json.dumps(products)
 
 
 # A manager to increment the step count depending on

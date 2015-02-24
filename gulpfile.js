@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var gulpif = require('gulp-if');
 var watchify = require('watchify');
 var debug = require('gulp-debug');
 var _ = require('underscore');
@@ -16,6 +17,7 @@ var gzip = require('gulp-gzip');
 var livereload = require('gulp-livereload');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
+var watch;
 
 var gzip_options = {
     threshold: '1kb',
@@ -43,6 +45,44 @@ var css_sources = [
 var sass_sources = [
     'src/scss/*.scss'
 ];
+
+gulp.task('browserify-nowatch', function(){
+    watch=false;
+    browserifyShare();
+});
+
+gulp.task('browserify-watch', function(){
+    watch = true;
+    browserifyShare();
+});
+
+function browserifyShare() {
+    var b = browserify({
+        cache: {},
+        transform: reactify,
+        packageCache: {},
+        fullPaths: true
+    });
+
+    if(watch){
+        b = watchify(b);
+        b.on('update', function(){
+            console.log('updated');
+            bundleShare(b);
+        });
+    }
+
+    b.add('./src/js/review_app/app.jsx');
+    bundleShare(b);
+}
+
+function bundleShare(b) {
+    b.bundle()
+        .pipe(source('review_app_bundle.js'))
+        .pipe(gulp.dest('./build/js/tmp/'))
+        .pipe(gulpif(watch, livereload()));
+}
+
 
 //clear tmp folder
 gulp.task('clean-js', function(){
@@ -75,43 +115,6 @@ gulp.task('move-js', ['clean-js'], function(){
         pipe(gulp.dest('./build/js/tmp'));
 });
 
-(function browserifyit(){
-    //browserify given files and move them into tmp
-    function browserifyFactory(taskName, path, bundleName){
-        if(!arguments.callee.tasks) arguments.callee.tasks = [];
-        arguments.callee.tasks.push(taskName);
-        return gulp.task(taskName, ['clean-js'], function(){
-            var b = browserify({
-                cache: {},
-                packageCache: {},
-                fullPaths: true
-            });
-            b.transform(reactify);
-            b.require(path, {expose: bundleName.replace(".js", "")});
-            b = watchify(b);
-            b.on('update', function(){
-                bundleShare(b);
-            });
-            b.add(path);
-            bundleShare(b);
-            function bundleShare(b){
-                return b.bundle()
-                .pipe(source(bundleName))
-                .pipe(gulp.dest('./build/js/tmp')).pipe(livereload());
-            }
-
-        });
-    }
-
-    for(var i=0,l=browserify_sources.length; i< l; i++){
-        browserifyFactory(browserify_sources[i].taskName,
-                          browserify_sources[i].src,
-                          browserify_sources[i].bundleName);
-    }
-//we register the tasks in one task
-gulp.task('browserify', browserifyFactory.tasks, function(){});
-})();
-
 
 //Move bower js files and browserify to tmp
 gulp.task('build-js', ['move-js', 'browserify'], function(){
@@ -133,7 +136,7 @@ gulp.task('move-css', ['clean-css'], function() {
 //compile sass and put it in tmp
 gulp.task('compile-sass', ['clean-css'], function() {
     return gulp.src(sass_sources).
-        pipe(sass()).
+        pipe(sass({errLogToConsole: true})).
         pipe(gulp.dest('build/css/tmp'));
 });
 
@@ -149,22 +152,13 @@ gulp.task('minify-css', ['compile-sass', 'move-css'], function(){
         })).
         pipe(gulp.dest('build/css')).
         pipe(gzip(gzip_options)).
-        pipe(gulp.dest('build/css'));
+        pipe(gulp.dest('build/css')).
+        pipe(livereload());
 });
 
 gulp.task('prod-styles', [
     'minify-css'
 ], function(){return;});
-
-// gulp.task('concat-sass-css', ['compile-css', 'compile-sass'], function() {
-//     del('build/css/all.min.css');
-//     console.log("deleted");
-//     return gulp.src('build/css/*.css').
-//         pipe(concat('all.min.css')).
-//         pipe(gulp.dest('build/css')).
-//         pipe(gzip(gzip_options)).
-//         pipe(gulp.dest('build/css'));
-// });
 
 
 gulp.task('compress-images', function(){
@@ -173,19 +167,9 @@ gulp.task('compress-images', function(){
         pipe(gulp.dest('build/images/'));
 });
 
-gulp.task('watch', function() {
-    livereload.listen();
-    gulp.watch('src/scss/*.scss', ['prod-styles']);
-    gulp.watch('src/js/**/*.js', ['prod-js']);
-    /* Trigger a live reload on any Django template changes */
-    gulp.watch('**/templates/*').on('change', livereload.changed);
-});
+gulp.task('watch', ['browserify-watch'], function(){
+    gulp.watch('./src/scss/*.scss', ['prod-styles']);
 
-gulp.task('watch:browserify', function(){
-    livereload.listen();
-    gulp.watch("./src/js/review_app/**/*.js*", ['browserify']);
-    /* Trigger a live reload on any Django template changes */
-    gulp.watch('./templates/*').on('change', livereload.changed);
+    livereload.listen(35729);
 });
-
 gulp.task('default', ['compile-styles', 'prod-js']);

@@ -1,6 +1,6 @@
 from django.shortcuts import render
+from products.models import Tag, Product
 from django.http import HttpResponseRedirect
-from users.models import get_user_movies
 # from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from users.models import UserStep
@@ -83,8 +83,9 @@ def step1(request):
     if request.user.userstep.step != 1:
         return redirect_user_to_current_step(request.user)
 
-    products = get_user_movies(request.user)
-    context_dict = {'products': products}
+    products = Product.objects.get_user_products(request)
+    tags = Tag.objects.get_tag_names()
+    context_dict = {'products': products, 'tags': tags}
     return render(request, 'phase1/step1.djhtml', context_dict)
 
 
@@ -105,19 +106,3 @@ def step3(request):
         return redirect_user_to_current_step(request.user)
 
     return render(request, 'phase1/step3.djhtml')
-
-
-# @login_required
-# def get_user_movies(request):
-#     products = Product.objects.values()
-#     reviewed_product_ids = set()
-
-#     for e in Reviewing.objects.filter(
-#             user=request.user).select_related('product'):
-#         reviewed_product_ids.add(e.product.id)
-
-#     print(reviewed_product_ids)
-#     for p in products:
-#         p['reviewed'] = True if p['id'] in reviewed_product_ids else False
-
-#     return HttpResponse(products, content_type='application/json')

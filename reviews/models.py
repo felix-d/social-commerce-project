@@ -1,11 +1,10 @@
 from django.db import models
-from products.models import Product
 from django.contrib.auth.models import User
 
 
 class Reviewing(models.Model):
     user = models.ForeignKey(User)
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey('products.Product')
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

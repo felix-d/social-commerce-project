@@ -1,16 +1,15 @@
 var React = require('react');
 var MovieStore = require('../stores/MovieStore');
 var MovieActions = require('../actions/MovieActions');
-
+var SideBar = require("./SideBar.react.jsx");
+var MoviesContainer = require("./MoviesContainer.react.jsx");
 
 function getMoviesState() {
-    return {
-        allMovies: MovieStore.getAllMovies()
-    }
+    return MovieStore.getAllMoviesAndTags();
 }
-
 var ReviewApp = React.createClass({
     getInitialState: function(){
+        MovieStore.shuffleMovies();
         return getMoviesState();
     },
     componentDidMount: function(){
@@ -21,12 +20,11 @@ var ReviewApp = React.createClass({
     },
     render: function(){
         return(
-            <div>
-                <h1>test</h1>
-                <h1>test</h1>
-                <h1>test</h1>
-                <h1>test</h1>
-                <h1>test</h1>
+            <div className="row">
+                <div className="review-app">
+                    <SideBar tags={this.state.tags}/>
+                    <MoviesContainer moviePages={this.state.movies}/>
+                </div>
             </div>
         );
     },
