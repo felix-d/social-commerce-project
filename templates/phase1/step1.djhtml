@@ -4,10 +4,22 @@
     <h1>This is the reviewing page</h1>
     <div id="reviewapp"></div>
     <p>LoggedIn!</p>
+    {{products}}
     <p><a href="{% url 'auth_logout' %}">Logout</a></p>
 {% endblock %}
 {% block extrafooter %}
     <script src="{% static "js/tmp/review_app_bundle.js" %}" type="text/javascript"></script>
+    <script type="text/javascript">
+     app = require('review_app_bundle');
+
+     var React = app.React;
+     var ReviewApp = app.ReviewApp;
+
+     React.render(
+         React.createElement(ReviewApp, {data: {{products|safe}}}),
+         document.getElementById('reviewapp')
+     );
+    </script>
 {% endblock %}
 
 

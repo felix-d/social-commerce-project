@@ -20886,10 +20886,10 @@ module.exports = MovieStore;
 var React = require('react/addons');
 var ReviewApp = require('./components/ReviewApp.react.jsx');
 
-React.render(
-    React.createElement(ReviewApp, null),
-    document.getElementById('reviewapp')
-)
+module.exports = {
+    React: React,
+    ReviewApp: ReviewApp
+};
 
 
 },{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}]},{},["review_app_bundle"]);

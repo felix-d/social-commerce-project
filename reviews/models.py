@@ -1,6 +1,6 @@
 from django.db import models
 from products.models import Product
-from users.models import User
+from django.contrib.auth.models import User
 
 
 class Reviewing(models.Model):
