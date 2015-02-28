@@ -1,14 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./src/js/review_app/app.jsx":[function(require,module,exports){
-var React = require('react/addons');
-var ReviewApp = require('./components/ReviewApp.react.jsx');
-React.render(
-    React.createElement(ReviewApp, null),
-    document.getElementById('reviewapp')
-);
-
-
-
-},{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js":[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -32147,10 +32137,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/react.js":[function(require,module,exports){
-module.exports = require('./lib/React');
-
-},{"./lib/React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var MovieConstants = require('../constants/MovieConstants');
 
@@ -32185,6 +32172,17 @@ var MovieActions = {
             actionType: MovieConstants.SHUFFLE_MOVIES
         });
     },
+    reviewIt: function(id){
+        AppDispatcher.dispatch({
+            actionType: MovieConstants.OPEN_REVIEW_BOX,
+            data: id
+        });
+    },
+    closeReviewBox: function(){
+        AppDispatcher.dispatch({
+            actionType: MovieConstants.CLOSE_REVIEW_BOX
+        });
+    },
     doSearch: function(query, tags, sortBy){
         AppDispatcher.dispatch({
             actionType: MovieConstants.SEARCH_MOVIES,
@@ -32202,9 +32200,9 @@ module.exports = MovieActions;
 
 
 },{"../constants/MovieConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/MovieConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/Movie.react.jsx":[function(require,module,exports){
-var React = require('react');
-var MovieStore = require('../stores/MovieStore');
+var React = require('react/addons');
 var MovieActions = require('../actions/MovieActions');
+var MovieContainer = require('./MoviesContainer.react.jsx');
 
 var Movie = React.createClass({displayName: "Movie",
     popoverOptions: {
@@ -32213,7 +32211,7 @@ var Movie = React.createClass({displayName: "Movie",
         container: 'body'
     },
     cropName: false,
-    cropLength: 15,
+    cropLength: 12,
     componentDidMount: function(){
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -32234,30 +32232,37 @@ var Movie = React.createClass({displayName: "Movie",
         if(this.cropName)
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
+    reviewIt: function(){
+        MovieActions.reviewIt(this.props.data.id);
+    },
     render: function(){
+
         var name,
             movie_tags,
             imgReviewedClass,
             opacityControl,
             checkMark,
             button;
+
+        // Do we crop the length?
         if(this.props.data.name.length>this.cropLength){
             this.cropName = true;
+            name = this.props.data.name.substring(0,this.cropLength)+"...";
             
         } else {
             this.cropName = false;
-        }
-        if(this.cropName){
-            name = this.props.data.name.substring(0,this.cropLength)+"...";
-        }
-        else{
             name = this.props.data.name;
         }
-        if(this.props.data.tags.length > 0)
-            movie_tags = this.props.data.tags.join(", ");
-        else
-            movie_tags = null;
 
+        // Join the tags with commas
+        if(this.props.data.tags.length > 0){
+            movie_tags = this.props.data.tags.join(", ");
+        }
+        else {
+            movie_tags = null;
+        }
+
+        // Check if the movie was reviewed
         if(this.props.data.reviewed == true){
             imgReviewedClass="reviewed";
             opacityControl = "low-opacity"
@@ -32268,9 +32273,9 @@ var Movie = React.createClass({displayName: "Movie",
             checkMark= "";
             opacityControl = "";
             imgReviewedClass="";
-            button = React.createElement("button", {className: "btn btn-info btn-sm"}, "I've seen it!")
-
+            button = React.createElement("button", {className: "btn btn-info btn-sm", onClick: this.reviewIt}, "I've seen it!");
         }
+
         return(
             React.createElement("div", {className: "movie"}, 
             React.createElement("div", {className: "movie-inner effect6"}, 
@@ -32293,8 +32298,8 @@ module.exports = Movie;
 
 
 
-},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","react":"/Users/Felix/Documents/social_commerce_project/node_modules/react/react.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviePage.react.jsx":[function(require,module,exports){
-var React = require('react');
+},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","./MoviesContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviesContainer.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviePage.react.jsx":[function(require,module,exports){
+var React = require('react/addons');
 var MovieStore = require('../stores/MovieStore');
 var MovieActions = require('../actions/MovieActions');
 var Movie = require('./Movie.react.jsx');
@@ -32315,7 +32320,7 @@ var MoviePage = React.createClass({displayName: "MoviePage",
            return(
                React.createElement(Movie, {data: m, key: i})
            );
-        });
+        }.bind(this));
         return(
             React.createElement("div", {className: "movie-page"}, 
                 movies
@@ -32328,11 +32333,13 @@ module.exports = MoviePage;
 
 
 
-},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","./Movie.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/Movie.react.jsx","react":"/Users/Felix/Documents/social_commerce_project/node_modules/react/react.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviesContainer.react.jsx":[function(require,module,exports){
-var React = require('react');
+},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","./Movie.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/Movie.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviesContainer.react.jsx":[function(require,module,exports){
+var React = require('react/addons');
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var MoviePage = require("./MoviePage.react.jsx")
 var MovieStore = require('../stores/MovieStore');
 var MovieActions = require('../actions/MovieActions');
+var ReviewBox = require("./ReviewBox.react.jsx");
 
 var slickOptions = {
     appendArrows: '#arrows',
@@ -32340,9 +32347,15 @@ var slickOptions = {
     prevArrow: '<button class="btn btn-default arrow" id="left-arrow"><i class="fa fa-chevron-left"></i></button>',
     nextArrow: '<button class="btn btn-default arrow" id="right-arrow"><i class="fa fa-chevron-right"></i></button>'
 };
-
+function getProductsState(){
+    return MovieStore.getProducts();
+}
 var MoviesContainer = React.createClass({displayName: "MoviesContainer",
+    getInitialState: function(){
+        return getProductsState();
+    },
     componentDidMount: function(){
+        MovieStore.addChangeListener(this._onChange);
         $('#slick-it').slick(slickOptions);
     },
     componentWillUpdate: function(){
@@ -32352,19 +32365,27 @@ var MoviesContainer = React.createClass({displayName: "MoviesContainer",
         $('#slick-it').slick(slickOptions);
     },
     componentWillUnmount: function(){
+        MovieStore.removeChangeListener(this._onChange);
         $('#slick-it').slick('unslick');
     },
+    _onChange: function(){
+        this.setState(getProductsState());
+    },
     render: function(){
-        var moviePages = this.props.moviePages.map(function(mp, i){
+        var moviePages = this.state.products.map(function(mp, i){
             return(
                 React.createElement(MoviePage, {movies: mp, key: i})
             );
-        });
+        }.bind(this));
+
         return(
-            React.createElement("div", {className: "movie-pages col-xs-9"}, 
-                React.createElement("div", {id: "arrows"}), 
-                React.createElement("div", {id: "slick-it"}, 
-                moviePages
+            React.createElement("div", {className: "movie-pages col-md-9"}, 
+                React.createElement("div", {className: "row"}, 
+                    React.createElement(ReviewBox, null)
+                ), 
+                React.createElement("div", {id: "arrows", className: "will-fade"}), 
+                React.createElement("div", {id: "slick-it", className: "will-fade"}, 
+                    moviePages
                 )
             )
         );
@@ -32375,57 +32396,94 @@ module.exports = MoviesContainer;
 
 
 
-},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","./MoviePage.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviePage.react.jsx","react":"/Users/Felix/Documents/social_commerce_project/node_modules/react/react.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
-var React = require('react');
+},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","./MoviePage.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviePage.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
+var React = require('react/addons');
 var MovieStore = require('../stores/MovieStore');
+var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var MovieActions = require('../actions/MovieActions');
 var SideBar = require("./SideBar.react.jsx");
+var ReviewBox = require("./ReviewBox.react.jsx");
 var MoviesContainer = require("./MoviesContainer.react.jsx");
+var assign = require('object-assign');
 
-function getMoviesState() {
-    return MovieStore.getAllMoviesAndTags();
-}
 var ReviewApp = React.createClass({displayName: "ReviewApp",
     getInitialState: function(){
+        MovieStore.init(this.props.products, this.props.tags);
+        ReviewBoxStore.init();
         MovieStore.shuffleMovies();
-        return getMoviesState();
-    },
-    componentDidMount: function(){
-        MovieStore.addChangeListener(this._onChange);
-    },
-    componentWillUnmount: function(){
-        MovieStore.removeChangeListener(this._onChange);
+        return null;
     },
     render: function(){
         return(
-            React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "review-app"}, 
-                    React.createElement(SideBar, {tags: this.state.tags}), 
-                    React.createElement(MoviesContainer, {moviePages: this.state.movies})
-                )
+            React.createElement("div", {className: "review-app row", id: "review-app-inner"}, 
+                React.createElement(SideBar, null), 
+                React.createElement(MoviesContainer, null)
             )
         );
-    },
-    _onChange: function(){
-        this.setState(getMoviesState());
     }
-
 });
 
 module.exports = ReviewApp;
 
 
 
-},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","./MoviesContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviesContainer.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/SideBar.react.jsx","react":"/Users/Felix/Documents/social_commerce_project/node_modules/react/react.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/SideBar.react.jsx":[function(require,module,exports){
-var React = require('react');
+},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js","./MoviesContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/MoviesContainer.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewBox.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/SideBar.react.jsx","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewBox.react.jsx":[function(require,module,exports){
+var React = require('react/addons');
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+var ReviewBoxStore = require('../stores/ReviewBoxStore');
+
+function getReviewState(){
+    return ReviewBoxStore.getReviewState();
+}
+
+var ReviewBox = React.createClass({displayName: "ReviewBox",
+    getInitialState: function(){
+        return getReviewState();
+    },
+    _onChange: function(){
+        this.setState(getReviewState());
+    },
+    componentDidMount: function(){
+        ReviewBoxStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount:function(){
+        ReviewBoxStore.removeReviewChangeListener(this._onChange);
+    },
+    render: function(){
+        var reviewWidget = React.createElement("div", {className: "col-xs-8 col-xs-offset-2", id: "review-widget"});
+        return(
+
+                React.createElement(CSSTransitionGroup, {transitionName: "example"}, 
+                    this.state.open ? reviewWidget : null
+                )
+        )
+        
+    }
+});
+
+module.exports = ReviewBox;
+
+
+
+},{"../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/SideBar.react.jsx":[function(require,module,exports){
+var React = require('react/addons');
 var MovieStore = require('../stores/MovieStore');
 var MovieActions = require('../actions/MovieActions');
 
+function getSideBarState(){
+    return MovieStore.getTags();
+}
 var SideBar = React.createClass({displayName: "SideBar",
 
     shuffleMovies: function(){
         this.refs.selectSort.getDOMNode().value = "Random";
         MovieActions.shuffleMovies();
+    },
+    getInitialState: function(){
+        return getSideBarState();
+    },
+    _onChange: function(){
+        this.setState(getSideBarState());
     },
     //Are we typing in search field?
     typingInSearchField: false,
@@ -32452,31 +32510,35 @@ var SideBar = React.createClass({displayName: "SideBar",
     },
     componentDidMount: function(){
         //We set the old search field value at mounting
+        MovieStore.addChangeListener(this._onChange);
         this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
+    },
+    componentWillUnmount: function(){
+        MovieStore.removeChangeListener(this._onChange);
     },
     doSearch: function(){
         MovieActions.doSearch(
             this.refs.searchInput.getDOMNode().value,
-            this.props.tags,
+            this.state.tags,
             this.refs.selectSort.getDOMNode().value
       )  
     },
     render: function(){
-        var tags_checkbox = this.props.tags.map(function(t, i){
+        var tags_checkbox = this.state.tags.map(function(t, i){
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
                 this.doSearch();
             }.bind(this);
 
             return(
-                React.createElement("label", {className: "btn btn-default", onClick: toggleTag}, 
-                    React.createElement("input", {type: "checkbox", autocomplete: "off", key: i}), 
+                React.createElement("label", {className: "btn btn-default", onClick: toggleTag, key: i}, 
+                    React.createElement("input", {type: "checkbox", autocomplete: "off"}), 
                     t.name
                 )
             );
         }.bind(this));
         return(
-            React.createElement("div", {className: "side-bar col-xs-3"}, 
+            React.createElement("div", {className: "side-bar col-md-3 will-fade"}, 
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-search"}), " Search"), 
                 React.createElement("input", {id: "input-search", ref: "searchInput", type: "text", onChange: this.textSearch}), 
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-sort"}), " Sort by"), 
@@ -32499,7 +32561,7 @@ module.exports = SideBar;
 
 
 
-},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","react":"/Users/Felix/Documents/social_commerce_project/node_modules/react/react.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/MovieConstants.js":[function(require,module,exports){
+},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../stores/MovieStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/MovieStore.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/MovieConstants.js":[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -32507,7 +32569,10 @@ module.exports = keyMirror({
     MOVIES_SORT: null,
     GET_MOVIES: null,
     SHUFFLE_MOVIES: null,
-    SEARCH_MOVIES: null
+    SEARCH_MOVIES: null,
+    //review box actions
+    OPEN_REVIEW_BOX: null,
+    CLOSE_REVIEW_BOX: null
 });
 
 
@@ -32527,17 +32592,15 @@ var assign = require('object-assign');
 var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
+var REVIEWCHANGE_EVENT = 'change_review';
 
 // movies_data is passed from global object
-var _perPage = 8;
-var _sortBy = 'Random';
-var _moviesOriginal = window.movies_data;
-var _tags = window.tags_data.map(function(t){
-    return {name: t, isChecked: false}; 
-});
-
-//The movies we will return, we start by copying the original movies
-var _movies = _moviesOriginal.slice();
+var _perPage,
+    _sortBy,
+    _moviesOriginal,
+    _tags,
+    _numberOfReviews,
+    _movies;
 
 /**
 * Takes an array of movies and a number and
@@ -32556,6 +32619,13 @@ function getPaginatedMovies(movies, perPage){
     return result;
 }
 
+function getNumberOfReviewedMovies(movies){
+    var count = 0;
+    for(var i=0,l=movies.length;i<l;i++){
+        if(movies[i].reviewed === true) count++;
+    }
+    return count;
+}
 function createReview(data){
     // AJAX CALL TO CREATE A NEW REVIEW
 }
@@ -32572,9 +32642,32 @@ function updateAllMovies(updates){
 }
 
 var MovieStore = assign({}, EventEmitter.prototype, {
-    getAllMoviesAndTags: function() {
+    //called by root component at startup
+    init: function(movies, tags){
+        _moviesOriginal = movies;
+        _sortBy = 'Random';
+        _perPage = 10;
+        _tags = tags.map(function(t){
+            return {name: t, isChecked: false}; 
+        });
+        _numberOfReviews = getNumberOfReviewedMovies(_moviesOriginal);
+        _movies = _moviesOriginal.slice();
+        
+    },
+    getAllData: function() {
         return {
             movies: getPaginatedMovies(_movies, _perPage),
+            tags: _tags,
+            numberReviews: _numberOfReviews
+        };
+    },
+    getProducts: function(){
+        return {
+            products: getPaginatedMovies(_movies, _perPage)
+        };
+    },
+    getTags: function(){
+        return {
             tags: _tags
         };
     },
@@ -32633,12 +32726,17 @@ var MovieStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
-
+    emitReviewChange: function() {
+        this.emit(REVIEWCHANGE_EVENT);
+    },
     /**
      * @param {function} callback
      */
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
+    },
+    addReviewChangeListener: function(callback) {
+        this.on(REVIEWCHANGE_EVENT, callback);
     },
 
     /**
@@ -32646,6 +32744,9 @@ var MovieStore = assign({}, EventEmitter.prototype, {
      */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
+    },
+    removeReviewChangeListener: function(callback) {
+        this.removeListener(REVIEWCHANGE_EVENT, callback);
     }
 });
 
@@ -32667,4 +32768,100 @@ module.exports = MovieStore;
 
 
 
-},{"../constants/MovieConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/MovieConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}]},{},["./src/js/review_app/app.jsx"]);
+},{"../constants/MovieConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/MovieConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js":[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var MovieActions = require('../actions/MovieActions');
+var EventEmitter = require('events').EventEmitter;
+var MovieConstants = require('../constants/MovieConstants');
+var assign = require('object-assign');
+var _ = require('lodash');
+
+var CHANGE_EVENT = 'change';
+var _reviewBox,
+    $willFade,
+    $reviewApp,
+    $overlay;
+
+var ReviewBoxStore = assign({}, EventEmitter.prototype, {
+    init: function(){
+        _reviewBox = {
+            id: undefined,
+            open: false
+        };
+        $(function(){
+            $willFade = $('.will-fade');
+            $reviewApp = $('#review-app-inner');
+            $overlay = $('<div id="overlay"></div>');
+            $overlay.click(function(){
+                MovieActions.closeReviewBox(); 
+            });
+            $overlay.hide();
+            $reviewApp.prepend($overlay);
+        });
+
+    },
+    openReviewBox: function(id){
+        $overlay.show();
+        $willFade.addClass('fade');
+        _reviewBox.id = id;
+        _reviewBox.open = true;
+    },
+    closeReviewBox: function(){
+        $willFade.removeClass('fade');
+        $overlay.hide();
+        _reviewBox.open = false;
+    },
+    getReviewState: function(){
+        return _reviewBox;
+    },
+    emitChange: function() {
+        this.emit(CHANGE_EVENT);
+    },
+    /**
+     * @param {function} callback
+     */
+    addChangeListener: function(callback) {
+        this.on(CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeChangeListener: function(callback) {
+        this.removeListener(CHANGE_EVENT, callback);
+    }
+});
+AppDispatcher.register(function(action){
+    switch(action.actionType) {
+    case MovieConstants.OPEN_REVIEW_BOX:
+        ReviewBoxStore.openReviewBox(action.data);
+        ReviewBoxStore.emitChange();
+        break;
+    case MovieConstants.CLOSE_REVIEW_BOX:
+        ReviewBoxStore.closeReviewBox();
+        ReviewBoxStore.emitChange();
+        break;
+    default:
+        break;
+    }
+});
+module.exports = ReviewBoxStore;
+
+
+
+},{"../actions/MovieActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/MovieActions.js","../constants/MovieConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/MovieConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"review_app_bundle":[function(require,module,exports){
+var React = require('react/addons');
+var ReviewApp = require('./components/ReviewApp.react.jsx');
+
+var init = function init(data){
+    React.render(
+        React.createElement(ReviewApp, data),
+        document.getElementById('reviewapp')
+    );
+}
+
+module.exports = init;
+
+
+
+},{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}]},{},["review_app_bundle"]);

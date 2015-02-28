@@ -1,6 +1,6 @@
-var React = require('react');
-var MovieStore = require('../stores/MovieStore');
+var React = require('react/addons');
 var MovieActions = require('../actions/MovieActions');
+var MovieContainer = require('./MoviesContainer.react.jsx');
 
 var Movie = React.createClass({
     popoverOptions: {
@@ -9,7 +9,7 @@ var Movie = React.createClass({
         container: 'body'
     },
     cropName: false,
-    cropLength: 15,
+    cropLength: 12,
     componentDidMount: function(){
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -30,30 +30,37 @@ var Movie = React.createClass({
         if(this.cropName)
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
+    reviewIt: function(){
+        MovieActions.reviewIt(this.props.data.id);
+    },
     render: function(){
+
         var name,
             movie_tags,
             imgReviewedClass,
             opacityControl,
             checkMark,
             button;
+
+        // Do we crop the length?
         if(this.props.data.name.length>this.cropLength){
             this.cropName = true;
+            name = this.props.data.name.substring(0,this.cropLength)+"...";
             
         } else {
             this.cropName = false;
-        }
-        if(this.cropName){
-            name = this.props.data.name.substring(0,this.cropLength)+"...";
-        }
-        else{
             name = this.props.data.name;
         }
-        if(this.props.data.tags.length > 0)
-            movie_tags = this.props.data.tags.join(", ");
-        else
-            movie_tags = null;
 
+        // Join the tags with commas
+        if(this.props.data.tags.length > 0){
+            movie_tags = this.props.data.tags.join(", ");
+        }
+        else {
+            movie_tags = null;
+        }
+
+        // Check if the movie was reviewed
         if(this.props.data.reviewed == true){
             imgReviewedClass="reviewed";
             opacityControl = "low-opacity"
@@ -64,9 +71,9 @@ var Movie = React.createClass({
             checkMark= "";
             opacityControl = "";
             imgReviewedClass="";
-            button = <button className="btn btn-info btn-sm">I've seen it!</button>
-
+            button = <button className="btn btn-info btn-sm" onClick={this.reviewIt}>I've seen it!</button>;
         }
+
         return(
             <div className="movie">
             <div className="movie-inner effect6">

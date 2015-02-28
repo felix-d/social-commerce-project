@@ -85,7 +85,11 @@ def step1(request):
 
     products = Product.objects.get_user_products(request)
     tags = Tag.objects.get_tag_names()
-    context_dict = {'products': products, 'tags': tags}
+    context_dict = {
+        'products': products,
+        'tags': tags,
+        'name': request.user.first_name
+    }
     return render(request, 'phase1/step1.djhtml', context_dict)
 
 

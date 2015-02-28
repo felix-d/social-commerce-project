@@ -5,17 +5,15 @@ var assign = require('object-assign');
 var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
+var REVIEWCHANGE_EVENT = 'change_review';
 
 // movies_data is passed from global object
-var _perPage = 8;
-var _sortBy = 'Random';
-var _moviesOriginal = window.movies_data;
-var _tags = window.tags_data.map(function(t){
-    return {name: t, isChecked: false}; 
-});
-
-//The movies we will return, we start by copying the original movies
-var _movies = _moviesOriginal.slice();
+var _perPage,
+    _sortBy,
+    _moviesOriginal,
+    _tags,
+    _numberOfReviews,
+    _movies;
 
 /**
 * Takes an array of movies and a number and
@@ -34,6 +32,13 @@ function getPaginatedMovies(movies, perPage){
     return result;
 }
 
+function getNumberOfReviewedMovies(movies){
+    var count = 0;
+    for(var i=0,l=movies.length;i<l;i++){
+        if(movies[i].reviewed === true) count++;
+    }
+    return count;
+}
 function createReview(data){
     // AJAX CALL TO CREATE A NEW REVIEW
 }
@@ -50,9 +55,32 @@ function updateAllMovies(updates){
 }
 
 var MovieStore = assign({}, EventEmitter.prototype, {
-    getAllMoviesAndTags: function() {
+    //called by root component at startup
+    init: function(movies, tags){
+        _moviesOriginal = movies;
+        _sortBy = 'Random';
+        _perPage = 10;
+        _tags = tags.map(function(t){
+            return {name: t, isChecked: false}; 
+        });
+        _numberOfReviews = getNumberOfReviewedMovies(_moviesOriginal);
+        _movies = _moviesOriginal.slice();
+        
+    },
+    getAllData: function() {
         return {
             movies: getPaginatedMovies(_movies, _perPage),
+            tags: _tags,
+            numberReviews: _numberOfReviews
+        };
+    },
+    getProducts: function(){
+        return {
+            products: getPaginatedMovies(_movies, _perPage)
+        };
+    },
+    getTags: function(){
+        return {
             tags: _tags
         };
     },
@@ -111,12 +139,17 @@ var MovieStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
-
+    emitReviewChange: function() {
+        this.emit(REVIEWCHANGE_EVENT);
+    },
     /**
      * @param {function} callback
      */
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
+    },
+    addReviewChangeListener: function(callback) {
+        this.on(REVIEWCHANGE_EVENT, callback);
     },
 
     /**
@@ -124,6 +157,9 @@ var MovieStore = assign({}, EventEmitter.prototype, {
      */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
+    },
+    removeReviewChangeListener: function(callback) {
+        this.removeListener(REVIEWCHANGE_EVENT, callback);
     }
 });
 

@@ -2,6 +2,7 @@ body, html {
     height:100%;
 }
 #reviewapp {
+    min-height:700px;
 }
 .movie {
     float: left;
@@ -26,10 +27,23 @@ body, html {
     }
     /*     height: 385px; */
     /* overflow:scroll; */
-    width: 165px;
+    width: 157px;
 }
 .popover {
     z-index: 999;
+}
+
+.info-box {
+    text-align:right;
+    height: 45px;
+    padding: 5px;
+    .next-button {
+        margin-right: 40px;
+    }
+    .well {
+        margin-top:5px;
+        text-align:left;
+    }
 }
 .movie-inner {
     padding: 5px;
@@ -68,18 +82,10 @@ body, html {
 }
 
 .movie-page {
-    overflow: hidden;
     padding: 20px;
     text-align: center;
-    height:900px;
 }
 .movie-pages {
-    min-height: 400px;
-    #slick-it {
-        padding-left: 70px;
-        padding-right: 70px;
-
-    }
     #arrows {
         position: relative;
         height:34px;
@@ -88,7 +94,7 @@ body, html {
         }
         #left-arrow {
             z-index:1;
-            margin-left: 90px;
+            margin-left: 25px;
 
         }
         #right-arrow {
@@ -99,7 +105,6 @@ body, html {
 }
 .review-app {
     position: relative;
-    overflow:auto;
     width:100%;
 }
 .side-bar{
@@ -110,4 +115,49 @@ body, html {
             margin-bottom: 2px;
         }
     }
+}
+#review-widget-container {
+}
+#review-widget{
+    position:absolute;
+    z-index:999;
+    top: 100px;
+    height:400px;
+    background-color: #DDD;
+};
+#review-widget.example-enter {
+  top: -20px;
+  opacity: 0.01;
+  transition: all 0.1s ease-in;
+}
+
+#review-widget.example-enter.example-enter-active {
+    top: 100px;
+    opacity: 1;
+}
+#review-widget.example-leave {
+    top: 100px;
+  opacity: 1;
+  transition: all 0.1s ease-out;
+}
+
+#review-widget.example-leave.example-leave-active {
+    top: -20px;
+  opacity: 0.01;
+}
+
+.will-fade{
+    opacity: 1;
+    transition: opacity 0.1s;
+}
+
+.will-fade.fade {
+    opacity: 0.3;
+}
+
+#overlay {
+    position:absolute;
+    z-index:998;
+    height:100%;
+    width:100%;
 }

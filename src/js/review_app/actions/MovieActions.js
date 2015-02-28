@@ -32,6 +32,17 @@ var MovieActions = {
             actionType: MovieConstants.SHUFFLE_MOVIES
         });
     },
+    reviewIt: function(id){
+        AppDispatcher.dispatch({
+            actionType: MovieConstants.OPEN_REVIEW_BOX,
+            data: id
+        });
+    },
+    closeReviewBox: function(){
+        AppDispatcher.dispatch({
+            actionType: MovieConstants.CLOSE_REVIEW_BOX
+        });
+    },
     doSearch: function(query, tags, sortBy){
         AppDispatcher.dispatch({
             actionType: MovieConstants.SEARCH_MOVIES,

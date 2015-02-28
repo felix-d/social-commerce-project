@@ -38,8 +38,6 @@
     "imagesloaded": "^3.1.8",
     "keymirror": "^0.1.1",
     "lodash": "^3.3.1",
-    "masonry": "0.0.2",
-    "masonry-layout": "^3.2.2",
     "object-assign": "^2.0.0",
     "react": "^0.12.2",
     "reactify": "^1.0.0",

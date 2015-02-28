@@ -1,37 +1,27 @@
-var React = require('react');
+var React = require('react/addons');
 var MovieStore = require('../stores/MovieStore');
+var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var MovieActions = require('../actions/MovieActions');
 var SideBar = require("./SideBar.react.jsx");
+var ReviewBox = require("./ReviewBox.react.jsx");
 var MoviesContainer = require("./MoviesContainer.react.jsx");
+var assign = require('object-assign');
 
-function getMoviesState() {
-    return MovieStore.getAllMoviesAndTags();
-}
 var ReviewApp = React.createClass({
     getInitialState: function(){
+        MovieStore.init(this.props.products, this.props.tags);
+        ReviewBoxStore.init();
         MovieStore.shuffleMovies();
-        return getMoviesState();
-    },
-    componentDidMount: function(){
-        MovieStore.addChangeListener(this._onChange);
-    },
-    componentWillUnmount: function(){
-        MovieStore.removeChangeListener(this._onChange);
+        return null;
     },
     render: function(){
         return(
-            <div className="row">
-                <div className="review-app">
-                    <SideBar tags={this.state.tags}/>
-                    <MoviesContainer moviePages={this.state.movies}/>
-                </div>
+            <div className="review-app row" id="review-app-inner">
+                <SideBar/>
+                <MoviesContainer/>
             </div>
         );
-    },
-    _onChange: function(){
-        this.setState(getMoviesState());
     }
-
 });
 
 module.exports = ReviewApp;

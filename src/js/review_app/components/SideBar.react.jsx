@@ -1,12 +1,21 @@
-var React = require('react');
+var React = require('react/addons');
 var MovieStore = require('../stores/MovieStore');
 var MovieActions = require('../actions/MovieActions');
 
+function getSideBarState(){
+    return MovieStore.getTags();
+}
 var SideBar = React.createClass({
 
     shuffleMovies: function(){
         this.refs.selectSort.getDOMNode().value = "Random";
         MovieActions.shuffleMovies();
+    },
+    getInitialState: function(){
+        return getSideBarState();
+    },
+    _onChange: function(){
+        this.setState(getSideBarState());
     },
     //Are we typing in search field?
     typingInSearchField: false,
@@ -33,31 +42,35 @@ var SideBar = React.createClass({
     },
     componentDidMount: function(){
         //We set the old search field value at mounting
+        MovieStore.addChangeListener(this._onChange);
         this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
+    },
+    componentWillUnmount: function(){
+        MovieStore.removeChangeListener(this._onChange);
     },
     doSearch: function(){
         MovieActions.doSearch(
             this.refs.searchInput.getDOMNode().value,
-            this.props.tags,
+            this.state.tags,
             this.refs.selectSort.getDOMNode().value
       )  
     },
     render: function(){
-        var tags_checkbox = this.props.tags.map(function(t, i){
+        var tags_checkbox = this.state.tags.map(function(t, i){
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
                 this.doSearch();
             }.bind(this);
 
             return(
-                <label className="btn btn-default" onClick={toggleTag}>
-                    <input type="checkbox" autocomplete="off" key={i}/>
+                <label className="btn btn-default" onClick={toggleTag} key={i}>
+                    <input type="checkbox" autocomplete="off"/>
                     {t.name}
                 </label>
             );
         }.bind(this));
         return(
-            <div className="side-bar col-xs-3">
+            <div className="side-bar col-md-3 will-fade">
                 <h4><i className="fa fa-search"></i> Search</h4>
                 <input id="input-search" ref="searchInput" type="text" onChange={this.textSearch}/>
                 <h4><i className="fa fa-sort"></i> Sort by</h4>

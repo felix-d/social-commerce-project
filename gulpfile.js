@@ -35,7 +35,8 @@ var browserify_sources = [
 ];
 var js_sources = [
     'bower_components/jquery/dist/jquery.min.js',
-    'bower_components/bootstrap/dist/js/bootstrap.min.js'
+    'bower_components/bootstrap/dist/js/bootstrap.min.js',
+    'src/js/*.js'
 ];
 //css sources are prepended to sass!!
 var css_sources = [
@@ -73,6 +74,7 @@ function browserifyShare() {
     }
 
     b.add('./src/js/review_app/app.jsx');
+    b.require('./src/js/review_app/app.jsx', {expose: "review_app_bundle" });
     bundleShare(b);
 }
 
@@ -109,7 +111,7 @@ gulp.task('compress-js', ['build-js'], function() {
 });
 
 //move js files from bower components into tmp
-gulp.task('move-js', ['clean-js'], function(){
+gulp.task('move-js', function(){
     return gulp.src(js_sources).
         pipe(debug()).
         pipe(gulp.dest('./build/js/tmp'));
@@ -168,6 +170,7 @@ gulp.task('compress-images', function(){
 });
 
 gulp.task('watch', ['browserify-watch'], function(){
+    gulp.watch('./src/js/*.js', ['move-js']);
     gulp.watch('./src/scss/*.scss', ['prod-styles']);
 
     livereload.listen(35729);
