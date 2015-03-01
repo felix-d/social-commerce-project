@@ -162,7 +162,7 @@ body, html {
 #review-widget.example-enter {
   top: $review-widget-height-init;
   opacity: 0.01;
-  transition: all 0.1s ease-in;
+  transition: all 0.1s ease-out;
 }
 
 #review-widget.example-enter.example-enter-active {

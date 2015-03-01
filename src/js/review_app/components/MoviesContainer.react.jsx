@@ -31,14 +31,15 @@ var MoviesContainer = React.createClass({
             $('#slick-it').slick('unslick');
     },
     componentDidUpdate: function(prevProps, prevState){
-        //we always set back _reviewdPage to null because we might be done updating
-        //after reviewing a movie
-        MovieStore.setReviewedPage(null);
         //in case we are rerendering but we dont need to slick again
         if(!this.state.dontSlick)
             $('#slick-it').slick(slickOptions);
+
         //we set it back to false because slicking is default behavior
         MovieStore.setDontSlick(false);
+        //we always set back _reviewdPage to null because we might be done updating
+        //after reviewing a movie
+        MovieStore.setReviewedPage(null);
     },
     componentWillUnmount: function(){
         MovieStore.removeChangeListener(this._onChange);

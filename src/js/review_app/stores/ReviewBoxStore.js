@@ -1,5 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
+var MovieActions = require('../actions/MovieActions');
 var MovieConstants = require('../constants/MovieConstants');
 var assign = require('object-assign');
 var _ = require('lodash');

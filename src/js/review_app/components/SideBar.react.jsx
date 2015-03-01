@@ -48,6 +48,10 @@ var SideBar = React.createClass({
     componentWillUnmount: function(){
         MovieStore.removeChangeListener(this._onChange);
     },
+    shouldComponentUpdate: function(){
+        //we dont need to ever update it
+        return false;  
+    },
     doSearch: function(){
         MovieActions.doSearch(
             this.refs.searchInput.getDOMNode().value,

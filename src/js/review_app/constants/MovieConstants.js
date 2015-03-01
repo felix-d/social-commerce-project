@@ -9,5 +9,6 @@ module.exports = keyMirror({
     //review box actions
     OPEN_REVIEW_BOX: null,
     CLOSE_REVIEW_BOX: null,
-    SUBMIT_REVIEW: null
+    SUBMIT_REVIEW: null,
+    ALLOW_SLICK_REVIEW_PAGE: null
 });

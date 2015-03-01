@@ -10,8 +10,8 @@ function getReviewState(){
 
 var ReviewBox = React.createClass({
     popoverOptions: {
-        trigger: 'hover',
-        placement: 'auto',
+        trigger: 'manuel',
+        placement: 'left',
         container: '#review-widget'
     },
     getInitialState: function(){
@@ -34,7 +34,21 @@ var ReviewBox = React.createClass({
         //we add the popover
         if(this.state.open && this.state.movie.doCropDescription){
             $(this.refs.description.getDOMNode())
-                  .popover(this.popoverOptions);
+                  .popover(this.popoverOptions)
+                  .on("mouseenter", function () {
+                      var _this = this;
+                      $(this).popover("show");
+                      $(this).siblings(".popover").on("mouseleave", function () {
+                          $(_this).popover('hide');
+                      });
+                  }).on("mouseleave", function () {
+                      var _this = this;
+                      setTimeout(function () {
+                          if (!$(".popover:hover").length) {
+                              $(_this).popover("hide")
+                          }
+                      }, 100);
+                  });
         }
     },
     componentWillUpdate: function(){
