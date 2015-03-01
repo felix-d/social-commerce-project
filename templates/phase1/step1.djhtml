@@ -24,7 +24,9 @@
             </div>
         </div>
     </div>
+    <div className="row">
     <div id="reviewapp"></div>
+    </div>
     <p>LoggedIn!</p>
     <p><a href="{% url 'auth_logout' %}">Logout</a></p>
 {% endblock %}
@@ -35,9 +37,35 @@
     <script type="text/javascript">
      var init = require("review_app_bundle");
      init({
-             products: {{products|safe}},
-             tags: {{tags|safe}}
-         });
+         reviewElements: {
+             tabElements: [
+                 {
+                     text: "I liked...",
+                     categories: [
+                         {name: "Plot", elements: ["good", "nice", "blabla"]},
+                         {name: "Music", elements: ["good", "nice", "blabla"]}
+                     ]
+                 },
+                 {
+                     text: "I disliked...",
+                     categories: [
+                         {name: "Test", elements: ["good", "nice", "blabla"]},
+                         {name: "Lol", elements: ["good", "nice", "blabla"]}
+                     ]
+                 },
+                 {
+                     text: "My overall rating is...",
+                     categories: [
+                         {name: "Plot", elements: ["good", "nice", "blabla"]},
+                         {name: "Music", elements: ["good", "nice", "blabla"]}
+                     ]
+                 }
+             ],
+             buttonText: "I recommend it!"
+         },
+         products: {{products|safe}},
+         tags: {{tags|safe}}
+     });
     </script>
 {% endblock %}
 

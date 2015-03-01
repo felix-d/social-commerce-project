@@ -78,7 +78,7 @@ body, html {
   .movie-pages #arrows #right-arrow {
     z-index: 1; }
 
-.review-app {
+#review-app-inner {
   position: relative;
   width: 100%; }
 
@@ -90,27 +90,50 @@ body, html {
 
 #review-widget {
   position: absolute;
+  padding: 10px 30px;
   z-index: 999;
-  top: 100px;
-  height: 400px;
-  background-color: #DDD; }
+  top: 0px;
+  height: auto;
+  background-color: #FFF;
+  border: 1px solid #dddddd;
+  -webkit-box-shadow: 10px 10px 49px 0px rgba(0, 0, 0, 0.09);
+  -moz-box-shadow: 10px 10px 49px 0px rgba(0, 0, 0, 0.09);
+  box-shadow: 10px 10px 49px 0px rgba(0, 0, 0, 0.09); }
+  #review-widget .movie-image {
+    width: 90%; }
+  #review-widget .ajax-loader {
+    margin-left: 5px; }
+  #review-widget .inner {
+    padding: 15px; }
+  #review-widget .form-comments {
+    width: 100%;
+    margin-bottom: 15px; }
+  #review-widget .description {
+    height: 100%;
+    overflow: auto; }
+  #review-widget .tab-panel {
+    margin-bottom: 10px; }
+  #review-widget .tab-content {
+    padding: 5px; }
+  #review-widget #recommend {
+    margin-bottom: 20px; }
 
 #review-widget.example-enter {
-  top: -20px;
+  top: -60px;
   opacity: 0.01;
   transition: all 0.1s ease-in; }
 
 #review-widget.example-enter.example-enter-active {
-  top: 100px;
+  top: 0px;
   opacity: 1; }
 
 #review-widget.example-leave {
-  top: 100px;
+  top: 0px;
   opacity: 1;
   transition: all 0.1s ease-out; }
 
 #review-widget.example-leave.example-leave-active {
-  top: -20px;
+  top: -60px;
   opacity: 0.01; }
 
 .will-fade {
@@ -118,10 +141,12 @@ body, html {
   transition: opacity 0.1s; }
 
 .will-fade.fade {
-  opacity: 0.3; }
+  opacity: 0.2; }
 
 #overlay {
-  position: absolute;
+  position: fixed;
   z-index: 998;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+  top: 0;
+  left: 0; }

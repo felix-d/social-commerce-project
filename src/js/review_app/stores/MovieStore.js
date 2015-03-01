@@ -1,6 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MovieConstants = require('../constants/MovieConstants');
+var ReviewBoxStore = require("./ReviewBoxStore");
 var assign = require('object-assign');
 var _ = require('lodash');
 
@@ -13,7 +14,9 @@ var _perPage,
     _moviesOriginal,
     _tags,
     _numberOfReviews,
-    _movies;
+    _movies,
+    _dontSlick,
+    _reviewedPage;
 
 /**
 * Takes an array of movies and a number and
@@ -39,18 +42,13 @@ function getNumberOfReviewedMovies(movies){
     }
     return count;
 }
-function createReview(data){
-    // AJAX CALL TO CREATE A NEW REVIEW
-}
 
-function updateMovie(id, updates){
-    
-    _movies[id] = assign({}, _movies[id], updates);
-}
-
-function updateAllMovies(updates){
-    for(var id in _movies){
-        update(id, updates);
+function getPageNumber(movie){
+    for(var i=0,l=_movies.length;i<l;i++){
+        if(movie.id===_movies[i].id){
+            var page = Math.floor(i/_perPage);
+            return page;
+        }
     }
 }
 
@@ -60,12 +58,27 @@ var MovieStore = assign({}, EventEmitter.prototype, {
         _moviesOriginal = movies;
         _sortBy = 'Random';
         _perPage = 10;
+        _dontSlick = false;
+        _reviewedPage = null;
         _tags = tags.map(function(t){
             return {name: t, isChecked: false}; 
         });
         _numberOfReviews = getNumberOfReviewedMovies(_moviesOriginal);
         _movies = _moviesOriginal.slice();
         
+    },
+    getReviewedPage: function(){
+        return _reviewedPage;
+    },
+    setReviewedPage: function(val){
+        _reviewedPage = val;  
+    },
+    getMovieFromId: function(id){
+        for(var i=0, l=_moviesOriginal.length;i<l;i++){
+            if(_moviesOriginal[i].id === id){
+                return _moviesOriginal[i];
+            }
+        }
     },
     getAllData: function() {
         return {
@@ -76,7 +89,8 @@ var MovieStore = assign({}, EventEmitter.prototype, {
     },
     getProducts: function(){
         return {
-            products: getPaginatedMovies(_movies, _perPage)
+            products: getPaginatedMovies(_movies, _perPage),
+            dontSlick: _dontSlick
         };
     },
     getTags: function(){
@@ -136,11 +150,16 @@ var MovieStore = assign({}, EventEmitter.prototype, {
     shuffleMovies: function(){
         _movies = _.shuffle(_movies);       
     },
+    setDontSlick: function(val){
+        _dontSlick  = val; 
+    },
+    submit_review: function(movie, reviewData){
+        _dontSlick = true;
+        _reviewedPage = getPageNumber(movie);
+        movie.reviewed = true;
+    },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
-    },
-    emitReviewChange: function() {
-        this.emit(REVIEWCHANGE_EVENT);
     },
     /**
      * @param {function} callback
@@ -148,18 +167,11 @@ var MovieStore = assign({}, EventEmitter.prototype, {
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
-    addReviewChangeListener: function(callback) {
-        this.on(REVIEWCHANGE_EVENT, callback);
-    },
-
     /**
      * @param {function} callback
      */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
-    },
-    removeReviewChangeListener: function(callback) {
-        this.removeListener(REVIEWCHANGE_EVENT, callback);
     }
 });
 
@@ -171,6 +183,10 @@ AppDispatcher.register(function(action){
         break;
     case MovieConstants.SEARCH_MOVIES:
         MovieStore.doSearch(action.data.query, action.data.tags,action.data.sortBy);
+        MovieStore.emitChange();
+        break;
+    case MovieConstants.SUBMIT_REVIEW:
+        MovieStore.submit_review(action.movie, action.reviewData);
         MovieStore.emitChange();
         break;
     default:

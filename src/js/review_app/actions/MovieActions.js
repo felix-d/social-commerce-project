@@ -32,16 +32,24 @@ var MovieActions = {
             actionType: MovieConstants.SHUFFLE_MOVIES
         });
     },
-    reviewIt: function(id){
+    reviewIt: function(movie){
         AppDispatcher.dispatch({
             actionType: MovieConstants.OPEN_REVIEW_BOX,
-            data: id
+            data: movie
         });
     },
     closeReviewBox: function(){
         AppDispatcher.dispatch({
             actionType: MovieConstants.CLOSE_REVIEW_BOX
         });
+    },
+    submitReview: function(movie, reviewData){
+        AppDispatcher.dispatch({
+            actionType: MovieConstants.SUBMIT_REVIEW,
+            movie: movie,
+            reviewData: reviewData
+        });
+        
     },
     doSearch: function(query, tags, sortBy){
         AppDispatcher.dispatch({

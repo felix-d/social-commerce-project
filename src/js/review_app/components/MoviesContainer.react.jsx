@@ -22,11 +22,23 @@ var MoviesContainer = React.createClass({
         MovieStore.addChangeListener(this._onChange);
         $('#slick-it').slick(slickOptions);
     },
-    componentWillUpdate: function(){
-        $('#slick-it').slick('unslick');
+    componentWillUpdate: function(nextProps, nextState){
+        //in case we are rerendering but we dont need to slick again
+        //like if only set a movie to reviewed
+        //so we dont unslick
+        //see componentDidUpdate
+        if(!nextState.dontSlick)
+            $('#slick-it').slick('unslick');
     },
-    componentDidUpdate: function(){
-        $('#slick-it').slick(slickOptions);
+    componentDidUpdate: function(prevProps, prevState){
+        //we always set back _reviewdPage to null because we might be done updating
+        //after reviewing a movie
+        MovieStore.setReviewedPage(null);
+        //in case we are rerendering but we dont need to slick again
+        if(!this.state.dontSlick)
+            $('#slick-it').slick(slickOptions);
+        //we set it back to false because slicking is default behavior
+        MovieStore.setDontSlick(false);
     },
     componentWillUnmount: function(){
         MovieStore.removeChangeListener(this._onChange);
@@ -38,15 +50,12 @@ var MoviesContainer = React.createClass({
     render: function(){
         var moviePages = this.state.products.map(function(mp, i){
             return(
-                <MoviePage movies={mp} key={i}/>
+                <MoviePage movies={mp} key={i} id={i}/>
             );
         }.bind(this));
 
         return(
             <div className="movie-pages col-md-9">
-                <div className="row">
-                    <ReviewBox/>
-                </div>
                 <div id="arrows" className="will-fade"></div>
                 <div id="slick-it" className="will-fade">
                     {moviePages}

@@ -1,3 +1,6 @@
+$review-widget-height: 0px;
+$review-widget-height-init: $review-widget-height - 60px;
+
 body, html {
     height:100%;
 }
@@ -103,7 +106,7 @@ body, html {
 
     }
 }
-.review-app {
+#review-app-inner {
     position: relative;
     width:100%;
 }
@@ -120,29 +123,60 @@ body, html {
 }
 #review-widget{
     position:absolute;
+    padding: 10px 30px;
     z-index:999;
-    top: 100px;
-    height:400px;
-    background-color: #DDD;
+    top: $review-widget-height;
+    height: auto;
+    background-color: #FFF;
+    border: 1px solid rgb(221, 221, 221);
+    -webkit-box-shadow: 10px 10px 49px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 10px 10px 49px 0px rgba(0,0,0,0.09);
+    box-shadow: 10px 10px 49px 0px rgba(0,0,0,0.09);
+    .movie-image {
+        width: 90%;
+    }
+    .ajax-loader {
+        margin-left: 5px;
+    }
+    .inner {
+        padding: 15px;
+    }
+    .form-comments{
+        width: 100%;
+        margin-bottom: 15px
+    }
+    .description{
+        height: 100%;
+        overflow: auto;
+    }
+    .tab-panel {
+        margin-bottom: 10px;
+    }
+    .tab-content {
+        padding: 5px;
+    }
+    #recommend {
+        margin-bottom: 20px;
+    }
 };
 #review-widget.example-enter {
-  top: -20px;
+  top: $review-widget-height-init;
   opacity: 0.01;
   transition: all 0.1s ease-in;
 }
 
 #review-widget.example-enter.example-enter-active {
-    top: 100px;
+    top: $review-widget-height;
     opacity: 1;
 }
 #review-widget.example-leave {
-    top: 100px;
+    top: $review-widget-height;
   opacity: 1;
   transition: all 0.1s ease-out;
 }
 
 #review-widget.example-leave.example-leave-active {
-    top: -20px;
+  top: $review-widget-height-init;
   opacity: 0.01;
 }
 
@@ -152,12 +186,14 @@ body, html {
 }
 
 .will-fade.fade {
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
 #overlay {
-    position:absolute;
+    position:fixed;
     z-index:998;
     height:100%;
     width:100%;
+    top: 0;
+    left:0;
 }

@@ -31,7 +31,7 @@ var Movie = React.createClass({
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
     reviewIt: function(){
-        MovieActions.reviewIt(this.props.data.id);
+        MovieActions.reviewIt(this.props.data);
     },
     render: function(){
 

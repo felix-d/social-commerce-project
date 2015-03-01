@@ -14,11 +14,20 @@ var MoviePage = React.createClass({
     },
     componentWillUpdate: function(){
     },
+    shouldComponentUpdate: function(nextProps, nextStates){
+        if(MovieStore.getReviewedPage() ===
+            nextProps.id ||
+            MovieStore.getReviewedPage() ===
+            null)
+            return true;
+        console.log("page wasnt updated");
+        return false;
+    },
     render: function(){
         var movies = this.props.movies.map(function(m, i){
-           return(
-               <Movie data={m} key={i}/>
-           );
+            return(
+                <Movie data={m} key={i}/>
+            );
         }.bind(this));
         return(
             <div className="movie-page">

@@ -16,9 +16,10 @@ var ReviewApp = React.createClass({
     },
     render: function(){
         return(
-            <div className="review-app row" id="review-app-inner">
+            <div className="review-app clearfix" id="review-app-inner">
+                <ReviewBox reviewElements={this.props.reviewElements}/>
                 <SideBar/>
-                <MoviesContainer/>
+                <MoviesContainer reviewElements={this.props.reviewElements}/>
             </div>
         );
     }
