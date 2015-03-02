@@ -1,15 +1,15 @@
 var React = require('react/addons');
-var MovieStore = require('../stores/MovieStore');
-var MovieActions = require('../actions/MovieActions');
+var ProductStore = require('../stores/ProductStore');
+var ProductActions = require('../actions/ProductActions');
 
 function getSideBarState(){
-    return MovieStore.getTags();
+    return ProductStore.getTags();
 }
 var SideBar = React.createClass({
 
-    shuffleMovies: function(){
+    shuffleProducts: function(){
         this.refs.selectSort.getDOMNode().value = "Random";
-        MovieActions.shuffleMovies();
+        ProductActions.shuffleProducts();
     },
     getInitialState: function(){
         return getSideBarState();
@@ -42,18 +42,18 @@ var SideBar = React.createClass({
     },
     componentDidMount: function(){
         //We set the old search field value at mounting
-        MovieStore.addChangeListener(this._onChange);
+        ProductStore.addChangeListener(this._onChange);
         this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
     },
     componentWillUnmount: function(){
-        MovieStore.removeChangeListener(this._onChange);
+        ProductStore.removeChangeListener(this._onChange);
     },
     shouldComponentUpdate: function(){
         //we dont need to ever update it
         return false;  
     },
     doSearch: function(){
-        MovieActions.doSearch(
+        ProductActions.doSearch(
             this.refs.searchInput.getDOMNode().value,
             this.state.tags,
             this.refs.selectSort.getDOMNode().value
@@ -74,7 +74,7 @@ var SideBar = React.createClass({
             );
         }.bind(this));
         return(
-            <div className="side-bar col-md-3 will-fade">
+            <div className="side-bar col-xs-3 will-fade">
                 <h4><i className="fa fa-search"></i> Search</h4>
                 <input id="input-search" ref="searchInput" type="text" onChange={this.textSearch}/>
                 <h4><i className="fa fa-sort"></i> Sort by</h4>
@@ -87,7 +87,7 @@ var SideBar = React.createClass({
                 <div className="tags-group" data-toggle="buttons" ref="selectedTags">
                 {tags_checkbox}
                 </div>
-                <button className="btn btn-primary" id="shuffle-button" onClick={this.shuffleMovies}>Shuffle</button>
+                <button className="btn btn-primary" id="shuffle-button" onClick={this.shuffleProducts}>Shuffle</button>
             </div>
         );
     }

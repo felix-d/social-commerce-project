@@ -1,15 +1,15 @@
 var React = require('react/addons');
-var MovieActions = require('../actions/MovieActions');
-var MovieContainer = require('./MoviesContainer.react.jsx');
+var ProductActions = require('../actions/ProductActions');
+var ProductContainer = require('./ProductsContainer.react.jsx');
 
-var Movie = React.createClass({
+var Product = React.createClass({
     popoverOptions: {
         trigger: 'hover',
         placement: 'auto',
         container: 'body'
     },
     cropName: false,
-    cropLength: 12,
+    cropLength: 14,
     componentDidMount: function(){
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -31,12 +31,12 @@ var Movie = React.createClass({
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
     reviewIt: function(){
-        MovieActions.reviewIt(this.props.data);
+        ProductActions.reviewIt(this.props.data);
     },
     render: function(){
 
         var name,
-            movie_tags,
+            product_tags,
             imgReviewedClass,
             opacityControl,
             checkMark,
@@ -54,13 +54,13 @@ var Movie = React.createClass({
 
         // Join the tags with commas
         if(this.props.data.tags.length > 0){
-            movie_tags = this.props.data.tags.join(", ");
+            product_tags = this.props.data.tags.join(", ");
         }
         else {
-            movie_tags = null;
+            product_tags = null;
         }
 
-        // Check if the movie was reviewed
+        // Check if the product was reviewed
         if(this.props.data.reviewed == true){
             imgReviewedClass="reviewed";
             opacityControl = "low-opacity"
@@ -75,8 +75,8 @@ var Movie = React.createClass({
         }
 
         return(
-            <div className="movie">
-            <div className="movie-inner effect6">
+            <div className="product col-xs-15">
+            <div className="product-inner effect6">
                 <h5 className={opacityControl} ref="name" data-toggle="popover" data-content={this.props.data.name}>{name}</h5>
                 <div className="img-container">
                     {checkMark}
@@ -92,4 +92,4 @@ var Movie = React.createClass({
     }
 });
 
-module.exports = Movie;
+module.exports = Product;

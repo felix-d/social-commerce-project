@@ -1,12 +1,12 @@
 var React = require('react/addons');
 var ReviewFormTab = require('./ReviewFormTab.react.jsx');
-var MovieActions = require("../actions/MovieActions");
+var ProductActions = require("../actions/ProductActions");
 
 var ReviewForm = React.createClass({
     reviewData: {},
     submitReview: function(){
-        MovieActions.submitReview(this.props.movie, this.reviewData);  
-        MovieActions.closeReviewBox();  
+        ProductActions.submitReview(this.props.product, this.reviewData);  
+        ProductActions.closeReviewBox();  
     },
     render: function(){
         var tabs = this.props.reviewElements.tabElements.map(function(re, i){

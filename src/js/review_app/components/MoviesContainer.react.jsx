@@ -1,8 +1,8 @@
 var React = require('react/addons');
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
-var MoviePage = require("./MoviePage.react.jsx")
-var MovieStore = require('../stores/MovieStore');
-var MovieActions = require('../actions/MovieActions');
+var ProductPage = require("./ProductPage.react.jsx")
+var ProductStore = require('../stores/ProductStore');
+var ProductActions = require('../actions/ProductActions');
 var ReviewBox = require("./ReviewBox.react.jsx");
 
 var slickOptions = {
@@ -12,19 +12,19 @@ var slickOptions = {
     nextArrow: '<button class="btn btn-default arrow" id="right-arrow"><i class="fa fa-chevron-right"></i></button>'
 };
 function getProductsState(){
-    return MovieStore.getProducts();
+    return ProductStore.getProducts();
 }
-var MoviesContainer = React.createClass({
+var ProductsContainer = React.createClass({
     getInitialState: function(){
         return getProductsState();
     },
     componentDidMount: function(){
-        MovieStore.addChangeListener(this._onChange);
+        ProductStore.addChangeListener(this._onChange);
         $('#slick-it').slick(slickOptions);
     },
     componentWillUpdate: function(nextProps, nextState){
         //in case we are rerendering but we dont need to slick again
-        //like if only set a movie to reviewed
+        //like if only set a product to reviewed
         //so we dont unslick
         //see componentDidUpdate
         if(!nextState.dontSlick)
@@ -36,34 +36,34 @@ var MoviesContainer = React.createClass({
             $('#slick-it').slick(slickOptions);
 
         //we set it back to false because slicking is default behavior
-        MovieStore.setDontSlick(false);
+        ProductStore.setDontSlick(false);
         //we always set back _reviewdPage to null because we might be done updating
-        //after reviewing a movie
-        MovieStore.setReviewedPage(null);
+        //after reviewing a product
+        ProductStore.setReviewedPage(null);
     },
     componentWillUnmount: function(){
-        MovieStore.removeChangeListener(this._onChange);
+        ProductStore.removeChangeListener(this._onChange);
         $('#slick-it').slick('unslick');
     },
     _onChange: function(){
         this.setState(getProductsState());
     },
     render: function(){
-        var moviePages = this.state.products.map(function(mp, i){
+        var productPages = this.state.products.map(function(mp, i){
             return(
-                <MoviePage movies={mp} key={i} id={i}/>
+                <ProductPage products={mp} key={i} id={i}/>
             );
         }.bind(this));
 
         return(
-            <div className="movie-pages col-md-9">
+            <div className="product-pages col-xs-9">
                 <div id="arrows" className="will-fade"></div>
                 <div id="slick-it" className="will-fade">
-                    {moviePages}
+                    {productPages}
                 </div>
             </div>
         );
     }
 });
 
-module.exports = MoviesContainer;
+module.exports = ProductsContainer;

@@ -2,7 +2,8 @@
 {% load static %}
 {% block extraheader %}
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.css"/>
-    <link href="{% static "css/review_app.min.css" %}" type="text/css" rel="stylesheet"/>
+    <link href="{% static "css/review-app.min.css" %}" type="text/css" rel="stylesheet"/>
+    <link href="{% static "css/review-page.min.css" %}" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 {% endblock %}
 {% block body %}
@@ -24,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div className="row">
+    <div class="row">
     <div id="reviewapp"></div>
     </div>
     <p>LoggedIn!</p>

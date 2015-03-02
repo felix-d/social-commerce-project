@@ -32219,7 +32219,7 @@ var Movie = React.createClass({displayName: "Movie",
         container: 'body'
     },
     cropName: false,
-    cropLength: 12,
+    cropLength: 14,
     componentDidMount: function(){
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -32285,8 +32285,8 @@ var Movie = React.createClass({displayName: "Movie",
         }
 
         return(
-            React.createElement("div", {className: "movie"}, 
-            React.createElement("div", {className: "movie-inner effect6"}, 
+            React.createElement("div", {className: "product col-xs-15"}, 
+            React.createElement("div", {className: "product-inner effect6"}, 
                 React.createElement("h5", {className: opacityControl, ref: "name", "data-toggle": "popover", "data-content": this.props.data.name}, name), 
                 React.createElement("div", {className: "img-container"}, 
                     checkMark, 
@@ -32339,7 +32339,7 @@ var MoviePage = React.createClass({displayName: "MoviePage",
             );
         }.bind(this));
         return(
-            React.createElement("div", {className: "movie-page"}, 
+            React.createElement("div", {className: "product-page"}, 
                 movies
             )
         );
@@ -32409,7 +32409,7 @@ var MoviesContainer = React.createClass({displayName: "MoviesContainer",
         }.bind(this));
 
         return(
-            React.createElement("div", {className: "movie-pages col-md-9"}, 
+            React.createElement("div", {className: "product-pages col-xs-9"}, 
                 React.createElement("div", {id: "arrows", className: "will-fade"}), 
                 React.createElement("div", {id: "slick-it", className: "will-fade"}, 
                     moviePages
@@ -32462,15 +32462,20 @@ var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var MovieActions = require('../actions/MovieActions');
 
+
 function getReviewState(){
     return ReviewBoxStore.getReviewState();
 }
 
 var ReviewBox = React.createClass({displayName: "ReviewBox",
     popoverOptions: {
-        trigger: 'manuel',
+        trigger: 'hover',
         placement: 'left',
-        container: '#review-widget'
+        container: '#review-widget',
+        delay: {
+            show: 400,
+            hide: 100
+        }
     },
     getInitialState: function(){
         return getReviewState();
@@ -32490,23 +32495,10 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
     },
     componentDidUpdate: function(){
         //we add the popover
+        var timeout;
         if(this.state.open && this.state.movie.doCropDescription){
             $(this.refs.description.getDOMNode())
-                  .popover(this.popoverOptions)
-                  .on("mouseenter", function () {
-                      var _this = this;
-                      $(this).popover("show");
-                      $(this).siblings(".popover").on("mouseleave", function () {
-                          $(_this).popover('hide');
-                      });
-                  }).on("mouseleave", function () {
-                      var _this = this;
-                      setTimeout(function () {
-                          if (!$(".popover:hover").length) {
-                              $(_this).popover("hide")
-                          }
-                      }, 100);
-                  });
+                  .popover(this.popoverOptions);
         }
     },
     componentWillUpdate: function(){
@@ -32525,26 +32517,26 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
             description = this.state.movie.description;
         } 
         var reviewWidget =
-        React.createElement("div", {className: "col-md-10 col-md-offset-2 col-xs-12", id: "review-widget"}, 
+        React.createElement("div", {className: "col-xs-10 col-xs-offset-2 col-xs-12", id: "review-widget"}, 
             React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-md-12 text-right", style: {paddingRight: '0px', right: '-4px'}}, 
+                React.createElement("div", {className: "col-xs-12 text-right", style: {paddingRight: '0px', right: '-4px'}}, 
                     React.createElement("button", {className: "btn btn-default", onClick: this.closeReviewBox}, React.createElement("i", {className: "fa fa-times"}))
                 )
             ), 
 
             React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-md-12 text-center"}, 
+                React.createElement("div", {className: "col-xs-12 text-center"}, 
                     React.createElement("h2", {className: "movie-name"}, this.state.movie.name)
                 )
             ), 
 
             React.createElement("div", {className: "row inner"}, 
 
-                React.createElement("div", {className: "col-md-3"}, 
+                React.createElement("div", {className: "col-xs-3"}, 
                     React.createElement("img", {src: this.state.movie.image_path, alt: this.state.movie.name, className: "movie-image"})
                 ), 
 
-                React.createElement("div", {className: "col-md-3"}, 
+                React.createElement("div", {className: "col-xs-3"}, 
                     React.createElement("h4", null, "Release date"), 
                     React.createElement("p", null, this.state.movie.caracteristic_1), 
                     React.createElement("h4", null, "Tags"), 
@@ -32553,7 +32545,7 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
                     React.createElement("p", {className: "description", ref: "description", "data-toggle": "popover", "data-content": this.state.movie.description}, description)
                 ), 
 
-                React.createElement("div", {className: "col-md-6"}, 
+                React.createElement("div", {className: "col-xs-6"}, 
                     React.createElement(ReviewForm, {movie: this.state.movie, reviewElements: this.props.reviewElements})
                 )
             )
@@ -32749,7 +32741,7 @@ var SideBar = React.createClass({displayName: "SideBar",
             );
         }.bind(this));
         return(
-            React.createElement("div", {className: "side-bar col-md-3 will-fade"}, 
+            React.createElement("div", {className: "side-bar col-xs-3 will-fade"}, 
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-search"}), " Search"), 
                 React.createElement("input", {id: "input-search", ref: "searchInput", type: "text", onChange: this.textSearch}), 
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-sort"}), " Sort by"), 

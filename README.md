@@ -22,15 +22,15 @@ http://plnkr.co/edit/HIqqdeQUvPfrc7eOOvfx?p=preview
 
 **GULP TASKS**
 
-`gulp` compiles js and css/sass sources
+`gulp browserify-watch` watch review-app bundle w/ reactify & watchify and move bundle to build/js/tmp/
 
-`gulp compile-js` compiles js
+`gulp compress-js` takes everything in build/js/tmp/, minifies it and output it to /build/js/
 
-`gulp compile-styles` compiles css and sass
+`gulp prod-styles` move css to build/css/tmp/, compile sass, minify + compress everything and output to build/css/
 
-`gulp compress-images` compresses images
+`gulp compress-images` compresses images in src/images/ and ouput to /build/images/
 
-`gulp watch` watch for new scripts and styles, compile and live reload
+`gulp watch` browserify-watch, compile css + js and live reload chrome
 
 * * *
 ### TODO
@@ -42,49 +42,21 @@ The script [tools/get_movies.py](https://github.com/felix-d/social-commerce-proj
 The images are stored in [tools/images/](https://github.com/felix-d/social-commerce-project/tree/master/tools/images)
 The information is stored in [tools/movies.csv](https://github.com/felix-d/social-commerce-project/blob/master/tools/movies.csv#L9)
 #### ~~Writing a script to fill the database from the csv file~~
-Database was filled!
 #### ~~Extend user model with step field~~
 The user model was extended with a one to one relationship to UserStep. This is the clean and recommended way of extending the User model
 according to Django docs.
 #### ~~Implement a middleware to intercept http requests and redirect the user depending on his status and step count~~
 #### ~~Creating products app model~~
-
-* Product
-* Tag
-
 #### ~~Creating questionnaires app model~~
-
-* Questionnaire
-* QuestionGroup
-* Question
-* QuestionChoice
-* QuestionnaireAnswering
-* QuestionAnswer
-
 #### ~~Creating reviews app models~~
-
-* Reviewing
-* ReviewRootElement
-* ReviewChildGroup
-* ReviewElement
-* ReviewAnswer
-
 #### ~~Creating users app models~~
-
-* FriendShip
-* Wish
-* UserStep
-
 #### ~~Creating analytics app models~~
-
-* Session
-* PageVisit
-
 #### ~~Updating friendships on logging~~
 
 Now when a user logs in, a new friendship is created in the database if it doesn't exist yet
 
-#### create a function to redirect given user step and authentication status and use that functions in views and 404 view
-#### Create templates for basic interactions
+#### ~~Create a reviewing app with React + Flux for phase1~~~
+#### Create questionnaire page from the questionnaire models
+#### User-agent sniffing to prevent mobile users from using the app
 #### Add share dialog with javascript sdk and ajax callback to update step count
 #### ...

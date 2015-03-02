@@ -10,20 +10,20 @@ class Reviewing(models.Model):
 
 
 class ReviewRootElement(models.Model):
-    order = models.SmallIntegerField()
+    order = models.SmallIntegerField(default=0)
     name = models.CharField(max_length=255)
-    has_child = models.BooleanField(default=None)
 
 
 class ReviewChildGroup(models.Model):
     review_root_element = models.ForeignKey(ReviewRootElement)
     name = models.CharField(max_length=255)
-    order = models.SmallIntegerField()
+    order = models.SmallIntegerField(default=0)
 
 
 class ReviewElement(models.Model):
     review_child_group = models.ForeignKey(ReviewChildGroup)
     name = models.CharField(max_length=255)
+    order = models.SmallIntegerField(default=0)
 
 
 class ReviewAnswer(models.Model):

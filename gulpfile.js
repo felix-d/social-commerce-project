@@ -96,9 +96,8 @@ gulp.task('clean-css', function(){
 });
 
 //Takes all in the tmp folder and minify it and gzip it
-gulp.task('compress-js', ['build-js'], function() {
+gulp.task('compress-js', function() {
     return gulp.src('./build/js/tmp/*.js')
-        .pipe(debug())
         .pipe(uglify())
         .pipe(rename(function(path){
             if(!/\.min$/.test(path.basename)){
@@ -117,17 +116,6 @@ gulp.task('move-js', function(){
         pipe(gulp.dest('./build/js/tmp'));
 });
 
-
-//Move bower js files and browserify to tmp
-gulp.task('build-js', ['move-js', 'browserify'], function(){
-    return;
-});
-
-
-//Build and minify
-gulp.task('prod-js', ['compress-js'], function(){
-    return;
-});
 
 //takes css from bower components and move them to tmp
 gulp.task('move-css', ['clean-css'], function() {

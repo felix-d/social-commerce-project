@@ -1,11 +1,11 @@
 var React = require('react/addons');
-var MovieStore = require('../stores/MovieStore');
-var MovieActions = require('../actions/MovieActions');
-var Movie = require('./Movie.react.jsx');
+var ProductStore = require('../stores/ProductStore');
+var ProductActions = require('../actions/ProductActions');
+var Product = require('./Product.react.jsx');
 
 
 
-var MoviePage = React.createClass({
+var ProductPage = React.createClass({
     componentDidMount: function(){
     },
     componentWillUnmount: function(){
@@ -15,26 +15,26 @@ var MoviePage = React.createClass({
     componentWillUpdate: function(){
     },
     shouldComponentUpdate: function(nextProps, nextStates){
-        if(MovieStore.getReviewedPage() ===
+        if(ProductStore.getReviewedPage() ===
             nextProps.id ||
-            MovieStore.getReviewedPage() ===
+            ProductStore.getReviewedPage() ===
             null)
             return true;
         console.log("page wasnt updated");
         return false;
     },
     render: function(){
-        var movies = this.props.movies.map(function(m, i){
+        var products = this.props.products.map(function(m, i){
             return(
-                <Movie data={m} key={i}/>
+                <Product data={m} key={i}/>
             );
         }.bind(this));
         return(
-            <div className="movie-page">
-                {movies}
+            <div className="product-page">
+                {products}
             </div>
         );
     }
 });
 
-module.exports = MoviePage;
+module.exports = ProductPage;
