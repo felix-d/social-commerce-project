@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 {% endblock %}
 {% block body %}
-    <div class="jumbotron">
+    <div class="jumbotron will-fade">
         <h1>This is the reviewing page</h1>
-        <p>Hi {{name}}, nice to see you!!</p>
+        <p>Hi {{name}}, nice to see you!! <a href="{% url 'auth_logout' %}">Logout</a></p>
     </div>
-    <div class="row">
+    <div class="row will-fade">
         <div class="info-box">
             <div class="col-xs-12">
                 <button className="btn btn-default" id="info-button" type="button" data-toggle="collapse" data-target="#collapse-it" aria-expanded="false" aria-controls="collapse" onClick={this.toggleInfoBox}>
@@ -28,8 +28,7 @@
     <div class="row">
     <div id="reviewapp"></div>
     </div>
-    <p>LoggedIn!</p>
-    <p><a href="{% url 'auth_logout' %}">Logout</a></p>
+    
 {% endblock %}
 {% block extrafooter %}
     <script src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js" type="text/javascript"></script>

@@ -1,7 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MovieActions = require('../actions/MovieActions');
-var MovieConstants = require('../constants/MovieConstants');
+var ProductActions = require('../actions/ProductActions');
+var ProductConstants = require('../constants/ProductConstants');
 var assign = require('object-assign');
 var _ = require('lodash');
 
@@ -17,7 +17,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     init: function(){
         _cropLength = 150;
         _reviewBox = {
-            movie: {
+            product: {
                 name: '',
                 image_path: '',
                 caracteristic_1: '',
@@ -36,7 +36,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
             $reviewApp = $('#review-app-inner');
             $overlay = $('<div id="overlay"></div>');
             $overlay.click(function(){
-                MovieActions.closeReviewBox(); 
+                ProductActions.closeReviewBox(); 
             });
             $overlay.hide();
             $reviewApp.prepend($overlay);
@@ -44,17 +44,16 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     },
     openReviewBox: function(data){
-        console.log(data);
         $overlay.show();
         $willFade.addClass('fade');
-        _reviewBox.movie = data;
+        _reviewBox.product = data;
         _reviewBox.open = true;
 
-        if(_reviewBox.movie.description.length > _cropLength){
-            _reviewBox.movie.doCropDescription= true;
-            _reviewBox.movie.cropDescription =_reviewBox.movie.description.substring(0, _cropLength) + "...";
+        if(_reviewBox.product.description.length > _cropLength){
+            _reviewBox.product.doCropDescription= true;
+            _reviewBox.product.cropDescription =_reviewBox.product.description.substring(0, _cropLength) + "...";
         } else {
-            _reviewBox.movie.doCropDescription = false;
+            _reviewBox.product.doCropDescription = false;
         }
     },
     closeReviewBox: function(){
@@ -84,11 +83,11 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 });
 AppDispatcher.register(function(action){
     switch(action.actionType) {
-    case MovieConstants.OPEN_REVIEW_BOX:
+    case ProductConstants.OPEN_REVIEW_BOX:
         ReviewBoxStore.openReviewBox(action.data);
         ReviewBoxStore.emitChange();
         break;
-    case MovieConstants.CLOSE_REVIEW_BOX:
+    case ProductConstants.CLOSE_REVIEW_BOX:
         ReviewBoxStore.closeReviewBox();
         ReviewBoxStore.emitChange();
         break;

@@ -1,5 +1,4 @@
 $(function(){
-
     var $infoButton = $("#info-button"),
         $infoButton_i = $("#info-button i"),
         $collapse = $("#collapse"),
