@@ -3,7 +3,7 @@ var ReviewForm = require("./ReviewForm.react.jsx");
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
-var isElementInViewport = require('../../tools/tools').isElementInViewport;
+var isElementInViewport = require('../../../tools').isElementInViewport;
 
 
 function getReviewState(){

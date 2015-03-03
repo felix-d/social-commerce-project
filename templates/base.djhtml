@@ -16,8 +16,8 @@
             {% block body %}
             {% endblock %}
         </div>
-        <script src="{% static "js/jquery.min.js" %}" type="text/javascript"></script>
-        <script src="{% static "js/bootstrap.min.js" %}" type="text/javascript"></script>
+        <script src="{% static "js/bower_components/jquery.min.js" %}" type="text/javascript"></script>
+        <script src="{% static "js/bower_components/bootstrap.min.js" %}" type="text/javascript"></script>
         {% block extrafooter %}
         {% endblock %}
     </body>

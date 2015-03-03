@@ -32,10 +32,10 @@
 {% endblock %}
 {% block extrafooter %}
     <script src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js" type="text/javascript"></script>
-    <script src="{% static "js/tmp/review_app_misc.js"%}" type="text/javascript"></script>
-    <script src="{% static "js/tmp/review_app_bundle.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/dev/phase1/review-app-misc.js"%}" type="text/javascript"></script>
+    <script src="{% static "js/dev/phase1/review-app-bundle.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
-     var init = require("review_app_bundle");
+     var init = require("review-app-bundle");
      init({
          reviewElements: {
              tabElements: [

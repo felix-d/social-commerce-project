@@ -32137,7 +32137,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
 
@@ -32207,7 +32207,7 @@ module.exports = ProductActions;
 
 
 
-},{"../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/Product.react.jsx":[function(require,module,exports){
+},{"../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/Product.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ProductActions = require('../actions/ProductActions');
 var ProductContainer = require('./ProductsContainer.react.jsx');
@@ -32306,7 +32306,7 @@ module.exports = Product;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ProductsContainer.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ProductPage.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductPage.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
@@ -32350,7 +32350,7 @@ module.exports = ProductPage;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ProductStore.js","./Product.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/Product.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./Product.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/Product.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ProductPage = require("./ProductPage.react.jsx")
@@ -32423,7 +32423,7 @@ module.exports = ProductsContainer;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ProductStore.js","./ProductPage.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ProductPage.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./ProductPage.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductPage.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ProductStore = require('../stores/ProductStore');
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
@@ -32455,13 +32455,13 @@ module.exports = ReviewApp;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ProductStore.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ProductsContainer.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewBox.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/SideBar.react.jsx","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewBox.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/SideBar.react.jsx","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ReviewForm = require("./ReviewForm.react.jsx");
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
-var isElementInViewport = require('../../tools/tools').isElementInViewport;
+var isElementInViewport = require('../../../tools').isElementInViewport;
 
 
 function getReviewState(){
@@ -32584,7 +32584,7 @@ module.exports = ReviewBox;
 
 
 
-},{"../../tools/tools":"/Users/Felix/Documents/social_commerce_project/src/js/tools/tools.js","../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js","./ReviewForm.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewForm.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewForm.react.jsx":[function(require,module,exports){
+},{"../../../tools":"/Users/Felix/Documents/social_commerce_project/src/js/tools.js","../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ReviewForm.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewForm.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewForm.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ReviewFormTab = require('./ReviewFormTab.react.jsx');
 var ProductActions = require("../actions/ProductActions");
@@ -32643,7 +32643,7 @@ module.exports = ReviewForm;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","./ReviewFormTab.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewFormTab.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewFormTab.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","./ReviewFormTab.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 
 var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
@@ -32684,7 +32684,7 @@ module.exports = ReviewFormTab;
 
 
 
-},{"react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/SideBar.react.jsx":[function(require,module,exports){
+},{"react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/SideBar.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
@@ -32784,7 +32784,7 @@ module.exports = SideBar;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ProductStore.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/ProductConstants.js":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js":[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -32802,14 +32802,14 @@ module.exports = keyMirror({
 
 
 
-},{"keymirror":"/Users/Felix/Documents/social_commerce_project/node_modules/keymirror/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js":[function(require,module,exports){
+},{"keymirror":"/Users/Felix/Documents/social_commerce_project/node_modules/keymirror/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js":[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
 
 
-},{"flux":"/Users/Felix/Documents/social_commerce_project/node_modules/flux/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ProductStore.js":[function(require,module,exports){
+},{"flux":"/Users/Felix/Documents/social_commerce_project/node_modules/flux/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ProductConstants = require('../constants/ProductConstants');
@@ -33009,7 +33009,7 @@ module.exports = ProductStore;
 
 
 
-},{"../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js","./ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/review_app/stores/ReviewBoxStore.js":[function(require,module,exports){
+},{"../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js","./ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ProductActions = require('../actions/ProductActions');
@@ -33111,7 +33111,7 @@ module.exports = ReviewBoxStore;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/actions/ProductActions.js","../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/tools/tools.js":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/tools.js":[function(require,module,exports){
 var tools = {};
 tools.isElementInViewport = function(el) {
 
@@ -33133,7 +33133,7 @@ module.exports = tools;
 
 
 
-},{}],"review_app_bundle":[function(require,module,exports){
+},{}],"review-app-bundle":[function(require,module,exports){
 var React = require('react/addons');
 var ReviewApp = require('./components/ReviewApp.react.jsx');
 
@@ -33148,4 +33148,4 @@ module.exports = init;
 
 
 
-},{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}]},{},["review_app_bundle"]);
+},{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}]},{},["review-app-bundle"]);

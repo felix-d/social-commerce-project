@@ -33,11 +33,18 @@ var browserify_sources = [
         bundleName: 'review_app_bundle.js'
     }
 ];
+
 var js_sources = [
-    'bower_components/jquery/dist/jquery.min.js',
-    'bower_components/bootstrap/dist/js/bootstrap.min.js',
-    'src/js/*.js'
+    "./src/js/phase1/*.js",
+    "./src/js/phase2/*.js",
+    "./src/js/bower_components/*.js"
 ];
+
+var js_bower_sources = [
+    './bower_components/jquery/dist/jquery.min.js',
+    './bower_components/bootstrap/dist/js/bootstrap.min.js'
+];
+
 //css sources are prepended to sass!!
 var css_sources = [
     'bower_components/bootstrap/dist/css/bootstrap.min.css'
@@ -73,15 +80,15 @@ function browserifyShare() {
         });
     }
 
-    b.add('./src/js/review_app/app.jsx');
-    b.require('./src/js/review_app/app.jsx', {expose: "review_app_bundle" });
+    b.add('./src/js/phase1/review_app/app.jsx');
+    b.require('./src/js/phase1/review_app/app.jsx', {expose: "review-app-bundle" });
     bundleShare(b);
 }
 
 function bundleShare(b) {
     b.bundle()
-        .pipe(source('review_app_bundle.js'))
-        .pipe(gulp.dest('./build/js/tmp/'))
+        .pipe(source('review-app-bundle.js'))
+        .pipe(gulp.dest('./build/js/dev/phase1/'))
         .pipe(gulpif(watch, livereload()));
 }
 
@@ -110,11 +117,19 @@ gulp.task('compress-js', function() {
 });
 
 //move js files from bower components into tmp
-gulp.task('move-js', function(){
-    return gulp.src(js_sources).
+gulp.task('move-js-bower', function(){
+    return gulp.src(js_bower_sources).
+        pipe(debug()).
+        pipe(gulp.dest('./src/js/bower_components/'));
+});
+
+//move js files from bower components into tmp
+gulp.task('move-js',['move-js-bower'], function(){
+    return gulp.src(js_sources, {base: 'src/js/'}).
         pipe(debug()).
         pipe(gulp.dest('./build/js/tmp'));
 });
+
 
 
 //takes css from bower components and move them to tmp
