@@ -41,6 +41,7 @@
     "object-assign": "^2.0.0",
     "react": "^0.12.2",
     "reactify": "^1.0.0",
+    "reflux": "^0.2.6",
     "underscore": "^1.8.0",
     "vinyl-source-stream": "^1.0.0",
     "vinyl-transform": "^1.0.0",

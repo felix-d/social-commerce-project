@@ -19,7 +19,6 @@ var ReviewForm = React.createClass({
                 </li>
             );
         });
-        console.log(tabs);
         var tabContent = this.props.reviewElements.tabElements.map(function(re, i){
             var id = "tab" + i;
             return(

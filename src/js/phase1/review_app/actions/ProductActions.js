@@ -2,47 +2,30 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
 
 var ProductActions = {
-    getInitialData: function(){
-        AppDispatcher.dispatch({
-            actionType: productConstants.GET_PRODUCTS
-        });
-        
-    },
-    /**
-     * @param  {object} data
-     */
-    create: function(data) {
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.REVIEW_CREATE,
-            data: data
-        });
-    },
-    /**
-     * @param  {object} sort_data
-     */
-    sort: function(sort_data) {
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.PRODUCTS_SORT,
-            data: sort_data
-        });
-    },
 
+    // Shuffle the products!
     shuffleProducts: function(){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SHUFFLE_PRODUCTS
         });
     },
+
+    // Review a product!
     reviewIt: function(product){
         AppDispatcher.dispatch({
             actionType: ProductConstants.OPEN_REVIEW_BOX,
             data: product
         });
     },
+
+    // The name says it all...
     closeReviewBox: function(){
         AppDispatcher.dispatch({
             actionType: ProductConstants.CLOSE_REVIEW_BOX
         });
     },
+
+    // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SUBMIT_REVIEW,
@@ -51,6 +34,8 @@ var ProductActions = {
         });
         
     },
+
+    // Search for products
     doSearch: function(query, tags, sortBy){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SEARCH_PRODUCTS,

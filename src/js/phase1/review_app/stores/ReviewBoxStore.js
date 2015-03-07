@@ -6,31 +6,38 @@ var assign = require('object-assign');
 var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
-var _reviewBox,
+var _reviewBox = {
+    product: {
+        name: '',
+        image_path: '',
+        caracteristic_1: '',
+        caracteristic_2: '',
+        tags: [],
+        description: '',
+        cropDescription: '',
+        doCropDescription: false
+    },
+    // is it opened
+    open: false
+},
+    // The max length of the description
+    _cropLength = 150,
+    // The jQuery element containing the elements that will fade
     $willFade,
+    // The element we will prepend the overlay to
     $reviewApp,
-    $overlay,
-    _cropLength,
-    _reviewButtons;
+    // The clickable overlay
+    $overlay;
+
 
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
+
+    // Called from root component
     init: function(){
-        _cropLength = 150;
-        _reviewBox = {
-            product: {
-                name: '',
-                image_path: '',
-                caracteristic_1: '',
-                caracteristic_2: '',
-                tags: [],
-                description: '',
-                cropDescription: '',
-                doCropDescription: false
-            },
-            open: false,
-            showChildBox: false,
-            children: []
-        };
+
+        // We set up the overlay for closing the review box
+        // and the elements that need to fade on review box
+        // opening
         $(function(){
             $willFade = $('.will-fade');
             $reviewApp = $('#review-app-inner');
@@ -43,12 +50,23 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         });
 
     },
+
+    // When the user wants to review a movie
     openReviewBox: function(data){
+
+        // The clickable overlay is shown
         $overlay.show();
+
+        // We fade the elements with class will-fade
         $willFade.addClass('fade');
+
+        // We set the data
         _reviewBox.product = data;
+
+        // We set open to true
         _reviewBox.open = true;
 
+        // Do we crop?
         if(_reviewBox.product.description.length > _cropLength){
             _reviewBox.product.doCropDescription= true;
             _reviewBox.product.cropDescription =_reviewBox.product.description.substring(0, _cropLength) + "...";
@@ -56,6 +74,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
             _reviewBox.product.doCropDescription = false;
         }
     },
+
     closeReviewBox: function(){
         $willFade.removeClass('fade');
         $overlay.hide();
@@ -67,16 +86,9 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
-    /**
-     * @param {function} callback
-     */
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
-
-    /**
-     * @param {function} callback
-     */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }

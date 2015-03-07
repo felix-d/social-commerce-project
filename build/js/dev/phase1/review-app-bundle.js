@@ -32142,47 +32142,30 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
 
 var ProductActions = {
-    getInitialData: function(){
-        AppDispatcher.dispatch({
-            actionType: productConstants.GET_PRODUCTS
-        });
-        
-    },
-    /**
-     * @param  {object} data
-     */
-    create: function(data) {
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.REVIEW_CREATE,
-            data: data
-        });
-    },
-    /**
-     * @param  {object} sort_data
-     */
-    sort: function(sort_data) {
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.PRODUCTS_SORT,
-            data: sort_data
-        });
-    },
 
+    // Shuffle the products!
     shuffleProducts: function(){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SHUFFLE_PRODUCTS
         });
     },
+
+    // Review a product!
     reviewIt: function(product){
         AppDispatcher.dispatch({
             actionType: ProductConstants.OPEN_REVIEW_BOX,
             data: product
         });
     },
+
+    // The name says it all...
     closeReviewBox: function(){
         AppDispatcher.dispatch({
             actionType: ProductConstants.CLOSE_REVIEW_BOX
         });
     },
+
+    // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SUBMIT_REVIEW,
@@ -32191,6 +32174,8 @@ var ProductActions = {
         });
         
     },
+
+    // Search for products
     doSearch: function(query, tags, sortBy){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SEARCH_PRODUCTS,
@@ -32213,43 +32198,64 @@ var ProductActions = require('../actions/ProductActions');
 var ProductContainer = require('./ProductsContainer.react.jsx');
 
 var Product = React.createClass({displayName: "Product",
+
+    // Options for the popover
     popoverOptions: {
         trigger: 'hover',
         placement: 'auto',
         container: 'body'
     },
+
+    // Do we need to crop the name
     cropName: false,
+
+    // De maximum length before cropping
     cropLength: 14,
     componentDidMount: function(){
+
+        // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
                   .popover(this.popoverOptions);
         }
     },
     componentDidUpdate: function(){
+
+        // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover(this.popoverOptions);
     },
     componentWillUpdate: function(){
+
+        // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover('destroy');
     },
     componentWillUnmount: function(){
+
+        // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
+
+    // Review the product
     reviewIt: function(){
         ProductActions.reviewIt(this.props.data);
     },
+
     render: function(){
 
+        // the name of the movie
         var name,
-            product_tags,
+            // the class set on reviewed products
             imgReviewedClass,
+            // We reduce the opacity of reviewed products
             opacityControl,
+            // the check mark on reviewed products
             checkMark,
+            // the review button
             button;
 
         // Do we crop the length?
@@ -32257,17 +32263,10 @@ var Product = React.createClass({displayName: "Product",
             this.cropName = true;
             name = this.props.data.name.substring(0,this.cropLength)+"...";
             
-        } else {
-            this.cropName = false;
-            name = this.props.data.name;
-        }
-
-        // Join the tags with commas
-        if(this.props.data.tags.length > 0){
-            product_tags = this.props.data.tags.join(", ");
         }
         else {
-            product_tags = null;
+            this.cropName = false;
+            name = this.props.data.name;
         }
 
         // Check if the product was reviewed
@@ -32358,40 +32357,63 @@ var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
 var ReviewBox = require("./ReviewBox.react.jsx");
 
+// Options for slick carousel
 var slickOptions = {
+    // where to append the arrows
     appendArrows: '#arrows',
+    // lazy-load of the images
     lazyLoad: 'ondemand',
-    prevArrow: '<button class="btn btn-default arrow" id="left-arrow"><i class="fa fa-chevron-left"></i></button>',
-    nextArrow: '<button class="btn btn-default arrow" id="right-arrow"><i class="fa fa-chevron-right"></i></button>'
+    // what is the prevArrow
+    prevArrow: '<button class="btn btn-default arrow"'+
+               ' id="left-arrow"><i '+
+               'class="fa fa-chevron-left"></i></button>',
+    // what is the nextArrow
+    nextArrow: '<button class="btn btn-default arrow"'+
+               ' id="right-arrow"><i '+
+               'class="fa fa-chevron-right"></i></button>'
 };
+
+//Return the products
 function getProductsState(){
     return ProductStore.getProducts();
 }
+
+/**
+ * PRODUCTS CONTAINER COMPONENT
+ * The right-most container of the review app containing the products
+ */
 var ProductsContainer = React.createClass({displayName: "ProductsContainer",
     getInitialState: function(){
         return getProductsState();
     },
     componentDidMount: function(){
+
+        // We listen to the product store
         ProductStore.addChangeListener(this._onChange);
+
+        // We slick the products!
         $('#slick-it').slick(slickOptions);
     },
     componentWillUpdate: function(nextProps, nextState){
-        //in case we are rerendering but we dont need to slick again
-        //like if only set a product to reviewed
-        //so we dont unslick
-        //see componentDidUpdate
+
+        // In case we are rerendering but we dont need to slick again
+        // like if only set a product to reviewed
+        // So we DONT unslick!
+        // see this.componentDidUpdate
         if(!nextState.dontSlick)
             $('#slick-it').slick('unslick');
     },
     componentDidUpdate: function(prevProps, prevState){
-        //in case we are rerendering but we dont need to slick again
+
+        // In case we are rerendering but we dont need to slick again
         if(!this.state.dontSlick)
             $('#slick-it').slick(slickOptions);
 
-        //we set it back to false because slicking is default behavior
+        // We set it back to false because slicking is default behavior
         ProductStore.setDontSlick(false);
-        //we always set back _reviewdPage to null because we might be done updating
-        //after reviewing a product
+
+        // We always set back _reviewedPage to null because we might be done updating
+        // after reviewing a product.
         ProductStore.setReviewedPage(null);
     },
     componentWillUnmount: function(){
@@ -32463,12 +32485,13 @@ var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
 var isElementInViewport = require('../../../tools').isElementInViewport;
 
-
 function getReviewState(){
     return ReviewBoxStore.getReviewState();
 }
 
 var ReviewBox = React.createClass({displayName: "ReviewBox",
+
+    // Popover options for the product description
     popoverOptions: {
         trigger: 'hover',
         placement: 'left',
@@ -32495,26 +32518,7 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
         ReviewBoxStore.removeReviewChangeListener(this._onChange);
     },
     componentDidUpdate: function(){
-        if(this.state.open){
-            var $this = $(this.refs.reviewWidget.getDOMNode());
-            //top of widget, relative to document
-            var this_top = $this.offset().top;
-            //outer height of widget
-            var this_height = $this.outerHeight();
-            //bottom position of widget
-            var bottom = this_top + this_height;
-            //bottom position of window
-            var scrollBottom = $(window).scrollTop() + $(window).height();
-            //if bottom of widget is below bottom of window
-            //60px is the SCSS top difference during animation (see src/scss/review-app.scss)
-            //we need to add it because the measurement is done before.
-            if(bottom + 60 > scrollBottom){
-                //posit
-                $('body').animate({scrollTop: this_top}, 400, 'swing');
-            }
-        }
         //we add the popover
-        var timeout;
         if(this.state.open && this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover(this.popoverOptions);
@@ -32530,6 +32534,8 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
     },
     render: function(){
         var description = '';
+
+        // Do we crop the description
         if(this.state.product.doCropDescription){
             description = this.state.product.cropDescription;
         } 
@@ -32606,7 +32612,6 @@ var ReviewForm = React.createClass({displayName: "ReviewForm",
                 )
             );
         });
-        console.log(tabs);
         var tabContent = this.props.reviewElements.tabElements.map(function(re, i){
             var id = "tab" + i;
             return(
@@ -32648,13 +32653,18 @@ var React = require('react/addons');
 
 var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
     render: function(){
+
+        // needed classes for the tabs
         var className = "tab-pane fade";
         if(this.props.active){
             className+= " in active";
         }
+
+        // For each category, there are toggle elements
         var categories = this.props.data.map(function(d, i){
 
             var elements = d.elements.map(function(e, j){
+
                 return (
                     React.createElement("label", {className: "btn btn-default", key: j}, 
                         React.createElement("input", {type: "checkbox", autocomplete: "off"}), 
@@ -32695,26 +32705,34 @@ function getSideBarState(){
 var SideBar = React.createClass({displayName: "SideBar",
 
     shuffleProducts: function(){
+
+        // We set the sort selection to "Random" when shuffle is pressed
         this.refs.selectSort.getDOMNode().value = "Random";
         ProductActions.shuffleProducts();
     },
+
     getInitialState: function(){
         return getSideBarState();
     },
+
     _onChange: function(){
         this.setState(getSideBarState());
     },
-    //Are we typing in search field?
+
+    // Are we typing in search field?
     typingInSearchField: false,
 
-    //We are waiting some time before searching
+    // We are waiting some time before searching
     typingTimeout: undefined,
 
-    //to compare if new search is the same as old search. If it is, we dont refresh!
+    // to compare if new search is the same as old search. If it is, we dont refresh!
     oldSearchValue: undefined,
 
-    //When we type in search field
+    // When we type in search field
     textSearch: function(){
+
+        // We only execute a search query when the user stops typing for more
+        // than 0.2 seconds!
         if(this.typingInSearchField){
             clearTimeout(this.typingTimeout);
         } 
@@ -32727,6 +32745,7 @@ var SideBar = React.createClass({displayName: "SideBar",
             this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
         }.bind(this), 200);
     },
+
     componentDidMount: function(){
         //We set the old search field value at mounting
         ProductStore.addChangeListener(this._onChange);
@@ -32748,6 +32767,8 @@ var SideBar = React.createClass({displayName: "SideBar",
     },
     render: function(){
         var tags_checkbox = this.state.tags.map(function(t, i){
+
+            // Handler for clicking on tag toggles
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
                 this.doSearch();
@@ -32760,6 +32781,7 @@ var SideBar = React.createClass({displayName: "SideBar",
                 )
             );
         }.bind(this));
+
         return(
             React.createElement("div", {className: "side-bar col-xs-3 will-fade"}, 
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-search"}), " Search"), 
@@ -32820,20 +32842,24 @@ var _ = require('lodash');
 var CHANGE_EVENT = 'change';
 var REVIEWCHANGE_EVENT = 'change_review';
 
-// products_data is passed from global object
-var _perPage,
-    _sortBy,
+// Number of product per page
+var _perPage = 10,
+    // The initial sorting order
+    _sortBy = 'Random',
+    // will set to true when a review gets submitted
+    // to disallow reslicking the whole thing
+    _dontSlick = false,
+    // The number of the page just reviewed
+    _reviewedPage = null,
+
+    // these will be set in init
     _productsOriginal,
     _tags,
     _numberOfReviews,
-    _products,
-    _dontSlick,
-    _reviewedPage;
+    _products;
 
-/**
-* Takes an array of products and a number and
-* returns the paginated array
-*/
+// Takes an array of products and a number and
+// returns the paginated array
 function getPaginatedProducts(products, perPage){
     var result = [];
     for(var i=0, l= products.length ;i<l;i+= perPage){
@@ -32847,6 +32873,7 @@ function getPaginatedProducts(products, perPage){
     return result;
 }
 
+// Return the number of reviewed products by the current user
 function getNumberOfReviewedProducts(products){
     var count = 0;
     for(var i=0,l=products.length;i<l;i++){
@@ -32855,6 +32882,9 @@ function getNumberOfReviewedProducts(products){
     return count;
 }
 
+// Get the page number for a given product
+// Will be used to only update the current page
+// When a user submits a review
 function getPageNumber(product){
     for(var i=0,l=_products.length;i<l;i++){
         if(product.id===_products[i].id){
@@ -32865,17 +32895,19 @@ function getPageNumber(product){
 }
 
 var ProductStore = assign({}, EventEmitter.prototype, {
+
     //called by root component at startup
     init: function(products, tags){
         _productsOriginal = products;
-        _sortBy = 'Random';
-        _perPage = 10;
-        _dontSlick = false;
-        _reviewedPage = null;
+
+        // We add a field to every tags
         _tags = tags.map(function(t){
             return {name: t, isChecked: false}; 
         });
+
         _numberOfReviews = getNumberOfReviewedProducts(_productsOriginal);
+
+        // We do a copy to _products, which is the rendered array
         _products = _productsOriginal.slice();
         
     },
@@ -32892,39 +32924,38 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             }
         }
     },
-    getAllData: function() {
-        return {
-            products: getPaginatedProducts(_products, _perPage),
-            tags: _tags,
-            numberReviews: _numberOfReviews
-        };
-    },
+    // Used by the ProductsContainer component to set its state
     getProducts: function(){
         return {
             products: getPaginatedProducts(_products, _perPage),
             dontSlick: _dontSlick
         };
     },
+    // Used by the SideBar component to set its state
     getTags: function(){
         return {
             tags: _tags
         };
     },
+    // We execute a search query
     doSearch: function(query, tags, sortBy) {
+
+        // what will be returned
         var queryResult = [];
         var regex = new RegExp(query, "i");
         var subset;
-        //we set the tags to change isChecked values
+
+        // we set the tags to change isChecked values
         assign(_tags, tags);
 
-        //an array of tag names that are checked
+        // an array of tag names that are checked
         tags = _tags.filter(function(t){
             return t.isChecked;
         }).map(function(t){
             return t.name;
         });
 
-        //for all products, do check
+        // for all products, do check if regex match and intersection for tags
         _productsOriginal.forEach(function(product){
             subset = tags.length ===  _.intersection(tags, product.tags).length;
             if(regex.test(product.name) && subset){
@@ -32932,19 +32963,25 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             }
         });
 
-        //sort the results
+        // sort the results
         switch(sortBy){
+
+        // Random sort
         case "Random":
             queryResult = _.shuffle(queryResult);       
             break;
+
+        // Sort by title
         case "Title":
             queryResult.sort(function(a, b){
-                // Compare the 2 dates
+                // Compare the 2 titles
                 if(a.name < b.name) return -1;
                 if(a.name > b.name) return 1;
                 return 0;
             });
             break;
+
+        // Sort by release year
         case "Release Year":
             queryResult.sort(function(a, b){
                 // Compare the 2 dates
@@ -32953,10 +32990,11 @@ var ProductStore = assign({}, EventEmitter.prototype, {
                 return 0;
             });
             break;
+
         default:
             break;
         }
-
+        // the products that will be returned
         _products = queryResult;
     },
     shuffleProducts: function(){
@@ -32966,6 +33004,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         _dontSlick  = val; 
     },
     submit_review: function(product, reviewData){
+        // because we will only update one page
         _dontSlick = true;
         _reviewedPage = getPageNumber(product);
         product.reviewed = true;
@@ -32973,15 +33012,9 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
-    /**
-     * @param {function} callback
-     */
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
-    /**
-     * @param {function} callback
-     */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }
@@ -33018,31 +33051,38 @@ var assign = require('object-assign');
 var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
-var _reviewBox,
+var _reviewBox = {
+    product: {
+        name: '',
+        image_path: '',
+        caracteristic_1: '',
+        caracteristic_2: '',
+        tags: [],
+        description: '',
+        cropDescription: '',
+        doCropDescription: false
+    },
+    // is it opened
+    open: false
+},
+    // The max length of the description
+    _cropLength = 150,
+    // The jQuery element containing the elements that will fade
     $willFade,
+    // The element we will prepend the overlay to
     $reviewApp,
-    $overlay,
-    _cropLength,
-    _reviewButtons;
+    // The clickable overlay
+    $overlay;
+
 
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
+
+    // Called from root component
     init: function(){
-        _cropLength = 150;
-        _reviewBox = {
-            product: {
-                name: '',
-                image_path: '',
-                caracteristic_1: '',
-                caracteristic_2: '',
-                tags: [],
-                description: '',
-                cropDescription: '',
-                doCropDescription: false
-            },
-            open: false,
-            showChildBox: false,
-            children: []
-        };
+
+        // We set up the overlay for closing the review box
+        // and the elements that need to fade on review box
+        // opening
         $(function(){
             $willFade = $('.will-fade');
             $reviewApp = $('#review-app-inner');
@@ -33055,12 +33095,23 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         });
 
     },
+
+    // When the user wants to review a movie
     openReviewBox: function(data){
+
+        // The clickable overlay is shown
         $overlay.show();
+
+        // We fade the elements with class will-fade
         $willFade.addClass('fade');
+
+        // We set the data
         _reviewBox.product = data;
+
+        // We set open to true
         _reviewBox.open = true;
 
+        // Do we crop?
         if(_reviewBox.product.description.length > _cropLength){
             _reviewBox.product.doCropDescription= true;
             _reviewBox.product.cropDescription =_reviewBox.product.description.substring(0, _cropLength) + "...";
@@ -33068,6 +33119,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
             _reviewBox.product.doCropDescription = false;
         }
     },
+
     closeReviewBox: function(){
         $willFade.removeClass('fade');
         $overlay.hide();
@@ -33079,16 +33131,9 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
-    /**
-     * @param {function} callback
-     */
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
-
-    /**
-     * @param {function} callback
-     */
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }
@@ -33137,7 +33182,10 @@ module.exports = tools;
 var React = require('react/addons');
 var ReviewApp = require('./components/ReviewApp.react.jsx');
 
+//Called in the django template
 var init = function init(data){
+
+    //Rendering of root component
     React.render(
         React.createElement(ReviewApp, data),
         document.getElementById('reviewapp')

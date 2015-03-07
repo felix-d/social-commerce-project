@@ -8,26 +8,34 @@ function getSideBarState(){
 var SideBar = React.createClass({
 
     shuffleProducts: function(){
+
+        // We set the sort selection to "Random" when shuffle is pressed
         this.refs.selectSort.getDOMNode().value = "Random";
         ProductActions.shuffleProducts();
     },
+
     getInitialState: function(){
         return getSideBarState();
     },
+
     _onChange: function(){
         this.setState(getSideBarState());
     },
-    //Are we typing in search field?
+
+    // Are we typing in search field?
     typingInSearchField: false,
 
-    //We are waiting some time before searching
+    // We are waiting some time before searching
     typingTimeout: undefined,
 
-    //to compare if new search is the same as old search. If it is, we dont refresh!
+    // to compare if new search is the same as old search. If it is, we dont refresh!
     oldSearchValue: undefined,
 
-    //When we type in search field
+    // When we type in search field
     textSearch: function(){
+
+        // We only execute a search query when the user stops typing for more
+        // than 0.2 seconds!
         if(this.typingInSearchField){
             clearTimeout(this.typingTimeout);
         } 
@@ -40,6 +48,7 @@ var SideBar = React.createClass({
             this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
         }.bind(this), 200);
     },
+
     componentDidMount: function(){
         //We set the old search field value at mounting
         ProductStore.addChangeListener(this._onChange);
@@ -61,6 +70,8 @@ var SideBar = React.createClass({
     },
     render: function(){
         var tags_checkbox = this.state.tags.map(function(t, i){
+
+            // Handler for clicking on tag toggles
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
                 this.doSearch();
@@ -73,6 +84,7 @@ var SideBar = React.createClass({
                 </label>
             );
         }.bind(this));
+
         return(
             <div className="side-bar col-xs-3 will-fade">
                 <h4><i className="fa fa-search"></i> Search</h4>

@@ -123,7 +123,7 @@
       #reviewapp #review-app-inner #review-widget.example-enter {
         top: -60px !important;
         opacity: 0.01;
-        transition: all 0.2s linear; }
+        transition: all 0.17s linear; }
       #reviewapp #review-app-inner #review-widget.example-enter.example-enter-active {
         top: 0px !important;
         opacity: 1; }

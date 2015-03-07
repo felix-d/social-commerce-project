@@ -2,13 +2,18 @@ var React = require('react/addons');
 
 var ReviewFormTab = React.createClass({
     render: function(){
+
+        // needed classes for the tabs
         var className = "tab-pane fade";
         if(this.props.active){
             className+= " in active";
         }
+
+        // For each category, there are toggle elements
         var categories = this.props.data.map(function(d, i){
 
             var elements = d.elements.map(function(e, j){
+
                 return (
                     <label className="btn btn-default" key={j}>
                         <input type="checkbox" autocomplete="off"/>

@@ -3,43 +3,64 @@ var ProductActions = require('../actions/ProductActions');
 var ProductContainer = require('./ProductsContainer.react.jsx');
 
 var Product = React.createClass({
+
+    // Options for the popover
     popoverOptions: {
         trigger: 'hover',
         placement: 'auto',
         container: 'body'
     },
+
+    // Do we need to crop the name
     cropName: false,
+
+    // De maximum length before cropping
     cropLength: 14,
     componentDidMount: function(){
+
+        // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
                   .popover(this.popoverOptions);
         }
     },
     componentDidUpdate: function(){
+
+        // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover(this.popoverOptions);
     },
     componentWillUpdate: function(){
+
+        // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover('destroy');
     },
     componentWillUnmount: function(){
+
+        // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
+
+    // Review the product
     reviewIt: function(){
         ProductActions.reviewIt(this.props.data);
     },
+
     render: function(){
 
+        // the name of the movie
         var name,
-            product_tags,
+            // the class set on reviewed products
             imgReviewedClass,
+            // We reduce the opacity of reviewed products
             opacityControl,
+            // the check mark on reviewed products
             checkMark,
+            // the review button
             button;
 
         // Do we crop the length?
@@ -47,17 +68,10 @@ var Product = React.createClass({
             this.cropName = true;
             name = this.props.data.name.substring(0,this.cropLength)+"...";
             
-        } else {
-            this.cropName = false;
-            name = this.props.data.name;
-        }
-
-        // Join the tags with commas
-        if(this.props.data.tags.length > 0){
-            product_tags = this.props.data.tags.join(", ");
         }
         else {
-            product_tags = null;
+            this.cropName = false;
+            name = this.props.data.name;
         }
 
         // Check if the product was reviewed
