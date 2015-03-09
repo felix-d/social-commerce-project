@@ -8,16 +8,26 @@ class Reviewing(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return "{} reviewed by {} {}."\
+            .format(self.product, self.user.first_name, self.user.last_name)
+
 
 class ReviewRootElement(models.Model):
     order = models.SmallIntegerField(default=0)
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class ReviewChildGroup(models.Model):
     review_root_element = models.ForeignKey(ReviewRootElement)
     name = models.CharField(max_length=255)
     order = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
 
 class ReviewElement(models.Model):

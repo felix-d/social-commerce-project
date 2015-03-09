@@ -37,32 +37,7 @@
     <script type="text/javascript">
      var init = require("review-app-bundle");
      init({
-         reviewElements: {
-             tabElements: [
-                 {
-                     text: "I liked...",
-                     categories: [
-                         {name: "Plot", elements: ["good", "nice", "blabla"]},
-                         {name: "Music", elements: ["good", "nice", "blabla"]}
-                     ]
-                 },
-                 {
-                     text: "I disliked...",
-                     categories: [
-                         {name: "Test", elements: ["good", "nice", "blabla"]},
-                         {name: "Lol", elements: ["good", "nice", "blabla"]}
-                     ]
-                 },
-                 {
-                     text: "My overall rating is...",
-                     categories: [
-                         {name: "Plot", elements: ["good", "nice", "blabla"]},
-                         {name: "Music", elements: ["good", "nice", "blabla"]}
-                     ]
-                 }
-             ],
-             buttonText: "I recommend it!"
-         },
+         reviewElements: {{review_elements|safe}},
          products: {{products|safe}},
          tags: {{tags|safe}}
      });

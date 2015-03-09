@@ -32602,7 +32602,9 @@ var ReviewForm = React.createClass({displayName: "ReviewForm",
         ProductActions.closeReviewBox();  
     },
     render: function(){
-        var tabs = this.props.reviewElements.tabElements.map(function(re, i){
+
+        // The tabs
+        var tabs = this.props.reviewElements.map(function(re, i){
             var href = "#tab" + i;
             return (
                 React.createElement("li", {className: i===0? "active" : "", key: i}, 
@@ -32612,7 +32614,9 @@ var ReviewForm = React.createClass({displayName: "ReviewForm",
                 )
             );
         });
-        var tabContent = this.props.reviewElements.tabElements.map(function(re, i){
+
+        // the tab content
+        var tabContent = this.props.reviewElements.map(function(re, i){
             var id = "tab" + i;
             return(
                 React.createElement(ReviewFormTab, {active: i === 0 ? true : false, data: re.categories, id: id, key: i})

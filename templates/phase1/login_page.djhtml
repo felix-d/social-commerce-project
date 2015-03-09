@@ -10,11 +10,6 @@
     <p><a href="/phase1/?resetagreement=true">Go back to agreement</a></p>
 
     {% block extrafooter %}
-        <script src="{%static "js/tmp/bundle-widget.js"%}" type="text/javascript"></script>
-        <script>
-         var logServerResponse = require('bundle-widget');
-         logServerResponse("test");
-        </script>
     {% endblock %}
 
 {% endblock %}
