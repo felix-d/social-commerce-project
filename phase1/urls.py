@@ -8,4 +8,5 @@ urlpatterns = patterns(
     url(r'^step1/$', views.step1, name="step1"),
     url(r'^step2/$', views.step2, name="step2"),
     url(r'^step3/$', views.step3, name="step3"),
+    url(r'^review/$', views.review, name="review"),
 )

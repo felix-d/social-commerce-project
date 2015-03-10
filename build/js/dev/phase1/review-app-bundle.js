@@ -32140,7 +32140,34 @@ module.exports = warning;
 },{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
-
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+var csrftoken = getCookie('csrftoken');
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 var ProductActions = {
 
     // Shuffle the products!
@@ -32167,6 +32194,13 @@ var ProductActions = {
 
     // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
+        console.log(reviewData);
+        $.post(
+            '/phase1/review/',
+            JSON.stringify({product: product.id, reviewData: reviewData}),
+            function(data){
+                console.log("success");
+            });
         AppDispatcher.dispatch({
             actionType: ProductConstants.SUBMIT_REVIEW,
             product: product,
@@ -32174,7 +32208,23 @@ var ProductActions = {
         });
         
     },
-
+    aggregateReviewData: function(data){
+        AppDispatcher.dispatch({
+            actionType: ProductConstants.AGGREGATE_DATA,
+            data: data
+        });
+    },
+    toggleRecommendIt: function(){
+        AppDispatcher.dispatch({
+            actionType: ProductConstants.TOGGLE_RECOMMEND
+        });
+    },
+    commentChanged: function(comment){
+        AppDispatcher.dispatch({
+            actionType: ProductConstants.COMMENT_CHANGED,
+            data: comment
+        });
+    },
     // Search for products
     doSearch: function(query, tags, sortBy){
         AppDispatcher.dispatch({
@@ -32458,16 +32508,16 @@ var assign = require('object-assign');
 var ReviewApp = React.createClass({displayName: "ReviewApp",
     getInitialState: function(){
         ProductStore.init(this.props.products, this.props.tags);
-        ReviewBoxStore.init();
+        ReviewBoxStore.init(this.props.reviewElements);
         ProductStore.shuffleProducts();
         return null;
     },
     render: function(){
         return(
             React.createElement("div", {className: "review-app clearfix", id: "review-app-inner"}, 
-                React.createElement(ReviewBox, {reviewElements: this.props.reviewElements}), 
+                React.createElement(ReviewBox, null), 
                 React.createElement(SideBar, null), 
-                React.createElement(ProductsContainer, {reviewElements: this.props.reviewElements})
+                React.createElement(ProductsContainer, null)
             )
         );
     }
@@ -32572,7 +32622,7 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
                 ), 
 
                 React.createElement("div", {className: "col-xs-6"}, 
-                    React.createElement(ReviewForm, {product: this.state.product, reviewElements: this.props.reviewElements})
+                    React.createElement(ReviewForm, {product: this.state.product})
                 )
             )
         )
@@ -32594,17 +32644,38 @@ module.exports = ReviewBox;
 var React = require('react/addons');
 var ReviewFormTab = require('./ReviewFormTab.react.jsx');
 var ProductActions = require("../actions/ProductActions");
+var ReviewBoxStore = require("../stores/ReviewBoxStore");
 
 var ReviewForm = React.createClass({displayName: "ReviewForm",
-    reviewData: {},
+    // We only need to set initial state since
+    // component gets unmounted each time the box closes
+    getInitialState: function(){
+       console.log("initial state");
+       return ReviewBoxStore.getReviewData(); 
+    },
     submitReview: function(){
-        ProductActions.submitReview(this.props.product, this.reviewData);  
+        // We get the updated data, no need to use an event for that
+        var reviewData = ReviewBoxStore.getReviewData();
+
+        // Submit the review via Ajax
+        ProductActions.submitReview(this.props.product, reviewData);  
+
+        // Close the review box
         ProductActions.closeReviewBox();  
+    },
+    // Toggle 'recommendIt' between true and false
+    toggleRecommendIt: function(){
+        ProductActions.toggleRecommendIt();
+    },
+    // When the comment is changing, set the store
+    // (we could not make use of the store, but still, it's good practice)
+    commentChanged: function(){
+        ProductActions.commentChanged(this.refs.comment.getDOMNode().value);
     },
     render: function(){
 
         // The tabs
-        var tabs = this.props.reviewElements.map(function(re, i){
+        var tabs = this.state.elements.map(function(re, i){
             var href = "#tab" + i;
             return (
                 React.createElement("li", {className: i===0? "active" : "", key: i}, 
@@ -32616,26 +32687,30 @@ var ReviewForm = React.createClass({displayName: "ReviewForm",
         });
 
         // the tab content
-        var tabContent = this.props.reviewElements.map(function(re, i){
+        var tabContent = this.state.elements.map(function(re, i){
             var id = "tab" + i;
             return(
                 React.createElement(ReviewFormTab, {active: i === 0 ? true : false, data: re.categories, id: id, key: i})
             );
         });
+
         return (
             React.createElement("div", null, 
                 React.createElement("div", {role: "tabpanel", className: "tab-panel"}, 
                     React.createElement("ul", {className: "nav nav-tabs", role: "tablist"}, 
                         tabs
                     ), 
-                    React.createElement("div", {className: "tab-content"}, 
+                    React.createElement("div", {className: "tab-content", ref: "tabContent"}, 
                         tabContent
                     )
                 ), 
                 React.createElement("hr", null), 
-                React.createElement("textarea", {className: "form-comments", placeholder: "Your comments", rows: "3"}), 
+                React.createElement("textarea", {className: "form-comments", 
+                          placeholder: "Your comments", 
+                          ref: "comment", rows: "3", 
+                          onChange: this.commentChanged}), 
                 React.createElement("div", {"data-toggle": "buttons", id: "recommend"}, 
-                    React.createElement("label", {className: "btn btn-default btn-lg"}, 
+                    React.createElement("label", {className: "btn btn-default btn-lg", onClick: this.toggleRecommendIt}, 
                         React.createElement("input", {type: "checkbox", autocomplete: "off"}), 
                         "I recommend it!"
                     )
@@ -32652,8 +32727,9 @@ module.exports = ReviewForm;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","./ReviewFormTab.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ReviewFormTab.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
+var ProductActions = require('../actions/ProductActions');
 
 var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
     render: function(){
@@ -32664,15 +32740,21 @@ var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
             className+= " in active";
         }
 
-        // For each category, there are toggle elements
+        // For each category, there 
+        var that = this;
         var categories = this.props.data.map(function(d, i){
 
-            var elements = d.elements.map(function(e, j){
-
+            var elements = d.elements.map(function(e){
+                // When the button is toggled
+                function aggregate(){
+                    e.isChecked = !e.isChecked;
+                    // Merge the new data with the old!
+                    ProductActions.aggregateReviewData(that.props.data);
+                }
                 return (
-                    React.createElement("label", {className: "btn btn-default", key: j}, 
+                    React.createElement("label", {className: "btn btn-default", key: e.id, onClick: aggregate}, 
                         React.createElement("input", {type: "checkbox", autocomplete: "off"}), 
-                        e
+                        e.name
                     )
                 );
             });
@@ -32686,6 +32768,7 @@ var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
                 )
             );
         });
+
         return(
             React.createElement("div", {className: className, id: this.props.id}, 
                 categories
@@ -32698,7 +32781,7 @@ module.exports = ReviewFormTab;
 
 
 
-},{"react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/SideBar.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/SideBar.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
@@ -32823,7 +32906,10 @@ module.exports = keyMirror({
     OPEN_REVIEW_BOX: null,
     CLOSE_REVIEW_BOX: null,
     SUBMIT_REVIEW: null,
-    ALLOW_SLICK_REVIEW_PAGE: null
+    ALLOW_SLICK_REVIEW_PAGE: null,
+    AGGREGATE_DATA: null,
+    TOGGLE_RECOMMEND: null,
+    COMMENT_CHANGED: null
 });
 
 
@@ -32911,7 +32997,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
 
         _numberOfReviews = getNumberOfReviewedProducts(_productsOriginal);
 
-        // We do a copy to _products, which is the rendered array
+        // We do a shallow copy to _products, which is the rendered array
         _products = _productsOriginal.slice();
         
     },
@@ -33012,6 +33098,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         _dontSlick = true;
         _reviewedPage = getPageNumber(product);
         product.reviewed = true;
+        ReviewBoxStore.resetReviewData();
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -33057,6 +33144,7 @@ var _ = require('lodash');
 var CHANGE_EVENT = 'change';
 var _reviewBox = {
     product: {
+        id: null,
         name: '',
         image_path: '',
         caracteristic_1: '',
@@ -33076,13 +33164,29 @@ var _reviewBox = {
     // The element we will prepend the overlay to
     $reviewApp,
     // The clickable overlay
-    $overlay;
+    $overlay,
+    _reviewElementsOriginal,
+    _reviewElements,
+    _recommendIt = false,
+    _comment = '';
 
 
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     // Called from root component
-    init: function(){
+    init: function(reviewElements){
+        // We set all elements' isChecked to false
+        for(var i=0, l=reviewElements.length; i<l;i++){
+            for(var j=0,m=reviewElements[i].categories.length;j<m;j++){
+                for(var k=0, n=reviewElements[i].categories[j].elements.length;k<n;k++){
+                    reviewElements[i].categories[j].elements[k].isChecked = false;
+                }
+            }
+        }
+
+        // Put the reference in private var
+        _reviewElements = reviewElements;
+        _reviewElementsOriginal = $.extend(true, [], reviewElements);
 
         // We set up the overlay for closing the review box
         // and the elements that need to fade on review box
@@ -33099,7 +33203,13 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         });
 
     },
-
+    getReviewData: function(){
+        return {
+            comment: _comment,
+            elements: _reviewElements,
+            recommendIt: _recommendIt
+        };
+    },
     // When the user wants to review a movie
     openReviewBox: function(data){
 
@@ -33129,8 +33239,27 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         $overlay.hide();
         _reviewBox.open = false;
     },
+    aggregateReviewData: function(data){
+        // Merge the data
+        console.log(data);
+        assign(_reviewElements, data);
+    },
+    resetReviewData: function(){
+        _recommendIt = false;
+        _comment = "";
+        _reviewElements = $.extend(true, [], _reviewElementsOriginal);
+    },
     getReviewState: function(){
         return _reviewBox;
+    },
+    toggleRecommendIt: function(comment){
+        _recommendIt = !_recommendIt;
+
+        console.log(_recommendIt);
+    },
+    commentChanged: function(comment){
+        _comment = comment;   
+        console.log(_comment);
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -33151,6 +33280,15 @@ AppDispatcher.register(function(action){
     case ProductConstants.CLOSE_REVIEW_BOX:
         ReviewBoxStore.closeReviewBox();
         ReviewBoxStore.emitChange();
+        break;
+    case ProductConstants.AGGREGATE_DATA:
+        ReviewBoxStore.aggregateReviewData(action.data);
+        break;
+    case ProductConstants.TOGGLE_RECOMMEND:
+        ReviewBoxStore.toggleRecommendIt();
+        break;
+    case ProductConstants.COMMENT_CHANGED:
+        ReviewBoxStore.commentChanged(action.data);
         break;
     default:
         break;

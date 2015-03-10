@@ -92,7 +92,7 @@ var ReviewBox = React.createClass({
                 </div>
 
                 <div className="col-xs-6">
-                    <ReviewForm product={this.state.product} reviewElements={this.props.reviewElements}/>
+                    <ReviewForm product={this.state.product}/>
                 </div>
             </div>
         </div>

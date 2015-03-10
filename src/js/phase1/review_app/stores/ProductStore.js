@@ -73,7 +73,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
 
         _numberOfReviews = getNumberOfReviewedProducts(_productsOriginal);
 
-        // We do a copy to _products, which is the rendered array
+        // We do a shallow copy to _products, which is the rendered array
         _products = _productsOriginal.slice();
         
     },
@@ -174,6 +174,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         _dontSlick = true;
         _reviewedPage = getPageNumber(product);
         product.reviewed = true;
+        ReviewBoxStore.resetReviewData();
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

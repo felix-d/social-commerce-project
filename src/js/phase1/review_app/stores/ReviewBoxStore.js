@@ -8,6 +8,7 @@ var _ = require('lodash');
 var CHANGE_EVENT = 'change';
 var _reviewBox = {
     product: {
+        id: null,
         name: '',
         image_path: '',
         caracteristic_1: '',
@@ -27,13 +28,29 @@ var _reviewBox = {
     // The element we will prepend the overlay to
     $reviewApp,
     // The clickable overlay
-    $overlay;
+    $overlay,
+    _reviewElementsOriginal,
+    _reviewElements,
+    _recommendIt = false,
+    _comment = '';
 
 
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     // Called from root component
-    init: function(){
+    init: function(reviewElements){
+        // We set all elements' isChecked to false
+        for(var i=0, l=reviewElements.length; i<l;i++){
+            for(var j=0,m=reviewElements[i].categories.length;j<m;j++){
+                for(var k=0, n=reviewElements[i].categories[j].elements.length;k<n;k++){
+                    reviewElements[i].categories[j].elements[k].isChecked = false;
+                }
+            }
+        }
+
+        // Put the reference in private var
+        _reviewElements = reviewElements;
+        _reviewElementsOriginal = $.extend(true, [], reviewElements);
 
         // We set up the overlay for closing the review box
         // and the elements that need to fade on review box
@@ -50,7 +67,13 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         });
 
     },
-
+    getReviewData: function(){
+        return {
+            comment: _comment,
+            elements: _reviewElements,
+            recommendIt: _recommendIt
+        };
+    },
     // When the user wants to review a movie
     openReviewBox: function(data){
 
@@ -80,8 +103,27 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         $overlay.hide();
         _reviewBox.open = false;
     },
+    aggregateReviewData: function(data){
+        // Merge the data
+        console.log(data);
+        assign(_reviewElements, data);
+    },
+    resetReviewData: function(){
+        _recommendIt = false;
+        _comment = "";
+        _reviewElements = $.extend(true, [], _reviewElementsOriginal);
+    },
     getReviewState: function(){
         return _reviewBox;
+    },
+    toggleRecommendIt: function(comment){
+        _recommendIt = !_recommendIt;
+
+        console.log(_recommendIt);
+    },
+    commentChanged: function(comment){
+        _comment = comment;   
+        console.log(_comment);
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -102,6 +144,15 @@ AppDispatcher.register(function(action){
     case ProductConstants.CLOSE_REVIEW_BOX:
         ReviewBoxStore.closeReviewBox();
         ReviewBoxStore.emitChange();
+        break;
+    case ProductConstants.AGGREGATE_DATA:
+        ReviewBoxStore.aggregateReviewData(action.data);
+        break;
+    case ProductConstants.TOGGLE_RECOMMEND:
+        ReviewBoxStore.toggleRecommendIt();
+        break;
+    case ProductConstants.COMMENT_CHANGED:
+        ReviewBoxStore.commentChanged(action.data);
         break;
     default:
         break;

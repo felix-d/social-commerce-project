@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var ProductActions = require('../actions/ProductActions');
 
 var ReviewFormTab = React.createClass({
     render: function(){
@@ -9,15 +10,21 @@ var ReviewFormTab = React.createClass({
             className+= " in active";
         }
 
-        // For each category, there are toggle elements
+        // For each category, there 
+        var that = this;
         var categories = this.props.data.map(function(d, i){
 
-            var elements = d.elements.map(function(e, j){
-
+            var elements = d.elements.map(function(e){
+                // When the button is toggled
+                function aggregate(){
+                    e.isChecked = !e.isChecked;
+                    // Merge the new data with the old!
+                    ProductActions.aggregateReviewData(that.props.data);
+                }
                 return (
-                    <label className="btn btn-default" key={j}>
+                    <label className="btn btn-default" key={e.id} onClick={aggregate}>
                         <input type="checkbox" autocomplete="off"/>
-                        {e}
+                        {e.name}
                     </label>
                 );
             });
@@ -31,6 +38,7 @@ var ReviewFormTab = React.createClass({
                 </div>
             );
         });
+
         return(
             <div className={className} id={this.props.id}>
                 {categories}

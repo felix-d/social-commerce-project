@@ -10,16 +10,16 @@ var assign = require('object-assign');
 var ReviewApp = React.createClass({
     getInitialState: function(){
         ProductStore.init(this.props.products, this.props.tags);
-        ReviewBoxStore.init();
+        ReviewBoxStore.init(this.props.reviewElements);
         ProductStore.shuffleProducts();
         return null;
     },
     render: function(){
         return(
             <div className="review-app clearfix" id="review-app-inner">
-                <ReviewBox reviewElements={this.props.reviewElements}/>
+                <ReviewBox/>
                 <SideBar/>
-                <ProductsContainer reviewElements={this.props.reviewElements}/>
+                <ProductsContainer/>
             </div>
         );
     }
