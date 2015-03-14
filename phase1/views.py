@@ -1,13 +1,12 @@
 from django.shortcuts import render
+from questionnaires.models import get_primary_questionnaire_as_dict
 import json
 from products.models import Tag, Product
+from reviews.models import create_review
 from reviews.models import get_review_tree
+from users.models import setUserStep
 from django.http import HttpResponseRedirect, JsonResponse, Http404
-# from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from users.models import UserStep
-# from reviews.models import Reviewintpg
-# from products.models import Product
 from django import forms
 from .phase1_user_flow import redirect_user_to_current_step
 from django.forms.utils import ErrorList
@@ -78,7 +77,37 @@ def login_page(request):
 
     return render(request, 'phase1/login_page.djhtml', context_dict)
 
+# Called when a review is posted
+@login_required
+def review(request):
+    if request.method == 'POST':
 
+        json_data = json.loads(request.body.decode('utf-8'))
+        product = Product.objects.get(id=json_data['product'])
+
+        create_review(json_data, request.user, product)
+        # success!
+        result = 'success'
+        json_response = {'result': result}
+        return JsonResponse(json_response)
+
+    # Else what are you doing here????
+    raise Http404("Only accessible with POST")
+
+
+# Called when a questionnaire is posted
+@login_required
+def questionnaire(request):
+    if request.method == "POST":
+        print(request.POST)
+        # If is valid
+        # setUserStep(request.user, 3)
+        return HttpResponseRedirect('/phase1/step3/')
+
+    raise Http404("Only accesible with POST")
+
+
+# The reviewing page
 @login_required
 def step1(request):
 
@@ -99,30 +128,23 @@ def step1(request):
     return render(request, 'phase1/step1.djhtml', context_dict)
 
 
-@login_required
-def review(request):
-    if request.method == 'POST':
-        print(request.POST)
-        result = 'success'
-        json_response = {'result': result}
-        return JsonResponse(json_response)
-    raise Http404("Only accessible with POST")
-
-
+# The questionnaire page
 @login_required
 def step2(request):
 
-    if request.user.userstep.step != 2:
-        return redirect_user_to_current_step(request.user)
-
-    UserStep.objects.setUserStep(request.user, 1, 2)
-    return render(request, 'phase1/step2.djhtml')
+    # if request.user.userstep.step != 2:
+    #     return redirect_user_to_current_step(request.user)
+    questionnaire = get_primary_questionnaire_as_dict()
+    context_dict = {
+        'questionnaire': questionnaire
+    }
+    return render(request, 'phase1/step2.djhtml', context_dict)
 
 
 @login_required
 def step3(request):
 
-    if request.user.userstep.step != 3:
-        return redirect_user_to_current_step(request.user)
+    # if request.user.userstep.step != 3:
+    #     return redirect_user_to_current_step(request.user)
 
     return render(request, 'phase1/step3.djhtml')

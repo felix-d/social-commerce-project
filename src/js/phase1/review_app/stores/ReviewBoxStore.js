@@ -103,11 +103,6 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         $overlay.hide();
         _reviewBox.open = false;
     },
-    aggregateReviewData: function(data){
-        // Merge the data
-        console.log(data);
-        assign(_reviewElements, data);
-    },
     resetReviewData: function(){
         _recommendIt = false;
         _comment = "";

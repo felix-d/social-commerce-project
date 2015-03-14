@@ -10,8 +10,6 @@ import requests
 def is_friendship_exists(a, b):
     if Friendship.objects.filter(user=a, friend=b):
         return True
-    if Friendship.objects.filter(user=b, friend=a):
-        return True
     return False
 
 
@@ -33,7 +31,7 @@ def check_for_friends(sender, **kwargs):
 
         friend_id = f['id']
         friend = SocialAccount.objects.get(uid=friend_id).user
-        if not is_friendship_exists(friend, user):
+        if not is_friendship_exists(user, friend):
             Friendship.objects.get_or_create(
                 user=user,
                 friend=friend
@@ -51,14 +49,12 @@ def complete_social_signup(sender, **kwargs):
     us.save()
 
 
-# A manager to increment the step count depending on
+# Increment the step count depending on
 # current step
-class UserStepManager(models.Manager):
-    def setUserStep(self, user, conditional_step, step):
-        # move to model
-        if user.userstep.step == conditional_step:
-            user.userstep.step = step
-            user.userstep.save()
+def setUserStep(user, step):
+    # move to model
+    user.userstep.step = step
+    user.userstep.save()
 
 
 class UserStep(models.Model):
@@ -66,7 +62,7 @@ class UserStep(models.Model):
     user = models.OneToOneField(User)
     step = models.IntegerField(default=0)
     # we set the custom manager
-    objects = UserStepManager()
+    # objects = UserStepManager()
 
 
 class Friendship(models.Model):

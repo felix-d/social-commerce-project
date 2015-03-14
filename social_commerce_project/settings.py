@@ -65,8 +65,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'nested_inline',
-    'django_react'
+    'nested_inline'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,7 +74,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    # 'phase1.middleware.AllauthOverrideMiddleware',
     'custom_user_flow.custom_user_flow.AllauthOverrideMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -105,7 +103,7 @@ AUTHENTICATION_BACKENDS = (
 )
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = '/phase1/step1/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':

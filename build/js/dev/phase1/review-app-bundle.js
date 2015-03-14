@@ -32140,7 +32140,10 @@ module.exports = warning;
 },{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
-// using jQuery
+
+// We want to set the Cross Site Request Forgery token on each request
+// https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/#ajax
+//**************************************************************
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -32156,10 +32159,12 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
 var csrftoken = getCookie('csrftoken');
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
@@ -32168,6 +32173,8 @@ $.ajaxSetup({
         }
     }
 });
+//**************************************************************
+
 var ProductActions = {
 
     // Shuffle the products!
@@ -32194,7 +32201,6 @@ var ProductActions = {
 
     // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
-        console.log(reviewData);
         $.post(
             '/phase1/review/',
             JSON.stringify({product: product.id, reviewData: reviewData}),
@@ -32207,12 +32213,6 @@ var ProductActions = {
             reviewData: reviewData
         });
         
-    },
-    aggregateReviewData: function(data){
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.AGGREGATE_DATA,
-            data: data
-        });
     },
     toggleRecommendIt: function(){
         AppDispatcher.dispatch({
@@ -32749,7 +32749,6 @@ var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
                 function aggregate(){
                     e.isChecked = !e.isChecked;
                     // Merge the new data with the old!
-                    ProductActions.aggregateReviewData(that.props.data);
                 }
                 return (
                     React.createElement("label", {className: "btn btn-default", key: e.id, onClick: aggregate}, 
@@ -32907,7 +32906,6 @@ module.exports = keyMirror({
     CLOSE_REVIEW_BOX: null,
     SUBMIT_REVIEW: null,
     ALLOW_SLICK_REVIEW_PAGE: null,
-    AGGREGATE_DATA: null,
     TOGGLE_RECOMMEND: null,
     COMMENT_CHANGED: null
 });
@@ -33238,11 +33236,6 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         $willFade.removeClass('fade');
         $overlay.hide();
         _reviewBox.open = false;
-    },
-    aggregateReviewData: function(data){
-        // Merge the data
-        console.log(data);
-        assign(_reviewElements, data);
     },
     resetReviewData: function(){
         _recommendIt = false;

@@ -19,7 +19,6 @@ var ReviewFormTab = React.createClass({
                 function aggregate(){
                     e.isChecked = !e.isChecked;
                     // Merge the new data with the old!
-                    ProductActions.aggregateReviewData(that.props.data);
                 }
                 return (
                     <label className="btn btn-default" key={e.id} onClick={aggregate}>

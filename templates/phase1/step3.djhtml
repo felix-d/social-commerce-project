@@ -1,4 +1,4 @@
-{% extends base.djhtml %}
+{% extends "base.djhtml" %}
 {% block body %}
-    <h1>This is the form page</h1>
+    <h1>This is the sharing page</h1>
 {% endblock %}

@@ -1,6 +1,9 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
-// using jQuery
+
+// We want to set the Cross Site Request Forgery token on each request
+// https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/#ajax
+//**************************************************************
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -16,10 +19,12 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
 var csrftoken = getCookie('csrftoken');
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
@@ -28,6 +33,8 @@ $.ajaxSetup({
         }
     }
 });
+//**************************************************************
+
 var ProductActions = {
 
     // Shuffle the products!
@@ -54,7 +61,6 @@ var ProductActions = {
 
     // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
-        console.log(reviewData);
         $.post(
             '/phase1/review/',
             JSON.stringify({product: product.id, reviewData: reviewData}),
@@ -67,12 +73,6 @@ var ProductActions = {
             reviewData: reviewData
         });
         
-    },
-    aggregateReviewData: function(data){
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.AGGREGATE_DATA,
-            data: data
-        });
     },
     toggleRecommendIt: function(){
         AppDispatcher.dispatch({

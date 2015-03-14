@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import pprint
 
 
 def get_review_tree():
@@ -37,6 +38,42 @@ def get_review_tree():
     return review_tree
 
 
+def create_review(data, user, product):
+
+    """Creates a reviewing object, and its corresponding review answers"""
+
+    review_data = data['reviewData']
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(review_data)
+
+    # We create the reviewing object, created_at will be updated auto
+    reviewing = Reviewing(user=user, product=product)
+    reviewing.save()
+
+    # We create the comment object
+    comment = ReviewComment(reviewing=reviewing,
+                            text_value=review_data['comment'])
+    comment.save()
+
+    # We create the reviewRecommendIt element
+    recommend_it = ReviewRecommendIt(reviewing=reviewing,
+                                     boolean_value=review_data['recommendIt'])
+    recommend_it.save()
+
+    # We create the reviewBoolAnswer for every answer
+    for root in review_data['elements']:
+        for cat in root['categories']:
+            for element in cat['elements']:
+                print(element)
+                review_element = ReviewElement.objects.get(id=element['id'])
+                reviewBoolAnswer = ReviewBoolAnswer(
+                    reviewing=reviewing,
+                    review_element=review_element,
+                    boolean_value=element['isChecked']
+                )
+                reviewBoolAnswer.save()
+
+
 class Reviewing(models.Model):
     user = models.ForeignKey(User)
     product = models.ForeignKey('products.Product')
@@ -70,9 +107,32 @@ class ReviewElement(models.Model):
     name = models.CharField(max_length=255)
     order = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return "Element '{}' belonging to group '{}'".format(
+            self.name, self.review_child_group)
 
-class ReviewAnswer(models.Model):
-    review = models.ForeignKey(Reviewing)
+
+class ReviewBoolAnswer(models.Model):
+    reviewing = models.ForeignKey(Reviewing)
     review_element = models.ForeignKey(ReviewElement)
-    text_value = models.TextField()
     boolean_value = models.BooleanField(default=None)
+
+    def __str__(self):
+        return "{} is {}".format(self.review_element, self.boolean_value)
+
+
+class ReviewComment(models.Model):
+    reviewing = models.OneToOneField(Reviewing, primary_key=True)
+    text_value = models.TextField()
+
+    def __str__(self):
+        return self.text_value
+
+
+class ReviewRecommendIt(models.Model):
+    reviewing = models.OneToOneField(Reviewing, primary_key=True)
+    boolean_value = models.BooleanField(default=None)
+
+    def __str__(self):
+        return "Recommended it" if self.boolean_value\
+            else "Didn't recommend it"
