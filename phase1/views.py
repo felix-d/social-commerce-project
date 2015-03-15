@@ -77,6 +77,7 @@ def login_page(request):
 
     return render(request, 'phase1/login_page.djhtml', context_dict)
 
+
 # Called when a review is posted
 @login_required
 def review(request):
@@ -99,7 +100,6 @@ def review(request):
 @login_required
 def questionnaire(request):
     if request.method == "POST":
-        print(request.POST)
         # If is valid
         # setUserStep(request.user, 3)
         return HttpResponseRedirect('/phase1/step3/')

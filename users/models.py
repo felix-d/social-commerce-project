@@ -39,13 +39,12 @@ def check_for_friends(sender, **kwargs):
 
 
 # we create a user step bound to the user
-# and set its value to 0
+# and set its value to 1
 @receiver(user_signed_up)
 def complete_social_signup(sender, **kwargs):
-    """We start step to 0"""
+    """We start step to 1"""
     user = kwargs.pop('user')
     us = UserStep(user=user)
-    us.step = 1
     us.save()
 
 
@@ -60,7 +59,7 @@ def setUserStep(user, step):
 class UserStep(models.Model):
     """This model holds the user step count"""
     user = models.OneToOneField(User)
-    step = models.IntegerField(default=0)
+    step = models.IntegerField(default=1)
     # we set the custom manager
     # objects = UserStepManager()
 

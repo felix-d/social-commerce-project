@@ -54,7 +54,6 @@ def get_primary_questionnaire_as_dict():
                          choices=choices_text,
                          id=question_id))
 
-    print(res)
     return res
 
 
