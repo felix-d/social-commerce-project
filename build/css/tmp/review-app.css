@@ -21,12 +21,17 @@
           opacity: 0.2; }
         #reviewapp #review-app-inner .product-pages .product-page .product i {
           position: absolute;
-          top: 45px;
           color: green;
           left: 0;
           right: 0;
           z-index: 3;
           font-size: 3em; }
+          @media screen and (min-width: 1200px) {
+            #reviewapp #review-app-inner .product-pages .product-page .product i {
+              top: 60px; } }
+          @media screen and (max-width: 1199px) {
+            #reviewapp #review-app-inner .product-pages .product-page .product i {
+              top: 45px; } }
         #reviewapp #review-app-inner .product-pages .product-page .product .product-inner {
           padding: 5px;
           padding-bottom: 15px;
@@ -65,10 +70,10 @@
         margin-bottom: 2px; }
     #reviewapp #review-app-inner #review-widget {
       position: absolute;
+      height: auto;
       padding: 10px 30px;
       z-index: 999;
       top: 0px;
-      height: auto;
       background-color: #FFF;
       border: 1px solid #dddddd;
       -webkit-box-shadow: 10px 10px 49px 0px rgba(0, 0, 0, 0.09);
@@ -89,6 +94,8 @@
       #reviewapp #review-app-inner #review-widget .tab-panel {
         margin-bottom: 10px; }
       #reviewapp #review-app-inner #review-widget .tab-content {
+        min-height: 156px;
+        position: relative;
         padding: 5px; }
       #reviewapp #review-app-inner #review-widget #recommend {
         margin-bottom: 20px; }

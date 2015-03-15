@@ -1,7 +1,13 @@
 from django.contrib import admin
-from reviews.models import Reviewing,\
-    ReviewRootElement, ReviewChildGroup, ReviewElement,\
-    ReviewBoolAnswer, ReviewComment, ReviewRecommendIt
+from reviews.models import\
+    ReviewElement,\
+    ReviewChildGroup,\
+    ReviewRootElement,\
+    ReviewWidget,\
+    ReviewBoolAnswer,\
+    ReviewComment,\
+    ReviewRecommendIt,\
+    Reviewing
 from nested_inline.admin import NestedStackedInline, NestedModelAdmin
 
 
@@ -16,11 +22,19 @@ class ReviewChildGroupInline(NestedStackedInline):
     ]
 
 
-@admin.register(ReviewRootElement)
-class ReviewRootElementAdmin(NestedModelAdmin):
+# @admin.register(ReviewRootElement)
+class ReviewRootElementInline(NestedStackedInline):
     model = ReviewRootElement
     inlines = [
         ReviewChildGroupInline,
+    ]
+
+
+@admin.register(ReviewWidget)
+class ReviewWidgetAdmin(NestedModelAdmin):
+    model = ReviewWidget
+    inlines = [
+        ReviewRootElementInline,
     ]
 
 

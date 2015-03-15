@@ -15,9 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Question',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('text', models.TextField()),
-                ('order', models.SmallIntegerField(default=0)),
             ],
             options={
             },
@@ -26,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuestionAnswer',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('text_value', models.TextField()),
                 ('boolean_value', models.BooleanField(default=None)),
                 ('question', models.ForeignKey(to='questionnaires.Question')),
@@ -38,9 +37,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuestionChoice',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('order', models.SmallIntegerField(default=0)),
             ],
             options={
             },
@@ -49,9 +47,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuestionGroup',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('order', models.SmallIntegerField(default=0)),
             ],
             options={
             },
@@ -60,8 +57,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Questionnaire',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
+                ('primary', models.BooleanField(default=None)),
             ],
             options={
             },
@@ -70,7 +68,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuestionnaireAnswering',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
@@ -81,7 +79,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuestionType',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
             ],
             options={
@@ -96,7 +94,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='questionchoice',
-            name='question_choice_group',
+            name='question_type',
             field=models.ForeignKey(to='questionnaires.QuestionType'),
             preserve_default=True,
         ),
@@ -115,7 +113,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='qtype',
-            field=models.ForeignKey(blank=True, to='questionnaires.QuestionType', null=True),
+            field=models.ForeignKey(help_text='Keep blank for open answer question.', blank=True, null=True, to='questionnaires.QuestionType'),
             preserve_default=True,
         ),
     ]

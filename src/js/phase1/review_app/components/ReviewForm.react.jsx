@@ -32,19 +32,19 @@ var ReviewForm = React.createClass({
     render: function(){
 
         // The tabs
-        var tabs = this.state.elements.map(function(re, i){
+        var tabs = this.state.tabs.map(function(re, i){
             var href = "#tab" + i;
             return (
                 <li className={i===0? "active" : ""} key={i}>
                     <a href={href} data-toggle="tab">
-                        {re.text}
+                        {re.name}
                     </a>
                 </li>
             );
         });
 
         // the tab content
-        var tabContent = this.state.elements.map(function(re, i){
+        var tabContent = this.state.tabs.map(function(re, i){
             var id = "tab" + i;
             return(
                 <ReviewFormTab active={i === 0 ? true : false} data={re.categories} id={id} key={i}/>

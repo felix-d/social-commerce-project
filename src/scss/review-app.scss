@@ -51,12 +51,17 @@ $product-images-height-normal: 136px;
                     //the check mark symbol
                     i {
                         position: absolute;
-                        top: 45px;
                         color: green;
                         left: 0;
                         right: 0;
                         z-index: 3;
                         font-size: 3em;
+                        @include large-screen {
+                            top:60px;
+                        }
+                        @include normal-screen {
+                            top: 45px;
+                        }
                     }
 
                     //inner container
@@ -114,12 +119,13 @@ $product-images-height-normal: 136px;
                 }
             }
         }
+
         #review-widget{
             position:absolute;
+            height:auto;
             padding: 10px 30px;
             z-index:999;
             top: $review-widget-top;
-            height: auto;
             background-color: #FFF;
             border: 1px solid rgb(221, 221, 221);
             @include box-shadow(10px 10px 49px 0px rgba(0,0,0,0.09));
@@ -145,6 +151,8 @@ $product-images-height-normal: 136px;
                 margin-bottom: 10px;
             }
             .tab-content {
+                min-height: 156px;
+                position: relative;
                 padding: 5px;
             }
             #recommend {

@@ -6,10 +6,14 @@ import pprint
 def get_review_tree():
 
     # We build the review tree
-    review_root_elements = ReviewRootElement.objects.all()
+    review_widget = ReviewWidget.objects.filter(
+        primary=True)[0]
+
+    review_root_elements = ReviewRootElement.objects.filter(
+        review_widget=review_widget)
 
     # We create a list composed of dicts(name=X, childs=[...])
-    review_tree = [dict(text=rre.name, categories=[])
+    review_tree = [dict(name=rre.name, categories=[])
                    for rre in review_root_elements]
     # For every root element
     for i, r in enumerate(review_root_elements):
@@ -61,7 +65,7 @@ def create_review(data, user, product):
     recommend_it.save()
 
     # We create the reviewBoolAnswer for every answer
-    for root in review_data['elements']:
+    for root in review_data['tabs']:
         for cat in root['categories']:
             for element in cat['elements']:
                 print(element)
@@ -85,9 +89,18 @@ class Reviewing(models.Model):
             .format(self.product, self.user.first_name, self.user.last_name)
 
 
-class ReviewRootElement(models.Model):
-    order = models.SmallIntegerField(default=0)
+class ReviewWidget(models.Model):
     name = models.CharField(max_length=255)
+    primary = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ReviewRootElement(models.Model):
+    # order = models.SmallIntegerField(default=0)
+    name = models.CharField(max_length=255)
+    review_widget = models.ForeignKey(ReviewWidget)
 
     def __str__(self):
         return self.name
@@ -96,7 +109,7 @@ class ReviewRootElement(models.Model):
 class ReviewChildGroup(models.Model):
     review_root_element = models.ForeignKey(ReviewRootElement)
     name = models.CharField(max_length=255)
-    order = models.SmallIntegerField(default=0)
+    # order = models.SmallIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -105,7 +118,7 @@ class ReviewChildGroup(models.Model):
 class ReviewElement(models.Model):
     review_child_group = models.ForeignKey(ReviewChildGroup)
     name = models.CharField(max_length=255)
-    order = models.SmallIntegerField(default=0)
+    # order = models.SmallIntegerField(default=0)
 
     def __str__(self):
         return "Element '{}' belonging to group '{}'".format(

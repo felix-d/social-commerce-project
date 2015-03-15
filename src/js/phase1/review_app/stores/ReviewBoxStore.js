@@ -70,7 +70,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     getReviewData: function(){
         return {
             comment: _comment,
-            elements: _reviewElements,
+            tabs: _reviewElements,
             recommendIt: _recommendIt
         };
     },

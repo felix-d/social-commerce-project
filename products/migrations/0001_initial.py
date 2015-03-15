@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('description', models.TextField()),
                 ('image_path', models.URLField()),
-                ('caracteristic_1', models.CharField(default=None, max_length=255)),
-                ('caracteristic_2', models.CharField(default=None, max_length=255)),
+                ('caracteristic_1', models.CharField(max_length=255, default=None)),
+                ('caracteristic_2', models.CharField(max_length=255, default=None)),
             ],
             options={
             },
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tag',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
             ],
             options={

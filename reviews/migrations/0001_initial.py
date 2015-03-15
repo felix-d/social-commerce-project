@@ -14,10 +14,9 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ReviewAnswer',
+            name='ReviewBoolAnswer',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('text_value', models.TextField()),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('boolean_value', models.BooleanField(default=None)),
             ],
             options={
@@ -27,9 +26,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReviewChildGroup',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('order', models.SmallIntegerField()),
             ],
             options={
             },
@@ -38,7 +36,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReviewElement',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('review_child_group', models.ForeignKey(to='reviews.ReviewChildGroup')),
             ],
@@ -49,11 +47,29 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Reviewing',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('product', models.ForeignKey(to='products.Product')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ReviewComment',
+            fields=[
+                ('reviewing', models.OneToOneField(primary_key=True, serialize=False, to='reviews.Reviewing')),
+                ('text_value', models.TextField()),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ReviewRecommendIt',
+            fields=[
+                ('reviewing', models.OneToOneField(primary_key=True, serialize=False, to='reviews.Reviewing')),
+                ('boolean_value', models.BooleanField(default=None)),
             ],
             options={
             },
@@ -62,14 +78,41 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReviewRootElement',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('order', models.SmallIntegerField()),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('has_child', models.BooleanField(default=None)),
             ],
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ReviewWidget',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
+                ('name', models.CharField(max_length=255)),
+                ('primary', models.BooleanField(default=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='reviewrootelement',
+            name='review_widget',
+            field=models.ForeignKey(to='reviews.ReviewWidget'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='reviewing',
+            name='product',
+            field=models.ForeignKey(to='products.Product'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='reviewing',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='reviewchildgroup',
@@ -78,15 +121,15 @@ class Migration(migrations.Migration):
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='reviewanswer',
-            name='review',
-            field=models.ForeignKey(to='reviews.Reviewing'),
+            model_name='reviewboolanswer',
+            name='review_element',
+            field=models.ForeignKey(to='reviews.ReviewElement'),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='reviewanswer',
-            name='review_element',
-            field=models.ForeignKey(to='reviews.ReviewElement'),
+            model_name='reviewboolanswer',
+            name='reviewing',
+            field=models.ForeignKey(to='reviews.Reviewing'),
             preserve_default=True,
         ),
     ]

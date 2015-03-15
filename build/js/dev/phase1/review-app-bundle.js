@@ -32675,19 +32675,19 @@ var ReviewForm = React.createClass({displayName: "ReviewForm",
     render: function(){
 
         // The tabs
-        var tabs = this.state.elements.map(function(re, i){
+        var tabs = this.state.tabs.map(function(re, i){
             var href = "#tab" + i;
             return (
                 React.createElement("li", {className: i===0? "active" : "", key: i}, 
                     React.createElement("a", {href: href, "data-toggle": "tab"}, 
-                        re.text
+                        re.name
                     )
                 )
             );
         });
 
         // the tab content
-        var tabContent = this.state.elements.map(function(re, i){
+        var tabContent = this.state.tabs.map(function(re, i){
             var id = "tab" + i;
             return(
                 React.createElement(ReviewFormTab, {active: i === 0 ? true : false, data: re.categories, id: id, key: i})
@@ -33204,7 +33204,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     getReviewData: function(){
         return {
             comment: _comment,
-            elements: _reviewElements,
+            tabs: _reviewElements,
             recommendIt: _recommendIt
         };
     },
