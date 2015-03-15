@@ -32141,38 +32141,6 @@ module.exports = warning;
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
 
-// We want to set the Cross Site Request Forgery token on each request
-// https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/#ajax
-//**************************************************************
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-
-var csrftoken = getCookie('csrftoken');
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
 //**************************************************************
 
 var ProductActions = {
@@ -32507,10 +32475,13 @@ var assign = require('object-assign');
 
 var ReviewApp = React.createClass({displayName: "ReviewApp",
     getInitialState: function(){
-        ProductStore.init(this.props.products, this.props.tags);
+        ProductStore.init(this.props.products, this.props.tags, this.props.number_reviews);
         ReviewBoxStore.init(this.props.reviewElements);
         ProductStore.shuffleProducts();
+        ProductStore.updateReviewText();
         return null;
+    },
+    componentDidMount: function(){
     },
     render: function(){
         return(
@@ -32942,9 +32913,13 @@ var _perPage = 10,
 
     // these will be set in init
     _productsOriginal,
+    _num,
     _tags,
     _numberOfReviews,
-    _products;
+    _products,
+    $doneOrNot = $("#done-or-not"),
+    $numReviews = $('#num-reviews');
+
 
 // Takes an array of products and a number and
 // returns the paginated array
@@ -32980,12 +32955,13 @@ function getPageNumber(product){
             return page;
         }
     }
+    return null;
 }
 
 var ProductStore = assign({}, EventEmitter.prototype, {
 
     //called by root component at startup
-    init: function(products, tags){
+    init: function(products, tags, num){
         _productsOriginal = products;
 
         // We add a field to every tags
@@ -32997,7 +32973,32 @@ var ProductStore = assign({}, EventEmitter.prototype, {
 
         // We do a shallow copy to _products, which is the rendered array
         _products = _productsOriginal.slice();
-        
+
+        // The number of reviews
+        _num = num;
+    },
+    updateReviewText: function(){
+        $numReviews.text(_num);
+        if(_num < 3){
+            $doneOrNot.text("Please review "+
+                               (3 - _num) +
+                               " more before moving on to the next step.");
+        }
+        else {
+            $doneOrNot.text("You can move on to the next step when you're done!");
+            $doneOrNot.append('<div id="icon-wrapper">'+
+                              '<a href="/phase1/step2/"><i id="next-icon" class="fa fa-hand-o-right">'+
+                              '</i></a></div>');
+            var done = true;
+            $("#next-icon").mouseover(function(){
+                if(done){
+                    done = false;
+                    $(this).effect('bounce', {direction: "right", times: 3}, 1000, function(){
+                        done = true;
+                    });
+                }
+            });
+        }
     },
     getReviewedPage: function(){
         return _reviewedPage;
@@ -33011,6 +33012,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
                 return _productsOriginal[i];
             }
         }
+        return null;
     },
     // Used by the ProductsContainer component to set its state
     getProducts: function(){
@@ -33091,12 +33093,17 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     setDontSlick: function(val){
         _dontSlick  = val; 
     },
+    triggerNextIconBounce: function(){
+    },
     submit_review: function(product, reviewData){
+        // we increment the number of reviews!
+        _num++;
         // because we will only update one page
         _dontSlick = true;
         _reviewedPage = getPageNumber(product);
         product.reviewed = true;
         ReviewBoxStore.resetReviewData();
+        this.updateReviewText();
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

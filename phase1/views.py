@@ -4,7 +4,7 @@ import json
 from products.models import Tag, Product
 from reviews.models import create_review
 from reviews.models import get_review_tree
-from users.models import setUserStep
+from users.models import set_user_step, get_number_reviews
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -71,6 +71,30 @@ def login_page(request):
     return render(request, 'phase1/login_page.djhtml', context_dict)
 
 
+# The reviewing page
+@login_required
+def step1(request):
+
+    if not request.user.is_superuser and\
+       request.user.userstep.step != 1:
+        return redirect_user_to_current_step(request.user)
+
+    # Will be set in context
+    products = Product.objects.get_user_products(request)
+    tags = Tag.objects.get_tag_names()
+    review_tree = get_review_tree()
+    number_reviews = get_number_reviews(request.user)
+
+    context_dict = {
+        'products': products,
+        'tags': tags,
+        'name': request.user.first_name,
+        'review_elements': review_tree,
+        'number_reviews': number_reviews
+    }
+    return render(request, 'phase1/step1.djhtml', context_dict)
+
+
 # Called when a review is posted
 @login_required
 def review(request):
@@ -89,45 +113,18 @@ def review(request):
     raise Http404("Only accessible with POST")
 
 
-# Called when a questionnaire is posted
-@login_required
-def questionnaire(request):
-    if request.method == "POST":
-        # If is valid
-        # setUserStep(request.user, 3)
-        return HttpResponseRedirect('/phase1/step3/')
-
-    raise Http404("Only accesible with POST")
-
-
-# The reviewing page
-@login_required
-def step1(request):
-
-    if not request.user.is_superuser and\
-       request.user.userstep.step != 1:
-        return redirect_user_to_current_step(request.user)
-
-    # Will be set in context
-    products = Product.objects.get_user_products(request)
-    tags = Tag.objects.get_tag_names()
-    review_tree = get_review_tree()
-
-    context_dict = {
-        'products': products,
-        'tags': tags,
-        'name': request.user.first_name,
-        'review_elements': review_tree
-    }
-    return render(request, 'phase1/step1.djhtml', context_dict)
-
-
 # The questionnaire page
 @login_required
 def step2(request):
+    if not request.user.is_superuser and\
+       get_number_reviews(request.user) >= 3 and\
+       request.user.userstep.step == 1:
+        set_user_step(request.user, 2)
 
-    # if request.user.userstep.step != 2:
-    #     return redirect_user_to_current_step(request.user)
+    if not request.user.is_superuser and\
+       request.user.userstep.step != 2:
+        return redirect_user_to_current_step(request.user)
+
     questionnaire = get_primary_questionnaire_as_dict()
     context_dict = {
         'questionnaire': questionnaire
@@ -135,10 +132,35 @@ def step2(request):
     return render(request, 'phase1/step2.djhtml', context_dict)
 
 
+# Called when a questionnaire is posted
+@login_required
+def questionnaire(request):
+    if request.method == "POST":
+        # If is valid
+        set_user_step(request.user, 3)
+        return HttpResponseRedirect('/phase1/step3/')
+
+    raise Http404("Only accesible with POST")
+
+
 @login_required
 def step3(request):
 
-    # if request.user.userstep.step != 3:
-    #     return redirect_user_to_current_step(request.user)
+    if not request.user.is_superuser and\
+       request.user.userstep.step < 3:
+        return redirect_user_to_current_step(request.user)
 
     return render(request, 'phase1/step3.djhtml')
+
+
+@login_required
+def shared(request):
+    if request.method == "POST":
+        # If is valid===l
+        set_user_step(request.user, 4)
+        result = 'success'
+        json_response = {'result': result}
+        return JsonResponse(json_response)
+
+    raise Http404("Only accesible with POST")
+

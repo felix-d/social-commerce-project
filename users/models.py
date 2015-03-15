@@ -13,6 +13,10 @@ def is_friendship_exists(a, b):
     return False
 
 
+def get_number_reviews(user):
+    return len(user.reviewing_set.all())
+
+
 @receiver(user_logged_in)
 def check_for_friends(sender, **kwargs):
     # We start by getting the token
@@ -50,7 +54,7 @@ def complete_social_signup(sender, **kwargs):
 
 # Increment the step count depending on
 # current step
-def setUserStep(user, step):
+def set_user_step(user, step):
     # move to model
     user.userstep.step = step
     user.userstep.save()

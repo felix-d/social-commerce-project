@@ -7,3 +7,13 @@
   .info-box .well {
     margin-top: 5px;
     text-align: left; }
+
+#icon-wrapper {
+  display: inline-block;
+  width: 72px;
+  margin-left: 20px;
+  line-height: 1em;
+  height: 42px;
+  font-size: 2em;
+  position: relative; }
+

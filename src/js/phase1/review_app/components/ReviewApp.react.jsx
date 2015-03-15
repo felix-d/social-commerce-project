@@ -9,10 +9,13 @@ var assign = require('object-assign');
 
 var ReviewApp = React.createClass({
     getInitialState: function(){
-        ProductStore.init(this.props.products, this.props.tags);
+        ProductStore.init(this.props.products, this.props.tags, this.props.number_reviews);
         ReviewBoxStore.init(this.props.reviewElements);
         ProductStore.shuffleProducts();
+        ProductStore.updateReviewText();
         return null;
+    },
+    componentDidMount: function(){
     },
     render: function(){
         return(

@@ -3,7 +3,7 @@ from phase1 import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.agreement, name="agreement"),
+    url(r'^$', views.agreement, name="home_phase1"),
     url(r'^login/$', views.login_page, name="login"),
     url(r'^agree/$', views.agree, name="agree"),
     url(r'^step1/$', views.step1, name="step1"),
@@ -11,4 +11,5 @@ urlpatterns = patterns(
     url(r'^step3/$', views.step3, name="step3"),
     url(r'^review/$', views.review, name="review"),
     url(r'^questionnaire/$', views.questionnaire, name="questionnaire"),
+    url(r'^shared/$', views.shared, name="shared"),
 )

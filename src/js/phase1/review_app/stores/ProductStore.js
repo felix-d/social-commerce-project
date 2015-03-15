@@ -20,9 +20,13 @@ var _perPage = 10,
 
     // these will be set in init
     _productsOriginal,
+    _num,
     _tags,
     _numberOfReviews,
-    _products;
+    _products,
+    $doneOrNot = $("#done-or-not"),
+    $numReviews = $('#num-reviews');
+
 
 // Takes an array of products and a number and
 // returns the paginated array
@@ -58,12 +62,13 @@ function getPageNumber(product){
             return page;
         }
     }
+    return null;
 }
 
 var ProductStore = assign({}, EventEmitter.prototype, {
 
     //called by root component at startup
-    init: function(products, tags){
+    init: function(products, tags, num){
         _productsOriginal = products;
 
         // We add a field to every tags
@@ -75,7 +80,32 @@ var ProductStore = assign({}, EventEmitter.prototype, {
 
         // We do a shallow copy to _products, which is the rendered array
         _products = _productsOriginal.slice();
-        
+
+        // The number of reviews
+        _num = num;
+    },
+    updateReviewText: function(){
+        $numReviews.text(_num);
+        if(_num < 3){
+            $doneOrNot.text("Please review "+
+                               (3 - _num) +
+                               " more before moving on to the next step.");
+        }
+        else {
+            $doneOrNot.text("You can move on to the next step when you're done!");
+            $doneOrNot.append('<div id="icon-wrapper">'+
+                              '<a href="/phase1/step2/"><i id="next-icon" class="fa fa-hand-o-right">'+
+                              '</i></a></div>');
+            var done = true;
+            $("#next-icon").mouseover(function(){
+                if(done){
+                    done = false;
+                    $(this).effect('bounce', {direction: "right", times: 3}, 1000, function(){
+                        done = true;
+                    });
+                }
+            });
+        }
     },
     getReviewedPage: function(){
         return _reviewedPage;
@@ -89,6 +119,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
                 return _productsOriginal[i];
             }
         }
+        return null;
     },
     // Used by the ProductsContainer component to set its state
     getProducts: function(){
@@ -169,12 +200,17 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     setDontSlick: function(val){
         _dontSlick  = val; 
     },
+    triggerNextIconBounce: function(){
+    },
     submit_review: function(product, reviewData){
+        // we increment the number of reviews!
+        _num++;
         // because we will only update one page
         _dontSlick = true;
         _reviewedPage = getPageNumber(product);
         product.reviewed = true;
         ReviewBoxStore.resetReviewData();
+        this.updateReviewText();
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);

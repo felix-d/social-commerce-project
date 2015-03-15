@@ -37,12 +37,14 @@ var browserify_sources = [
 var js_sources = [
     "./src/js/phase1/*.js",
     "./src/js/phase2/*.js",
+    "./src/js/*.js",
     "./src/js/bower_components/*.js"
 ];
 
-var js_bower_sources = [
+var js_vendor_sources = [
     './bower_components/jquery/dist/jquery.min.js',
-    './bower_components/bootstrap/dist/js/bootstrap.min.js'
+    './bower_components/bootstrap/dist/js/bootstrap.min.js',
+    './src/js/vendor/jquery-ui.min.js'
 ];
 
 //css sources are prepended to sass!!
@@ -104,7 +106,7 @@ gulp.task('clean-css', function(){
 
 //Takes all in the tmp folder and minify it and gzip it
 gulp.task('compress-js', function() {
-    return gulp.src('./build/js/tmp/*.js')
+    return gulp.src('./build/js/dev/*.js')
         .pipe(uglify())
         .pipe(rename(function(path){
             if(!/\.min$/.test(path.basename)){
@@ -117,17 +119,17 @@ gulp.task('compress-js', function() {
 });
 
 //move js files from bower components into tmp
-gulp.task('move-js-bower', function(){
-    return gulp.src(js_bower_sources).
+gulp.task('move-js-vendor', function(){
+    return gulp.src(js_vendor_sources).
         pipe(debug()).
-        pipe(gulp.dest('./src/js/bower_components/'));
+        pipe(gulp.dest('./build/js/vendor/'));
 });
 
 //move js files from bower components into tmp
-gulp.task('move-js',['move-js-bower'], function(){
+gulp.task('move-js', function(){
     return gulp.src(js_sources, {base: 'src/js/'}).
         pipe(debug()).
-        pipe(gulp.dest('./build/js/tmp'));
+        pipe(gulp.dest('./build/js/dev/'));
 });
 
 
@@ -135,7 +137,7 @@ gulp.task('move-js',['move-js-bower'], function(){
 //takes css from bower components and move them to tmp
 gulp.task('move-css', ['clean-css'], function() {
     return gulp.src(css_sources).
-        pipe(gulp.dest('build/css/tmp'));
+        pipe(gulp.dest('build/css/bower_components/'));
 });
 
 //compile sass and put it in tmp

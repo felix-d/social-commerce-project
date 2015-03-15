@@ -1,4 +1,12 @@
 {% extends "base.djhtml" %}
+{% load static %}
 {% block body %}
     <h1>This is the sharing page</h1>
+    <div id="sharing">
+        <button onclick='shareTheProject()'>Share the project</button>
+    </div>
+{% endblock %}
+{% block extrafooter %}
+    <script src="{% static "js/dev/ajax-init.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/dev/phase1/facebook.js" %}" type="text/javascript"></script>
 {% endblock %}

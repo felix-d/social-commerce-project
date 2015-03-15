@@ -9,7 +9,17 @@
 {% block body %}
     <div class="jumbotron will-fade">
         <h1>This is the reviewing page</h1>
-        <p>Hi {{name}}, nice to see you!! <a href="{% url 'auth_logout' %}">Logout</a></p>
+        <p>Hi {{name}}, nice to see you!!</p>
+        <p id="number-review-text">
+            So far you have reviewed
+            <span id="num-reviews">{{ number_reviews }}</span>
+            movies.
+            <!-- This will be replaced by a notice from the react app -->
+            <!-- See product store, updateReviewText() -->
+            <span id="done-or-not">
+            </span>
+        </p>
+        <p><a href="{% url 'auth_logout' %}">Logout</a></p>
     </div>
     <div class="row will-fade">
         <div class="info-box">
@@ -19,7 +29,15 @@
                 </button>
                 <div class="collapse in" id="collapse-it">
                     <div class="well">
-                        Vivamus non nisl a augue consectetur porttitor sed vitae tellus. Aenean at lorem facilisis, vehicula sapien sit amet, posuere nunc. Pellentesque commodo ornare massa et faucibus. Sed porta vitae urna sit amet molestie. Etiam dignissim libero sed nisl malesuada ornare. Vivamus ornare felis quis sapien imperdiet scelerisque. Quisque vel eros vitae purus pharetra pulvinar.
+                        Vivamus non nisl a augue consectetur porttitor
+                        sed vitae tellus. Aenean at lorem facilisis,
+                        vehicula sapien sit amet, posuere
+                        nunc. Pellentesque commodo ornare massa et
+                        faucibus. Sed porta vitae urna sit amet
+                        molestie. Etiam dignissim libero sed nisl
+                        malesuada ornare. Vivamus ornare felis quis
+                        sapien imperdiet scelerisque. Quisque vel eros
+                        vitae purus pharetra pulvinar.
                     </div>
                 </div>
             </div>
@@ -32,6 +50,9 @@
 {% endblock %}
 {% block extrafooter %}
     <script src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js" type="text/javascript"></script>
+    <script src="{% static "js/vendor/jquery-ui.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/dev/ajax-init.js" %}" type="text/javascript"></script>
+    
     <script src="{% static "js/dev/phase1/review-app-misc.js"%}" type="text/javascript"></script>
     <script src="{% static "js/dev/phase1/review-app-bundle.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -39,7 +60,8 @@
      init({
          reviewElements: {{review_elements|safe}},
          products: {{products|safe}},
-         tags: {{tags|safe}}
+         tags: {{tags|safe}},
+         number_reviews: {{number_reviews}}
      });
     </script>
 {% endblock %}
