@@ -44,21 +44,14 @@ def agreement(request):
     elif "agreed" in request.session:
         return HttpResponseRedirect("/phase1/login/")
 
-    # this is just used to controll access to the agreement
+    return render(request, "phase1/agreement.djhtml")
+
+
+def agree(request):
     if request.method == "POST":
-
-        agreement_form = AgreementForm(request.POST,
-                                       error_class=DivErrorList)
-
-        if agreement_form.is_valid():
-            response = HttpResponseRedirect("/phase1/login/")
-            request.session["agreed"] = True
-            return response
-
-    else:
-        agreement_form = AgreementForm()
-    context = {"form": agreement_form}
-    return render(request, "phase1/agreement.djhtml", context)
+        request.session['agreed'] = True
+        return HttpResponseRedirect('/phase1/login/')
+    raise Http404("Only accesible with POST")
 
 
 def login_page(request):
@@ -111,7 +104,8 @@ def questionnaire(request):
 @login_required
 def step1(request):
 
-    if request.user.userstep.step != 1:
+    if not request.user.is_superuser and\
+       request.user.userstep.step != 1:
         return redirect_user_to_current_step(request.user)
 
     # Will be set in context

@@ -16,7 +16,7 @@
                             <h4>{{ question.question }}</h4>
                             {% if question.choices %}
                                 {% for choice in question.choices %}
-                                    <label class="radio-inline control-label">
+                                    <label class="radio-inline">
                                         <input class="" type="radio" name="inlineRadioOptions{{question.id}}" id="" value="{{choice}}" required>{{choice}}
                                     </label>
                                 {% endfor %}
