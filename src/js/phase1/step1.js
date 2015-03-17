@@ -24,7 +24,6 @@ $(function(){
         $overlay = $("#base-overlay"),
         $infoPopup = $("#info-popup");
 
-
     //For the info box
     $infoButton.click(function(e){
         if(!closing){

@@ -15,7 +15,7 @@ var Product = React.createClass({
     cropName: false,
 
     // De maximum length before cropping
-    cropLength: 14,
+    cropLength: 13,
     componentDidMount: function(){
 
         // If the name is cropped, activate popover

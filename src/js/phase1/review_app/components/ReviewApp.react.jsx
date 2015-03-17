@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ProductStore = require('../stores/ProductStore');
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
@@ -19,7 +20,7 @@ var ReviewApp = React.createClass({
     },
     render: function(){
         return(
-            <div className="review-app clearfix" id="review-app-inner">
+            <div className="review-app clearfix" id="review-app-inner"> 
                 <ReviewBox/>
                 <SideBar/>
                 <ProductsContainer/>

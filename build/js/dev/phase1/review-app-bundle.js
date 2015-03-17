@@ -32228,7 +32228,7 @@ var Product = React.createClass({displayName: "Product",
     cropName: false,
 
     // De maximum length before cropping
-    cropLength: 14,
+    cropLength: 13,
     componentDidMount: function(){
 
         // If the name is cropped, activate popover
@@ -32465,6 +32465,7 @@ module.exports = ProductsContainer;
 
 },{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./ProductPage.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductPage.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ProductStore = require('../stores/ProductStore');
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');

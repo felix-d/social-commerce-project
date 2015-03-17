@@ -21,3 +21,22 @@
 }
 #next-icon {
 }
+#base-overlay{
+    position:fixed;
+    z-index: 998;
+    width:100%;
+    height:100%;
+    display:block;
+    background-color: rgba(255,255,255,0.8);
+}
+#info-popup{
+    display: block;
+    z-index: 999;
+    position: fixed;
+    width: 300px;
+    margin: 0 auto;
+    top: 200px;
+    left: 50%;
+    margin-left: -150px;
+    background-color: white;
+}

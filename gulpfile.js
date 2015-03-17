@@ -20,164 +20,170 @@ var imagemin = require('gulp-imagemin');
 var watch;
 
 var gzip_options = {
-    threshold: '1kb',
-    gzipOptions: {
-        level: 9
-    }
+  threshold: '1kb',
+  gzipOptions: {
+    level: 9
+  }
 };
 
 var browserify_sources = [
-    {
-        taskName: 'browserify-review',
-        src: './src/js/review_app/app.jsx',
-        bundleName: 'review_app_bundle.js'
-    }
+  {
+    taskName: 'browserify-review',
+    src: './src/js/review_app/app.jsx',
+    bundleName: 'review_app_bundle.js'
+  }
 ];
 
 var js_sources = [
-    "./src/js/phase1/*.js",
-    "./src/js/phase2/*.js",
-    "./src/js/*.js",
-    "./src/js/bower_components/*.js"
+  "./src/js/phase1/*.js",
+  "./src/js/phase2/*.js",
+  "./src/js/*.js",
+  "./src/js/bower_components/*.js"
 ];
 
 var js_vendor_sources = [
-    './bower_components/jquery/dist/jquery.min.js',
-    './bower_components/bootstrap/dist/js/bootstrap.min.js',
-    './src/js/vendor/jquery-ui.min.js'
+  './bower_components/jquery/dist/jquery.min.js',
+  './bower_components/bootstrap/dist/js/bootstrap.min.js',
+  './src/js/vendor/jquery-ui.min.js',
+  './bower_components/vivus/dist/vivus.min.js',
+  './src/js/vendor/svg.min.js',
+  './src/js/vendor/svg.import.min.js',
+  './src/js/vendor/modernizr.js',
+  './src/js/vendor/drawfillsvg.min.js',
+  './src/js/vendor/particles.min.js'
 ];
 
 //css sources are prepended to sass!!
 var css_sources = [
-    'bower_components/bootstrap/dist/css/bootstrap.min.css'
+  'bower_components/bootstrap/dist/css/bootstrap.min.css'
 ];
 
 var sass_sources = [
-    'src/scss/*.scss'
+  'src/scss/*.scss'
 ];
 
 gulp.task('browserify-nowatch', function(){
-    watch=false;
-    browserifyShare();
+  watch=false;
+  browserifyShare();
 });
 
 gulp.task('browserify-watch', function(){
-    watch = true;
-    browserifyShare();
+  watch = true;
+  browserifyShare();
 });
 
 function browserifyShare() {
-    var b = browserify({
-        cache: {},
-        transform: reactify,
-        packageCache: {},
-        fullPaths: true
+  var b = browserify({
+    cache: {},
+    transform: reactify,
+    packageCache: {},
+    fullPaths: true
+  });
+
+  if(watch){
+    b = watchify(b);
+    b.on('update', function(){
+      console.log('updated');
+      bundleShare(b);
     });
+  }
 
-    if(watch){
-        b = watchify(b);
-        b.on('update', function(){
-            console.log('updated');
-            bundleShare(b);
-        });
-    }
-
-    b.add('./src/js/phase1/review_app/app.jsx');
-    b.require('./src/js/phase1/review_app/app.jsx', {expose: "review-app-bundle" });
-    bundleShare(b);
+  b.add('./src/js/phase1/review_app/app.jsx');
+  b.require('./src/js/phase1/review_app/app.jsx', {expose: "review-app-bundle" });
+  bundleShare(b);
 }
 
 function bundleShare(b) {
-    b.bundle()
-        .pipe(source('review-app-bundle.js'))
-        .pipe(gulp.dest('./build/js/dev/phase1/'))
-        .pipe(gulpif(watch, livereload()));
+  b.bundle()
+    .pipe(source('review-app-bundle.js'))
+    .pipe(gulp.dest('./build/js/dev/phase1/'))
+    .pipe(gulpif(watch, livereload()));
 }
 
 
 //clear tmp folder
 gulp.task('clean-js', function(){
-    del('build/js/tmp/*');
+  del('build/js/tmp/*');
 });
 
 gulp.task('clean-css', function(){
-    del('build/css/tmp/*');
+  del('build/css/tmp/*');
 });
 
 //Takes all in the tmp folder and minify it and gzip it
 gulp.task('compress-js', function() {
-    return gulp.src('./build/js/dev/*.js')
-        .pipe(uglify())
-        .pipe(rename(function(path){
-            if(!/\.min$/.test(path.basename)){
-                path.extname = ".min.js";
-            }
-        }))
-        .pipe(gulp.dest('build/js'))
-        .pipe(gzip(gzip_options))
-        .pipe(gulp.dest('build/js'));
+  return gulp.src('./build/js/dev/*.js')
+    .pipe(uglify())
+    .pipe(rename(function(path){
+      if(!/\.min$/.test(path.basename)){
+        path.extname = ".min.js";
+      }
+    }))
+    .pipe(gulp.dest('build/js'))
+    .pipe(gzip(gzip_options))
+    .pipe(gulp.dest('build/js'));
 });
 
 //move js files from bower components into tmp
 gulp.task('move-js-vendor', function(){
-    return gulp.src(js_vendor_sources).
-        pipe(debug()).
-        pipe(gulp.dest('./build/js/vendor/'));
+  return gulp.src(js_vendor_sources).
+    pipe(debug()).
+    pipe(gulp.dest('./build/js/vendor/'));
 });
 
 //move js files from bower components into tmp
 gulp.task('move-js', function(){
-    return gulp.src(js_sources, {base: 'src/js/'}).
-        pipe(debug()).
-        pipe(gulp.dest('./build/js/dev/'));
+  return gulp.src(js_sources, {base: 'src/js/'}).
+    pipe(debug()).
+    pipe(gulp.dest('./build/js/dev/'));
 });
 
 
 
 //takes css from bower components and move them to tmp
 gulp.task('move-css', ['clean-css'], function() {
-    return gulp.src(css_sources).
-        pipe(gulp.dest('build/css/bower_components/'));
+  return gulp.src(css_sources).
+    pipe(gulp.dest('build/css/bower_components/'));
 });
 
 //compile sass and put it in tmp
 gulp.task('compile-sass', ['clean-css'], function() {
-    return gulp.src(sass_sources).
-        pipe(sass({errLogToConsole: true})).
-        pipe(gulp.dest('build/css/tmp'));
+  return gulp.src(sass_sources).
+    pipe(sass({errLogToConsole: true})).
+    pipe(gulp.dest('build/css/tmp'));
 });
 
 //takes the css from temp, minify it and put it in build
 gulp.task('minify-css', ['compile-sass', 'move-css'], function(){
-    return gulp.src("build/css/tmp/*.css").
-        pipe(minifycss()).
-        pipe(rename(function(path){
-            if(!/\.min$/.test(path.basename)){
-                path.dir = "";
-                path.extname = ".min.css";
-            }
-        })).
-        pipe(gulp.dest('build/css')).
-        pipe(gzip(gzip_options)).
-        pipe(gulp.dest('build/css')).
-        pipe(livereload());
+  return gulp.src("build/css/tmp/*.css").
+    pipe(minifycss()).
+    pipe(rename(function(path){
+      if(!/\.min$/.test(path.basename)){
+        path.dir = "";
+        path.extname = ".min.css";
+      }
+    })).
+    pipe(gulp.dest('build/css')).
+    pipe(gzip(gzip_options)).
+    pipe(gulp.dest('build/css')).
+    pipe(livereload());
 });
 
 gulp.task('prod-styles', [
-    'minify-css'
+  'minify-css'
 ], function(){return;});
 
 
 gulp.task('compress-images', function(){
-    return gulp.src('src/images/**').
-        pipe(imagemin({progressive: true, optimizationLevel: 7})).
-        pipe(gulp.dest('build/images/'));
+  return gulp.src('src/images/**').
+    pipe(imagemin({progressive: true, optimizationLevel: 7})).
+    pipe(gulp.dest('build/images/'));
 });
 
 gulp.task('watch', ['browserify-watch'], function(){
-    gulp.watch('./src/js/*.js', ['move-js']);
-    gulp.watch('./src/scss/*.scss', ['prod-styles']);
+  gulp.watch('./src/js/*.js', ['move-js']);
+  gulp.watch('./src/scss/*.scss', ['prod-styles']);
 
-    livereload.listen(35729);
+  livereload.listen(35729);
 });
 gulp.task('default', ['compile-styles', 'prod-js']);

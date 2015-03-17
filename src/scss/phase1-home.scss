@@ -1,0 +1,60 @@
+#logo {
+    margin: 40px 0px;
+    height:60px;
+}
+#login {
+    display: none;
+    position: absolute;
+    width:100%;
+}
+#agreement {
+    position: absolute;
+    -moz-animation-duration: .7s;
+    -webkit-animation-duration: .7s;
+    animation-duration: .7s;
+}
+
+#alert-agree {
+    display: none;
+    position:absolute;
+    margin-left:20px;
+    top: -5px;
+}
+
+#form-check-group {
+    position:relative;
+    margin-top:30px;
+}
+#i-agree-btn {
+    margin-top: 30px;
+}
+#btn-wrapper {
+    margin-top: 30px;
+}
+#btn-row {
+    margin-top:30px;
+}
+
+#particles-js{
+    width:100%;
+    height:100%;
+    position:fixed;
+    z-index: -1;
+}
+
+#logo-row{
+    margin-top: 70px;
+    background-color: rgba(0,0,0,0.3);
+
+}
+body {
+        background-color: black;
+        overflow: hidden;
+}
+
+#content {
+    display: none;
+    -moz-animation-duration: 2s;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+}

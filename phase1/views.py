@@ -7,31 +7,10 @@ from reviews.models import get_review_tree
 from users.models import set_user_step, get_number_reviews
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django import forms
 from .phase1_user_flow import redirect_user_to_current_step
-from django.forms.utils import ErrorList
 
 
-class DivErrorList(ErrorList):
-    """A custom div error list for the agreement form"""
-    def __str__(self):
-        return self.as_divs()
-
-    def as_divs(self):
-        if not self:
-            return ''
-        return '<div class="errorlist">{}</div>'.format(''.join([
-            '<div class="error alert alert-danger">{}</div>'
-            .format(e) for e in self
-        ]))
-
-
-class AgreementForm(forms.Form):
-    """The agreement form"""
-    i_agree = forms.BooleanField(label="I agree", required=True)
-
-
-def agreement(request):
+def home(request):
     """THE AGREEMENT PAGE"""
 
     if request.user.is_authenticated() and\
@@ -44,31 +23,7 @@ def agreement(request):
     elif "agreed" in request.session:
         return HttpResponseRedirect("/phase1/login/")
 
-    return render(request, "phase1/agreement.djhtml")
-
-
-def agree(request):
-    if request.method == "POST":
-        request.session['agreed'] = True
-        return HttpResponseRedirect('/phase1/login/')
-    raise Http404("Only accesible with POST")
-
-
-def login_page(request):
-    """THE LOGIN PAGE"""
-
-    if request.user.is_authenticated() and\
-       not request.user.is_superuser:
-        return redirect_user_to_current_step(request.user)
-
-    # we cant access login page without first agreeing
-    if "agreed" not in request.session:
-        return HttpResponseRedirect('/')
-
-    # we get the email from the session or cookie
-    context_dict = {}
-
-    return render(request, 'phase1/login_page.djhtml', context_dict)
+    return render(request, "phase1/home.djhtml")
 
 
 # The reviewing page

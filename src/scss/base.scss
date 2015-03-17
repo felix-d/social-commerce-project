@@ -1,5 +1,8 @@
 @import 'bootstrap-custom';
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
 .example-enter {
       opacity: 0.01;
         transition: opacity .5s ease-in;
@@ -10,7 +13,15 @@
 
 }
 
+h1 {
+    font-family: 'Lobster', cursive;
+}
 
+.alert {
+    padding: 5px 8px;
+    background: none;
+    margin: 0px;
+}
 .example-leave {
       opacity: 1;
         transition: opacity .5s ease-in;
@@ -20,4 +31,7 @@
 .example-leave.example-leave-active {
       opacity: 0.01;
 
+}
+#base-overlay {
+    display: none;
 }

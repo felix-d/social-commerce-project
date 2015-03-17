@@ -1,0 +1,77 @@
+{% extends "base.djhtml" %}
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+{% block extraheader %}
+    <link href="{% static "css/phase1-home.min.css" %}" rel="stylesheet"/>
+{% endblock %}
+{% block body %}
+    <div class="row" id="logo-row">
+        <div class="col-xs-12 text-center">
+            <object id="logo" data="{% static "images/drawing.svg" %}" type="image/svg+xml">
+                <img src="#"/>
+            </object>
+        </div>
+    </div>
+    <div class="row" id="content">
+        <div class="col-xs-6 col-xs-offset-3">
+            <div id="agreement">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Fusce in pulvinar orci. Donec sagittis in turpis
+                            vitae fringilla. Sed tellus augue, condimentum at elit
+                            ac, porttitor placerat erat. Vivamus vestibulum
+                            tincidunt eleifend. Aliquam accumsan, sem in malesuada
+                            pretium, risus ligula euismod ipsum, at feugiat elit
+                            ex eu leo. Vestibulum mollis consequat sapien vel
+                            semper. Quisque vestibulum magna sit amet vehicula
+                            blandit. Pellentesque euismod quam vel fringilla
+                            elementum. Vestibulum quis condimentum dui. Sed nec
+                            enim vitae erat lacinia aliquam in nec magna. Mauris
+                            quis odio viverra, rutrum nisi eu, ultrices tellus.
+                        </p>
+                        <div class="form-group" id="form-check-group">
+                            <label class="checkbox-inline control-label">
+                                <input type="checkbox" id="agree-checkbox" name="agree"/>I agree
+                            </label>
+                            <span class="alert alert-danger" id="alert-agree"><i class="fa fa-hand-o-left"></i> You need to accept the agreement first!</span>
+                            <div class="form-group text-center">
+                                <button class="btn btn-info" id="i-agree-btn"" onclick="agreement();">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="login" class="">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Aenean quis nibh sit amet metus ullamcorper
+                            viverra et eu augue. Etiam sagittis accumsan leo et
+                            imperdiet.Ut consequat massa vel iaculis
+                            porttitor. Quisque viverra leo a rhoncus
+                            finibus. Vestibulum interdum condimentum felis quis
+                            sollicitudin. Nunc auctor vitae massa vitae
+                            sagittis. Donec hendrerit viverra justo, sit amet
+                            maximus purus malesuada a.</p>
+                        <div class="row" id="btn-row">
+                            <div class='col-xs-12 text-center'>
+                                <a class="btn btn-info" href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+{% block extrafooter %}
+    <script src="{% static "js/vendor/vivus.min.js"%}" type="text/javascript"></script>
+    <script src="{% static "js/vendor/particles.min.js"%}" type="text/javascript"></script>
+    <script src="{% static "js/dev/phase1/home.js"%}" type="text/javascript"></script>
+    <script type="text/javascript">
+    </script>
+{% endblock %}
