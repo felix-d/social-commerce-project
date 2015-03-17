@@ -1,5 +1,5 @@
 defusedxml==0.4.1
-Django==1.7.4
+Django==1.7.7
 django-allauth==0.19.1
 -e git+https://github.com/felix-d/django-nested-inline.git@68c86ffadbb84112747260f193288641810c97d7#egg=django_nested_inline-master
 futures==2.2.0

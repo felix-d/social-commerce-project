@@ -12,5 +12,6 @@ module.exports = keyMirror({
     SUBMIT_REVIEW: null,
     ALLOW_SLICK_REVIEW_PAGE: null,
     TOGGLE_RECOMMEND: null,
-    COMMENT_CHANGED: null
+    COMMENT_CHANGED: null,
+    DELETE_REVIEW: null
 });

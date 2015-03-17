@@ -1,19 +1,20 @@
-var $overlay = $("#base-overlay"),
+var $overlay = $("#overlay"),
     $infoPopup = $("#info-popup");
 
 function dismissInfoPopup(){
     $overlay.addClass("animated fadeOut");
     $infoPopup.addClass("animated bounceOut");
     $infoPopup.one(
-      'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-      function(){
-        $(this).remove();
-      });
+        'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+        function(){
+            $(this).remove();
+        });
     $overlay.one(
-      'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-      function(){
-        $(this).remove();
-      });
+        'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+        function(){
+            $(this).hide();
+            $(this).removeClass("animated fadeOut");
+        });
 }
 
 $(function(){

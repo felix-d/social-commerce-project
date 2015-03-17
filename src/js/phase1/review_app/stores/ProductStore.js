@@ -47,7 +47,7 @@ function getPaginatedProducts(products, perPage){
 function getNumberOfReviewedProducts(products){
     var count = 0;
     for(var i=0,l=products.length;i<l;i++){
-        if(products[i].reviewed === true) count++;
+        if(products[i].review) count++;
     }
     return count;
 }
@@ -84,6 +84,8 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         // The number of reviews
         _num = num;
     },
+
+    // update the text that informs the user about the reviewing state
     updateReviewText: function(){
         $numReviews.text(_num);
         if(_num < 3){
@@ -107,12 +109,18 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             });
         }
     },
+
+    // get the current reviewed page
     getReviewedPage: function(){
         return _reviewedPage;
     },
+
+    // set the current reviewing page to val
     setReviewedPage: function(val){
         _reviewedPage = val;  
     },
+
+    // get the product from id
     getProductFromId: function(id){
         for(var i=0, l=_productsOriginal.length;i<l;i++){
             if(_productsOriginal[i].id === id){
@@ -121,6 +129,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         }
         return null;
     },
+
     // Used by the ProductsContainer component to set its state
     getProducts: function(){
         return {
@@ -128,6 +137,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             dontSlick: _dontSlick
         };
     },
+
     // Used by the SideBar component to set its state
     getTags: function(){
         return {
@@ -202,13 +212,49 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     },
     triggerNextIconBounce: function(){
     },
-    submit_review: function(product, reviewData){
-        // we increment the number of reviews!
-        _num++;
+    deleteReviewWithId: function(product){
+        for(var i = 0; i < _products.length; i++) {
+            if(_products[i].id === product.id){
+                _products[i].review = false;
+            }
+        }
+        //decrement number of reviews
+        _num--;
         // because we will only update one page
         _dontSlick = true;
         _reviewedPage = getPageNumber(product);
-        product.reviewed = true;
+
+        ReviewBoxStore.resetReviewData();
+        this.updateReviewText();
+    },
+    submit_review: function(product, reviewData){
+
+        // we increment the number of reviews!
+        _num++;
+        
+        // because we will only update one page
+        _dontSlick = true;
+        _reviewedPage = getPageNumber(product);
+
+        // we update review state
+        var boolAnswers = [];
+        for(var i = 0; i < reviewData.tabs.length; i++) {
+            for(var j = 0; j < reviewData.tabs[i].categories.length; j++) {
+                for(var k = 0; k < reviewData.tabs[i].categories[j].elements.length; k++) {
+                    var elem = reviewData.tabs[i].categories[j].elements[k];
+                    boolAnswers.push({
+                        id: elem.id,
+                        val: elem.isChecked
+                    });
+                }
+            }
+        }
+        product.review = {
+            boolAnswers:boolAnswers,
+            comment: reviewData.comment,
+            recommendIt: reviewData.recommendIt
+        };
+
         ReviewBoxStore.resetReviewData();
         this.updateReviewText();
     },
@@ -235,6 +281,10 @@ AppDispatcher.register(function(action){
         break;
     case ProductConstants.SUBMIT_REVIEW:
         ProductStore.submit_review(action.product, action.reviewData);
+        ProductStore.emitChange();
+        break;
+    case ProductConstants.DELETE_REVIEW:
+        ProductStore.deleteReviewWithId(action.product);
         ProductStore.emitChange();
         break;
     default:

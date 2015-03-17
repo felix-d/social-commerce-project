@@ -26,14 +26,7 @@ var gzip_options = {
   }
 };
 
-var browserify_sources = [
-  {
-    taskName: 'browserify-review',
-    src: './src/js/review_app/app.jsx',
-    bundleName: 'review_app_bundle.js'
-  }
-];
-
+// we're not including react apps
 var js_sources = [
   "./src/js/phase1/*.js",
   "./src/js/phase2/*.js",
@@ -46,20 +39,25 @@ var js_vendor_sources = [
   './bower_components/bootstrap/dist/js/bootstrap.min.js',
   './src/js/vendor/jquery-ui.min.js',
   './bower_components/vivus/dist/vivus.min.js',
-  './src/js/vendor/svg.min.js',
-  './src/js/vendor/svg.import.min.js',
-  './src/js/vendor/modernizr.js',
-  './src/js/vendor/drawfillsvg.min.js',
   './src/js/vendor/particles.min.js'
 ];
 
 //css sources are prepended to sass!!
-var css_sources = [
-  'bower_components/bootstrap/dist/css/bootstrap.min.css'
+var css_vendor_sources = [
+  'bower_components/bootstrap/dist/css/bootstrap.min.css',
+  'src/css/vendor/animate.min.css'
 ];
 
 var sass_sources = [
-  'src/scss/*.scss'
+  'src/scss/**/*.scss'
+];
+
+var browserify_bundles = [
+    {
+        src: "",
+        expose: "",
+        dist: ""
+    }
 ];
 
 gulp.task('browserify-nowatch', function(){
@@ -101,16 +99,16 @@ function bundleShare(b) {
 }
 
 
-//clear tmp folder
+//clear dev folder
 gulp.task('clean-js', function(){
-  del('build/js/tmp/*');
+  del('build/js/dev/*');
 });
 
 gulp.task('clean-css', function(){
-  del('build/css/tmp/*');
+  del('build/css/dev/*');
 });
 
-//Takes all in the tmp folder and minify it and gzip it
+//Takes all in the dev folder and minify it and gzip it
 gulp.task('compress-js', function() {
   return gulp.src('./build/js/dev/*.js')
     .pipe(uglify())
@@ -124,14 +122,14 @@ gulp.task('compress-js', function() {
     .pipe(gulp.dest('build/js'));
 });
 
-//move js files from bower components into tmp
+//move js files from bower components into dev
 gulp.task('move-js-vendor', function(){
   return gulp.src(js_vendor_sources).
     pipe(debug()).
     pipe(gulp.dest('./build/js/vendor/'));
 });
 
-//move js files from bower components into tmp
+//move js files from bower components into dev
 gulp.task('move-js', function(){
   return gulp.src(js_sources, {base: 'src/js/'}).
     pipe(debug()).
@@ -140,22 +138,22 @@ gulp.task('move-js', function(){
 
 
 
-//takes css from bower components and move them to tmp
+//takes css from bower components and move them to dev
 gulp.task('move-css', ['clean-css'], function() {
-  return gulp.src(css_sources).
-    pipe(gulp.dest('build/css/bower_components/'));
+  return gulp.src(css_vendor_sources).
+    pipe(gulp.dest('build/css/vendor/'));
 });
 
-//compile sass and put it in tmp
+//compile sass and put it in dev
 gulp.task('compile-sass', ['clean-css'], function() {
-  return gulp.src(sass_sources).
+    return gulp.src(sass_sources, {base: 'src/scss/'}).
     pipe(sass({errLogToConsole: true})).
-    pipe(gulp.dest('build/css/tmp'));
+    pipe(gulp.dest('build/css/dev'));
 });
 
 //takes the css from temp, minify it and put it in build
 gulp.task('minify-css', ['compile-sass', 'move-css'], function(){
-  return gulp.src("build/css/tmp/*.css").
+    return gulp.src("build/css/dev/**/*.css", {base: 'build/css/dev/'}).
     pipe(minifycss()).
     pipe(rename(function(path){
       if(!/\.min$/.test(path.basename)){

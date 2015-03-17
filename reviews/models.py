@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-import pprint
 
 
 def get_review_tree():
@@ -42,13 +41,9 @@ def get_review_tree():
     return review_tree
 
 
-def create_review(data, user, product):
+def create_review(review_data, user, product):
 
     """Creates a reviewing object, and its corresponding review answers"""
-
-    review_data = data['reviewData']
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(review_data)
 
     # We create the reviewing object, created_at will be updated auto
     reviewing = Reviewing(user=user, product=product)
@@ -68,7 +63,6 @@ def create_review(data, user, product):
     for root in review_data['tabs']:
         for cat in root['categories']:
             for element in cat['elements']:
-                print(element)
                 review_element = ReviewElement.objects.get(id=element['id'])
                 reviewBoolAnswer = ReviewBoolAnswer(
                     reviewing=reviewing,
@@ -76,6 +70,14 @@ def create_review(data, user, product):
                     boolean_value=element['isChecked']
                 )
                 reviewBoolAnswer.save()
+
+
+def del_review(user, product):
+    try:
+        Reviewing.objects.get(user=user, product=product).delete()
+        print("deleted")
+    except:
+        pass
 
 
 class Reviewing(models.Model):

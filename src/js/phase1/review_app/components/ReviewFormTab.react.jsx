@@ -20,8 +20,10 @@ var ReviewFormTab = React.createClass({
                     e.isChecked = !e.isChecked;
                     // Merge the new data with the old!
                 }
+                var classes = "btn btn-default";
+                if(e.isChecked) classes += " active";
                 return (
-                    <label className="btn btn-default" key={e.id} onClick={aggregate}>
+                    <label className={classes} key={e.id} onClick={aggregate}>
                         <input type="checkbox" autocomplete="off"/>
                         {e.name}
                     </label>

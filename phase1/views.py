@@ -2,8 +2,7 @@ from django.shortcuts import render
 from questionnaires.models import get_primary_questionnaire_as_dict
 import json
 from products.models import Tag, Product
-from reviews.models import create_review
-from reviews.models import get_review_tree
+from reviews.models import create_review, get_review_tree, del_review
 from users.models import set_user_step, get_number_reviews
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
@@ -35,7 +34,7 @@ def step1(request):
         return redirect_user_to_current_step(request.user)
 
     # Will be set in context
-    products = Product.objects.get_user_products(request)
+    products = Product.objects.get_user_products(request.user)
     tags = Tag.objects.get_tag_names()
     review_tree = get_review_tree()
     number_reviews = get_number_reviews(request.user)
@@ -56,9 +55,20 @@ def review(request):
     if request.method == 'POST':
 
         json_data = json.loads(request.body.decode('utf-8'))
-        product = Product.objects.get(id=json_data['product'])
+        product = Product.objects.get(id=json_data['productId'])
 
-        create_review(json_data, request.user, product)
+        # if there exists a review already
+        del_review(request.user, product)
+
+        # We are only deleting
+        if not json_data['reviewData']:
+            result = 'success'
+            json_response = {'result': result}
+            return JsonResponse(json_response)
+
+        # we are editing or creating
+        create_review(json_data['reviewData'], request.user, product)
+
         # success!
         result = 'success'
         json_response = {'result': result}
@@ -72,7 +82,7 @@ def review(request):
 @login_required
 def step2(request):
     if not request.user.is_superuser and\
-       get_number_reviews(request.user) >= 3 and\
+      get_number_reviews(request.user) >= 3 and\
        request.user.userstep.step == 1:
         set_user_step(request.user, 2)
 
@@ -118,4 +128,3 @@ def shared(request):
         return JsonResponse(json_response)
 
     raise Http404("Only accesible with POST")
-

@@ -17,7 +17,6 @@ var Product = React.createClass({
     // De maximum length before cropping
     cropLength: 13,
     componentDidMount: function(){
-
         // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -47,9 +46,12 @@ var Product = React.createClass({
 
     // Review the product
     reviewIt: function(){
-        ProductActions.reviewIt(this.props.data);
+        ProductActions.review(this.props.data);
     },
-
+    editReview: function(){
+        console.log(this.props.data.review);
+        ProductActions.review(this.props.data);
+    },
     render: function(){
 
         // the name of the movie
@@ -75,11 +77,11 @@ var Product = React.createClass({
         }
 
         // Check if the product was reviewed
-        if(this.props.data.reviewed == true){
+        if(this.props.data.review){
             imgReviewedClass="reviewed";
             opacityControl = "low-opacity"
             checkMark = <i className="fa fa-check-circle"></i>;
-            button = <button className="btn btn-success btn-sm" disabled>Reviewed!</button>;
+            button = <button className="btn btn-success btn-sm" onClick={this.editReview}>Edit</button>;
         }
         else {
             checkMark= "";

@@ -1,0 +1,145 @@
+#reviewapp {
+  min-height: 710px; }
+  #reviewapp #review-app-inner {
+    position: relative;
+    width: 100%; }
+    #reviewapp #review-app-inner .product-pages #arrows {
+      position: relative;
+      height: 34px; }
+      #reviewapp #review-app-inner .product-pages #arrows .arrow {
+        top: 10px; }
+      #reviewapp #review-app-inner .product-pages #arrows #left-arrow {
+        z-index: 1;
+        margin-left: 25px; }
+      #reviewapp #review-app-inner .product-pages #arrows #right-arrow {
+        z-index: 1; }
+    #reviewapp #review-app-inner .product-pages .product-page {
+      padding: 20px; }
+      #reviewapp #review-app-inner .product-pages .product-page .product {
+        padding: 0px !important; }
+        #reviewapp #review-app-inner .product-pages .product-page .product .low-opacity {
+          opacity: 0.2; }
+        #reviewapp #review-app-inner .product-pages .product-page .product i {
+          position: absolute;
+          color: green;
+          left: 0;
+          right: 0;
+          z-index: 3;
+          font-size: 3em; }
+          @media screen and (min-width: 1200px) {
+            #reviewapp #review-app-inner .product-pages .product-page .product i {
+              top: 60px; } }
+          @media screen and (max-width: 1199px) {
+            #reviewapp #review-app-inner .product-pages .product-page .product i {
+              top: 45px; } }
+        #reviewapp #review-app-inner .product-pages .product-page .product .product-inner {
+          padding: 5px;
+          padding-bottom: 15px;
+          margin: 5px;
+          text-align: center; }
+          #reviewapp #review-app-inner .product-pages .product-page .product .product-inner h5 {
+            padding: 5px;
+            margin-bottom: 15px; }
+            @media screen and (min-width: 1200px) {
+              #reviewapp #review-app-inner .product-pages .product-page .product .product-inner h5 {
+                height: 25px; } }
+            @media screen and (max-width: 1199px) {
+              #reviewapp #review-app-inner .product-pages .product-page .product .product-inner h5 {
+                height: 40px; } }
+          #reviewapp #review-app-inner .product-pages .product-page .product .product-inner .img-container {
+            position: relative;
+            width: 90%;
+            margin: 0 auto;
+            margin-bottom: 5px;
+            overflow: hidden; }
+            #reviewapp #review-app-inner .product-pages .product-page .product .product-inner .img-container img {
+              width: 90%;
+              margin: 0 auto; }
+            @media screen and (min-width: 1200px) {
+              #reviewapp #review-app-inner .product-pages .product-page .product .product-inner .img-container {
+                height: 173px; } }
+            @media screen and (max-width: 1199px) {
+              #reviewapp #review-app-inner .product-pages .product-page .product .product-inner .img-container {
+                height: 136px; } }
+    #reviewapp #review-app-inner .side-bar #shuffle-button {
+      margin-top: 20px; }
+    #reviewapp #review-app-inner .side-bar .tags-group {
+      line-height: 20px; }
+      #reviewapp #review-app-inner .side-bar .tags-group label {
+        margin-right: 2px;
+        margin-bottom: 2px; }
+    #reviewapp #review-app-inner #review-widget {
+      position: absolute;
+      height: auto;
+      padding: 10px 30px;
+      z-index: 999;
+      top: 0px;
+      background-color: #FFF;
+      border: 1px solid #dddddd;
+      -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1); }
+      #reviewapp #review-app-inner #review-widget .btn-danger {
+        margin-left: 5px; }
+      #reviewapp #review-app-inner #review-widget .bottom-btn {
+        width: 75px; }
+      #reviewapp #review-app-inner #review-widget .product-image {
+        width: 90%; }
+      #reviewapp #review-app-inner #review-widget .ajax-loader {
+        margin-left: 5px; }
+      #reviewapp #review-app-inner #review-widget .inner {
+        padding: 15px; }
+      #reviewapp #review-app-inner #review-widget .form-comments {
+        width: 100%;
+        margin-bottom: 15px; }
+      #reviewapp #review-app-inner #review-widget .description {
+        height: 100%;
+        overflow: auto; }
+      #reviewapp #review-app-inner #review-widget .tab-panel {
+        margin-bottom: 10px; }
+      #reviewapp #review-app-inner #review-widget .tab-content {
+        min-height: 156px;
+        position: relative;
+        padding: 5px; }
+      #reviewapp #review-app-inner #review-widget #recommend {
+        margin-bottom: 20px; }
+      #reviewapp #review-app-inner #review-widget.example-enter {
+        top: -60px !important;
+        opacity: 0.01;
+        transition: all 0.17s linear; }
+      #reviewapp #review-app-inner #review-widget.example-enter.example-enter-active {
+        top: 0px !important;
+        opacity: 1; }
+      #reviewapp #review-app-inner #review-widget.example-leave {
+        top: 0px !important;
+        opacity: 1;
+        transition: all 0.15s ease-out; }
+      #reviewapp #review-app-inner #review-widget.example-leave.example-leave-active {
+        top: -60px !important;
+        opacity: 0.01; }
+
+.effect6 {
+  position: relative;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset; }
+
+#overlay {
+  -moz-animation-duration: .3s;
+  -webkit-animation-duration: .3s;
+  animation-duration: .3s; }
+
+.will-fade {
+  opacity: 1;
+  transition: opacity 0.1s; }
+
+.will-fade.fade {
+  opacity: 0.2; }
+
+#overlay {
+  position: fixed;
+  z-index: 998;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0; }

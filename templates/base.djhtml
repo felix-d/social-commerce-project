@@ -5,10 +5,10 @@
 <html>
     <head>
         <link href='http://fonts.googleapis.com/css?family=Lobster|Open+Sans:300italic,400italic,700italic,700,300,400' rel='stylesheet' type='text/css'>
-        <link href="{% static "css/animate.min.css"%}" rel="stylesheet"/>
+        <link href="{% static "css/vendor/animate.min.css"%}" rel="stylesheet"/>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-        <link href="{% static "css/bootstrap.min.css" %}" type="text/css" rel="stylesheet"/>
+        <link href="{% static "css/vendor/bootstrap.min.css" %}" type="text/css" rel="stylesheet"/>
         <link href="{% static "css/base.min.css" %}" type="text/css" rel="stylesheet"/>
         <meta charset="UTF-8">
         <title>{% block head_title %}{% endblock %}</title>
@@ -16,7 +16,7 @@
         {% endblock %}
     </head>
     <body>
-        <div id="base-overlay"></div>
+        <div id="overlay"></div>
         <div id="particles-js">
         </div>
         <div class="container">

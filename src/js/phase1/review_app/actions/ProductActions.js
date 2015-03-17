@@ -1,8 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
 
-//**************************************************************
-
 var ProductActions = {
 
     // Shuffle the products!
@@ -13,7 +11,7 @@ var ProductActions = {
     },
 
     // Review a product!
-    reviewIt: function(product){
+    review: function(product){
         AppDispatcher.dispatch({
             actionType: ProductConstants.OPEN_REVIEW_BOX,
             data: product
@@ -31,7 +29,7 @@ var ProductActions = {
     submitReview: function(product, reviewData){
         $.post(
             '/phase1/review/',
-            JSON.stringify({product: product.id, reviewData: reviewData}),
+            JSON.stringify({productId: product.id, reviewData: reviewData}),
             function(data){
                 console.log("success");
             });
@@ -40,7 +38,18 @@ var ProductActions = {
             product: product,
             reviewData: reviewData
         });
-        
+    },
+    deleteReview: function(product){
+        $.post(
+            '/phase1/review/',
+            JSON.stringify({productId: product.id}),
+            function(data){
+                console.log("success");
+            });
+        AppDispatcher.dispatch({
+            actionType: ProductConstants.DELETE_REVIEW,
+            product: product
+        });
     },
     toggleRecommendIt: function(){
         AppDispatcher.dispatch({

@@ -1,6 +1,7 @@
 from django.db import models
 from django.templatetags.static import static
-from reviews.models import Reviewing
+from reviews.models import Reviewing, ReviewBoolAnswer,\
+    ReviewComment, ReviewRecommendIt
 import json
 
 
@@ -22,32 +23,71 @@ class Tag(models.Model):
 
 class CustomProductManager(models.Manager):
 
-    def get_user_products(self, request):
+    def get_user_products(self, user):
         """
         Get user movies. This method adds a property 'reviewd'
         reviewed movies
         """
-        # get all the products
+        # get all the products, as a dictonary rather than
+        # model-instance object
         products = list(self.model.objects.values())
+
         # the set that will contain ids of reviewed products
         reviewed_product_ids = set()
 
         # add ids of reviewed products to set
-        for e in Reviewing.objects.filter(
-                user=request.user).select_related('product'):
+        for e in Reviewing.objects.select_related('product').filter(
+                user=user):
             reviewed_product_ids.add(e.product.id)
 
-        # if the movie id is in the set, add reviewd=true
         for p in products:
-            p['reviewed'] = True if p['id'] in reviewed_product_ids else False
-            p_tags = list(
-                Tag.objects.filter(product=p['id']).values('name'))
-            p_tags_names = []
 
-            for pt in p_tags:
-                p_tags_names.append(pt['name'])
+            # if the movie id is in the set, add reviewd=true
+            # and get review answers
+            if p['id'] in reviewed_product_ids:
 
-            p['tags'] = p_tags_names
+                # we get the user review
+                reviewing = Reviewing.objects.filter(user=user,
+                                                     product_id=p['id'])\
+                                             .latest('created')
+
+                # we get the bool answers as [{'val': True, 'id': 1}]
+                bool_answers = [dict(val=x['boolean_value'],
+                                     id=x['review_element_id']) for x in
+                                list(ReviewBoolAnswer.objects
+                                     .filter(reviewing=reviewing)
+                                     .values('boolean_value',
+                                             'review_element_id'))]
+
+                # we get the comment answer
+                comment = ReviewComment\
+                    .objects\
+                    .get(reviewing=reviewing)\
+                    .text_value
+
+                # we get the recommend_it
+                recommend_it = ReviewRecommendIt\
+                    .objects\
+                    .get(reviewing=reviewing)\
+                    .boolean_value
+
+                # we set the review
+                p['review'] = dict(
+                    boolAnswers=bool_answers,
+                    comment=comment,
+                    recommendIt=recommend_it
+                )
+
+            # else there is no review for the product
+            else:
+                p['review'] = False
+
+            # get tags names for the given product
+            p_tags = [x['name'] for x in list(
+                Tag.objects.filter(product=p['id']).values('name'))]
+            p['tags'] = p_tags
+
+            # augment path
             p['image_path'] = static('images/products/' + p['image_path'])
 
         return json.dumps(products)
