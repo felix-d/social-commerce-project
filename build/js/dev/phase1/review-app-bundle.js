@@ -32152,6 +32152,9 @@ var ProductActions = {
 
     // Review a product!
     review: function(product){
+        var $overlay = $("#overlay");
+        $overlay.show();
+        $overlay.addClass("animated fadeIn");
         AppDispatcher.dispatch({
             actionType: ProductConstants.OPEN_REVIEW_BOX,
             data: product
@@ -32160,8 +32163,29 @@ var ProductActions = {
 
     // The name says it all...
     closeReviewBox: function(){
+        var $overlay = $("#overlay");
+        var $reviewWidget = $("#review-widget");
+        $overlay.addClass("fadeOut");
+        $overlay.one(
+            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function(){
+                $(this).hide();
+                $(this).removeClass();
+            });
+        
+        $reviewWidget.addClass("bounceOutUp");
+        $reviewWidget.one(
+            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function(){
+                AppDispatcher.dispatch({
+                    actionType: ProductConstants.CLOSE_REVIEW_BOX
+                });
+            });
+    },
+
+    infiniteScroll: function(){
         AppDispatcher.dispatch({
-            actionType: ProductConstants.CLOSE_REVIEW_BOX
+            actionType: ProductConstants.INFINITE_SCROLL
         });
     },
 
@@ -32260,7 +32284,6 @@ var Product = React.createClass({displayName: "Product",
                .popover('destroy');
     },
     componentWillUnmount: function(){
-
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode()).popover('destroy');
@@ -32313,13 +32336,13 @@ var Product = React.createClass({displayName: "Product",
         }
 
         return(
-            React.createElement("div", {className: "product col-xs-15"}, 
+            React.createElement("div", {className: "product animated fadeIn col-xs-15"}, 
             React.createElement("div", {className: "product-inner effect6"}, 
                 React.createElement("h5", {className: opacityControl, ref: "name", "data-toggle": "popover", "data-content": this.props.data.name}, name), 
                 React.createElement("div", {className: "img-container"}, 
                     checkMark, 
                     React.createElement("div", {className: opacityControl}, 
-                        React.createElement("img", {"data-lazy": this.props.data.image_path, alt: this.props.data.name})
+                        React.createElement("img", {src: this.props.data.image_path, alt: this.props.data.name})
                     )
                 ), 
                 React.createElement("p", {className: opacityControl}, this.props.data.caracteristic_1), 
@@ -32334,73 +32357,13 @@ module.exports = Product;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductPage.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
-var ProductStore = require('../stores/ProductStore');
-var ProductActions = require('../actions/ProductActions');
-var Product = require('./Product.react.jsx');
-
-
-
-var ProductPage = React.createClass({displayName: "ProductPage",
-    componentDidMount: function(){
-    },
-    componentWillUnmount: function(){
-    },
-    componentDidUpdate: function(){
-    },
-    componentWillUpdate: function(){
-    },
-    shouldComponentUpdate: function(nextProps, nextStates){
-        if(ProductStore.getReviewedPage() ===
-            nextProps.id ||
-            ProductStore.getReviewedPage() ===
-            null)
-            return true;
-        console.log("page wasnt updated");
-        return false;
-    },
-    render: function(){
-        var products = this.props.products.map(function(m, i){
-            return(
-                React.createElement(Product, {data: m, key: i})
-            );
-        }.bind(this));
-        return(
-            React.createElement("div", {className: "product-page"}, 
-                products
-            )
-        );
-    }
-});
-
-module.exports = ProductPage;
-
-
-
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./Product.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/Product.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
-var ProductPage = require("./ProductPage.react.jsx")
+var Product = require("./Product.react.jsx")
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
 var ReviewBox = require("./ReviewBox.react.jsx");
-
-// Options for slick carousel
-var slickOptions = {
-    // where to append the arrows
-    appendArrows: '#arrows',
-    // lazy-load of the images
-    lazyLoad: 'ondemand',
-    // what is the prevArrow
-    prevArrow: '<button class="btn btn-default arrow"'+
-               ' id="left-arrow"><i '+
-               'class="fa fa-chevron-left"></i></button>',
-    // what is the nextArrow
-    nextArrow: '<button class="btn btn-default arrow"'+
-               ' id="right-arrow"><i '+
-               'class="fa fa-chevron-right"></i></button>'
-};
 
 //Return the products
 function getProductsState(){
@@ -32416,54 +32379,38 @@ var ProductsContainer = React.createClass({displayName: "ProductsContainer",
         return getProductsState();
     },
     componentDidMount: function(){
-
         // We listen to the product store
         ProductStore.addChangeListener(this._onChange);
-
-        // We slick the products!
-        $('#slick-it').slick(slickOptions);
-    },
-    componentWillUpdate: function(nextProps, nextState){
-
-        // In case we are rerendering but we dont need to slick again
-        // like if only set a product to reviewed
-        // So we DONT unslick!
-        // see this.componentDidUpdate
-        if(!nextState.dontSlick)
-            $('#slick-it').slick('unslick');
-    },
-    componentDidUpdate: function(prevProps, prevState){
-
-        // In case we are rerendering but we dont need to slick again
-        if(!this.state.dontSlick)
-            $('#slick-it').slick(slickOptions);
-
-        // We set it back to false because slicking is default behavior
-        ProductStore.setDontSlick(false);
-
-        // We always set back _reviewedPage to null because we might be done updating
-        // after reviewing a product.
-        ProductStore.setReviewedPage(null);
+        $(window).scroll(function() {
+            // we add 100 for a little buffer!
+            if($(window).scrollTop() + $(window).height() >= ($(document).height() - 100)) {
+                ProductActions.infiniteScroll();
+            }
+        });
     },
     componentWillUnmount: function(){
         ProductStore.removeChangeListener(this._onChange);
-        $('#slick-it').slick('unslick');
     },
     _onChange: function(){
         this.setState(getProductsState());
     },
     render: function(){
-        var productPages = this.state.products.map(function(mp, i){
+        var productss = [];
+
+        for(var i=0; i<this.state.currentIndex;i++){
+            if(i >= this.state.products.length) break;
+            productss.push(React.createElement(Product, {data: this.state.products[i], key: i}));
+        }
+        var products = this.state.products.map(function(m, i){
             return(
-                React.createElement(ProductPage, {products: mp, key: i, id: i})
+                React.createElement(Product, {data: m, key: i})
             );
         }.bind(this));
 
         return(
             React.createElement("div", {className: "product-pages col-xs-9"}, 
-                React.createElement("div", {id: "arrows", className: "will-fade"}), 
-                React.createElement("div", {id: "slick-it", className: "will-fade"}, 
-                    productPages
+                React.createElement("div", {id: "products", className: "will-fade"}, 
+                    productss
                 )
             )
         );
@@ -32474,7 +32421,7 @@ module.exports = ProductsContainer;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./ProductPage.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductPage.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./Product.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/Product.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ProductStore = require('../stores/ProductStore');
@@ -32558,7 +32505,7 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
         }
         
     },
-    componentWillUpdate: function(){
+    componentWillUpdate: function(nextProps, nextState){
         //we remove the popover if the state is open (not yet updated)
         if(this.state.open && this.refs.description && this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
@@ -32576,7 +32523,7 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
             description = this.state.product.description;
         } 
         var reviewWidget =
-        React.createElement("div", {className: "col-xs-10 col-xs-offset-2 col-xs-12", id: "review-widget", ref: "reviewWidget"}, 
+        React.createElement("div", {id: "review-widget", className: "animated bounceInDown", ref: "reviewWidget"}, 
             React.createElement("div", {className: "row"}, 
                 React.createElement("div", {className: "col-xs-12 text-right", style: {paddingRight: '0px', right: '-4px'}}, 
                     React.createElement("button", {className: "btn btn-default", onClick: this.closeReviewBox}, React.createElement("i", {className: "fa fa-times"}))
@@ -32608,14 +32555,12 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
                     React.createElement(ReviewForm, {product: this.state.product})
                 )
             )
-        )
+        ) 
         return(
-
-        React.createElement(CSSTransitionGroup, {transitionName: "example"}, 
+        React.createElement("div", null, 
             this.state.open ? reviewWidget : null
         )
         );
-        
     }
 });
 
@@ -32841,9 +32786,11 @@ var SideBar = React.createClass({displayName: "SideBar",
         this.typingTimeout = setTimeout(function(){
             this.typingInSearchField = false;
             var newSearchValue = this.refs.searchInput.getDOMNode().value;
-            if(this.oldSearchValue != newSearchValue)
+            if(this.oldSearchValue != newSearchValue){
                 this.doSearch();
-            this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
+                this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
+                
+            }
         }.bind(this), 200);
     },
 
@@ -32923,7 +32870,8 @@ module.exports = keyMirror({
     ALLOW_SLICK_REVIEW_PAGE: null,
     TOGGLE_RECOMMEND: null,
     COMMENT_CHANGED: null,
-    DELETE_REVIEW: null
+    DELETE_REVIEW: null,
+    INFINITE_SCROLL: null
 });
 
 
@@ -32946,40 +32894,16 @@ var _ = require('lodash');
 var CHANGE_EVENT = 'change';
 var REVIEWCHANGE_EVENT = 'change_review';
 
-// Number of product per page
-var _perPage = 10,
-    // The initial sorting order
-    _sortBy = 'Random',
-    // will set to true when a review gets submitted
-    // to disallow reslicking the whole thing
-    _dontSlick = false,
-    // The number of the page just reviewed
-    _reviewedPage = null,
-
-    // these will be set in init
+// The initial sorting order
+var _sortBy = 'Random',
     _productsOriginal,
     _num,
     _tags,
     _numberOfReviews,
     _products,
     $doneOrNot = $("#done-or-not"),
-    $numReviews = $('#num-reviews');
-
-
-// Takes an array of products and a number and
-// returns the paginated array
-function getPaginatedProducts(products, perPage){
-    var result = [];
-    for(var i=0, l= products.length ;i<l;i+= perPage){
-        var inner = [];
-        for(var j = 0; j < perPage; j++){
-            if(products[i+j])
-                inner.push(products[i+j]);
-        }
-        result.push(inner);
-    } 
-    return result;
-}
+    $numReviews = $('#num-reviews'),
+    _currentIndex = 15;
 
 // Return the number of reviewed products by the current user
 function getNumberOfReviewedProducts(products){
@@ -32990,17 +32914,8 @@ function getNumberOfReviewedProducts(products){
     return count;
 }
 
-// Get the page number for a given product
-// Will be used to only update the current page
-// When a user submits a review
-function getPageNumber(product){
-    for(var i=0,l=_products.length;i<l;i++){
-        if(product.id===_products[i].id){
-            var page = Math.floor(i/_perPage);
-            return page;
-        }
-    }
-    return null;
+function resetCurrentIndex(){
+    _currentIndex = 15; 
 }
 
 var ProductStore = assign({}, EventEmitter.prototype, {
@@ -33071,8 +32986,8 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     // Used by the ProductsContainer component to set its state
     getProducts: function(){
         return {
-            products: getPaginatedProducts(_products, _perPage),
-            dontSlick: _dontSlick
+            products: _products,
+            currentIndex: _currentIndex
         };
     },
 
@@ -33084,7 +32999,6 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     },
     // We execute a search query
     doSearch: function(query, tags, sortBy) {
-
         // what will be returned
         var queryResult = [];
         var regex = new RegExp(query, "i");
@@ -33141,12 +33055,17 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         }
         // the products that will be returned
         _products = queryResult;
+        resetCurrentIndex();
     },
     shuffleProducts: function(){
+        resetCurrentIndex();
         _products = _.shuffle(_products);       
     },
-    setDontSlick: function(val){
-        _dontSlick  = val; 
+    incrementCurrentIndex: function(){
+        _currentIndex += 5;
+        if(_currentIndex > _products.length){
+            _currentIndex = _products.length;
+        }
     },
     triggerNextIconBounce: function(){
     },
@@ -33156,11 +33075,7 @@ var ProductStore = assign({}, EventEmitter.prototype, {
                 _products[i].review = false;
             }
         }
-        //decrement number of reviews
         _num--;
-        // because we will only update one page
-        _dontSlick = true;
-        _reviewedPage = getPageNumber(product);
 
         ReviewBoxStore.resetReviewData();
         this.updateReviewText();
@@ -33170,10 +33085,6 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         // we increment the number of reviews!
         _num++;
         
-        // because we will only update one page
-        _dontSlick = true;
-        _reviewedPage = getPageNumber(product);
-
         // we update review state
         var boolAnswers = [];
         for(var i = 0; i < reviewData.tabs.length; i++) {
@@ -33225,6 +33136,9 @@ AppDispatcher.register(function(action){
         ProductStore.deleteReviewWithId(action.product);
         ProductStore.emitChange();
         break;
+    case ProductConstants.INFINITE_SCROLL:
+        ProductStore.incrementCurrentIndex();
+        ProductStore.emitChange();
     default:
         break;
     }
@@ -33293,16 +33207,13 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         // We set all elements' isChecked to false
         setAllReviewElementsFalse();
 
-
         // Deep copy
         // _reviewElementsOriginal = $.extend(true, [], reviewElements);
-
         _reviewData = {
             comment: _comment,
             tabs: _reviewElements,
             recommendIt: _recommendIt
         };
-
 
         // We set up the overlay for closing the review box
         // and the elements that need to fade on review box
@@ -33314,19 +33225,15 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     },
     getReviewData: function(){
-        console.log(_reviewData);
         return _reviewData;
     },
     // When the user wants to review a movie
     openReviewBox: function(product){
-        console.log("opened");
 
         // The clickable overlay is shown
-        $overlay.show();
-        $overlay.addClass("animated fadeIn");
+        // $overlay.fadeIn(100);
 
         // We fade the elements with class will-fade
-        // $willFade.addClass('fade');
 
         // We set the data
         _reviewBox.product = product;
@@ -33368,13 +33275,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     },
 
     closeReviewBox: function(){
-        $overlay.addClass("animated fadeOut");
-        $overlay.one(
-            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-            function(){
-                $(this).hide();
-                $(this).removeClass();
-            });
+        // $overlay.fadeOut(100);
         _reviewBox.open = false;
         this.resetReviewData();
     },
@@ -33457,10 +33358,23 @@ module.exports = tools;
 },{}],"review-app-bundle":[function(require,module,exports){
 var React = require('react/addons');
 var ReviewApp = require('./components/ReviewApp.react.jsx');
-
 //Called in the django template
 var init = function init(data){
-
+    
+    //we preload images
+    function preload() {
+	for (i = 0; i < preload.arguments.length; i++) {
+	    images[i] = new Image();
+	    images[i].src = preload.arguments[i];
+	}
+    }
+    var images = [];
+    for(var i=0; i<data.products.length; i++){
+        console.log(data.products[i].image_path);
+        images.push(data.products[i].image_path);
+    }
+    preload.apply(this, images);
+    
     //Rendering of root component
     React.render(
         React.createElement(ReviewApp, data),

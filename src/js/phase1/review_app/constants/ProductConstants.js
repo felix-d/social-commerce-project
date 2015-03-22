@@ -13,5 +13,6 @@ module.exports = keyMirror({
     ALLOW_SLICK_REVIEW_PAGE: null,
     TOGGLE_RECOMMEND: null,
     COMMENT_CHANGED: null,
-    DELETE_REVIEW: null
+    DELETE_REVIEW: null,
+    INFINITE_SCROLL: null
 });

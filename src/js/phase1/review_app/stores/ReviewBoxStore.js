@@ -57,16 +57,13 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         // We set all elements' isChecked to false
         setAllReviewElementsFalse();
 
-
         // Deep copy
         // _reviewElementsOriginal = $.extend(true, [], reviewElements);
-
         _reviewData = {
             comment: _comment,
             tabs: _reviewElements,
             recommendIt: _recommendIt
         };
-
 
         // We set up the overlay for closing the review box
         // and the elements that need to fade on review box
@@ -78,19 +75,15 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     },
     getReviewData: function(){
-        console.log(_reviewData);
         return _reviewData;
     },
     // When the user wants to review a movie
     openReviewBox: function(product){
-        console.log("opened");
 
         // The clickable overlay is shown
-        $overlay.show();
-        $overlay.addClass("animated fadeIn");
+        // $overlay.fadeIn(100);
 
         // We fade the elements with class will-fade
-        // $willFade.addClass('fade');
 
         // We set the data
         _reviewBox.product = product;
@@ -132,13 +125,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     },
 
     closeReviewBox: function(){
-        $overlay.addClass("animated fadeOut");
-        $overlay.one(
-            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-            function(){
-                $(this).hide();
-                $(this).removeClass();
-            });
+        // $overlay.fadeOut(100);
         _reviewBox.open = false;
         this.resetReviewData();
     },

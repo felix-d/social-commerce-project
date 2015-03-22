@@ -38,7 +38,6 @@ var Product = React.createClass({
                .popover('destroy');
     },
     componentWillUnmount: function(){
-
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode()).popover('destroy');
@@ -91,13 +90,13 @@ var Product = React.createClass({
         }
 
         return(
-            <div className="product col-xs-15">
+            <div className="product animated fadeIn col-xs-15">
             <div className="product-inner effect6">
                 <h5 className={opacityControl} ref="name" data-toggle="popover" data-content={this.props.data.name}>{name}</h5>
                 <div className="img-container">
                     {checkMark}
                     <div className={opacityControl}>
-                        <img data-lazy={this.props.data.image_path} alt={this.props.data.name}/>
+                        <img src={this.props.data.image_path} alt={this.props.data.name}/>
                     </div>
                 </div>
                 <p className={opacityControl}>{this.props.data.caracteristic_1}</p>

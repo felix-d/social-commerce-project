@@ -39,7 +39,9 @@ var js_vendor_sources = [
   './bower_components/bootstrap/dist/js/bootstrap.min.js',
   './src/js/vendor/jquery-ui.min.js',
   './bower_components/vivus/dist/vivus.min.js',
-  './src/js/vendor/particles.min.js'
+    './src/js/vendor/particles.min.js',
+    './src/js/vendor/jquery.lazyload.min.js',
+    './src/js/vendor/jquery.infinitescroll.min.js'
 ];
 
 //css sources are prepended to sass!!
@@ -179,8 +181,8 @@ gulp.task('compress-images', function(){
 });
 
 gulp.task('watch', ['browserify-watch'], function(){
-  gulp.watch('./src/js/*.js', ['move-js']);
-  gulp.watch('./src/scss/*.scss', ['prod-styles']);
+  gulp.watch('./src/js/**/*.js', ['move-js']);
+  gulp.watch('./src/scss/**/*.scss', ['prod-styles']);
 
   livereload.listen(35729);
 });

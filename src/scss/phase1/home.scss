@@ -1,18 +1,3 @@
-#logo {
-    margin: 40px 0px;
-    height:60px;
-}
-#login {
-    display: none;
-    position: absolute;
-    width:100%;
-}
-#agreement {
-    position: absolute;
-    -moz-animation-duration: .7s;
-    -webkit-animation-duration: .7s;
-    animation-duration: .7s;
-}
 
 #alert-agree {
     display: none;
@@ -53,8 +38,30 @@ body {
 }
 
 #content {
+    /* display: none; */
+}
+#login {
     display: none;
-    -moz-animation-duration: 2s;
-    -webkit-animation-duration: 2s;
-    animation-duration: 2s;
+    position: absolute;
+    width:100%;
+    -moz-animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+
+#agreement {
+    display: none;
+    position: absolute;
+    -moz-animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+#logo {
+    display: none;
+    -moz-animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    margin: 40px 0px;
+    margin-top:70px;
+    height:60px;
 }

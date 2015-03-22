@@ -45,7 +45,7 @@ var ReviewBox = React.createClass({
         }
         
     },
-    componentWillUpdate: function(){
+    componentWillUpdate: function(nextProps, nextState){
         //we remove the popover if the state is open (not yet updated)
         if(this.state.open && this.refs.description && this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
@@ -63,7 +63,7 @@ var ReviewBox = React.createClass({
             description = this.state.product.description;
         } 
         var reviewWidget =
-        <div className="col-xs-10 col-xs-offset-2 col-xs-12" id="review-widget" ref="reviewWidget">
+        <div id="review-widget" className="animated bounceInDown" ref="reviewWidget">
             <div className="row">
                 <div className="col-xs-12 text-right" style={{paddingRight: '0px', right: '-4px'}}>
                     <button className="btn btn-default" onClick={this.closeReviewBox}><i className="fa fa-times"></i></button>
@@ -95,14 +95,12 @@ var ReviewBox = React.createClass({
                     <ReviewForm product={this.state.product}/>
                 </div>
             </div>
-        </div>
+        </div> 
         return(
-
-        <CSSTransitionGroup transitionName="example">
+        <div>
             {this.state.open ? reviewWidget : null}
-        </CSSTransitionGroup>
+        </div>
         );
-        
     }
 });
 

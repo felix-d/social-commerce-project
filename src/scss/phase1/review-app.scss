@@ -1,7 +1,5 @@
 @import '../mixins-and-variables';
 
-$review-widget-top: 0px;
-$review-widget-top-init: $review-widget-top - 60px;
 $review-app-min-height: 710px;
 $product-images-height-lg: 173px;
 $product-images-height-normal: 136px;
@@ -9,101 +7,80 @@ $product-images-height-normal: 136px;
 #reviewapp {
 
     min-height:$review-app-min-height;
+
     #review-app-inner {
+
         position: relative;
         width:100%;
 
-        //contains all the carousel pages
-        .product-pages {
+        //the product 
+        .product{
 
-            //the little nav arrows for the carousel
-            #arrows {
-                position: relative;
-                height:34px;
-                .arrow {
-                    top:10px;
-                }
-                #left-arrow {
-                    z-index:1;
-                    margin-left: 25px;
+            //override bootstrap padding to zero
+            padding: 0px !important;
 
-                }
-                #right-arrow {
-                    z-index:1;
-                }
-
+            //added when the product is reviewed
+            .low-opacity {
+                opacity: 0.2;
             }
 
-            //one carousel page
-            .product-page {
-                padding: 20px;
+            //the check mark symbol
+            i {
+                position: absolute;
+                color: green;
+                left: 0;
+                right: 0;
+                z-index: 3;
+                font-size: 3em;
+                @include large-screen {
+                    top:60px;
+                }
+                @include normal-screen {
+                    top: 45px;
+                }
+            }
 
-                //the product 
-                .product{
-                    //override bootstrap padding to zero
-                    padding: 0px !important;
-
-                    //added when the product is reviewed
-                    .low-opacity {
-                        opacity: 0.2;
+            //inner container
+            .product-inner {
+                padding: 5px;
+                padding-bottom: 15px;
+                margin: 5px;
+                text-align:center;
+                //product title
+                h5 {
+                    padding: 5px;
+                    margin-bottom: 15px;
+                    //so it stays on one line
+                    @include large-screen {
+                        height:25px;
                     }
-
-                    //the check mark symbol
-                    i {
-                        position: absolute;
-                        color: green;
-                        left: 0;
-                        right: 0;
-                        z-index: 3;
-                        font-size: 3em;
-                        @include large-screen {
-                            top:60px;
-                        }
-                        @include normal-screen {
-                            top: 45px;
-                        }
+                    //two lines
+                    @include normal-screen {
+                        height: 40px;
                     }
-
-                    //inner container
-                    .product-inner {
-                        padding: 5px;
-                        padding-bottom: 15px;
-                        margin: 5px;
-                        text-align:center;
-                        //product title
-                        h5 {
-                            padding: 5px;
-                            margin-bottom: 15px;
-                            //so it stays on one line
-                            @include large-screen {
-                                height:25px;
-                            }
-                            //two lines
-                            @include normal-screen {
-                                height: 40px;
-                            }
-                        }
-                        .img-container{
-                            position:relative;
-                            width: 90%;
-                            margin: 0 auto;
-                            margin-bottom: 5px;
-                            overflow: hidden;
-                            img {
-                                width: 90%;
-                                margin: 0 auto;
-                            }
-                            @include large-screen {
-                                height: $product-images-height-lg;
-                            }
-                            @include normal-screen {
-                                height: $product-images-height-normal;
-                            }
-                        }
+                }
+                .img-container{
+                    position:relative;
+                    width: 90%;
+                    margin: 0 auto;
+                    margin-bottom: 5px;
+                    overflow: hidden;
+                    img {
+                        width: 90%;
+                        margin: 0 auto;
+                    }
+                    @include large-screen {
+                        height: $product-images-height-lg;
+                    }
+                    @include normal-screen {
+                        height: $product-images-height-normal;
                     }
                 }
             }
         }
+        
+        
+
 
         .side-bar {
             #shuffle-button{
@@ -121,11 +98,16 @@ $product-images-height-normal: 136px;
         }
 
         #review-widget{
-            position:absolute;
+            position:fixed;
+            left: 50%;
+            width: 900px;
+            margin-left: -450px;
+            margin-top: -287px;
             height:auto;
             padding: 10px 30px;
             z-index:999;
-            top: $review-widget-top;
+            top: 50%;
+            right: 40px;
             background-color: #FFF;
             border: 1px solid rgb(221, 221, 221);
             @include box-shadow(0 2px 26px rgba(0, 0, 0, .3), 0 0 0 1px rgba(0, 0, 0, .1));
@@ -166,23 +148,23 @@ $product-images-height-normal: 136px;
                 margin-bottom: 20px;
             }
             &.example-enter {
-                top: $review-widget-top-init!important;
+                top: 40%;
                 opacity: 0.01;
                 transition: all 0.17s linear;
             }
 
             &.example-enter.example-enter-active {
-                top: $review-widget-top!important;
+                top: 50%;
                 opacity: 1;
             }
             &.example-leave {
-                top: $review-widget-top!important;
+                top: 50%;
                 opacity: 1;
                 transition: all 0.15s ease-out;
             }
 
             &.example-leave.example-leave-active {
-                top: $review-widget-top-init!important;
+                top: 48%;
                 opacity: 0.01;
             }
 
@@ -200,10 +182,14 @@ $product-images-height-normal: 136px;
     );
 }
 #overlay {
-    -moz-animation-duration: .3s;
-    -webkit-animation-duration: .3s;
-    animation-duration: .3s;
-
+    -moz-animation-duration: .6s;
+    -webkit-animation-duration: .6s;
+    animation-duration: .6s;
+}
+#review-widget {
+    -moz-animation-duration: .6s;
+    -webkit-animation-duration: .6s;
+    animation-duration: .6s;
 }
 //used when the review widget comes in
 .will-fade{
@@ -215,10 +201,10 @@ $product-images-height-normal: 136px;
 }
 //an overlay div to dismiss review widget when clicked
 #overlay {
-    position:fixed;
-    z-index:998;
-    height:100%;
-    width:100%;
-    top: 0;
-    left:0;
+    /* position:fixed; */
+    /* z-index:998; */
+    /* height:100%; */
+    /* width:100%; */
+    /* top: 0; */
+    /* left: 0; */
 }

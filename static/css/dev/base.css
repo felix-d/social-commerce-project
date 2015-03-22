@@ -52,4 +52,4 @@ h1 {
   opacity: 0.01; }
 
 #overlay {
-  display: none; }
+  display: "hidden"; }

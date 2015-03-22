@@ -2,8 +2,8 @@ var $overlay = $("#overlay"),
     $infoPopup = $("#info-popup");
 
 function dismissInfoPopup(){
-    $overlay.addClass("animated fadeOut");
     $infoPopup.addClass("animated bounceOut");
+    $overlay.addClass("animated fadeOut");
     $infoPopup.one(
         'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
         function(){
@@ -13,7 +13,7 @@ function dismissInfoPopup(){
         'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
         function(){
             $(this).hide();
-            $(this).removeClass("animated fadeOut");
+            $(this).removeClass();
         });
 }
 
@@ -25,6 +25,9 @@ $(function(){
         $overlay = $("#base-overlay"),
         $infoPopup = $("#info-popup");
 
+    $infoButton.popover({
+        placement: 'left'
+    });
     //For the info box
     $infoButton.click(function(e){
         if(!closing){

@@ -12,6 +12,9 @@ var ProductActions = {
 
     // Review a product!
     review: function(product){
+        var $overlay = $("#overlay");
+        $overlay.show();
+        $overlay.addClass("animated fadeIn");
         AppDispatcher.dispatch({
             actionType: ProductConstants.OPEN_REVIEW_BOX,
             data: product
@@ -20,8 +23,29 @@ var ProductActions = {
 
     // The name says it all...
     closeReviewBox: function(){
+        var $overlay = $("#overlay");
+        var $reviewWidget = $("#review-widget");
+        $overlay.addClass("fadeOut");
+        $overlay.one(
+            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function(){
+                $(this).hide();
+                $(this).removeClass();
+            });
+        
+        $reviewWidget.addClass("bounceOutUp");
+        $reviewWidget.one(
+            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function(){
+                AppDispatcher.dispatch({
+                    actionType: ProductConstants.CLOSE_REVIEW_BOX
+                });
+            });
+    },
+
+    infiniteScroll: function(){
         AppDispatcher.dispatch({
-            actionType: ProductConstants.CLOSE_REVIEW_BOX
+            actionType: ProductConstants.INFINITE_SCROLL
         });
     },
 

@@ -43,9 +43,11 @@ var SideBar = React.createClass({
         this.typingTimeout = setTimeout(function(){
             this.typingInSearchField = false;
             var newSearchValue = this.refs.searchInput.getDOMNode().value;
-            if(this.oldSearchValue != newSearchValue)
+            if(this.oldSearchValue != newSearchValue){
                 this.doSearch();
-            this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
+                this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
+                
+            }
         }.bind(this), 200);
     },
 

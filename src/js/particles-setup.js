@@ -6,7 +6,7 @@ particlesJS('particles-js', {
     opacity: {
       opacity: 1,
       anim: {
-        enable: true,
+        enable: false,
         speed: 1.2,
         opacity_min: 0,
         sync: false
@@ -14,7 +14,7 @@ particlesJS('particles-js', {
     },
     size: 6,
     size_random: true,
-    nb: 50,
+    nb: 100,
     line_linked: {
       enable_auto: true,
       distance: 300,
@@ -28,7 +28,7 @@ particlesJS('particles-js', {
       }
     },
     anim: {
-      enable: true,
+      enable: false,
       speed: 1
     }
   },

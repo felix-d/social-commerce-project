@@ -11,6 +11,9 @@
         text-align:left;
     }
 }
+#info-button {
+    width: 35px;
+}
 #icon-wrapper {
     display: inline-block;
     width:72px;
@@ -29,6 +32,7 @@
     height:100%;
     display:block;
     background-color: rgba(0,0,0,0.4);
+    -webkit-transform: translateZ(0);
 }
 #info-popup{
     display: block;
