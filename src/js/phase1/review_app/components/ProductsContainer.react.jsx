@@ -23,7 +23,7 @@ var ProductsContainer = React.createClass({
         ProductStore.addChangeListener(this._onChange);
         $(window).scroll(function() {
             // we add 100 for a little buffer!
-            if($(window).scrollTop() + $(window).height() >= ($(document).height() - 100)) {
+            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
                 ProductActions.infiniteScroll();
             }
         });
@@ -35,22 +35,17 @@ var ProductsContainer = React.createClass({
         this.setState(getProductsState());
     },
     render: function(){
-        var productss = [];
 
-        for(var i=0; i<this.state.currentIndex;i++){
-            if(i >= this.state.products.length) break;
-            productss.push(<Product data={this.state.products[i]} key={i}/>);
-        }
         var products = this.state.products.map(function(m, i){
             return(
                 <Product data={m} key={i}/>
             );
-        }.bind(this));
+        })
 
         return(
             <div className="product-pages col-xs-9">
                 <div id="products" className="will-fade">
-                    {productss}
+                    {products}
                 </div>
             </div>
         );

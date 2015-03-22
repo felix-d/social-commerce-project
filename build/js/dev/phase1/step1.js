@@ -25,6 +25,7 @@ $(function(){
         $overlay = $("#base-overlay"),
         $infoPopup = $("#info-popup");
 
+
     $infoButton.popover({
         placement: 'left'
     });

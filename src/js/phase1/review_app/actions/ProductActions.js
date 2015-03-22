@@ -87,12 +87,11 @@ var ProductActions = {
         });
     },
     // Search for products
-    doSearch: function(query, tags, sortBy){
+    doSearch: function(query, sortBy){
         AppDispatcher.dispatch({
             actionType: ProductConstants.SEARCH_PRODUCTS,
             data: {
                 query: query,
-                tags: tags,
                 sortBy: sortBy
             }
         });

@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var ProductActions = require('../actions/ProductActions');
 var ProductContainer = require('./ProductsContainer.react.jsx');
+var ProductStore = require('../stores/ProductStore');
 
 var Product = React.createClass({
 
@@ -24,7 +25,7 @@ var Product = React.createClass({
         }
     },
     componentDidUpdate: function(){
-
+        console.log("product updated");
         // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -43,6 +44,19 @@ var Product = React.createClass({
             $(this.refs.name.getDOMNode()).popover('destroy');
     },
 
+    shouldComponentUpdate: function(nextProps, nextState){
+
+        if(nextProps.data.id === ProductStore.getLastReviewedId() ||
+                                     nextProps.data.id != this.props.data.id){
+            ProductStore.resetReviewedId();
+            return true;
+        }
+
+        /* if(this.props.data.title === nextProps.data.title)
+           return false; */
+        return false;
+        
+    },
     // Review the product
     reviewIt: function(){
         ProductActions.review(this.props.data);

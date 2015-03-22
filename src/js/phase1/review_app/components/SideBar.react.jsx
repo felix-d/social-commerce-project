@@ -66,7 +66,6 @@ var SideBar = React.createClass({
     doSearch: function(){
         ProductActions.doSearch(
             this.refs.searchInput.getDOMNode().value,
-            this.state.tags,
             this.refs.selectSort.getDOMNode().value
       )  
     },

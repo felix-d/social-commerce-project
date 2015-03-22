@@ -6,15 +6,11 @@
     <link href="{% static "css/phase1/home.min.css" %}" rel="stylesheet"/>
 {% endblock %}
 {% block body %}
-    <div class="row" id="logo-row">
-        <div class="col-xs-12 text-center">
-            <object id="logo" data="{% static "images/drawing.svg" %}" type="image/svg+xml">
-                <img src="#"/>
-            </object>
+    <div id="wrapper">
+        <div id="logo">
+            <h1>Review It!</h1>
         </div>
-    </div>
-    <div class="row" id="content">
-        <div class="col-xs-6 col-xs-offset-3">
+        <div id="content">
             <div id="agreement">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -71,7 +67,7 @@
 {% block extrafooter %}
     <script src="{% static "js/vendor/vivus.min.js"%}" type="text/javascript"></script>
     <script src="{% static "js/vendor/particles.min.js"%}" type="text/javascript"></script>
-    <script src="{% static "js/dev/particles-setup.js"%}" type="text/javascript"></script> -->
+    <script src="{% static "js/dev/particles-setup.js"%}" type="text/javascript"></script>
     <script src="{% static "js/dev/phase1/home.js"%}" type="text/javascript"></script>
     <script type="text/javascript">
     </script>

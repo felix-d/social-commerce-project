@@ -41,9 +41,10 @@ var js_vendor_sources = [
   './bower_components/vivus/dist/vivus.min.js',
     './src/js/vendor/particles.min.js',
     './src/js/vendor/jquery.lazyload.min.js',
-    './src/js/vendor/jquery.infinitescroll.min.js'
+    './src/js/vendor/jquery.infinitescroll.min.js',
+    './bower_components/scrollup/dist/jquery.scrollUp.min.js'
 ];
-
+//
 //css sources are prepended to sass!!
 var css_vendor_sources = [
   'bower_components/bootstrap/dist/css/bootstrap.min.css',

@@ -1,4 +1,42 @@
-
+$wrapper-height: 500px;
+body {
+    background: url("../../images/bg.jpeg") no-repeat center center fixed;
+      -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+#logo {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    
+h1 {
+    color: white;
+    font-size: 6.5em;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    text-shadow: 0 0px 6px rgba(133, 103, 92, 0.53);
+    /* color: white; */
+}
+    
+}
+#myobj {
+    position:absolute;
+    bottom: 0px;
+    width:100px;
+    margin-left: 160px;
+    z-index:-1;
+     -ms-transform: rotate(7deg); /* IE 9 */
+    -webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
+    transform: rotate(7deg);
+}
+.panel {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 5px;
+}
 #alert-agree {
     display: none;
     position:absolute;
@@ -41,27 +79,44 @@ body {
     /* display: none; */
 }
 #login {
+    /* height: $login-height; */
+    /* top: 50%; */
+    /* margin-top: -$login-height/2; */
+    /* width: 600px; */
+    /* left: 50%; */
+    /* margin-left: -300px; */
     display: none;
     position: absolute;
-    width:100%;
+    -moz-animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+#content {
+    position: relative;
+    width: 600px;
+    margin: 0 auto;
+}
+
+#agreement {
+    /* top: 50%; */
+    /* height: $agree-height; */
+    /* margin-top: -$agree-height/2; */
+    position: absolute;
+    text-align: left;
+    /* width: 600px; */
+    /* left: 50%; */
+    /* margin-left: -300px; */
     -moz-animation-duration: 1s;
     -webkit-animation-duration: 1s;
     animation-duration: 1s;
 }
 
-#agreement {
-    display: none;
-    position: absolute;
-    -moz-animation-duration: 1s;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-}
-#logo {
-    display: none;
-    -moz-animation-duration: 1s;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    margin: 40px 0px;
-    margin-top:70px;
-    height:60px;
+#wrapper {
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    height: 500px;
+    top: 50%;
+    margin-top: -320px;
 }

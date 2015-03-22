@@ -16,4 +16,4 @@ class AllauthOverrideMiddleware():
         if request.method == "GET" and\
            self.url_social.match(request.path):
             # here we will call custom_redirect
-            return redirect("/")
+            return redirect("/?cancel=")

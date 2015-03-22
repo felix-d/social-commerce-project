@@ -1,29 +1,26 @@
-$(function(){
-    var $agreement = $("#agreement"),
-        $login = $("#login"),
-        $agreeCheckBox = $("#agree-checkbox"),
-        $alertAgree = $("#alert-agree"),
-        $logo = $("#logo");
-    $logo.show();
-    $agreement.show();
-    $logo.addClass("animated fadeIn");
-    $agreement.addClass("animated fadeIn");
-    $agreement.one(
-        'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-        function(){
-            $(this).removeClass();
-        });
-
-    
-});
-
+// if login was canceled 
+// $(function(){
+//         var $agreement = $("#agreement"),
+//             $login = $("#login"),
+//             $agreeCheckBox = $("#agree-checkbox"),
+//             $alertAgree = $("#alert-agree"),
+//             $logo = $("#logo");
+//     param = window.location.search.replace("?", "");
+//     if(param=='cancel='){
+//         $agreement.remove();
+//         $login.removeClass();
+//         $login.show();
+//     }
+//     else {
+//         $agreement.show();
+//     }
+// });
 function agreement(){
     var $agreement = $("#agreement"),
         $login = $("#login"),
         $agreeCheckBox = $("#agree-checkbox"),
         $alertAgree = $("#alert-agree"),
         $logo = $("#logo");
-
     if($agreeCheckBox.is(":checked")){
         $agreement.addClass("animated bounceOutLeft");
         $agreement.one(
