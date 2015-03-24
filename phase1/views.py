@@ -6,6 +6,7 @@ from reviews.models import create_review, get_review_tree, del_review
 from users.models import set_user_step, get_number_reviews
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
+from products.models import get_product_urls
 from .phase1_user_flow import redirect_user_to_current_step
 
 
@@ -22,7 +23,12 @@ def home(request):
     elif "agreed" in request.session:
         return HttpResponseRedirect("/phase1/login/")
 
-    return render(request, "phase1/home.djhtml")
+    urls = get_product_urls()
+    context = dict(
+        urls=urls
+    )
+
+    return render(request, "phase1/home.djhtml", context)
 
 
 # The reviewing page
@@ -102,7 +108,8 @@ def step2(request):
 def questionnaire(request):
     if request.method == "POST":
         # If is valid
-        set_user_step(request.user, 3)
+        if not request.user.is_superuser:
+            set_user_step(request.user, 3)
         return HttpResponseRedirect('/phase1/step3/')
 
     raise Http404("Only accesible with POST")

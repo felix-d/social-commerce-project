@@ -13,6 +13,11 @@ $product-images-height-normal: 136px;
         position: relative;
         width:100%;
 
+        .imageloader{
+            -moz-animation-duration: .5s;
+            -webkit-animation-duration: .5s;
+            animation-duration: .5s;
+        }
         //the product 
         .product{
 
@@ -59,14 +64,17 @@ $product-images-height-normal: 136px;
                         height: 40px;
                     }
                 }
+                .checkmark-container {
+                    position:relative;
+                }
                 .img-container{
                     position:relative;
                     width: 90%;
                     margin: 0 auto;
-                    margin-bottom: 5px;
-                    overflow: hidden;
+                    margin-bottom: 10px;
+                    position: relative;
                     img {
-                        width: 90%;
+                        height:100%;
                         margin: 0 auto;
                     }
                     @include large-screen {
@@ -75,6 +83,7 @@ $product-images-height-normal: 136px;
                     @include normal-screen {
                         height: $product-images-height-normal;
                     }
+                    
                 }
             }
         }
@@ -111,11 +120,20 @@ $product-images-height-normal: 136px;
             background-color: #FFF;
             border: 1px solid rgb(221, 221, 221);
             @include box-shadow(0 2px 26px rgba(0, 0, 0, .3), 0 0 0 1px rgba(0, 0, 0, .1));
+            .tab-pane.fade {
+                -webkit-transition: opacity .05s linear;
+                -o-transition: opacity .05s linear;
+                transition: opacity .05s linear;
+            }
             .btn-danger{
                 margin-left: 5px;
             }
             .bottom-btn {
                 width: 75px;
+            }
+            #stars-container {
+                margin-bottom:20px;
+                color: #337ab7;
             }
             
             //The animation when the widget comes in!
@@ -146,6 +164,9 @@ $product-images-height-normal: 136px;
             }
             #recommend {
                 margin-bottom: 20px;
+            }
+            .star {
+                cursor: pointer;
             }
             &.example-enter {
                 top: 40%;

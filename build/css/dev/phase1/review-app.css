@@ -3,6 +3,10 @@
   #reviewapp #review-app-inner {
     position: relative;
     width: 100%; }
+    #reviewapp #review-app-inner .imageloader {
+      -moz-animation-duration: .5s;
+      -webkit-animation-duration: .5s;
+      animation-duration: .5s; }
     #reviewapp #review-app-inner .product {
       padding: 0px !important; }
       #reviewapp #review-app-inner .product .low-opacity {
@@ -34,14 +38,16 @@
           @media screen and (max-width: 1199px) {
             #reviewapp #review-app-inner .product .product-inner h5 {
               height: 40px; } }
+        #reviewapp #review-app-inner .product .product-inner .checkmark-container {
+          position: relative; }
         #reviewapp #review-app-inner .product .product-inner .img-container {
           position: relative;
           width: 90%;
           margin: 0 auto;
-          margin-bottom: 5px;
-          overflow: hidden; }
+          margin-bottom: 10px;
+          position: relative; }
           #reviewapp #review-app-inner .product .product-inner .img-container img {
-            width: 90%;
+            height: 100%;
             margin: 0 auto; }
           @media screen and (min-width: 1200px) {
             #reviewapp #review-app-inner .product .product-inner .img-container {
@@ -72,10 +78,17 @@
       -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
       -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
       box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1); }
+      #reviewapp #review-app-inner #review-widget .tab-pane.fade {
+        -webkit-transition: opacity .05s linear;
+        -o-transition: opacity .05s linear;
+        transition: opacity .05s linear; }
       #reviewapp #review-app-inner #review-widget .btn-danger {
         margin-left: 5px; }
       #reviewapp #review-app-inner #review-widget .bottom-btn {
         width: 75px; }
+      #reviewapp #review-app-inner #review-widget #stars-container {
+        margin-bottom: 20px;
+        color: #337ab7; }
       #reviewapp #review-app-inner #review-widget .product-image {
         width: 90%; }
       #reviewapp #review-app-inner #review-widget .ajax-loader {
@@ -96,6 +109,8 @@
         padding: 5px; }
       #reviewapp #review-app-inner #review-widget #recommend {
         margin-bottom: 20px; }
+      #reviewapp #review-app-inner #review-widget .star {
+        cursor: pointer; }
       #reviewapp #review-app-inner #review-widget.example-enter {
         top: 40%;
         opacity: 0.01;

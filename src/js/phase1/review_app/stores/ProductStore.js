@@ -17,44 +17,7 @@ var _sortBy = 'Random',
     $doneOrNot = $("#done-or-not"),
     $numReviews = $('#num-reviews'),
     _currentIndex = 15,
-    _lastReviewedId,
-    _firstLaunch = true;
-
-function imageLoaded(){
-    // console.log("image preloaded");
-}
-// lets preload the images (the ones not on first screen)
-function preload(sources, chunkSize) {
-    chunkSize = chunkSize || sources.length;
-    var sourcesChunked = _.chunk(sources, chunkSize);
-    var steps = sourcesChunked.length;
-    var current = 0;
-    var inner = function(_current){
-        var imagesTemp = [];
-        var l = sourcesChunked[_current].length;
-        var counter = 0;
-        var callback = function(){
-            console.log("updated counter");
-                counter++;
-                if(counter == l - 1){
-                    if(_current < steps - 1){
-                        inner(++_current);
-                    }
-                    else {
-                        // preloading done
-                    }
-                }
-        };
-        for (var i = 0; i < l; i++) {
-           
-            imagesTemp[i] = new Image();
-	    imagesTemp[i].src = sourcesChunked[_current][i].image_path;
-            imagesTemp[i].onload = callback;
-        }
-    };
-    inner(current);
-}
-
+    _lastReviewedId;
 
 // Return the number of reviewed products by the current user
 function getNumberOfReviewedProducts(products){
@@ -65,6 +28,7 @@ function getNumberOfReviewedProducts(products){
     return count;
 }
 
+// The number of products that are currently visible
 function resetCurrentIndex(){
     _currentIndex = 15; 
 }
@@ -92,17 +56,24 @@ var ProductStore = assign({}, EventEmitter.prototype, {
 
     // update the text that informs the user about the reviewing state
     updateReviewText: function(){
+        //we set the text to the number 
         $numReviews.text(_num);
+
+        // if the number of reviews is less than 3
         if(_num < 3){
             $doneOrNot.text("Please review "+
                                (3 - _num) +
                                " more before moving on to the next step.");
         }
+
+        // else
         else {
             $doneOrNot.text("You can move on to the next step when you're done!");
             $doneOrNot.append('<div id="icon-wrapper">'+
                               '<a href="/phase1/step2/"><i id="next-icon" class="fa fa-hand-o-right">'+
                               '</i></a></div>');
+
+            // The bouncing 'next icon'
             var done = true;
             $("#next-icon").mouseover(function(){
                 if(done){
@@ -114,12 +85,15 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             });
         }
     },
+
     getLastReviewedId: function(){
         return _lastReviewedId;
     },
+
     resetReviewedId: function(id){
         _lastReviewedId = undefined;
     },
+
     // get the product from id
     getProductFromId: function(id){
         for(var i=0, l=_productsOriginal.length;i<l;i++){
@@ -133,10 +107,6 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     // Used by the ProductsContainer component to set its state
     getProducts: function(){
         //preload images by chunks of 15
-        if(_firstLaunch){
-            preload(_products, 15);
-            _firstLaunch = false;
-        }
         return {
             products: _products.slice(0, _currentIndex)
         };
@@ -148,10 +118,10 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             tags: _tags
         };
     },
+
     // We execute a search query
     doSearch: function(query, sortBy) {
         // what will be returned
-        console.log(sortBy);
         var queryResult = [];
         var regex = new RegExp(query, "i");
         var subset,
@@ -164,7 +134,8 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             return t.name;
         });
 
-        // for all products, do check if regex match and intersection for tags
+        // for all products, do check if regex match
+        // and intersection for tags
         _productsOriginal.forEach(function(product){
             subset = tags.length ===  _.intersection(tags, product.tags).length;
             if(regex.test(product.name) && subset){
@@ -203,22 +174,25 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         default:
             break;
         }
+
         // the products that will be returned
         _products = queryResult;
         resetCurrentIndex();
     },
+
     shuffleProducts: function(){
         resetCurrentIndex();
         _products = _.shuffle(_products);       
     },
+
+    // Increment the current number of products
     incrementCurrentIndex: function(){
         _currentIndex += 10;
         if(_currentIndex > _products.length){
             _currentIndex = _products.length;
         }
     },
-    triggerNextIconBounce: function(){
-    },
+
     deleteReviewWithId: function(product){
         for(var i = 0; i < _products.length; i++) {
             if(_products[i].id === product.id){
@@ -231,11 +205,15 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         ReviewBoxStore.resetReviewData();
         this.updateReviewText();
     },
+
+    // optimistic rendering
     submit_review: function(product, reviewData){
 
-        if(!product.review)
-        // we increment the number of reviews!
+        // if we were not editing the product
+        if(!product.review){
+            // we increment the number of reviews!
             _num++;
+        }
         
         // we update review state
         var boolAnswers = [];
@@ -253,20 +231,26 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         product.review = {
             boolAnswers:boolAnswers,
             comment: reviewData.comment,
-            recommendIt: reviewData.recommendIt
+            rating: reviewData.rating
         };
 
         _lastReviewedId = product.id;
 
+        // we reset the data in the review widget
         ReviewBoxStore.resetReviewData();
+
+        // we update the review text
         this.updateReviewText();
     },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
+
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
+
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }
@@ -293,6 +277,7 @@ AppDispatcher.register(function(action){
     case ProductConstants.INFINITE_SCROLL:
         ProductStore.incrementCurrentIndex();
         ProductStore.emitChange();
+        break;
     default:
         break;
     }

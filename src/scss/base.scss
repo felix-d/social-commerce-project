@@ -1,7 +1,12 @@
 @import 'bootstrap-custom';
-
+html, body {
+    height:100%;
+}
 body {
     font-family: 'Open Sans', sans-serif;
+}
+h1 {
+    font-size: 63px;
 }
 .example-enter {
       opacity: 0.01;

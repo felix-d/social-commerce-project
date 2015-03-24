@@ -1,4 +1,64 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+var queue = [];
+var draining = false;
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    draining = true;
+    var currentQueue;
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        var i = -1;
+        while (++i < len) {
+            currentQueue[i]();
+        }
+        len = queue.length;
+    }
+    draining = false;
+}
+process.nextTick = function (fun) {
+    queue.push(fun);
+    if (!draining) {
+        setTimeout(drainQueue, 0);
+    }
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],"/Users/Felix/Documents/hec/node_modules/events/events.js":[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -301,66 +361,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-var queue = [];
-var draining = false;
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    draining = true;
-    var currentQueue;
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        var i = -1;
-        while (++i < len) {
-            currentQueue[i]();
-        }
-        len = queue.length;
-    }
-    draining = false;
-}
-process.nextTick = function (fun) {
-    queue.push(fun);
-    if (!draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/flux/index.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/flux/index.js":[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -372,7 +373,7 @@ process.umask = function() { return 0; };
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":"/Users/Felix/Documents/social_commerce_project/node_modules/flux/lib/Dispatcher.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/flux/lib/Dispatcher.js":[function(require,module,exports){
+},{"./lib/Dispatcher":"/Users/Felix/Documents/hec/node_modules/flux/lib/Dispatcher.js"}],"/Users/Felix/Documents/hec/node_modules/flux/lib/Dispatcher.js":[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -624,7 +625,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/flux/lib/invariant.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/flux/lib/invariant.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/flux/lib/invariant.js"}],"/Users/Felix/Documents/hec/node_modules/flux/lib/invariant.js":[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -679,7 +680,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/keymirror/index.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/keymirror/index.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -734,11 +735,11 @@ var keyMirror = function(obj) {
 
 module.exports = keyMirror;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/lodash/index.js":[function(require,module,exports){
 (function (global){
 /**
  * @license
- * lodash 3.3.1 (Custom Build) <https://lodash.com/>
+ * lodash 3.6.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern -d -o ./index.js`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
@@ -751,7 +752,7 @@ module.exports = keyMirror;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '3.3.1';
+  var VERSION = '3.6.0';
 
   /** Used to compose bitmasks for wrapper metadata. */
   var BIND_FLAG = 1,
@@ -761,8 +762,8 @@ module.exports = keyMirror;
       CURRY_RIGHT_FLAG = 16,
       PARTIAL_FLAG = 32,
       PARTIAL_RIGHT_FLAG = 64,
-      REARG_FLAG = 128,
-      ARY_FLAG = 256;
+      ARY_FLAG = 128,
+      REARG_FLAG = 256;
 
   /** Used as default options for `_.trunc`. */
   var DEFAULT_TRUNC_LENGTH = 30,
@@ -773,9 +774,9 @@ module.exports = keyMirror;
       HOT_SPAN = 16;
 
   /** Used to indicate the type of lazy iteratees. */
-  var LAZY_FILTER_FLAG = 0,
-      LAZY_MAP_FLAG = 1,
-      LAZY_WHILE_FLAG = 2;
+  var LAZY_DROP_WHILE_FLAG = 0,
+      LAZY_FILTER_FLAG = 1,
+      LAZY_MAP_FLAG = 2;
 
   /** Used as the `TypeError` message for "Functions" methods. */
   var FUNC_ERROR_TEXT = 'Expected a function';
@@ -826,17 +827,17 @@ module.exports = keyMirror;
       reInterpolate = /<%=([\s\S]+?)%>/g;
 
   /**
-   * Used to match ES template delimiters.
-   * See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-template-literal-lexical-components)
-   * for more details.
+   * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+   */
+  var reComboMarks = /[\u0300-\u036f\ufe20-\ufe23]/g;
+
+  /**
+   * Used to match [ES template delimiters](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-template-literal-lexical-components).
    */
   var reEsTemplate = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g;
 
   /** Used to match `RegExp` flags from their coerced string values. */
   var reFlags = /\w*$/;
-
-  /** Used to detect named functions. */
-  var reFuncName = /^\s*function[ \n\r\t]+\w/;
 
   /** Used to detect hexadecimal string values. */
   var reHexPrefix = /^0[xX]/;
@@ -851,15 +852,12 @@ module.exports = keyMirror;
   var reNoMatch = /($^)/;
 
   /**
-   * Used to match `RegExp` special characters.
-   * See this [article on `RegExp` characters](http://www.regular-expressions.info/characters.html#special)
-   * for more details.
+   * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+   * In addition to special characters the forward slash is escaped to allow for
+   * easier `eval` use and `Function` compilation.
    */
   var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
       reHasRegExpChars = RegExp(reRegExpChars.source);
-
-  /** Used to detect functions containing a `this` reference. */
-  var reThis = /\bthis\b/;
 
   /** Used to match unescaped characters in compiled string literals. */
   var reUnescapedString = /['\n\r\u2028\u2029\\]/g;
@@ -869,7 +867,7 @@ module.exports = keyMirror;
     var upper = '[A-Z\\xc0-\\xd6\\xd8-\\xde]',
         lower = '[a-z\\xdf-\\xf6\\xf8-\\xff]+';
 
-    return RegExp(upper + '{2,}(?=' + upper + lower + ')|' + upper + '?' + lower + '|' + upper + '+|[0-9]+', 'g');
+    return RegExp(upper + '+(?=' + upper + lower + ')|' + upper + '?' + lower + '|' + upper + '+|[0-9]+', 'g');
   }());
 
   /** Used to detect and test for whitespace. */
@@ -891,7 +889,7 @@ module.exports = keyMirror;
     'Object', 'RegExp', 'Set', 'String', '_', 'clearTimeout', 'document',
     'isFinite', 'parseInt', 'setTimeout', 'TypeError', 'Uint8Array',
     'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap',
-    'window', 'WinRTError'
+    'window'
   ];
 
   /** Used to make template sourceURLs easier to identify. */
@@ -991,28 +989,31 @@ module.exports = keyMirror;
     '\u2029': 'u2029'
   };
 
-  /**
-   * Used as a reference to the global object.
-   *
-   * The `this` value is used if it is the global object to avoid Greasemonkey's
-   * restricted `window` object, otherwise the `window` object is used.
-   */
-  var root = (objectTypes[typeof window] && window !== (this && this.window)) ? window : this;
-
   /** Detect free variable `exports`. */
   var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
 
   /** Detect free variable `module`. */
   var freeModule = objectTypes[typeof module] && module && !module.nodeType && module;
 
-  /** Detect free variable `global` from Node.js or Browserified code and use it as `root`. */
+  /** Detect free variable `global` from Node.js. */
   var freeGlobal = freeExports && freeModule && typeof global == 'object' && global;
-  if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal)) {
-    root = freeGlobal;
-  }
+
+  /** Detect free variable `self`. */
+  var freeSelf = objectTypes[typeof self] && self && self.Object && self;
+
+  /** Detect free variable `window`. */
+  var freeWindow = objectTypes[typeof window] && window && window.Object && window;
 
   /** Detect the popular CommonJS extension `module.exports`. */
   var moduleExports = freeModule && freeModule.exports === freeExports && freeExports;
+
+  /**
+   * Used as a reference to the global object.
+   *
+   * The `this` value is used if it is the global object to avoid Greasemonkey's
+   * restricted `window` object, otherwise the `window` object is used.
+   */
+  var root = freeGlobal || ((freeWindow !== (this && this.window)) && freeWindow) || freeSelf || this;
 
   /*--------------------------------------------------------------------------*/
 
@@ -1041,19 +1042,41 @@ module.exports = keyMirror;
   }
 
   /**
+   * The base implementation of `_.findIndex` and `_.findLastIndex` without
+   * support for callback shorthands and `this` binding.
+   *
+   * @private
+   * @param {Array} array The array to search.
+   * @param {Function} predicate The function invoked per iteration.
+   * @param {boolean} [fromRight] Specify iterating from right to left.
+   * @returns {number} Returns the index of the matched value, else `-1`.
+   */
+  function baseFindIndex(array, predicate, fromRight) {
+    var length = array.length,
+        index = fromRight ? length : -1;
+
+    while ((fromRight ? index-- : ++index < length)) {
+      if (predicate(array[index], index, array)) {
+        return index;
+      }
+    }
+    return -1;
+  }
+
+  /**
    * The base implementation of `_.indexOf` without support for binary searches.
    *
    * @private
    * @param {Array} array The array to search.
    * @param {*} value The value to search for.
-   * @param {number} [fromIndex=0] The index to search from.
+   * @param {number} fromIndex The index to search from.
    * @returns {number} Returns the index of the matched value, else `-1`.
    */
   function baseIndexOf(array, value, fromIndex) {
     if (value !== value) {
       return indexOfNaN(array, fromIndex);
     }
-    var index = (fromIndex || 0) - 1,
+    var index = fromIndex - 1,
         length = array.length;
 
     while (++index < length) {
@@ -1076,26 +1099,6 @@ module.exports = keyMirror;
     // Avoid a Chakra JIT bug in compatibility modes of IE 11.
     // See https://github.com/jashkenas/underscore/issues/1621 for more details.
     return typeof value == 'function' || false;
-  }
-
-  /**
-   * The base implementation of `_.sortBy` and `_.sortByAll` which uses `comparer`
-   * to define the sort order of `array` and replaces criteria objects with their
-   * corresponding values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-  function baseSortBy(array, comparer) {
-    var length = array.length;
-
-    array.sort(comparer);
-    while (length--) {
-      array[length] = array[length].value;
-    }
-    return array;
   }
 
   /**
@@ -1171,24 +1174,33 @@ module.exports = keyMirror;
   }
 
   /**
-   * Used by `_.sortByAll` to compare multiple properties of each element
-   * in a collection and stable sort them in ascending order.
+   * Used by `_.sortByOrder` to compare multiple properties of each element
+   * in a collection and stable sort them in the following order:
+   *
+   * If orders is unspecified, sort in ascending order for all properties.
+   * Otherwise, for each property, sort in ascending order if its corresponding value in
+   * orders is true, and descending order if false.
    *
    * @private
    * @param {Object} object The object to compare to `other`.
    * @param {Object} other The object to compare to `object`.
+   * @param {boolean[]} orders The order to sort by for each property.
    * @returns {number} Returns the sort order indicator for `object`.
    */
-  function compareMultipleAscending(object, other) {
+  function compareMultiple(object, other, orders) {
     var index = -1,
         objCriteria = object.criteria,
         othCriteria = other.criteria,
-        length = objCriteria.length;
+        length = objCriteria.length,
+        ordersLength = orders.length;
 
     while (++index < length) {
       var result = baseCompareAscending(objCriteria[index], othCriteria[index]);
       if (result) {
-        return result;
+        if (index >= ordersLength) {
+          return result;
+        }
+        return result * (orders[index] ? 1 : -1);
       }
     }
     // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
@@ -1237,17 +1249,16 @@ module.exports = keyMirror;
 
   /**
    * Gets the index at which the first occurrence of `NaN` is found in `array`.
-   * If `fromRight` is provided elements of `array` are iterated from right to left.
    *
    * @private
    * @param {Array} array The array to search.
-   * @param {number} [fromIndex] The index to search from.
+   * @param {number} fromIndex The index to search from.
    * @param {boolean} [fromRight] Specify iterating from right to left.
    * @returns {number} Returns the index of the matched `NaN`, else `-1`.
    */
   function indexOfNaN(array, fromIndex, fromRight) {
     var length = array.length,
-        index = fromRight ? (fromIndex || length) : ((fromIndex || 0) - 1);
+        index = fromIndex + (fromRight ? 0 : -1);
 
     while ((fromRight ? index-- : ++index < length)) {
       var other = array[index];
@@ -1266,7 +1277,7 @@ module.exports = keyMirror;
    * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
    */
   function isObjectLike(value) {
-    return (value && typeof value == 'object') || false;
+    return !!value && typeof value == 'object';
   }
 
   /**
@@ -1388,19 +1399,19 @@ module.exports = keyMirror;
    * @returns {Function} Returns a new `lodash` function.
    * @example
    *
-   * _.mixin({ 'add': function(a, b) { return a + b; } });
+   * _.mixin({ 'foo': _.constant('foo') });
    *
    * var lodash = _.runInContext();
-   * lodash.mixin({ 'sub': function(a, b) { return a - b; } });
+   * lodash.mixin({ 'bar': lodash.constant('bar') });
    *
-   * _.isFunction(_.add);
+   * _.isFunction(_.foo);
    * // => true
-   * _.isFunction(_.sub);
+   * _.isFunction(_.bar);
    * // => false
    *
-   * lodash.isFunction(lodash.add);
+   * lodash.isFunction(lodash.foo);
    * // => false
-   * lodash.isFunction(lodash.sub);
+   * lodash.isFunction(lodash.bar);
    * // => true
    *
    * // using `context` to mock `Date#getTime` use in `_.now`
@@ -1434,7 +1445,8 @@ module.exports = keyMirror;
 
     /** Used for native method references. */
     var arrayProto = Array.prototype,
-        objectProto = Object.prototype;
+        objectProto = Object.prototype,
+        stringProto = String.prototype;
 
     /** Used to detect DOM support. */
     var document = (document = context.window) && document.document;
@@ -1452,9 +1464,8 @@ module.exports = keyMirror;
     var idCounter = 0;
 
     /**
-     * Used to resolve the `toStringTag` of values.
-     * See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-     * for more details.
+     * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+     * of values.
      */
     var objToString = objectProto.toString;
 
@@ -1519,14 +1530,16 @@ module.exports = keyMirror;
     var FLOAT64_BYTES_PER_ELEMENT = Float64Array ? Float64Array.BYTES_PER_ELEMENT : 0;
 
     /**
-     * Used as the maximum length of an array-like value.
-     * See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-     * for more details.
+     * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+     * of an array-like value.
      */
     var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
 
     /** Used to store function metadata. */
     var metaMap = WeakMap && new WeakMap;
+
+    /** Used to lookup unminified function names. */
+    var realNames = {};
 
     /*------------------------------------------------------------------------*/
 
@@ -1546,9 +1559,14 @@ module.exports = keyMirror;
      * Chaining is supported in custom builds as long as the `_#value` method is
      * directly or indirectly included in the build.
      *
-     * In addition to lodash methods, wrappers also have the following `Array` methods:
-     * `concat`, `join`, `pop`, `push`, `reverse`, `shift`, `slice`, `sort`, `splice`,
-     * and `unshift`
+     * In addition to lodash methods, wrappers have `Array` and `String` methods.
+     *
+     * The wrapper `Array` methods are:
+     * `concat`, `join`, `pop`, `push`, `reverse`, `shift`, `slice`, `sort`,
+     * `splice`, and `unshift`
+     *
+     * The wrapper `String` methods are:
+     * `replace` and `split`
      *
      * The wrapper methods that support shortcut fusion are:
      * `compact`, `drop`, `dropRight`, `dropRightWhile`, `dropWhile`, `filter`,
@@ -1568,26 +1586,26 @@ module.exports = keyMirror;
      * `mixin`, `negate`, `noop`, `omit`, `once`, `pairs`, `partial`, `partialRight`,
      * `partition`, `pick`, `plant`, `pluck`, `property`, `propertyOf`, `pull`,
      * `pullAt`, `push`, `range`, `rearg`, `reject`, `remove`, `rest`, `reverse`,
-     * `shuffle`, `slice`, `sort`, `sortBy`, `sortByAll`, `splice`, `spread`,
-     * `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`, `throttle`,
-     * `thru`, `times`, `toArray`, `toPlainObject`, `transform`, `union`, `uniq`,
-     * `unshift`, `unzip`, `values`, `valuesIn`, `where`, `without`, `wrap`, `xor`,
-     * `zip`, and `zipObject`
+     * `shuffle`, `slice`, `sort`, `sortBy`, `sortByAll`, `sortByOrder`, `splice`,
+     * `spread`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`,
+     * `throttle`, `thru`, `times`, `toArray`, `toPlainObject`, `transform`,
+     * `union`, `uniq`, `unshift`, `unzip`, `values`, `valuesIn`, `where`,
+     * `without`, `wrap`, `xor`, `zip`, and `zipObject`
      *
      * The wrapper methods that are **not** chainable by default are:
-     * `attempt`, `camelCase`, `capitalize`, `clone`, `cloneDeep`, `deburr`,
+     * `add`, `attempt`, `camelCase`, `capitalize`, `clone`, `cloneDeep`, `deburr`,
      * `endsWith`, `escape`, `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`,
      * `findLast`, `findLastIndex`, `findLastKey`, `findWhere`, `first`, `has`,
-     * `identity`, `includes`, `indexOf`, `isArguments`, `isArray`, `isBoolean`,
-     * `isDate`, `isElement`, `isEmpty`, `isEqual`, `isError`, `isFinite`,
-     * `isFunction`, `isMatch`, `isNative`, `isNaN`, `isNull`, `isNumber`,
+     * `identity`, `includes`, `indexOf`, `inRange`, `isArguments`, `isArray`,
+     * `isBoolean`, `isDate`, `isElement`, `isEmpty`, `isEqual`, `isError`,
+     * `isFinite`,`isFunction`, `isMatch`, `isNative`, `isNaN`, `isNull`, `isNumber`,
      * `isObject`, `isPlainObject`, `isRegExp`, `isString`, `isUndefined`,
      * `isTypedArray`, `join`, `kebabCase`, `last`, `lastIndexOf`, `max`, `min`,
      * `noConflict`, `now`, `pad`, `padLeft`, `padRight`, `parseInt`, `pop`,
      * `random`, `reduce`, `reduceRight`, `repeat`, `result`, `runInContext`,
      * `shift`, `size`, `snakeCase`, `some`, `sortedIndex`, `sortedLastIndex`,
-     * `startCase`, `startsWith`, `template`, `trim`, `trimLeft`, `trimRight`,
-     * `trunc`, `unescape`, `uniqueId`, `value`, and `words`
+     * `startCase`, `startsWith`, `sum`, `template`, `trim`, `trimLeft`,
+     * `trimRight`, `trunc`, `unescape`, `uniqueId`, `value`, and `words`
      *
      * The wrapper method `sample` will return a wrapped value when `n` is provided,
      * otherwise an unwrapped value is returned.
@@ -1672,7 +1690,7 @@ module.exports = keyMirror;
        * @memberOf _.support
        * @type boolean
        */
-      support.funcDecomp = !isNative(context.WinRTError) && reThis.test(runInContext);
+      support.funcDecomp = /\bthis\b/.test(function() { return this; });
 
       /**
        * Detect if `Function#name` is supported (all but IE).
@@ -1809,7 +1827,6 @@ module.exports = keyMirror;
 
       result.__actions__ = actions ? arrayCopy(actions) : null;
       result.__dir__ = this.__dir__;
-      result.__dropCount__ = this.__dropCount__;
       result.__filtered__ = this.__filtered__;
       result.__iteratees__ = iteratees ? arrayCopy(iteratees) : null;
       result.__takeCount__ = this.__takeCount__;
@@ -1856,9 +1873,8 @@ module.exports = keyMirror;
           start = view.start,
           end = view.end,
           length = end - start,
-          dropCount = this.__dropCount__,
+          index = isRight ? end : (start - 1),
           takeCount = nativeMin(length, this.__takeCount__),
-          index = isRight ? end : start - 1,
           iteratees = this.__iteratees__,
           iterLength = iteratees ? iteratees.length : 0,
           resIndex = 0,
@@ -1874,24 +1890,34 @@ module.exports = keyMirror;
         while (++iterIndex < iterLength) {
           var data = iteratees[iterIndex],
               iteratee = data.iteratee,
-              computed = iteratee(value, index, array),
               type = data.type;
 
-          if (type == LAZY_MAP_FLAG) {
-            value = computed;
-          } else if (!computed) {
-            if (type == LAZY_FILTER_FLAG) {
-              continue outer;
-            } else {
-              break outer;
+          if (type == LAZY_DROP_WHILE_FLAG) {
+            if (data.done && (isRight ? (index > data.index) : (index < data.index))) {
+              data.count = 0;
+              data.done = false;
+            }
+            data.index = index;
+            if (!data.done) {
+              var limit = data.limit;
+              if (!(data.done = limit > -1 ? (data.count++ >= limit) : !iteratee(value))) {
+                continue outer;
+              }
+            }
+          } else {
+            var computed = iteratee(value);
+            if (type == LAZY_MAP_FLAG) {
+              value = computed;
+            } else if (!computed) {
+              if (type == LAZY_FILTER_FLAG) {
+                continue outer;
+              } else {
+                break outer;
+              }
             }
           }
         }
-        if (dropCount) {
-          dropCount--;
-        } else {
-          result[resIndex++] = value;
-        }
+        result[resIndex++] = value;
       }
       return result;
     }
@@ -2040,7 +2066,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.forEach` for arrays without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2061,7 +2087,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.forEachRight` for arrays without support for
-     * callback shorthands or `this` binding.
+     * callback shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2081,7 +2107,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.every` for arrays without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2103,7 +2129,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.filter` for arrays without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2127,7 +2153,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.map` for arrays without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2189,7 +2215,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.reduce` for arrays without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2214,7 +2240,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.reduceRight` for arrays without support for
-     * callback shorthands or `this` binding.
+     * callback shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2237,7 +2263,7 @@ module.exports = keyMirror;
 
     /**
      * A specialized version of `_.some` for arrays without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array} array The array to iterate over.
@@ -2255,6 +2281,23 @@ module.exports = keyMirror;
         }
       }
       return false;
+    }
+
+    /**
+     * A specialized version of `_.sum` for arrays without support for iteratees.
+     *
+     * @private
+     * @param {Array} array The array to iterate over.
+     * @returns {number} Returns the sum.
+     */
+    function arraySum(array) {
+      var length = array.length,
+          result = 0;
+
+      while (length--) {
+        result += +array[length] || 0;
+      }
+      return result;
     }
 
     /**
@@ -2311,7 +2354,7 @@ module.exports = keyMirror;
             value = object[key],
             result = customizer(value, source[key], key, object, source);
 
-        if ((result === result ? result !== value : value === value) ||
+        if ((result === result ? (result !== value) : (value === value)) ||
             (typeof value == 'undefined' && !(key in object))) {
           object[key] = result;
         }
@@ -2372,26 +2415,6 @@ module.exports = keyMirror;
     }
 
     /**
-     * The base implementation of `_.bindAll` without support for individual
-     * method name arguments.
-     *
-     * @private
-     * @param {Object} object The object to bind and assign the bound methods to.
-     * @param {string[]} methodNames The object method names to bind.
-     * @returns {Object} Returns `object`.
-     */
-    function baseBindAll(object, methodNames) {
-      var index = -1,
-          length = methodNames.length;
-
-      while (++index < length) {
-        var key = methodNames[index];
-        object[key] = createWrapper(object[key], BIND_FLAG, object);
-      }
-      return object;
-    }
-
-    /**
      * The base implementation of `_.callback` which supports specifying the
      * number of arguments to provide to `func`.
      *
@@ -2404,9 +2427,9 @@ module.exports = keyMirror;
     function baseCallback(func, thisArg, argCount) {
       var type = typeof func;
       if (type == 'function') {
-        return (typeof thisArg != 'undefined' && isBindable(func))
-          ? bindCallback(func, thisArg, argCount)
-          : func;
+        return typeof thisArg == 'undefined'
+          ? func
+          : bindCallback(func, thisArg, argCount);
       }
       if (func == null) {
         return identity;
@@ -2513,14 +2536,14 @@ module.exports = keyMirror;
      * @private
      * @param {Function} func The function to delay.
      * @param {number} wait The number of milliseconds to delay invocation.
-     * @param {Object} args The `arguments` object to slice and provide to `func`.
+     * @param {Object} args The arguments provide to `func`.
      * @returns {number} Returns the timer id.
      */
-    function baseDelay(func, wait, args, fromIndex) {
+    function baseDelay(func, wait, args) {
       if (typeof func != 'function') {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
-      return setTimeout(function() { func.apply(undefined, baseSlice(args, fromIndex)); }, wait);
+      return setTimeout(function() { func.apply(undefined, args); }, wait);
     }
 
     /**
@@ -2563,7 +2586,7 @@ module.exports = keyMirror;
           }
           result.push(value);
         }
-        else if (indexOf(values, value) < 0) {
+        else if (indexOf(values, value, 0) < 0) {
           result.push(value);
         }
       }
@@ -2579,21 +2602,7 @@ module.exports = keyMirror;
      * @param {Function} iteratee The function invoked per iteration.
      * @returns {Array|Object|string} Returns `collection`.
      */
-    function baseEach(collection, iteratee) {
-      var length = collection ? collection.length : 0;
-      if (!isLength(length)) {
-        return baseForOwn(collection, iteratee);
-      }
-      var index = -1,
-          iterable = toObject(collection);
-
-      while (++index < length) {
-        if (iteratee(iterable[index], index, iterable) === false) {
-          break;
-        }
-      }
-      return collection;
-    }
+    var baseEach = createBaseEach(baseForOwn);
 
     /**
      * The base implementation of `_.forEachRight` without support for callback
@@ -2604,23 +2613,11 @@ module.exports = keyMirror;
      * @param {Function} iteratee The function invoked per iteration.
      * @returns {Array|Object|string} Returns `collection`.
      */
-    function baseEachRight(collection, iteratee) {
-      var length = collection ? collection.length : 0;
-      if (!isLength(length)) {
-        return baseForOwnRight(collection, iteratee);
-      }
-      var iterable = toObject(collection);
-      while (length--) {
-        if (iteratee(iterable[length], length, iterable) === false) {
-          break;
-        }
-      }
-      return collection;
-    }
+    var baseEachRight = createBaseEach(baseForOwnRight, true);
 
     /**
      * The base implementation of `_.every` without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array|Object|string} collection The collection to iterate over.
@@ -2658,7 +2655,7 @@ module.exports = keyMirror;
       if (end < 0) {
         end += length;
       }
-      length = start > end ? 0 : end >>> 0;
+      length = start > end ? 0 : (end >>> 0);
       start >>>= 0;
 
       while (start < length) {
@@ -2669,7 +2666,7 @@ module.exports = keyMirror;
 
     /**
      * The base implementation of `_.filter` without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Array|Object|string} collection The collection to iterate over.
@@ -2716,13 +2713,12 @@ module.exports = keyMirror;
      *
      * @private
      * @param {Array} array The array to flatten.
-     * @param {boolean} [isDeep] Specify a deep flatten.
-     * @param {boolean} [isStrict] Restrict flattening to arrays and `arguments` objects.
-     * @param {number} [fromIndex=0] The index to start from.
+     * @param {boolean} isDeep Specify a deep flatten.
+     * @param {boolean} isStrict Restrict flattening to arrays and `arguments` objects.
      * @returns {Array} Returns the new flattened array.
      */
-    function baseFlatten(array, isDeep, isStrict, fromIndex) {
-      var index = (fromIndex || 0) - 1,
+    function baseFlatten(array, isDeep, isStrict) {
+      var index = -1,
           length = array.length,
           resIndex = -1,
           result = [];
@@ -2761,20 +2757,7 @@ module.exports = keyMirror;
      * @param {Function} keysFunc The function to get the keys of `object`.
      * @returns {Object} Returns `object`.
      */
-    function baseFor(object, iteratee, keysFunc) {
-      var index = -1,
-          iterable = toObject(object),
-          props = keysFunc(object),
-          length = props.length;
-
-      while (++index < length) {
-        var key = props[index];
-        if (iteratee(iterable[key], key, iterable) === false) {
-          break;
-        }
-      }
-      return object;
-    }
+    var baseFor = createBaseFor();
 
     /**
      * This function is like `baseFor` except that it iterates over properties
@@ -2786,19 +2769,7 @@ module.exports = keyMirror;
      * @param {Function} keysFunc The function to get the keys of `object`.
      * @returns {Object} Returns `object`.
      */
-    function baseForRight(object, iteratee, keysFunc) {
-      var iterable = toObject(object),
-          props = keysFunc(object),
-          length = props.length;
-
-      while (length--) {
-        var key = props[length];
-        if (iteratee(iterable[key], key, iterable) === false) {
-          break;
-        }
-      }
-      return object;
-    }
+    var baseForRight = createBaseFor(true);
 
     /**
      * The base implementation of `_.forIn` without support for callback
@@ -2864,30 +2835,6 @@ module.exports = keyMirror;
     }
 
     /**
-     * The base implementation of `_.invoke` which requires additional arguments
-     * to be provided as an array of arguments rather than individually.
-     *
-     * @private
-     * @param {Array|Object|string} collection The collection to iterate over.
-     * @param {Function|string} methodName The name of the method to invoke or
-     *  the function invoked per iteration.
-     * @param {Array} [args] The arguments to invoke the method with.
-     * @returns {Array} Returns the array of results.
-     */
-    function baseInvoke(collection, methodName, args) {
-      var index = -1,
-          isFunc = typeof methodName == 'function',
-          length = collection ? collection.length : 0,
-          result = isLength(length) ? Array(length) : [];
-
-      baseEach(collection, function(value) {
-        var func = isFunc ? methodName : (value != null && value[methodName]);
-        result[++index] = func ? func.apply(value, args) : undefined;
-      });
-      return result;
-    }
-
-    /**
      * The base implementation of `_.isEqual` without support for `this` binding
      * `customizer` functions.
      *
@@ -2895,12 +2842,12 @@ module.exports = keyMirror;
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @param {Function} [customizer] The function to customize comparing values.
-     * @param {boolean} [isWhere] Specify performing partial comparisons.
+     * @param {boolean} [isLoose] Specify performing partial comparisons.
      * @param {Array} [stackA] Tracks traversed `value` objects.
      * @param {Array} [stackB] Tracks traversed `other` objects.
      * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
      */
-    function baseIsEqual(value, other, customizer, isWhere, stackA, stackB) {
+    function baseIsEqual(value, other, customizer, isLoose, stackA, stackB) {
       // Exit early for identical values.
       if (value === other) {
         // Treat `+0` vs. `-0` as not equal.
@@ -2915,7 +2862,7 @@ module.exports = keyMirror;
         // Return `false` unless both values are `NaN`.
         return value !== value && other !== other;
       }
-      return baseIsEqualDeep(value, other, baseIsEqual, customizer, isWhere, stackA, stackB);
+      return baseIsEqualDeep(value, other, baseIsEqual, customizer, isLoose, stackA, stackB);
     }
 
     /**
@@ -2928,12 +2875,12 @@ module.exports = keyMirror;
      * @param {Object} other The other object to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} [customizer] The function to customize comparing objects.
-     * @param {boolean} [isWhere] Specify performing partial comparisons.
+     * @param {boolean} [isLoose] Specify performing partial comparisons.
      * @param {Array} [stackA=[]] Tracks traversed `value` objects.
      * @param {Array} [stackB=[]] Tracks traversed `other` objects.
      * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
      */
-    function baseIsEqualDeep(object, other, equalFunc, customizer, isWhere, stackA, stackB) {
+    function baseIsEqualDeep(object, other, equalFunc, customizer, isLoose, stackA, stackB) {
       var objIsArr = isArray(object),
           othIsArr = isArray(other),
           objTag = arrayTag,
@@ -2955,21 +2902,27 @@ module.exports = keyMirror;
           othIsArr = isTypedArray(other);
         }
       }
-      var objIsObj = objTag == objectTag,
-          othIsObj = othTag == objectTag,
+      var objIsObj = (objTag == objectTag || (isLoose && objTag == funcTag)),
+          othIsObj = (othTag == objectTag || (isLoose && othTag == funcTag)),
           isSameTag = objTag == othTag;
 
       if (isSameTag && !(objIsArr || objIsObj)) {
         return equalByTag(object, other, objTag);
       }
-      var valWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
-          othWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+      if (isLoose) {
+        if (!isSameTag && !(objIsObj && othIsObj)) {
+          return false;
+        }
+      } else {
+        var valWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+            othWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
 
-      if (valWrapped || othWrapped) {
-        return equalFunc(valWrapped ? object.value() : object, othWrapped ? other.value() : other, customizer, isWhere, stackA, stackB);
-      }
-      if (!isSameTag) {
-        return false;
+        if (valWrapped || othWrapped) {
+          return equalFunc(valWrapped ? object.value() : object, othWrapped ? other.value() : other, customizer, isLoose, stackA, stackB);
+        }
+        if (!isSameTag) {
+          return false;
+        }
       }
       // Assume cyclic values are equal.
       // For more information on detecting circular references see https://es5.github.io/#JO.
@@ -2986,7 +2939,7 @@ module.exports = keyMirror;
       stackA.push(object);
       stackB.push(other);
 
-      var result = (objIsArr ? equalArrays : equalObjects)(object, other, equalFunc, customizer, isWhere, stackA, stackB);
+      var result = (objIsArr ? equalArrays : equalObjects)(object, other, equalFunc, customizer, isLoose, stackA, stackB);
 
       stackA.pop();
       stackB.pop();
@@ -2996,7 +2949,7 @@ module.exports = keyMirror;
 
     /**
      * The base implementation of `_.isMatch` without support for callback
-     * shorthands or `this` binding.
+     * shorthands and `this` binding.
      *
      * @private
      * @param {Object} object The object to inspect.
@@ -3007,30 +2960,27 @@ module.exports = keyMirror;
      * @returns {boolean} Returns `true` if `object` is a match, else `false`.
      */
     function baseIsMatch(object, props, values, strictCompareFlags, customizer) {
-      var length = props.length;
-      if (object == null) {
-        return !length;
-      }
       var index = -1,
+          length = props.length,
           noCustomizer = !customizer;
 
       while (++index < length) {
         if ((noCustomizer && strictCompareFlags[index])
               ? values[index] !== object[props[index]]
-              : !hasOwnProperty.call(object, props[index])
+              : !(props[index] in object)
             ) {
           return false;
         }
       }
       index = -1;
       while (++index < length) {
-        var key = props[index];
-        if (noCustomizer && strictCompareFlags[index]) {
-          var result = hasOwnProperty.call(object, key);
-        } else {
-          var objValue = object[key],
-              srcValue = values[index];
+        var key = props[index],
+            objValue = object[key],
+            srcValue = values[index];
 
+        if (noCustomizer && strictCompareFlags[index]) {
+          var result = typeof objValue != 'undefined' || (key in object);
+        } else {
           result = customizer ? customizer(objValue, srcValue, key) : undefined;
           if (typeof result == 'undefined') {
             result = baseIsEqual(srcValue, objValue, customizer, true);
@@ -3045,7 +2995,7 @@ module.exports = keyMirror;
 
     /**
      * The base implementation of `_.map` without support for callback shorthands
-     * or `this` binding.
+     * and `this` binding.
      *
      * @private
      * @param {Array|Object|string} collection The collection to iterate over.
@@ -3071,13 +3021,17 @@ module.exports = keyMirror;
       var props = keys(source),
           length = props.length;
 
+      if (!length) {
+        return constant(true);
+      }
       if (length == 1) {
         var key = props[0],
             value = source[key];
 
         if (isStrictComparable(value)) {
           return function(object) {
-            return object != null && object[key] === value && hasOwnProperty.call(object, key);
+            return object != null && object[key] === value &&
+              (typeof value != 'undefined' || (key in toObject(object)));
           };
         }
       }
@@ -3090,7 +3044,7 @@ module.exports = keyMirror;
         strictCompareFlags[length] = isStrictComparable(value);
       }
       return function(object) {
-        return baseIsMatch(object, props, values, strictCompareFlags);
+        return object != null && baseIsMatch(toObject(object), props, values, strictCompareFlags);
       };
     }
 
@@ -3106,7 +3060,8 @@ module.exports = keyMirror;
     function baseMatchesProperty(key, value) {
       if (isStrictComparable(value)) {
         return function(object) {
-          return object != null && object[key] === value;
+          return object != null && object[key] === value &&
+            (typeof value != 'undefined' || (key in toObject(object)));
         };
       }
       return function(object) {
@@ -3145,7 +3100,7 @@ module.exports = keyMirror;
           result = srcValue;
         }
         if ((isSrcArr || typeof result != 'undefined') &&
-            (isCommon || (result === result ? result !== value : value === value))) {
+            (isCommon || (result === result ? (result !== value) : (value === value)))) {
           object[key] = result;
         }
       });
@@ -3186,7 +3141,7 @@ module.exports = keyMirror;
         if (isLength(srcValue.length) && (isArray(srcValue) || isTypedArray(srcValue))) {
           result = isArray(value)
             ? value
-            : (value ? arrayCopy(value) : []);
+            : ((value && value.length) ? arrayCopy(value) : []);
         }
         else if (isPlainObject(srcValue) || isArguments(srcValue)) {
           result = isArguments(value)
@@ -3205,7 +3160,7 @@ module.exports = keyMirror;
       if (isCommon) {
         // Recursively merge objects and arrays (susceptible to call stack limits).
         object[key] = mergeFunc(result, srcValue, customizer, stackA, stackB);
-      } else if (result === result ? result !== value : value === value) {
+      } else if (result === result ? (result !== value) : (value === value)) {
         object[key] = result;
       }
     }
@@ -3224,30 +3179,6 @@ module.exports = keyMirror;
     }
 
     /**
-     * The base implementation of `_.pullAt` without support for individual
-     * index arguments.
-     *
-     * @private
-     * @param {Array} array The array to modify.
-     * @param {number[]} indexes The indexes of elements to remove.
-     * @returns {Array} Returns the new array of removed elements.
-     */
-    function basePullAt(array, indexes) {
-      var length = indexes.length,
-          result = baseAt(array, indexes);
-
-      indexes.sort(baseCompareAscending);
-      while (length--) {
-        var index = parseFloat(indexes[length]);
-        if (index != previous && isIndex(index)) {
-          var previous = index;
-          splice.call(array, index, 1);
-        }
-      }
-      return result;
-    }
-
-    /**
      * The base implementation of `_.random` without support for argument juggling
      * and returning floating-point numbers.
      *
@@ -3262,7 +3193,7 @@ module.exports = keyMirror;
 
     /**
      * The base implementation of `_.reduce` and `_.reduceRight` without support
-     * for callback shorthands or `this` binding, which iterates over `collection`
+     * for callback shorthands and `this` binding, which iterates over `collection`
      * using the provided `eachFunc`.
      *
      * @private
@@ -3317,7 +3248,7 @@ module.exports = keyMirror;
       if (end < 0) {
         end += length;
       }
-      length = start > end ? 0 : (end - start) >>> 0;
+      length = start > end ? 0 : ((end - start) >>> 0);
       start >>>= 0;
 
       var result = Array(length);
@@ -3329,7 +3260,7 @@ module.exports = keyMirror;
 
     /**
      * The base implementation of `_.some` without support for callback shorthands
-     * or `this` binding.
+     * and `this` binding.
      *
      * @private
      * @param {Array|Object|string} collection The collection to iterate over.
@@ -3345,6 +3276,72 @@ module.exports = keyMirror;
         return !result;
       });
       return !!result;
+    }
+
+    /**
+     * The base implementation of `_.sortBy` which uses `comparer` to define
+     * the sort order of `array` and replaces criteria objects with their
+     * corresponding values.
+     *
+     * @private
+     * @param {Array} array The array to sort.
+     * @param {Function} comparer The function to define sort order.
+     * @returns {Array} Returns `array`.
+     */
+    function baseSortBy(array, comparer) {
+      var length = array.length;
+
+      array.sort(comparer);
+      while (length--) {
+        array[length] = array[length].value;
+      }
+      return array;
+    }
+
+    /**
+     * The base implementation of `_.sortByOrder` without param guards.
+     *
+     * @private
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {string[]} props The property names to sort by.
+     * @param {boolean[]} orders The sort orders of `props`.
+     * @returns {Array} Returns the new sorted array.
+     */
+    function baseSortByOrder(collection, props, orders) {
+      var index = -1,
+          length = collection.length,
+          result = isLength(length) ? Array(length) : [];
+
+      baseEach(collection, function(value) {
+        var length = props.length,
+            criteria = Array(length);
+
+        while (length--) {
+          criteria[length] = value == null ? undefined : value[props[length]];
+        }
+        result[++index] = { 'criteria': criteria, 'index': index, 'value': value };
+      });
+
+      return baseSortBy(result, function(object, other) {
+        return compareMultiple(object, other, orders);
+      });
+    }
+
+    /**
+     * The base implementation of `_.sum` without support for callback shorthands
+     * and `this` binding.
+     *
+     * @private
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {number} Returns the sum.
+     */
+    function baseSum(collection, iteratee) {
+      var result = 0;
+      baseEach(collection, function(value, index, collection) {
+        result += +iteratee(value, index, collection) || 0;
+      });
+      return result;
     }
 
     /**
@@ -3389,7 +3386,7 @@ module.exports = keyMirror;
           }
           result.push(value);
         }
-        else if (indexOf(seen, computed) < 0) {
+        else if (indexOf(seen, computed, 0) < 0) {
           if (iteratee || isLarge) {
             seen.push(computed);
           }
@@ -3421,6 +3418,27 @@ module.exports = keyMirror;
     }
 
     /**
+     * The base implementation of `_.dropRightWhile`, `_.dropWhile`, `_.takeRightWhile`,
+     * and `_.takeWhile` without support for callback shorthands and `this` binding.
+     *
+     * @private
+     * @param {Array} array The array to query.
+     * @param {Function} predicate The function invoked per iteration.
+     * @param {boolean} [isDrop] Specify dropping elements instead of taking them.
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Array} Returns the slice of `array`.
+     */
+    function baseWhile(array, predicate, isDrop, fromRight) {
+      var length = array.length,
+          index = fromRight ? length : -1;
+
+      while ((fromRight ? index-- : ++index < length) && predicate(array[index], index, array)) {}
+      return isDrop
+        ? baseSlice(array, (fromRight ? 0 : index), (fromRight ? index + 1 : length))
+        : baseSlice(array, (fromRight ? index + 1 : 0), (fromRight ? length : index));
+    }
+
+    /**
      * The base implementation of `wrapperValue` which returns the result of
      * performing a sequence of actions on the unwrapped `value`, where each
      * successive action is supplied the return value of the previous.
@@ -3428,7 +3446,7 @@ module.exports = keyMirror;
      * @private
      * @param {*} value The unwrapped value.
      * @param {Array} actions Actions to peform to resolve the unwrapped value.
-     * @returns {*} Returns the resolved unwrapped value.
+     * @returns {*} Returns the resolved value.
      */
     function baseWrapperValue(value, actions) {
       var result = value;
@@ -3455,8 +3473,7 @@ module.exports = keyMirror;
      * @private
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
-     * @param {boolean} [retHighest] Specify returning the highest, instead
-     *  of the lowest, index at which a value should be inserted into `array`.
+     * @param {boolean} [retHighest] Specify returning the highest qualified index.
      * @returns {number} Returns the index at which `value` should be inserted
      *  into `array`.
      */
@@ -3489,8 +3506,7 @@ module.exports = keyMirror;
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
      * @param {Function} iteratee The function invoked per iteration.
-     * @param {boolean} [retHighest] Specify returning the highest, instead
-     *  of the lowest, index at which a value should be inserted into `array`.
+     * @param {boolean} [retHighest] Specify returning the highest qualified index.
      * @returns {number} Returns the index at which `value` should be inserted
      *  into `array`.
      */
@@ -3656,6 +3672,9 @@ module.exports = keyMirror;
      * object composed from the results of running each element in the collection
      * through an iteratee.
      *
+     * **Note:** This function is used to create `_.countBy`, `_.groupBy`, `_.indexBy`,
+     * and `_.partition`.
+     *
      * @private
      * @param {Function} setter The function to set keys and values of the accumulator object.
      * @param {Function} [initializer] The function to initialize the accumulator object.
@@ -3687,32 +3706,91 @@ module.exports = keyMirror;
      * Creates a function that assigns properties of source object(s) to a given
      * destination object.
      *
+     * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+     *
      * @private
      * @param {Function} assigner The function to assign values.
      * @returns {Function} Returns the new assigner function.
      */
     function createAssigner(assigner) {
       return function() {
-        var length = arguments.length,
-            object = arguments[0];
+        var args = arguments,
+            length = args.length,
+            object = args[0];
 
         if (length < 2 || object == null) {
           return object;
         }
-        if (length > 3 && isIterateeCall(arguments[1], arguments[2], arguments[3])) {
-          length = 2;
+        var customizer = args[length - 2],
+            thisArg = args[length - 1],
+            guard = args[3];
+
+        if (length > 3 && typeof customizer == 'function') {
+          customizer = bindCallback(customizer, thisArg, 5);
+          length -= 2;
+        } else {
+          customizer = (length > 2 && typeof thisArg == 'function') ? thisArg : null;
+          length -= (customizer ? 1 : 0);
         }
-        // Juggle arguments.
-        if (length > 3 && typeof arguments[length - 2] == 'function') {
-          var customizer = bindCallback(arguments[--length - 1], arguments[length--], 5);
-        } else if (length > 2 && typeof arguments[length - 1] == 'function') {
-          customizer = arguments[--length];
+        if (guard && isIterateeCall(args[1], args[2], guard)) {
+          customizer = length == 3 ? null : customizer;
+          length = 2;
         }
         var index = 0;
         while (++index < length) {
-          var source = arguments[index];
+          var source = args[index];
           if (source) {
             assigner(object, source, customizer);
+          }
+        }
+        return object;
+      };
+    }
+
+    /**
+     * Creates a `baseEach` or `baseEachRight` function.
+     *
+     * @private
+     * @param {Function} eachFunc The function to iterate over a collection.
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new base function.
+     */
+    function createBaseEach(eachFunc, fromRight) {
+      return function(collection, iteratee) {
+        var length = collection ? collection.length : 0;
+        if (!isLength(length)) {
+          return eachFunc(collection, iteratee);
+        }
+        var index = fromRight ? length : -1,
+            iterable = toObject(collection);
+
+        while ((fromRight ? index-- : ++index < length)) {
+          if (iteratee(iterable[index], index, iterable) === false) {
+            break;
+          }
+        }
+        return collection;
+      };
+    }
+
+    /**
+     * Creates a base function for `_.forIn` or `_.forInRight`.
+     *
+     * @private
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new base function.
+     */
+    function createBaseFor(fromRight) {
+      return function(object, iteratee, keysFunc) {
+        var iterable = toObject(object),
+            props = keysFunc(object),
+            length = props.length,
+            index = fromRight ? length : -1;
+
+        while ((fromRight ? index-- : ++index < length)) {
+          var key = props[index];
+          if (iteratee(iterable[key], key, iterable) === false) {
+            break;
           }
         }
         return object;
@@ -3732,7 +3810,8 @@ module.exports = keyMirror;
       var Ctor = createCtorWrapper(func);
 
       function wrapper() {
-        return (this instanceof wrapper ? Ctor : func).apply(thisArg, arguments);
+        var fn = (this && this !== root && this instanceof wrapper) ? Ctor : func;
+        return fn.apply(thisArg, arguments);
       }
       return wrapper;
     }
@@ -3790,7 +3869,26 @@ module.exports = keyMirror;
     }
 
     /**
-     * Creates a function that gets the extremum value of a collection.
+     * Creates a `_.curry` or `_.curryRight` function.
+     *
+     * @private
+     * @param {boolean} flag The curry bit flag.
+     * @returns {Function} Returns the new curry function.
+     */
+    function createCurry(flag) {
+      function curryFunc(func, arity, guard) {
+        if (guard && isIterateeCall(func, arity, guard)) {
+          arity = null;
+        }
+        var result = createWrapper(func, flag, null, null, null, null, null, arity);
+        result.placeholder = curryFunc.placeholder;
+        return result;
+      }
+      return curryFunc;
+    }
+
+    /**
+     * Creates a `_.max` or `_.min` function.
      *
      * @private
      * @param {Function} arrayFunc The function to get the extremum value from an array.
@@ -3819,6 +3917,204 @@ module.exports = keyMirror;
           }
         }
         return extremumBy(collection, iteratee, isMin);
+      };
+    }
+
+    /**
+     * Creates a `_.find` or `_.findLast` function.
+     *
+     * @private
+     * @param {Function} eachFunc The function to iterate over a collection.
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new find function.
+     */
+    function createFind(eachFunc, fromRight) {
+      return function(collection, predicate, thisArg) {
+        predicate = getCallback(predicate, thisArg, 3);
+        if (isArray(collection)) {
+          var index = baseFindIndex(collection, predicate, fromRight);
+          return index > -1 ? collection[index] : undefined;
+        }
+        return baseFind(collection, predicate, eachFunc);
+      }
+    }
+
+    /**
+     * Creates a `_.findIndex` or `_.findLastIndex` function.
+     *
+     * @private
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new find function.
+     */
+    function createFindIndex(fromRight) {
+      return function(array, predicate, thisArg) {
+        if (!(array && array.length)) {
+          return -1;
+        }
+        predicate = getCallback(predicate, thisArg, 3);
+        return baseFindIndex(array, predicate, fromRight);
+      };
+    }
+
+    /**
+     * Creates a `_.findKey` or `_.findLastKey` function.
+     *
+     * @private
+     * @param {Function} objectFunc The function to iterate over an object.
+     * @returns {Function} Returns the new find function.
+     */
+    function createFindKey(objectFunc) {
+      return function(object, predicate, thisArg) {
+        predicate = getCallback(predicate, thisArg, 3);
+        return baseFind(object, predicate, objectFunc, true);
+      };
+    }
+
+    /**
+     * Creates a `_.flow` or `_.flowRight` function.
+     *
+     * @private
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new flow function.
+     */
+    function createFlow(fromRight) {
+      return function() {
+        var length = arguments.length;
+        if (!length) {
+          return function() { return arguments[0]; };
+        }
+        var wrapper,
+            index = fromRight ? length : -1,
+            leftIndex = 0,
+            funcs = Array(length);
+
+        while ((fromRight ? index-- : ++index < length)) {
+          var func = funcs[leftIndex++] = arguments[index];
+          if (typeof func != 'function') {
+            throw new TypeError(FUNC_ERROR_TEXT);
+          }
+          var funcName = wrapper ? '' : getFuncName(func);
+          wrapper = funcName == 'wrapper' ? new LodashWrapper([]) : wrapper;
+        }
+        index = wrapper ? -1 : length;
+        while (++index < length) {
+          func = funcs[index];
+          funcName = getFuncName(func);
+
+          var data = funcName == 'wrapper' ? getData(func) : null;
+          if (data && isLaziable(data[0])) {
+            wrapper = wrapper[getFuncName(data[0])].apply(wrapper, data[3]);
+          } else {
+            wrapper = (func.length == 1 && isLaziable(func)) ? wrapper[funcName]() : wrapper.thru(func);
+          }
+        }
+        return function() {
+          var args = arguments;
+          if (wrapper && args.length == 1 && isArray(args[0])) {
+            return wrapper.plant(args[0]).value();
+          }
+          var index = 0,
+              result = funcs[index].apply(this, args);
+
+          while (++index < length) {
+            result = funcs[index].call(this, result);
+          }
+          return result;
+        };
+      };
+    }
+
+    /**
+     * Creates a function for `_.forEach` or `_.forEachRight`.
+     *
+     * @private
+     * @param {Function} arrayFunc The function to iterate over an array.
+     * @param {Function} eachFunc The function to iterate over a collection.
+     * @returns {Function} Returns the new each function.
+     */
+    function createForEach(arrayFunc, eachFunc) {
+      return function(collection, iteratee, thisArg) {
+        return (typeof iteratee == 'function' && typeof thisArg == 'undefined' && isArray(collection))
+          ? arrayFunc(collection, iteratee)
+          : eachFunc(collection, bindCallback(iteratee, thisArg, 3));
+      };
+    }
+
+    /**
+     * Creates a function for `_.forIn` or `_.forInRight`.
+     *
+     * @private
+     * @param {Function} objectFunc The function to iterate over an object.
+     * @returns {Function} Returns the new each function.
+     */
+    function createForIn(objectFunc) {
+      return function(object, iteratee, thisArg) {
+        if (typeof iteratee != 'function' || typeof thisArg != 'undefined') {
+          iteratee = bindCallback(iteratee, thisArg, 3);
+        }
+        return objectFunc(object, iteratee, keysIn);
+      };
+    }
+
+    /**
+     * Creates a function for `_.forOwn` or `_.forOwnRight`.
+     *
+     * @private
+     * @param {Function} objectFunc The function to iterate over an object.
+     * @returns {Function} Returns the new each function.
+     */
+    function createForOwn(objectFunc) {
+      return function(object, iteratee, thisArg) {
+        if (typeof iteratee != 'function' || typeof thisArg != 'undefined') {
+          iteratee = bindCallback(iteratee, thisArg, 3);
+        }
+        return objectFunc(object, iteratee);
+      };
+    }
+
+    /**
+     * Creates a function for `_.padLeft` or `_.padRight`.
+     *
+     * @private
+     * @param {boolean} [fromRight] Specify padding from the right.
+     * @returns {Function} Returns the new pad function.
+     */
+    function createPadDir(fromRight) {
+      return function(string, length, chars) {
+        string = baseToString(string);
+        return string && ((fromRight ? string : '') + createPadding(string, length, chars) + (fromRight ? '' : string));
+      };
+    }
+
+    /**
+     * Creates a `_.partial` or `_.partialRight` function.
+     *
+     * @private
+     * @param {boolean} flag The partial bit flag.
+     * @returns {Function} Returns the new partial function.
+     */
+    function createPartial(flag) {
+      var partialFunc = restParam(function(func, partials) {
+        var holders = replaceHolders(partials, partialFunc.placeholder);
+        return createWrapper(func, flag, null, partials, holders);
+      });
+      return partialFunc;
+    }
+
+    /**
+     * Creates a function for `_.reduce` or `_.reduceRight`.
+     *
+     * @private
+     * @param {Function} arrayFunc The function to iterate over an array.
+     * @param {Function} eachFunc The function to iterate over a collection.
+     * @returns {Function} Returns the new each function.
+     */
+    function createReduce(arrayFunc, eachFunc) {
+      return function(collection, iteratee, accumulator, thisArg) {
+        var initFromArray = arguments.length < 3;
+        return (typeof iteratee == 'function' && typeof thisArg == 'undefined' && isArray(collection))
+          ? arrayFunc(collection, iteratee, accumulator, initFromArray)
+          : baseReduce(collection, getCallback(iteratee, thisArg, 4), accumulator, initFromArray, eachFunc);
       };
     }
 
@@ -3885,7 +4181,12 @@ module.exports = keyMirror;
             if (!isCurryBound) {
               bitmask &= ~(BIND_FLAG | BIND_KEY_FLAG);
             }
-            var result = createHybridWrapper(func, bitmask, thisArg, newPartials, newsHolders, newPartialsRight, newHoldersRight, newArgPos, ary, newArity);
+            var newData = [func, bitmask, thisArg, newPartials, newsHolders, newPartialsRight, newHoldersRight, newArgPos, ary, newArity],
+                result = createHybridWrapper.apply(undefined, newData);
+
+            if (isLaziable(func)) {
+              setData(result, newData);
+            }
             result.placeholder = placeholder;
             return result;
           }
@@ -3900,15 +4201,15 @@ module.exports = keyMirror;
         if (isAry && ary < args.length) {
           args.length = ary;
         }
-        return (this instanceof wrapper ? (Ctor || createCtorWrapper(func)) : func).apply(thisBinding, args);
+        var fn = (this && this !== root && this instanceof wrapper) ? (Ctor || createCtorWrapper(func)) : func;
+        return fn.apply(thisBinding, args);
       }
       return wrapper;
     }
 
     /**
-     * Creates the pad required for `string` based on the given padding length.
-     * The `chars` string may be truncated if the number of padding characters
-     * exceeds the padding length.
+     * Creates the padding required for `string` based on the given `length`.
+     * The `chars` string is truncated if the number of characters exceeds `length`.
      *
      * @private
      * @param {string} string The string to create padding for.
@@ -3916,7 +4217,7 @@ module.exports = keyMirror;
      * @param {string} [chars=' '] The string used as padding.
      * @returns {string} Returns the pad for `string`.
      */
-    function createPad(string, length, chars) {
+    function createPadding(string, length, chars) {
       var strLength = string.length;
       length = +length;
 
@@ -3959,9 +4260,26 @@ module.exports = keyMirror;
         while (argsLength--) {
           args[leftIndex++] = arguments[++argsIndex];
         }
-        return (this instanceof wrapper ? Ctor : func).apply(isBind ? thisArg : this, args);
+        var fn = (this && this !== root && this instanceof wrapper) ? Ctor : func;
+        return fn.apply(isBind ? thisArg : this, args);
       }
       return wrapper;
+    }
+
+    /**
+     * Creates a `_.sortedIndex` or `_.sortedLastIndex` function.
+     *
+     * @private
+     * @param {boolean} [retHighest] Specify returning the highest qualified index.
+     * @returns {Function} Returns the new index function.
+     */
+    function createSortedIndex(retHighest) {
+      return function(array, value, iteratee, thisArg) {
+        var func = getCallback(iteratee);
+        return (func === baseCallback && iteratee == null)
+          ? binaryIndex(array, value, retHighest)
+          : binaryIndexBy(array, value, func(iteratee, thisArg, 1), retHighest);
+      };
     }
 
     /**
@@ -4006,10 +4324,10 @@ module.exports = keyMirror;
 
         partials = holders = null;
       }
-      var data = !isBindKey && getData(func),
+      var data = isBindKey ? null : getData(func),
           newData = [func, bitmask, thisArg, partials, holders, partialsRight, holdersRight, argPos, ary, arity];
 
-      if (data && data !== true) {
+      if (data) {
         mergeData(newData, data);
         bitmask = newData[1];
         arity = newData[9];
@@ -4038,18 +4356,18 @@ module.exports = keyMirror;
      * @param {Array} other The other array to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} [customizer] The function to customize comparing arrays.
-     * @param {boolean} [isWhere] Specify performing partial comparisons.
+     * @param {boolean} [isLoose] Specify performing partial comparisons.
      * @param {Array} [stackA] Tracks traversed `value` objects.
      * @param {Array} [stackB] Tracks traversed `other` objects.
      * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
      */
-    function equalArrays(array, other, equalFunc, customizer, isWhere, stackA, stackB) {
+    function equalArrays(array, other, equalFunc, customizer, isLoose, stackA, stackB) {
       var index = -1,
           arrLength = array.length,
           othLength = other.length,
           result = true;
 
-      if (arrLength != othLength && !(isWhere && othLength > arrLength)) {
+      if (arrLength != othLength && !(isLoose && othLength > arrLength)) {
         return false;
       }
       // Deep compare the contents, ignoring non-numeric properties.
@@ -4059,23 +4377,23 @@ module.exports = keyMirror;
 
         result = undefined;
         if (customizer) {
-          result = isWhere
+          result = isLoose
             ? customizer(othValue, arrValue, index)
             : customizer(arrValue, othValue, index);
         }
         if (typeof result == 'undefined') {
           // Recursively compare arrays (susceptible to call stack limits).
-          if (isWhere) {
+          if (isLoose) {
             var othIndex = othLength;
             while (othIndex--) {
               othValue = other[othIndex];
-              result = (arrValue && arrValue === othValue) || equalFunc(arrValue, othValue, customizer, isWhere, stackA, stackB);
+              result = (arrValue && arrValue === othValue) || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
               if (result) {
                 break;
               }
             }
           } else {
-            result = (arrValue && arrValue === othValue) || equalFunc(arrValue, othValue, customizer, isWhere, stackA, stackB);
+            result = (arrValue && arrValue === othValue) || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
           }
         }
       }
@@ -4131,26 +4449,26 @@ module.exports = keyMirror;
      * @param {Object} other The other object to compare.
      * @param {Function} equalFunc The function to determine equivalents of values.
      * @param {Function} [customizer] The function to customize comparing values.
-     * @param {boolean} [isWhere] Specify performing partial comparisons.
+     * @param {boolean} [isLoose] Specify performing partial comparisons.
      * @param {Array} [stackA] Tracks traversed `value` objects.
      * @param {Array} [stackB] Tracks traversed `other` objects.
      * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
      */
-    function equalObjects(object, other, equalFunc, customizer, isWhere, stackA, stackB) {
+    function equalObjects(object, other, equalFunc, customizer, isLoose, stackA, stackB) {
       var objProps = keys(object),
           objLength = objProps.length,
           othProps = keys(other),
           othLength = othProps.length;
 
-      if (objLength != othLength && !isWhere) {
+      if (objLength != othLength && !isLoose) {
         return false;
       }
-      var hasCtor,
+      var skipCtor = isLoose,
           index = -1;
 
       while (++index < objLength) {
         var key = objProps[index],
-            result = hasOwnProperty.call(other, key);
+            result = isLoose ? key in other : hasOwnProperty.call(other, key);
 
         if (result) {
           var objValue = object[key],
@@ -4158,27 +4476,29 @@ module.exports = keyMirror;
 
           result = undefined;
           if (customizer) {
-            result = isWhere
+            result = isLoose
               ? customizer(othValue, objValue, key)
               : customizer(objValue, othValue, key);
           }
           if (typeof result == 'undefined') {
             // Recursively compare objects (susceptible to call stack limits).
-            result = (objValue && objValue === othValue) || equalFunc(objValue, othValue, customizer, isWhere, stackA, stackB);
+            result = (objValue && objValue === othValue) || equalFunc(objValue, othValue, customizer, isLoose, stackA, stackB);
           }
         }
         if (!result) {
           return false;
         }
-        hasCtor || (hasCtor = key == 'constructor');
+        skipCtor || (skipCtor = key == 'constructor');
       }
-      if (!hasCtor) {
+      if (!skipCtor) {
         var objCtor = object.constructor,
             othCtor = other.constructor;
 
         // Non `Object` object instances with different constructors are not equal.
-        if (objCtor != othCtor && ('constructor' in object && 'constructor' in other) &&
-            !(typeof objCtor == 'function' && objCtor instanceof objCtor && typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+        if (objCtor != othCtor &&
+            ('constructor' in object && 'constructor' in other) &&
+            !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+              typeof othCtor == 'function' && othCtor instanceof othCtor)) {
           return false;
         }
       }
@@ -4188,7 +4508,7 @@ module.exports = keyMirror;
     /**
      * Gets the extremum value of `collection` invoking `iteratee` for each value
      * in `collection` to generate the criterion by which the value is ranked.
-     * The `iteratee` is invoked with three arguments; (value, index, collection).
+     * The `iteratee` is invoked with three arguments: (value, index, collection).
      *
      * @private
      * @param {Array|Object|string} collection The collection to iterate over.
@@ -4204,7 +4524,8 @@ module.exports = keyMirror;
 
       baseEach(collection, function(value, index, collection) {
         var current = iteratee(value, index, collection);
-        if ((isMin ? current < computed : current > computed) || (current === exValue && current === result)) {
+        if ((isMin ? (current < computed) : (current > computed)) ||
+            (current === exValue && current === result)) {
           computed = current;
           result = value;
         }
@@ -4237,6 +4558,37 @@ module.exports = keyMirror;
     var getData = !metaMap ? noop : function(func) {
       return metaMap.get(func);
     };
+
+    /**
+     * Gets the name of `func`.
+     *
+     * @private
+     * @param {Function} func The function to query.
+     * @returns {string} Returns the function name.
+     */
+    var getFuncName = (function() {
+      if (!support.funcNames) {
+        return constant('');
+      }
+      if (constant.name == 'constant') {
+        return baseProperty('name');
+      }
+      return function(func) {
+        var result = func.name,
+            array = realNames[result],
+            length = array ? array.length : 0;
+
+        while (length--) {
+          var data = array[length],
+              otherFunc = data.func;
+
+          if (otherFunc == null || otherFunc == func) {
+            return data.name;
+          }
+        }
+        return result;
+      };
+    }());
 
     /**
      * Gets the appropriate "indexOf" function. If the `_.indexOf` method is
@@ -4356,31 +4708,6 @@ module.exports = keyMirror;
     }
 
     /**
-     * Checks if `func` is eligible for `this` binding.
-     *
-     * @private
-     * @param {Function} func The function to check.
-     * @returns {boolean} Returns `true` if `func` is eligible, else `false`.
-     */
-    function isBindable(func) {
-      var support = lodash.support,
-          result = !(support.funcNames ? func.name : support.funcDecomp);
-
-      if (!result) {
-        var source = fnToString.call(func);
-        if (!support.funcNames) {
-          result = !reFuncName.test(source);
-        }
-        if (!result) {
-          // Check if `func` references the `this` keyword and store the result.
-          result = reThis.test(source) || isNative(func);
-          baseSetData(func, result);
-        }
-      }
-      return result;
-    }
-
-    /**
      * Checks if `value` is a valid array-like index.
      *
      * @private
@@ -4416,17 +4743,27 @@ module.exports = keyMirror;
       }
       if (prereq) {
         var other = object[index];
-        return value === value ? value === other : other !== other;
+        return value === value ? (value === other) : (other !== other);
       }
       return false;
     }
 
     /**
+     * Checks if `func` has a lazy counterpart.
+     *
+     * @private
+     * @param {Function} func The function to check.
+     * @returns {boolean} Returns `true` if `func` has a lazy counterpart, else `false`.
+     */
+    function isLaziable(func) {
+      var funcName = getFuncName(func);
+      return !!funcName && func === lodash[funcName] && funcName in LazyWrapper.prototype;
+    }
+
+    /**
      * Checks if `value` is a valid array-like length.
      *
-     * **Note:** This function is based on ES `ToLength`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength)
-     * for more details.
+     * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
      *
      * @private
      * @param {*} value The value to check.
@@ -4466,22 +4803,13 @@ module.exports = keyMirror;
     function mergeData(data, source) {
       var bitmask = data[1],
           srcBitmask = source[1],
-          newBitmask = bitmask | srcBitmask;
+          newBitmask = bitmask | srcBitmask,
+          isCommon = newBitmask < ARY_FLAG;
 
-      var arityFlags = ARY_FLAG | REARG_FLAG,
-          bindFlags = BIND_FLAG | BIND_KEY_FLAG,
-          comboFlags = arityFlags | bindFlags | CURRY_BOUND_FLAG | CURRY_RIGHT_FLAG;
-
-      var isAry = bitmask & ARY_FLAG && !(srcBitmask & ARY_FLAG),
-          isRearg = bitmask & REARG_FLAG && !(srcBitmask & REARG_FLAG),
-          argPos = (isRearg ? data : source)[7],
-          ary = (isAry ? data : source)[8];
-
-      var isCommon = !(bitmask >= REARG_FLAG && srcBitmask > bindFlags) &&
-        !(bitmask > bindFlags && srcBitmask >= REARG_FLAG);
-
-      var isCombo = (newBitmask >= arityFlags && newBitmask <= comboFlags) &&
-        (bitmask < REARG_FLAG || ((isRearg || isAry) && argPos.length <= ary));
+      var isCombo =
+        (srcBitmask == ARY_FLAG && bitmask == CURRY_FLAG) ||
+        (srcBitmask == ARY_FLAG && bitmask == REARG_FLAG && data[7].length <= source[8]) ||
+        (srcBitmask == (ARY_FLAG | REARG_FLAG) && bitmask == CURRY_FLAG);
 
       // Exit early if metadata can't be merged.
       if (!(isCommon || isCombo)) {
@@ -4800,10 +5128,9 @@ module.exports = keyMirror;
      * Creates an array excluding all values of the provided arrays using
      * `SameValueZero` for equality comparisons.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -4816,18 +5143,11 @@ module.exports = keyMirror;
      * _.difference([1, 2, 3], [4, 2]);
      * // => [1, 3]
      */
-    function difference() {
-      var index = -1,
-          length = arguments.length;
-
-      while (++index < length) {
-        var value = arguments[index];
-        if (isArray(value) || isArguments(value)) {
-          break;
-        }
-      }
-      return baseDifference(value, baseFlatten(arguments, false, true, ++index));
-    }
+    var difference = restParam(function(array, values) {
+      return (isArray(array) || isArguments(array))
+        ? baseDifference(array, baseFlatten(values, false, true))
+        : [];
+    });
 
     /**
      * Creates a slice of `array` with `n` elements dropped from the beginning.
@@ -4903,7 +5223,7 @@ module.exports = keyMirror;
     /**
      * Creates a slice of `array` excluding elements dropped from the end.
      * Elements are dropped until `predicate` returns falsey. The predicate is
-     * bound to `thisArg` and invoked with three arguments; (value, index, array).
+     * bound to `thisArg` and invoked with three arguments: (value, index, array).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -4938,7 +5258,7 @@ module.exports = keyMirror;
      * ];
      *
      * // using the `_.matches` callback shorthand
-     * _.pluck(_.dropRightWhile(users, { 'user': pebbles, 'active': false }), 'user');
+     * _.pluck(_.dropRightWhile(users, { 'user': 'pebbles', 'active': false }), 'user');
      * // => ['barney', 'fred']
      *
      * // using the `_.matchesProperty` callback shorthand
@@ -4950,19 +5270,15 @@ module.exports = keyMirror;
      * // => ['barney', 'fred', 'pebbles']
      */
     function dropRightWhile(array, predicate, thisArg) {
-      var length = array ? array.length : 0;
-      if (!length) {
-        return [];
-      }
-      predicate = getCallback(predicate, thisArg, 3);
-      while (length-- && predicate(array[length], length, array)) {}
-      return baseSlice(array, 0, length + 1);
+      return (array && array.length)
+        ? baseWhile(array, getCallback(predicate, thisArg, 3), true, true)
+        : [];
     }
 
     /**
      * Creates a slice of `array` excluding elements dropped from the beginning.
      * Elements are dropped until `predicate` returns falsey. The predicate is
-     * bound to `thisArg` and invoked with three arguments; (value, index, array).
+     * bound to `thisArg` and invoked with three arguments: (value, index, array).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -5009,14 +5325,9 @@ module.exports = keyMirror;
      * // => ['barney', 'fred', 'pebbles']
      */
     function dropWhile(array, predicate, thisArg) {
-      var length = array ? array.length : 0;
-      if (!length) {
-        return [];
-      }
-      var index = -1;
-      predicate = getCallback(predicate, thisArg, 3);
-      while (++index < length && predicate(array[index], index, array)) {}
-      return baseSlice(array, index);
+      return (array && array.length)
+        ? baseWhile(array, getCallback(predicate, thisArg, 3), true)
+        : [];
     }
 
     /**
@@ -5033,6 +5344,19 @@ module.exports = keyMirror;
      * @param {number} [start=0] The start position.
      * @param {number} [end=array.length] The end position.
      * @returns {Array} Returns `array`.
+     * @example
+     *
+     * var array = [1, 2, 3];
+     *
+     * _.fill(array, 'a');
+     * console.log(array);
+     * // => ['a', 'a', 'a']
+     *
+     * _.fill(Array(3), 2);
+     * // => [2, 2, 2]
+     *
+     * _.fill([4, 6, 8], '*', 1, 2);
+     * // => [4, '*', 8]
      */
     function fill(array, value, start, end) {
       var length = array ? array.length : 0;
@@ -5048,7 +5372,7 @@ module.exports = keyMirror;
 
     /**
      * This method is like `_.find` except that it returns the index of the first
-     * element `predicate` returns truthy for, instead of the element itself.
+     * element `predicate` returns truthy for instead of the element itself.
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -5094,18 +5418,7 @@ module.exports = keyMirror;
      * _.findIndex(users, 'active');
      * // => 2
      */
-    function findIndex(array, predicate, thisArg) {
-      var index = -1,
-          length = array ? array.length : 0;
-
-      predicate = getCallback(predicate, thisArg, 3);
-      while (++index < length) {
-        if (predicate(array[index], index, array)) {
-          return index;
-        }
-      }
-      return -1;
-    }
+    var findIndex = createFindIndex();
 
     /**
      * This method is like `_.findIndex` except that it iterates over elements
@@ -5149,22 +5462,13 @@ module.exports = keyMirror;
      *
      * // using the `_.matchesProperty` callback shorthand
      * _.findLastIndex(users, 'active', false);
-     * // => 1
+     * // => 2
      *
      * // using the `_.property` callback shorthand
      * _.findLastIndex(users, 'active');
      * // => 0
      */
-    function findLastIndex(array, predicate, thisArg) {
-      var length = array ? array.length : 0;
-      predicate = getCallback(predicate, thisArg, 3);
-      while (length--) {
-        if (predicate(array[length], length, array)) {
-          return length;
-        }
-      }
-      return -1;
-    }
+    var findLastIndex = createFindIndex(true);
 
     /**
      * Gets the first element of `array`.
@@ -5201,11 +5505,11 @@ module.exports = keyMirror;
      * @example
      *
      * _.flatten([1, [2, 3, [4]]]);
-     * // => [1, 2, 3, [4]];
+     * // => [1, 2, 3, [4]]
      *
      * // using `isDeep`
      * _.flatten([1, [2, 3, [4]]], true);
-     * // => [1, 2, 3, 4];
+     * // => [1, 2, 3, 4]
      */
     function flatten(array, isDeep, guard) {
       var length = array ? array.length : 0;
@@ -5226,7 +5530,7 @@ module.exports = keyMirror;
      * @example
      *
      * _.flattenDeep([1, [2, 3, [4]]]);
-     * // => [1, 2, 3, 4];
+     * // => [1, 2, 3, 4]
      */
     function flattenDeep(array) {
       var length = array ? array.length : 0;
@@ -5239,10 +5543,9 @@ module.exports = keyMirror;
      * it is used as the offset from the end of `array`. If `array` is sorted
      * providing `true` for `fromIndex` performs a faster binary search.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -5271,14 +5574,17 @@ module.exports = keyMirror;
         return -1;
       }
       if (typeof fromIndex == 'number') {
-        fromIndex = fromIndex < 0 ? nativeMax(length + fromIndex, 0) : (fromIndex || 0);
+        fromIndex = fromIndex < 0 ? nativeMax(length + fromIndex, 0) : fromIndex;
       } else if (fromIndex) {
         var index = binaryIndex(array, value),
             other = array[index];
 
-        return (value === value ? value === other : other !== other) ? index : -1;
+        if (value === value ? (value === other) : (other !== other)) {
+          return index;
+        }
+        return -1;
       }
-      return baseIndexOf(array, value, fromIndex);
+      return baseIndexOf(array, value, fromIndex || 0);
     }
 
     /**
@@ -5302,10 +5608,9 @@ module.exports = keyMirror;
      * Creates an array of unique values in all provided arrays using `SameValueZero`
      * for equality comparisons.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -5341,11 +5646,11 @@ module.exports = keyMirror;
       outer:
       while (++index < length) {
         value = array[index];
-        if ((seen ? cacheIndexOf(seen, value) : indexOf(result, value)) < 0) {
+        if ((seen ? cacheIndexOf(seen, value) : indexOf(result, value, 0)) < 0) {
           argsIndex = argsLength;
           while (--argsIndex) {
             var cache = caches[argsIndex];
-            if ((cache ? cacheIndexOf(cache, value) : indexOf(args[argsIndex], value)) < 0) {
+            if ((cache ? cacheIndexOf(cache, value) : indexOf(args[argsIndex], value, 0)) < 0) {
               continue outer;
             }
           }
@@ -5412,7 +5717,10 @@ module.exports = keyMirror;
       } else if (fromIndex) {
         index = binaryIndex(array, value, true) - 1;
         var other = array[index];
-        return (value === value ? value === other : other !== other) ? index : -1;
+        if (value === value ? (value === other) : (other !== other)) {
+          return index;
+        }
+        return -1;
       }
       if (value !== value) {
         return indexOfNaN(array, index, true);
@@ -5430,10 +5738,10 @@ module.exports = keyMirror;
      * comparisons.
      *
      * **Notes:**
-     *  - Unlike `_.without`, this method mutates `array`.
-     *  - `SameValueZero` comparisons are like strict equality comparisons, e.g. `===`,
-     *    except that `NaN` matches `NaN`. See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     *    for more details.
+     *  - Unlike `_.without`, this method mutates `array`
+     *  - [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     *    comparisons are like strict equality comparisons, e.g. `===`, except
+     *    that `NaN` matches `NaN`
      *
      * @static
      * @memberOf _
@@ -5450,17 +5758,19 @@ module.exports = keyMirror;
      * // => [1, 1]
      */
     function pull() {
-      var array = arguments[0];
+      var args = arguments,
+          array = args[0];
+
       if (!(array && array.length)) {
         return array;
       }
       var index = 0,
           indexOf = getIndexOf(),
-          length = arguments.length;
+          length = args.length;
 
       while (++index < length) {
         var fromIndex = 0,
-            value = arguments[index];
+            value = args[index];
 
         while ((fromIndex = indexOf(array, value, fromIndex)) > -1) {
           splice.call(array, fromIndex, 1);
@@ -5494,14 +5804,28 @@ module.exports = keyMirror;
      * console.log(evens);
      * // => [10, 20]
      */
-    function pullAt(array) {
-      return basePullAt(array || [], baseFlatten(arguments, false, false, 1));
-    }
+    var pullAt = restParam(function(array, indexes) {
+      array || (array = []);
+      indexes = baseFlatten(indexes);
+
+      var length = indexes.length,
+          result = baseAt(array, indexes);
+
+      indexes.sort(baseCompareAscending);
+      while (length--) {
+        var index = parseFloat(indexes[length]);
+        if (index != previous && isIndex(index)) {
+          var previous = index;
+          splice.call(array, index, 1);
+        }
+      }
+      return result;
+    });
 
     /**
      * Removes all elements from `array` that `predicate` returns truthy for
      * and returns an array of the removed elements. The predicate is bound to
-     * `thisArg` and invoked with three arguments; (value, index, array).
+     * `thisArg` and invoked with three arguments: (value, index, array).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -5605,14 +5929,14 @@ module.exports = keyMirror;
      * to compute their sort ranking. The iteratee is bound to `thisArg` and
      * invoked with one argument; (value).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
@@ -5646,12 +5970,7 @@ module.exports = keyMirror;
      * _.sortedIndex([{ 'x': 30 }, { 'x': 50 }], { 'x': 40 }, 'x');
      * // => 1
      */
-    function sortedIndex(array, value, iteratee, thisArg) {
-      var func = getCallback(iteratee);
-      return (func === baseCallback && iteratee == null)
-        ? binaryIndex(array, value)
-        : binaryIndexBy(array, value, func(iteratee, thisArg, 1));
-    }
+    var sortedIndex = createSortedIndex();
 
     /**
      * This method is like `_.sortedIndex` except that it returns the highest
@@ -5673,12 +5992,7 @@ module.exports = keyMirror;
      * _.sortedLastIndex([4, 4, 5, 5], 5);
      * // => 4
      */
-    function sortedLastIndex(array, value, iteratee, thisArg) {
-      var func = getCallback(iteratee);
-      return (func === baseCallback && iteratee == null)
-        ? binaryIndex(array, value, true)
-        : binaryIndexBy(array, value, func(iteratee, thisArg, 1), true);
-    }
+    var sortedLastIndex = createSortedIndex(true);
 
     /**
      * Creates a slice of `array` with `n` elements taken from the beginning.
@@ -5754,7 +6068,7 @@ module.exports = keyMirror;
     /**
      * Creates a slice of `array` with elements taken from the end. Elements are
      * taken until `predicate` returns falsey. The predicate is bound to `thisArg`
-     * and invoked with three arguments; (value, index, array).
+     * and invoked with three arguments: (value, index, array).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -5801,19 +6115,15 @@ module.exports = keyMirror;
      * // => []
      */
     function takeRightWhile(array, predicate, thisArg) {
-      var length = array ? array.length : 0;
-      if (!length) {
-        return [];
-      }
-      predicate = getCallback(predicate, thisArg, 3);
-      while (length-- && predicate(array[length], length, array)) {}
-      return baseSlice(array, length + 1);
+      return (array && array.length)
+        ? baseWhile(array, getCallback(predicate, thisArg, 3), false, true)
+        : [];
     }
 
     /**
      * Creates a slice of `array` with elements taken from the beginning. Elements
      * are taken until `predicate` returns falsey. The predicate is bound to
-     * `thisArg` and invoked with three arguments; (value, index, array).
+     * `thisArg` and invoked with three arguments: (value, index, array).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -5860,24 +6170,18 @@ module.exports = keyMirror;
      * // => []
      */
     function takeWhile(array, predicate, thisArg) {
-      var length = array ? array.length : 0;
-      if (!length) {
-        return [];
-      }
-      var index = -1;
-      predicate = getCallback(predicate, thisArg, 3);
-      while (++index < length && predicate(array[index], index, array)) {}
-      return baseSlice(array, 0, index);
+      return (array && array.length)
+        ? baseWhile(array, getCallback(predicate, thisArg, 3))
+        : [];
     }
 
     /**
      * Creates an array of unique values, in order, of the provided arrays using
      * `SameValueZero` for equality comparisons.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -5889,9 +6193,9 @@ module.exports = keyMirror;
      * _.union([1, 2], [4, 2], [2, 1]);
      * // => [1, 2, 4]
      */
-    function union() {
-      return baseUniq(baseFlatten(arguments, false, true));
-    }
+    var union = restParam(function(arrays) {
+      return baseUniq(baseFlatten(arrays, false, true));
+    });
 
     /**
      * Creates a duplicate-value-free version of an array using `SameValueZero`
@@ -5899,23 +6203,22 @@ module.exports = keyMirror;
      * search algorithm for sorted arrays. If an iteratee function is provided it
      * is invoked for each value in the array to generate the criterion by which
      * uniqueness is computed. The `iteratee` is bound to `thisArg` and invoked
-     * with three arguments; (value, index, array).
+     * with three arguments: (value, index, array).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -5997,10 +6300,9 @@ module.exports = keyMirror;
      * Creates an array excluding all provided values using `SameValueZero` for
      * equality comparisons.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -6013,14 +6315,15 @@ module.exports = keyMirror;
      * _.without([1, 2, 1, 3], 1, 2);
      * // => [3]
      */
-    function without(array) {
-      return baseDifference(array, baseSlice(arguments, 1));
-    }
+    var without = restParam(function(array, values) {
+      return (isArray(array) || isArguments(array))
+        ? baseDifference(array, values)
+        : [];
+    });
 
     /**
-     * Creates an array that is the symmetric difference of the provided arrays.
-     * See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
-     * more details.
+     * Creates an array that is the [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
+     * of the provided arrays.
      *
      * @static
      * @memberOf _
@@ -6062,20 +6365,13 @@ module.exports = keyMirror;
      * _.zip(['fred', 'barney'], [30, 40], [true, false]);
      * // => [['fred', 30, true], ['barney', 40, false]]
      */
-    function zip() {
-      var length = arguments.length,
-          array = Array(length);
-
-      while (length--) {
-        array[length] = arguments[length];
-      }
-      return unzip(array);
-    }
+    var zip = restParam(unzip);
 
     /**
-     * Creates an object composed from arrays of property names and values. Provide
-     * either a single two dimensional array, e.g. `[[key1, value1], [key2, value2]]`
-     * or two arrays, one of property names and one of corresponding values.
+     * The inverse of `_.pairs`; this method returns an object composed from arrays
+     * of property names and values. Provide either a single two dimensional array,
+     * e.g. `[[key1, value1], [key2, value2]]` or two arrays, one of property names
+     * and one of corresponding values.
      *
      * @static
      * @memberOf _
@@ -6085,6 +6381,9 @@ module.exports = keyMirror;
      * @param {Array} [values=[]] The property values.
      * @returns {Object} Returns the new object.
      * @example
+     *
+     * _.zipObject([['fred', 30], ['barney', 40]]);
+     * // => { 'fred': 30, 'barney': 40 }
      *
      * _.zipObject(['fred', 'barney'], [30, 40]);
      * // => { 'fred': 30, 'barney': 40 }
@@ -6182,13 +6481,14 @@ module.exports = keyMirror;
      * @returns {*} Returns the result of `interceptor`.
      * @example
      *
-     * _([1, 2, 3])
-     *  .last()
+     * _('  abc  ')
+     *  .chain()
+     *  .trim()
      *  .thru(function(value) {
      *    return [value];
      *  })
      *  .value();
-     * // => [3]
+     * // => ['abc']
      */
     function thru(value, interceptor, thisArg) {
       return interceptor.call(thisArg, value);
@@ -6378,32 +6678,32 @@ module.exports = keyMirror;
      * _.at(['a', 'b', 'c'], [0, 2]);
      * // => ['a', 'c']
      *
-     * _.at(['fred', 'barney', 'pebbles'], 0, 2);
-     * // => ['fred', 'pebbles']
+     * _.at(['barney', 'fred', 'pebbles'], 0, 2);
+     * // => ['barney', 'pebbles']
      */
-    function at(collection) {
+    var at = restParam(function(collection, props) {
       var length = collection ? collection.length : 0;
       if (isLength(length)) {
         collection = toIterable(collection);
       }
-      return baseAt(collection, baseFlatten(arguments, false, false, 1));
-    }
+      return baseAt(collection, baseFlatten(props));
+    });
 
     /**
      * Creates an object composed of keys generated from the results of running
      * each element of `collection` through `iteratee`. The corresponding value
      * of each key is the number of times the key was returned by `iteratee`.
-     * The `iteratee` is bound to `thisArg` and invoked with three arguments;
+     * The `iteratee` is bound to `thisArg` and invoked with three arguments:
      * (value, index|key, collection).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
@@ -6436,7 +6736,7 @@ module.exports = keyMirror;
 
     /**
      * Checks if `predicate` returns truthy for **all** elements of `collection`.
-     * The predicate is bound to `thisArg` and invoked with three arguments;
+     * The predicate is bound to `thisArg` and invoked with three arguments:
      * (value, index|key, collection).
      *
      * If a property name is provided for `predicate` the created `_.property`
@@ -6484,6 +6784,9 @@ module.exports = keyMirror;
      */
     function every(collection, predicate, thisArg) {
       var func = isArray(collection) ? arrayEvery : baseEvery;
+      if (thisArg && isIterateeCall(collection, predicate, thisArg)) {
+        predicate = null;
+      }
       if (typeof predicate != 'function' || typeof thisArg != 'undefined') {
         predicate = getCallback(predicate, thisArg, 3);
       }
@@ -6493,7 +6796,7 @@ module.exports = keyMirror;
     /**
      * Iterates over elements of `collection`, returning an array of all elements
      * `predicate` returns truthy for. The predicate is bound to `thisArg` and
-     * invoked with three arguments; (value, index|key, collection).
+     * invoked with three arguments: (value, index|key, collection).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -6548,7 +6851,7 @@ module.exports = keyMirror;
     /**
      * Iterates over elements of `collection`, returning the first element
      * `predicate` returns truthy for. The predicate is bound to `thisArg` and
-     * invoked with three arguments; (value, index|key, collection).
+     * invoked with three arguments: (value, index|key, collection).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -6595,14 +6898,7 @@ module.exports = keyMirror;
      * _.result(_.find(users, 'active'), 'user');
      * // => 'barney'
      */
-    function find(collection, predicate, thisArg) {
-      if (isArray(collection)) {
-        var index = findIndex(collection, predicate, thisArg);
-        return index > -1 ? collection[index] : undefined;
-      }
-      predicate = getCallback(predicate, thisArg, 3);
-      return baseFind(collection, predicate, baseEach);
-    }
+    var find = createFind(baseEach);
 
     /**
      * This method is like `_.find` except that it iterates over elements of
@@ -6623,10 +6919,7 @@ module.exports = keyMirror;
      * });
      * // => 3
      */
-    function findLast(collection, predicate, thisArg) {
-      predicate = getCallback(predicate, thisArg, 3);
-      return baseFind(collection, predicate, baseEachRight);
-    }
+    var findLast = createFind(baseEachRight, true);
 
     /**
      * Performs a deep comparison between each element in `collection` and the
@@ -6663,7 +6956,7 @@ module.exports = keyMirror;
 
     /**
      * Iterates over elements of `collection` invoking `iteratee` for each element.
-     * The `iteratee` is bound to `thisArg` and invoked with three arguments;
+     * The `iteratee` is bound to `thisArg` and invoked with three arguments:
      * (value, index|key, collection). Iterator functions may exit iteration early
      * by explicitly returning `false`.
      *
@@ -6691,11 +6984,7 @@ module.exports = keyMirror;
      * });
      * // => logs each value-key pair and returns the object (iteration order is not guaranteed)
      */
-    function forEach(collection, iteratee, thisArg) {
-      return (typeof iteratee == 'function' && typeof thisArg == 'undefined' && isArray(collection))
-        ? arrayEach(collection, iteratee)
-        : baseEach(collection, bindCallback(iteratee, thisArg, 3));
-    }
+    var forEach = createForEach(arrayEach, baseEach);
 
     /**
      * This method is like `_.forEach` except that it iterates over elements of
@@ -6713,30 +7002,26 @@ module.exports = keyMirror;
      *
      * _([1, 2]).forEachRight(function(n) {
      *   console.log(n);
-     * }).join(',');
+     * }).value();
      * // => logs each value from right to left and returns the array
      */
-    function forEachRight(collection, iteratee, thisArg) {
-      return (typeof iteratee == 'function' && typeof thisArg == 'undefined' && isArray(collection))
-        ? arrayEachRight(collection, iteratee)
-        : baseEachRight(collection, bindCallback(iteratee, thisArg, 3));
-    }
+    var forEachRight = createForEach(arrayEachRight, baseEachRight);
 
     /**
      * Creates an object composed of keys generated from the results of running
      * each element of `collection` through `iteratee`. The corresponding value
      * of each key is an array of the elements responsible for generating the key.
-     * The `iteratee` is bound to `thisArg` and invoked with three arguments;
+     * The `iteratee` is bound to `thisArg` and invoked with three arguments:
      * (value, index|key, collection).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
@@ -6777,10 +7062,9 @@ module.exports = keyMirror;
      * comparisons. If `fromIndex` is negative, it is used as the offset from
      * the end of `collection`.
      *
-     * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-     * e.g. `===`, except that `NaN` matches `NaN`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * for more details.
+     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * comparisons are like strict equality comparisons, e.g. `===`, except that
+     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -6789,6 +7073,7 @@ module.exports = keyMirror;
      * @param {Array|Object|string} collection The collection to search.
      * @param {*} target The value to search for.
      * @param {number} [fromIndex=0] The index to search from.
+     * @param- {Object} [guard] Enables use as a callback for functions like `_.reduce`.
      * @returns {boolean} Returns `true` if a matching element is found, else `false`.
      * @example
      *
@@ -6804,7 +7089,7 @@ module.exports = keyMirror;
      * _.includes('pebbles', 'eb');
      * // => true
      */
-    function includes(collection, target, fromIndex) {
+    function includes(collection, target, fromIndex, guard) {
       var length = collection ? collection.length : 0;
       if (!isLength(length)) {
         collection = values(collection);
@@ -6813,10 +7098,10 @@ module.exports = keyMirror;
       if (!length) {
         return false;
       }
-      if (typeof fromIndex == 'number') {
-        fromIndex = fromIndex < 0 ? nativeMax(length + fromIndex, 0) : (fromIndex || 0);
-      } else {
+      if (typeof fromIndex != 'number' || (guard && isIterateeCall(target, fromIndex, guard))) {
         fromIndex = 0;
+      } else {
+        fromIndex = fromIndex < 0 ? nativeMax(length + fromIndex, 0) : (fromIndex || 0);
       }
       return (typeof collection == 'string' || !isArray(collection) && isString(collection))
         ? (fromIndex < length && collection.indexOf(target, fromIndex) > -1)
@@ -6827,17 +7112,17 @@ module.exports = keyMirror;
      * Creates an object composed of keys generated from the results of running
      * each element of `collection` through `iteratee`. The corresponding value
      * of each key is the last element responsible for generating the key. The
-     * iteratee function is bound to `thisArg` and invoked with three arguments;
+     * iteratee function is bound to `thisArg` and invoked with three arguments:
      * (value, index|key, collection).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
@@ -6895,23 +7180,32 @@ module.exports = keyMirror;
      * _.invoke([123, 456], String.prototype.split, '');
      * // => [['1', '2', '3'], ['4', '5', '6']]
      */
-    function invoke(collection, methodName) {
-      return baseInvoke(collection, methodName, baseSlice(arguments, 2));
-    }
+    var invoke = restParam(function(collection, methodName, args) {
+      var index = -1,
+          isFunc = typeof methodName == 'function',
+          length = collection ? collection.length : 0,
+          result = isLength(length) ? Array(length) : [];
+
+      baseEach(collection, function(value) {
+        var func = isFunc ? methodName : (value != null && value[methodName]);
+        result[++index] = func ? func.apply(value, args) : undefined;
+      });
+      return result;
+    });
 
     /**
      * Creates an array of values by running each element in `collection` through
      * `iteratee`. The `iteratee` is bound to `thisArg` and invoked with three
-     * arguments; (value, index|key, collection).
+     * arguments: (value, index|key, collection).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
@@ -6920,9 +7214,9 @@ module.exports = keyMirror;
      *
      * The guarded methods are:
      * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`, `drop`,
-     * `dropRight`, `fill`, `flatten`, `invert`, `max`, `min`, `parseInt`, `slice`,
-     * `sortBy`, `take`, `takeRight`, `template`, `trim`, `trimLeft`, `trimRight`,
-     * `trunc`, `random`, `range`, `sample`, `uniq`, and `words`
+     * `dropRight`, `every`, `fill`, `flatten`, `invert`, `max`, `min`, `parseInt`,
+     * `slice`, `sortBy`, `take`, `takeRight`, `template`, `trim`, `trimLeft`,
+     * `trimRight`, `trunc`, `random`, `range`, `sample`, `some`, `uniq`, and `words`
      *
      * @static
      * @memberOf _
@@ -6962,108 +7256,10 @@ module.exports = keyMirror;
     }
 
     /**
-     * Gets the maximum value of `collection`. If `collection` is empty or falsey
-     * `-Infinity` is returned. If an iteratee function is provided it is invoked
-     * for each value in `collection` to generate the criterion by which the value
-     * is ranked. The `iteratee` is bound to `thisArg` and invoked with three
-     * arguments; (value, index, collection).
-     *
-     * If a property name is provided for `predicate` the created `_.property`
-     * style callback returns the property value of the given element.
-     *
-     * If a value is also provided for `thisArg` the created `_.matchesProperty`
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
-     * If an object is provided for `predicate` the created `_.matches` style
-     * callback returns `true` for elements that have the properties of the given
-     * object, else `false`.
-     *
-     * @static
-     * @memberOf _
-     * @category Collection
-     * @param {Array|Object|string} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee] The function invoked per iteration.
-     * @param {*} [thisArg] The `this` binding of `iteratee`.
-     * @returns {*} Returns the maximum value.
-     * @example
-     *
-     * _.max([4, 2, 8, 6]);
-     * // => 8
-     *
-     * _.max([]);
-     * // => -Infinity
-     *
-     * var users = [
-     *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 40 }
-     * ];
-     *
-     * _.max(users, function(chr) {
-     *   return chr.age;
-     * });
-     * // => { 'user': 'fred', 'age': 40 };
-     *
-     * // using the `_.property` callback shorthand
-     * _.max(users, 'age');
-     * // => { 'user': 'fred', 'age': 40 };
-     */
-    var max = createExtremum(arrayMax);
-
-    /**
-     * Gets the minimum value of `collection`. If `collection` is empty or falsey
-     * `Infinity` is returned. If an iteratee function is provided it is invoked
-     * for each value in `collection` to generate the criterion by which the value
-     * is ranked. The `iteratee` is bound to `thisArg` and invoked with three
-     * arguments; (value, index, collection).
-     *
-     * If a property name is provided for `predicate` the created `_.property`
-     * style callback returns the property value of the given element.
-     *
-     * If a value is also provided for `thisArg` the created `_.matchesProperty`
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
-     * If an object is provided for `predicate` the created `_.matches` style
-     * callback returns `true` for elements that have the properties of the given
-     * object, else `false`.
-     *
-     * @static
-     * @memberOf _
-     * @category Collection
-     * @param {Array|Object|string} collection The collection to iterate over.
-     * @param {Function|Object|string} [iteratee] The function invoked per iteration.
-     * @param {*} [thisArg] The `this` binding of `iteratee`.
-     * @returns {*} Returns the minimum value.
-     * @example
-     *
-     * _.min([4, 2, 8, 6]);
-     * // => 2
-     *
-     * _.min([]);
-     * // => Infinity
-     *
-     * var users = [
-     *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 40 }
-     * ];
-     *
-     * _.min(users, function(chr) {
-     *   return chr.age;
-     * });
-     * // => { 'user': 'barney', 'age': 36 };
-     *
-     * // using the `_.property` callback shorthand
-     * _.min(users, 'age');
-     * // => { 'user': 'barney', 'age': 36 };
-     */
-    var min = createExtremum(arrayMin, true);
-
-    /**
      * Creates an array of elements split into two groups, the first of which
      * contains elements `predicate` returns truthy for, while the second of which
      * contains elements `predicate` returns falsey for. The predicate is bound
-     * to `thisArg` and invoked with three arguments; (value, index|key, collection).
+     * to `thisArg` and invoked with three arguments: (value, index|key, collection).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -7094,7 +7290,7 @@ module.exports = keyMirror;
      * _.partition([1.2, 2.3, 3.4], function(n) {
      *   return this.floor(n) % 2;
      * }, Math);
-     * // => [[1, 3], [2]]
+     * // => [[1.2, 3.4], [2.3]]
      *
      * var users = [
      *   { 'user': 'barney',  'age': 36, 'active': false },
@@ -7154,14 +7350,14 @@ module.exports = keyMirror;
      * each element in `collection` through `iteratee`, where each successive
      * invocation is supplied the return value of the previous. If `accumulator`
      * is not provided the first element of `collection` is used as the initial
-     * value. The `iteratee` is bound to `thisArg`and invoked with four arguments;
+     * value. The `iteratee` is bound to `thisArg` and invoked with four arguments:
      * (accumulator, value, index|key, collection).
      *
      * Many lodash methods are guarded to work as interatees for methods like
      * `_.reduce`, `_.reduceRight`, and `_.transform`.
      *
      * The guarded methods are:
-     * `assign`, `defaults`, `merge`, and `sortAllBy`
+     * `assign`, `defaults`, `includes`, `merge`, `sortByAll`, and `sortByOrder`
      *
      * @static
      * @memberOf _
@@ -7185,10 +7381,7 @@ module.exports = keyMirror;
      * }, {});
      * // => { 'a': 3, 'b': 6 } (iteration order is not guaranteed)
      */
-    function reduce(collection, iteratee, accumulator, thisArg) {
-      var func = isArray(collection) ? arrayReduce : baseReduce;
-      return func(collection, getCallback(iteratee, thisArg, 4), accumulator, arguments.length < 3, baseEach);
-    }
+    var reduce = createReduce(arrayReduce, baseEach);
 
     /**
      * This method is like `_.reduce` except that it iterates over elements of
@@ -7212,10 +7405,7 @@ module.exports = keyMirror;
      * }, []);
      * // => [4, 5, 2, 3, 0, 1]
      */
-    function reduceRight(collection, iteratee, accumulator, thisArg) {
-      var func = isArray(collection) ? arrayReduceRight : baseReduce;
-      return func(collection, getCallback(iteratee, thisArg, 4), accumulator, arguments.length < 3, baseEachRight);
-    }
+    var reduceRight =  createReduce(arrayReduceRight, baseEachRight);
 
     /**
      * The opposite of `_.filter`; this method returns the elements of `collection`
@@ -7302,9 +7492,8 @@ module.exports = keyMirror;
     }
 
     /**
-     * Creates an array of shuffled values, using a version of the Fisher-Yates
-     * shuffle. See [Wikipedia](https://en.wikipedia.org/wiki/Fisher-Yates_shuffle)
-     * for more details.
+     * Creates an array of shuffled values, using a version of the
+     * [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher-Yates_shuffle).
      *
      * @static
      * @memberOf _
@@ -7334,8 +7523,8 @@ module.exports = keyMirror;
     }
 
     /**
-     * Gets the size of `collection` by returning `collection.length` for
-     * array-like values or the number of own enumerable properties for objects.
+     * Gets the size of `collection` by returning its length for array-like
+     * values or the number of own enumerable properties for objects.
      *
      * @static
      * @memberOf _
@@ -7362,7 +7551,7 @@ module.exports = keyMirror;
      * Checks if `predicate` returns truthy for **any** element of `collection`.
      * The function returns as soon as it finds a passing value and does not iterate
      * over the entire collection. The predicate is bound to `thisArg` and invoked
-     * with three arguments; (value, index|key, collection).
+     * with three arguments: (value, index|key, collection).
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -7409,6 +7598,9 @@ module.exports = keyMirror;
      */
     function some(collection, predicate, thisArg) {
       var func = isArray(collection) ? arraySome : baseSome;
+      if (thisArg && isIterateeCall(collection, predicate, thisArg)) {
+        predicate = null;
+      }
       if (typeof predicate != 'function' || typeof thisArg != 'undefined') {
         predicate = getCallback(predicate, thisArg, 3);
       }
@@ -7419,17 +7611,17 @@ module.exports = keyMirror;
      * Creates an array of elements, sorted in ascending order by the results of
      * running each element in a collection through `iteratee`. This method performs
      * a stable sort, that is, it preserves the original sort order of equal elements.
-     * The `iteratee` is bound to `thisArg` and invoked with three arguments;
+     * The `iteratee` is bound to `thisArg` and invoked with three arguments:
      * (value, index|key, collection).
      *
-     * If a property name is provided for `predicate` the created `_.property`
+     * If a property name is provided for `iteratee` the created `_.property`
      * style callback returns the property value of the given element.
      *
      * If a value is also provided for `thisArg` the created `_.matchesProperty`
      * style callback returns `true` for elements that have a matching property
      * value, else `false`.
      *
-     * If an object is provided for `predicate` the created `_.matches` style
+     * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
@@ -7465,8 +7657,11 @@ module.exports = keyMirror;
      * // => ['barney', 'fred', 'pebbles']
      */
     function sortBy(collection, iteratee, thisArg) {
+      if (collection == null) {
+        return [];
+      }
       var index = -1,
-          length = collection ? collection.length : 0,
+          length = collection.length,
           result = isLength(length) ? Array(length) : [];
 
       if (thisArg && isIterateeCall(collection, iteratee, thisArg)) {
@@ -7502,26 +7697,67 @@ module.exports = keyMirror;
      * _.map(_.sortByAll(users, ['user', 'age']), _.values);
      * // => [['barney', 26], ['barney', 36], ['fred', 30], ['fred', 40]]
      */
-    function sortByAll(collection) {
-      var args = arguments;
-      if (args.length > 3 && isIterateeCall(args[1], args[2], args[3])) {
-        args = [collection, args[1]];
+    function sortByAll() {
+      var args = arguments,
+          collection = args[0],
+          guard = args[3],
+          index = 0,
+          length = args.length - 1;
+
+      if (collection == null) {
+        return [];
       }
-      var index = -1,
-          length = collection ? collection.length : 0,
-          props = baseFlatten(args, false, false, 1),
-          result = isLength(length) ? Array(length) : [];
+      var props = Array(length);
+      while (index < length) {
+        props[index] = args[++index];
+      }
+      if (guard && isIterateeCall(args[1], args[2], guard)) {
+        props = args[1];
+      }
+      return baseSortByOrder(collection, baseFlatten(props), []);
+    }
 
-      baseEach(collection, function(value) {
-        var length = props.length,
-            criteria = Array(length);
-
-        while (length--) {
-          criteria[length] = value == null ? undefined : value[props[length]];
-        }
-        result[++index] = { 'criteria': criteria, 'index': index, 'value': value };
-      });
-      return baseSortBy(result, compareMultipleAscending);
+    /**
+     * This method is like `_.sortByAll` except that it allows specifying the
+     * sort orders of the property names to sort by. A truthy value in `orders`
+     * will sort the corresponding property name in ascending order while a
+     * falsey value will sort it in descending order.
+     *
+     * @static
+     * @memberOf _
+     * @category Collection
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {string[]} props The property names to sort by.
+     * @param {boolean[]} orders The sort orders of `props`.
+     * @param- {Object} [guard] Enables use as a callback for functions like `_.reduce`.
+     * @returns {Array} Returns the new sorted array.
+     * @example
+     *
+     * var users = [
+     *   { 'user': 'barney', 'age': 26 },
+     *   { 'user': 'fred',   'age': 40 },
+     *   { 'user': 'barney', 'age': 36 },
+     *   { 'user': 'fred',   'age': 30 }
+     * ];
+     *
+     * // sort by `user` in ascending order and by `age` in descending order
+     * _.map(_.sortByOrder(users, ['user', 'age'], [true, false]), _.values);
+     * // => [['barney', 36], ['barney', 26], ['fred', 40], ['fred', 30]]
+     */
+    function sortByOrder(collection, props, orders, guard) {
+      if (collection == null) {
+        return [];
+      }
+      if (guard && isIterateeCall(props, orders, guard)) {
+        orders = null;
+      }
+      if (!isArray(props)) {
+        props = props == null ? [] : [props];
+      }
+      if (!isArray(orders)) {
+        orders = orders == null ? [] : [orders];
+      }
+      return baseSortByOrder(collection, props, orders);
     }
 
     /**
@@ -7697,7 +7933,7 @@ module.exports = keyMirror;
      * @category Function
      * @param {Function} func The function to bind.
      * @param {*} thisArg The `this` binding of `func`.
-     * @param {...*} [args] The arguments to be partially applied.
+     * @param {...*} [partials] The arguments to be partially applied.
      * @returns {Function} Returns the new bound function.
      * @example
      *
@@ -7716,16 +7952,14 @@ module.exports = keyMirror;
      * bound('hi');
      * // => 'hi fred!'
      */
-    function bind(func, thisArg) {
+    var bind = restParam(function(func, thisArg, partials) {
       var bitmask = BIND_FLAG;
-      if (arguments.length > 2) {
-        var partials = baseSlice(arguments, 2),
-            holders = replaceHolders(partials, bind.placeholder);
-
+      if (partials.length) {
+        var holders = replaceHolders(partials, bind.placeholder);
         bitmask |= PARTIAL_FLAG;
       }
       return createWrapper(func, bitmask, thisArg, partials, holders);
-    }
+    });
 
     /**
      * Binds methods of an object to the object itself, overwriting the existing
@@ -7755,13 +7989,18 @@ module.exports = keyMirror;
      * jQuery('#docs').on('click', view.onClick);
      * // => logs 'clicked docs' when the element is clicked
      */
-    function bindAll(object) {
-      return baseBindAll(object,
-        arguments.length > 1
-          ? baseFlatten(arguments, false, false, 1)
-          : functions(object)
-      );
-    }
+    var bindAll = restParam(function(object, methodNames) {
+      methodNames = methodNames.length ? baseFlatten(methodNames) : functions(object);
+
+      var index = -1,
+          length = methodNames.length;
+
+      while (++index < length) {
+        var key = methodNames[index];
+        object[key] = createWrapper(object[key], BIND_FLAG, object);
+      }
+      return object;
+    });
 
     /**
      * Creates a function that invokes the method at `object[key]` and prepends
@@ -7780,7 +8019,7 @@ module.exports = keyMirror;
      * @category Function
      * @param {Object} object The object the method belongs to.
      * @param {string} key The key of the method.
-     * @param {...*} [args] The arguments to be partially applied.
+     * @param {...*} [partials] The arguments to be partially applied.
      * @returns {Function} Returns the new bound function.
      * @example
      *
@@ -7807,16 +8046,14 @@ module.exports = keyMirror;
      * bound('hi');
      * // => 'hiya fred!'
      */
-    function bindKey(object, key) {
+    var bindKey = restParam(function(object, key, partials) {
       var bitmask = BIND_FLAG | BIND_KEY_FLAG;
-      if (arguments.length > 2) {
-        var partials = baseSlice(arguments, 2),
-            holders = replaceHolders(partials, bindKey.placeholder);
-
+      if (partials.length) {
+        var holders = replaceHolders(partials, bindKey.placeholder);
         bitmask |= PARTIAL_FLAG;
       }
       return createWrapper(key, bitmask, object, partials, holders);
-    }
+    });
 
     /**
      * Creates a function that accepts one or more arguments of `func` that when
@@ -7858,14 +8095,7 @@ module.exports = keyMirror;
      * curried(1)(_, 3)(2);
      * // => [1, 2, 3]
      */
-    function curry(func, arity, guard) {
-      if (guard && isIterateeCall(func, arity, guard)) {
-        arity = null;
-      }
-      var result = createWrapper(func, CURRY_FLAG, null, null, null, null, null, arity);
-      result.placeholder = curry.placeholder;
-      return result;
-    }
+    var curry = createCurry(CURRY_FLAG);
 
     /**
      * This method is like `_.curry` except that arguments are applied to `func`
@@ -7904,14 +8134,7 @@ module.exports = keyMirror;
      * curried(3)(1, _)(2);
      * // => [1, 2, 3]
      */
-    function curryRight(func, arity, guard) {
-      if (guard && isIterateeCall(func, arity, guard)) {
-        arity = null;
-      }
-      var result = createWrapper(func, CURRY_RIGHT_FLAG, null, null, null, null, null, arity);
-      result.placeholder = curryRight.placeholder;
-      return result;
-    }
+    var curryRight = createCurry(CURRY_RIGHT_FLAG);
 
     /**
      * Creates a function that delays invoking `func` until after `wait` milliseconds
@@ -8106,9 +8329,9 @@ module.exports = keyMirror;
      * }, 'deferred');
      * // logs 'deferred' after one or more milliseconds
      */
-    function defer(func) {
-      return baseDelay(func, 1, arguments, 1);
-    }
+    var defer = restParam(function(func, args) {
+      return baseDelay(func, 1, args);
+    });
 
     /**
      * Invokes `func` after `wait` milliseconds. Any additional arguments are
@@ -8128,9 +8351,9 @@ module.exports = keyMirror;
      * }, 1000, 'later');
      * // => logs 'later' after one second
      */
-    function delay(func, wait) {
-      return baseDelay(func, wait, arguments, 2);
-    }
+    var delay = restParam(function(func, wait, args) {
+      return baseDelay(func, wait, args);
+    });
 
     /**
      * Creates a function that returns the result of invoking the provided
@@ -8144,38 +8367,15 @@ module.exports = keyMirror;
      * @returns {Function} Returns the new function.
      * @example
      *
-     * function add(x, y) {
-     *   return x + y;
-     * }
-     *
      * function square(n) {
      *   return n * n;
      * }
      *
-     * var addSquare = _.flow(add, square);
+     * var addSquare = _.flow(_.add, square);
      * addSquare(1, 2);
      * // => 9
      */
-    function flow() {
-      var funcs = arguments,
-          length = funcs.length;
-
-      if (!length) {
-        return function() { return arguments[0]; };
-      }
-      if (!arrayEvery(funcs, baseIsFunction)) {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      return function() {
-        var index = 0,
-            result = funcs[index].apply(this, arguments);
-
-        while (++index < length) {
-          result = funcs[index].call(this, result);
-        }
-        return result;
-      };
-    }
+    var flow = createFlow();
 
     /**
      * This method is like `_.flow` except that it creates a function that
@@ -8189,38 +8389,15 @@ module.exports = keyMirror;
      * @returns {Function} Returns the new function.
      * @example
      *
-     * function add(x, y) {
-     *   return x + y;
-     * }
-     *
      * function square(n) {
      *   return n * n;
      * }
      *
-     * var addSquare = _.flowRight(square, add);
+     * var addSquare = _.flowRight(square, _.add);
      * addSquare(1, 2);
      * // => 9
      */
-    function flowRight() {
-      var funcs = arguments,
-          fromIndex = funcs.length - 1;
-
-      if (fromIndex < 0) {
-        return function() { return arguments[0]; };
-      }
-      if (!arrayEvery(funcs, baseIsFunction)) {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      return function() {
-        var index = fromIndex,
-            result = funcs[index].apply(this, arguments);
-
-        while (index--) {
-          result = funcs[index].call(this, result);
-        }
-        return result;
-      };
-    }
+    var flowRight = createFlow(true);
 
     /**
      * Creates a function that memoizes the result of `func`. If `resolver` is
@@ -8232,10 +8409,8 @@ module.exports = keyMirror;
      *
      * **Note:** The cache is exposed as the `cache` property on the memoized
      * function. Its creation may be customized by replacing the `_.memoize.Cache`
-     * constructor with one whose instances implement the ES `Map` method interface
-     * of `get`, `has`, and `set`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-properties-of-the-map-prototype-object)
-     * for more details.
+     * constructor with one whose instances implement the [`Map`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-properties-of-the-map-prototype-object)
+     * method interface of `get`, `has`, and `set`.
      *
      * @static
      * @memberOf _
@@ -8280,13 +8455,14 @@ module.exports = keyMirror;
         throw new TypeError(FUNC_ERROR_TEXT);
       }
       var memoized = function() {
-        var cache = memoized.cache,
-            key = resolver ? resolver.apply(this, arguments) : arguments[0];
+        var args = arguments,
+            cache = memoized.cache,
+            key = resolver ? resolver.apply(this, args) : args[0];
 
         if (cache.has(key)) {
           return cache.get(key);
         }
-        var result = func.apply(this, arguments);
+        var result = func.apply(this, args);
         cache.set(key, result);
         return result;
       };
@@ -8325,7 +8501,7 @@ module.exports = keyMirror;
     /**
      * Creates a function that is restricted to invoking `func` once. Repeat calls
      * to the function return the value of the first call. The `func` is invoked
-     * with the `this` binding of the created function.
+     * with the `this` binding and arguments of the created function.
      *
      * @static
      * @memberOf _
@@ -8358,7 +8534,7 @@ module.exports = keyMirror;
      * @memberOf _
      * @category Function
      * @param {Function} func The function to partially apply arguments to.
-     * @param {...*} [args] The arguments to be partially applied.
+     * @param {...*} [partials] The arguments to be partially applied.
      * @returns {Function} Returns the new partially applied function.
      * @example
      *
@@ -8375,12 +8551,7 @@ module.exports = keyMirror;
      * greetFred('hi');
      * // => 'hi fred'
      */
-    function partial(func) {
-      var partials = baseSlice(arguments, 1),
-          holders = replaceHolders(partials, partial.placeholder);
-
-      return createWrapper(func, PARTIAL_FLAG, null, partials, holders);
-    }
+    var partial = createPartial(PARTIAL_FLAG);
 
     /**
      * This method is like `_.partial` except that partially applied arguments
@@ -8396,7 +8567,7 @@ module.exports = keyMirror;
      * @memberOf _
      * @category Function
      * @param {Function} func The function to partially apply arguments to.
-     * @param {...*} [args] The arguments to be partially applied.
+     * @param {...*} [partials] The arguments to be partially applied.
      * @returns {Function} Returns the new partially applied function.
      * @example
      *
@@ -8413,12 +8584,7 @@ module.exports = keyMirror;
      * sayHelloTo('fred');
      * // => 'hello fred'
      */
-    function partialRight(func) {
-      var partials = baseSlice(arguments, 1),
-          holders = replaceHolders(partials, partialRight.placeholder);
-
-      return createWrapper(func, PARTIAL_RIGHT_FLAG, null, partials, holders);
-    }
+    var partialRight = createPartial(PARTIAL_RIGHT_FLAG);
 
     /**
      * Creates a function that invokes `func` with arguments arranged according
@@ -8448,29 +8614,80 @@ module.exports = keyMirror;
      * }, [1, 2, 3]);
      * // => [3, 6, 9]
      */
-    function rearg(func) {
-      var indexes = baseFlatten(arguments, false, false, 1);
-      return createWrapper(func, REARG_FLAG, null, null, null, indexes);
-    }
+    var rearg = restParam(function(func, indexes) {
+      return createWrapper(func, REARG_FLAG, null, null, null, baseFlatten(indexes));
+    });
 
     /**
      * Creates a function that invokes `func` with the `this` binding of the
-     * created function and the array of arguments provided to the created
-     * function much like [Function#apply](http://es5.github.io/#x15.3.4.3).
+     * created function and arguments from `start` and beyond provided as an array.
+     *
+     * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+     *
+     * @static
+     * @memberOf _
+     * @category Function
+     * @param {Function} func The function to apply a rest parameter to.
+     * @param {number} [start=func.length-1] The start position of the rest parameter.
+     * @returns {Function} Returns the new function.
+     * @example
+     *
+     * var say = _.restParam(function(what, names) {
+     *   return what + ' ' + _.initial(names).join(', ') +
+     *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+     * });
+     *
+     * say('hello', 'fred', 'barney', 'pebbles');
+     * // => 'hello fred, barney, & pebbles'
+     */
+    function restParam(func, start) {
+      if (typeof func != 'function') {
+        throw new TypeError(FUNC_ERROR_TEXT);
+      }
+      start = nativeMax(typeof start == 'undefined' ? (func.length - 1) : (+start || 0), 0);
+      return function() {
+        var args = arguments,
+            index = -1,
+            length = nativeMax(args.length - start, 0),
+            rest = Array(length);
+
+        while (++index < length) {
+          rest[index] = args[start + index];
+        }
+        switch (start) {
+          case 0: return func.call(this, rest);
+          case 1: return func.call(this, args[0], rest);
+          case 2: return func.call(this, args[0], args[1], rest);
+        }
+        var otherArgs = Array(start + 1);
+        index = -1;
+        while (++index < start) {
+          otherArgs[index] = args[index];
+        }
+        otherArgs[start] = rest;
+        return func.apply(this, otherArgs);
+      };
+    }
+
+    /**
+     * Creates a function that invokes `func` with the `this` binding of the created
+     * function and an array of arguments much like [`Function#apply`](https://es5.github.io/#x15.3.4.3).
+     *
+     * **Note:** This method is based on the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator).
      *
      * @static
      * @memberOf _
      * @category Function
      * @param {Function} func The function to spread arguments over.
-     * @returns {*} Returns the new function.
+     * @returns {Function} Returns the new function.
      * @example
      *
-     * var spread = _.spread(function(who, what) {
+     * var say = _.spread(function(who, what) {
      *   return who + ' says ' + what;
      * });
      *
-     * spread(['Fred', 'hello']);
-     * // => 'Fred says hello'
+     * say(['fred', 'hello']);
+     * // => 'fred says hello'
      *
      * // with a Promise
      * var numbers = Promise.all([
@@ -8585,12 +8802,12 @@ module.exports = keyMirror;
      * cloning is handled by the method instead. The `customizer` is bound to
      * `thisArg` and invoked with two argument; (value [, index|key, object]).
      *
-     * **Note:** This method is loosely based on the structured clone algorithm.
+     * **Note:** This method is loosely based on the
+     * [structured clone algorithm](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm).
      * The enumerable properties of `arguments` objects and objects created by
      * constructors other than `Object` are cloned to plain `Object` objects. An
      * empty object is returned for uncloneable values such as functions, DOM nodes,
-     * Maps, Sets, and WeakMaps. See the [HTML5 specification](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm)
-     * for more details.
+     * Maps, Sets, and WeakMaps.
      *
      * @static
      * @memberOf _
@@ -8648,12 +8865,12 @@ module.exports = keyMirror;
      * is handled by the method instead. The `customizer` is bound to `thisArg`
      * and invoked with two argument; (value [, index|key, object]).
      *
-     * **Note:** This method is loosely based on the structured clone algorithm.
+     * **Note:** This method is loosely based on the
+     * [structured clone algorithm](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm).
      * The enumerable properties of `arguments` objects and objects created by
      * constructors other than `Object` are cloned to plain `Object` objects. An
      * empty object is returned for uncloneable values such as functions, DOM nodes,
-     * Maps, Sets, and WeakMaps. See the [HTML5 specification](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm)
-     * for more details.
+     * Maps, Sets, and WeakMaps.
      *
      * @static
      * @memberOf _
@@ -8710,7 +8927,7 @@ module.exports = keyMirror;
      */
     function isArguments(value) {
       var length = isObjectLike(value) ? value.length : undefined;
-      return (isLength(length) && objToString.call(value) == argsTag) || false;
+      return isLength(length) && objToString.call(value) == argsTag;
     }
 
     /**
@@ -8730,7 +8947,7 @@ module.exports = keyMirror;
      * // => false
      */
     var isArray = nativeIsArray || function(value) {
-      return (isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag) || false;
+      return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
     };
 
     /**
@@ -8750,7 +8967,7 @@ module.exports = keyMirror;
      * // => false
      */
     function isBoolean(value) {
-      return (value === true || value === false || isObjectLike(value) && objToString.call(value) == boolTag) || false;
+      return value === true || value === false || (isObjectLike(value) && objToString.call(value) == boolTag);
     }
 
     /**
@@ -8770,7 +8987,7 @@ module.exports = keyMirror;
      * // => false
      */
     function isDate(value) {
-      return (isObjectLike(value) && objToString.call(value) == dateTag) || false;
+      return isObjectLike(value) && objToString.call(value) == dateTag;
     }
 
     /**
@@ -8790,18 +9007,18 @@ module.exports = keyMirror;
      * // => false
      */
     function isElement(value) {
-      return (value && value.nodeType === 1 && isObjectLike(value) &&
-        objToString.call(value).indexOf('Element') > -1) || false;
+      return !!value && value.nodeType === 1 && isObjectLike(value) &&
+        (objToString.call(value).indexOf('Element') > -1);
     }
     // Fallback for environments without DOM support.
     if (!support.dom) {
       isElement = function(value) {
-        return (value && value.nodeType === 1 && isObjectLike(value) && !isPlainObject(value)) || false;
+        return !!value && value.nodeType === 1 && isObjectLike(value) && !isPlainObject(value);
       };
     }
 
     /**
-     * Checks if a value is empty. A value is considered empty unless it is an
+     * Checks if `value` is empty. A value is considered empty unless it is an
      * `arguments` object, array, string, or jQuery-like collection with a length
      * greater than `0` or an object with own enumerable properties.
      *
@@ -8844,7 +9061,7 @@ module.exports = keyMirror;
      * equivalent. If `customizer` is provided it is invoked to compare values.
      * If `customizer` returns `undefined` comparisons are handled by the method
      * instead. The `customizer` is bound to `thisArg` and invoked with three
-     * arguments; (value, other [, index|key]).
+     * arguments: (value, other [, index|key]).
      *
      * **Note:** This method supports comparing arrays, booleans, `Date` objects,
      * numbers, `Object` objects, regexes, and strings. Objects are compared by
@@ -8909,15 +9126,13 @@ module.exports = keyMirror;
      * // => false
      */
     function isError(value) {
-      return (isObjectLike(value) && typeof value.message == 'string' && objToString.call(value) == errorTag) || false;
+      return isObjectLike(value) && typeof value.message == 'string' && objToString.call(value) == errorTag;
     }
 
     /**
      * Checks if `value` is a finite primitive number.
      *
-     * **Note:** This method is based on ES `Number.isFinite`. See the
-     * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.isfinite)
-     * for more details.
+     * **Note:** This method is based on [`Number.isFinite`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.isfinite).
      *
      * @static
      * @memberOf _
@@ -8969,10 +9184,8 @@ module.exports = keyMirror;
     };
 
     /**
-     * Checks if `value` is the language type of `Object`.
+     * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
      * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-     *
-     * **Note:** See the [ES5 spec](https://es5.github.io/#x8) for more details.
      *
      * @static
      * @memberOf _
@@ -8994,7 +9207,7 @@ module.exports = keyMirror;
       // Avoid a V8 JIT bug in Chrome 19-20.
       // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
       var type = typeof value;
-      return type == 'function' || (value && type == 'object') || false;
+      return type == 'function' || (!!value && type == 'object');
     }
 
     /**
@@ -9002,7 +9215,7 @@ module.exports = keyMirror;
      * `object` contains equivalent property values. If `customizer` is provided
      * it is invoked to compare values. If `customizer` returns `undefined`
      * comparisons are handled by the method instead. The `customizer` is bound
-     * to `thisArg` and invoked with three arguments; (value, other, index|key).
+     * to `thisArg` and invoked with three arguments: (value, other, index|key).
      *
      * **Note:** This method supports comparing properties of arrays, booleans,
      * `Date` objects, numbers, `Object` objects, regexes, and strings. Functions
@@ -9040,13 +9253,19 @@ module.exports = keyMirror;
       var props = keys(source),
           length = props.length;
 
+      if (!length) {
+        return true;
+      }
+      if (object == null) {
+        return false;
+      }
       customizer = typeof customizer == 'function' && bindCallback(customizer, thisArg, 3);
       if (!customizer && length == 1) {
         var key = props[0],
             value = source[key];
 
         if (isStrictComparable(value)) {
-          return object != null && value === object[key] && hasOwnProperty.call(object, key);
+          return value === object[key] && (typeof value != 'undefined' || (key in toObject(object)));
         }
       }
       var values = Array(length),
@@ -9056,15 +9275,14 @@ module.exports = keyMirror;
         value = values[length] = source[props[length]];
         strictCompareFlags[length] = isStrictComparable(value);
       }
-      return baseIsMatch(object, props, values, strictCompareFlags, customizer);
+      return baseIsMatch(toObject(object), props, values, strictCompareFlags, customizer);
     }
 
     /**
      * Checks if `value` is `NaN`.
      *
-     * **Note:** This method is not the same as native `isNaN` which returns `true`
-     * for `undefined` and other non-numeric values. See the [ES5 spec](https://es5.github.io/#x15.1.2.4)
-     * for more details.
+     * **Note:** This method is not the same as [`isNaN`](https://es5.github.io/#x15.1.2.4)
+     * which returns `true` for `undefined` and other non-numeric values.
      *
      * @static
      * @memberOf _
@@ -9114,7 +9332,7 @@ module.exports = keyMirror;
       if (objToString.call(value) == funcTag) {
         return reNative.test(fnToString.call(value));
       }
-      return (isObjectLike(value) && reHostCtor.test(value)) || false;
+      return isObjectLike(value) && reHostCtor.test(value);
     }
 
     /**
@@ -9160,7 +9378,7 @@ module.exports = keyMirror;
      * // => false
      */
     function isNumber(value) {
-      return typeof value == 'number' || (isObjectLike(value) && objToString.call(value) == numberTag) || false;
+      return typeof value == 'number' || (isObjectLike(value) && objToString.call(value) == numberTag);
     }
 
     /**
@@ -9242,7 +9460,7 @@ module.exports = keyMirror;
      * // => false
      */
     function isString(value) {
-      return typeof value == 'string' || (isObjectLike(value) && objToString.call(value) == stringTag) || false;
+      return typeof value == 'string' || (isObjectLike(value) && objToString.call(value) == stringTag);
     }
 
     /**
@@ -9262,7 +9480,7 @@ module.exports = keyMirror;
      * // => false
      */
     function isTypedArray(value) {
-      return (isObjectLike(value) && isLength(value.length) && typedArrayTags[objToString.call(value)]) || false;
+      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objToString.call(value)];
     }
 
     /**
@@ -9344,7 +9562,7 @@ module.exports = keyMirror;
      * Assigns own enumerable properties of source object(s) to the destination
      * object. Subsequent sources overwrite property assignments of previous sources.
      * If `customizer` is provided it is invoked to produce the assigned values.
-     * The `customizer` is bound to `thisArg` and invoked with five arguments;
+     * The `customizer` is bound to `thisArg` and invoked with five arguments:
      * (objectValue, sourceValue, key, object, source).
      *
      * @static
@@ -9416,7 +9634,7 @@ module.exports = keyMirror;
     /**
      * Assigns own enumerable properties of source object(s) to the destination
      * object for all destination properties that resolve to `undefined`. Once a
-     * property is set, additional defaults of the same property are ignored.
+     * property is set, additional values of the same property are ignored.
      *
      * @static
      * @memberOf _
@@ -9429,18 +9647,18 @@ module.exports = keyMirror;
      * _.defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
      * // => { 'user': 'barney', 'age': 36 }
      */
-    function defaults(object) {
+    var defaults = restParam(function(args) {
+      var object = args[0];
       if (object == null) {
         return object;
       }
-      var args = arrayCopy(arguments);
       args.push(assignDefaults);
       return assign.apply(undefined, args);
-    }
+    });
 
     /**
-     * This method is like `_.findIndex` except that it returns the key of the
-     * first element `predicate` returns truthy for, instead of the element itself.
+     * This method is like `_.find` except that it returns the key of the first
+     * element `predicate` returns truthy for instead of the element itself.
      *
      * If a property name is provided for `predicate` the created `_.property`
      * style callback returns the property value of the given element.
@@ -9486,10 +9704,7 @@ module.exports = keyMirror;
      * _.findKey(users, 'active');
      * // => 'barney'
      */
-    function findKey(object, predicate, thisArg) {
-      predicate = getCallback(predicate, thisArg, 3);
-      return baseFind(object, predicate, baseForOwn, true);
-    }
+    var findKey = createFindKey(baseForOwn);
 
     /**
      * This method is like `_.findKey` except that it iterates over elements of
@@ -9539,15 +9754,12 @@ module.exports = keyMirror;
      * _.findLastKey(users, 'active');
      * // => 'pebbles'
      */
-    function findLastKey(object, predicate, thisArg) {
-      predicate = getCallback(predicate, thisArg, 3);
-      return baseFind(object, predicate, baseForOwnRight, true);
-    }
+    var findLastKey = createFindKey(baseForOwnRight);
 
     /**
      * Iterates over own and inherited enumerable properties of an object invoking
      * `iteratee` for each property. The `iteratee` is bound to `thisArg` and invoked
-     * with three arguments; (value, key, object). Iterator functions may exit
+     * with three arguments: (value, key, object). Iterator functions may exit
      * iteration early by explicitly returning `false`.
      *
      * @static
@@ -9571,12 +9783,7 @@ module.exports = keyMirror;
      * });
      * // => logs 'a', 'b', and 'c' (iteration order is not guaranteed)
      */
-    function forIn(object, iteratee, thisArg) {
-      if (typeof iteratee != 'function' || typeof thisArg != 'undefined') {
-        iteratee = bindCallback(iteratee, thisArg, 3);
-      }
-      return baseFor(object, iteratee, keysIn);
-    }
+    var forIn = createForIn(baseFor);
 
     /**
      * This method is like `_.forIn` except that it iterates over properties of
@@ -9603,15 +9810,12 @@ module.exports = keyMirror;
      * });
      * // => logs 'c', 'b', and 'a' assuming `_.forIn ` logs 'a', 'b', and 'c'
      */
-    function forInRight(object, iteratee, thisArg) {
-      iteratee = bindCallback(iteratee, thisArg, 3);
-      return baseForRight(object, iteratee, keysIn);
-    }
+    var forInRight = createForIn(baseForRight);
 
     /**
      * Iterates over own enumerable properties of an object invoking `iteratee`
      * for each property. The `iteratee` is bound to `thisArg` and invoked with
-     * three arguments; (value, key, object). Iterator functions may exit iteration
+     * three arguments: (value, key, object). Iterator functions may exit iteration
      * early by explicitly returning `false`.
      *
      * @static
@@ -9635,12 +9839,7 @@ module.exports = keyMirror;
      * });
      * // => logs 'a' and 'b' (iteration order is not guaranteed)
      */
-    function forOwn(object, iteratee, thisArg) {
-      if (typeof iteratee != 'function' || typeof thisArg != 'undefined') {
-        iteratee = bindCallback(iteratee, thisArg, 3);
-      }
-      return baseForOwn(object, iteratee);
-    }
+    var forOwn = createForOwn(baseForOwn);
 
     /**
      * This method is like `_.forOwn` except that it iterates over properties of
@@ -9667,10 +9866,7 @@ module.exports = keyMirror;
      * });
      * // => logs 'b' and 'a' assuming `_.forOwn` logs 'a' and 'b'
      */
-    function forOwnRight(object, iteratee, thisArg) {
-      iteratee = bindCallback(iteratee, thisArg, 3);
-      return baseForRight(object, iteratee, keys);
-    }
+    var forOwnRight = createForOwn(baseForOwnRight);
 
     /**
      * Creates an array of function property names from all enumerable properties,
@@ -9795,7 +9991,7 @@ module.exports = keyMirror;
             length = object.length;
       }
       if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
-         (typeof object != 'function' && (length && isLength(length)))) {
+          (typeof object != 'function' && (length && isLength(length)))) {
         return shimKeys(object);
       }
       return isObject(object) ? nativeKeys(object) : [];
@@ -9855,7 +10051,7 @@ module.exports = keyMirror;
     /**
      * Creates an object with the same keys as `object` and values generated by
      * running each own enumerable property of `object` through `iteratee`. The
-     * iteratee function is bound to `thisArg` and invoked with three arguments;
+     * iteratee function is bound to `thisArg` and invoked with three arguments:
      * (value, key, object).
      *
      * If a property name is provided for `iteratee` the created `_.property`
@@ -9910,7 +10106,7 @@ module.exports = keyMirror;
      * provided it is invoked to produce the merged values of the destination and
      * source properties. If `customizer` returns `undefined` merging is handled
      * by the method instead. The `customizer` is bound to `thisArg` and invoked
-     * with five arguments; (objectValue, sourceValue, key, object, source).
+     * with five arguments: (objectValue, sourceValue, key, object, source).
      *
      * @static
      * @memberOf _
@@ -9959,7 +10155,7 @@ module.exports = keyMirror;
      * Property names may be specified as individual arguments or as arrays of
      * property names. If `predicate` is provided it is invoked for each property
      * of `object` omitting the properties `predicate` returns truthy for. The
-     * predicate is bound to `thisArg` and invoked with three arguments;
+     * predicate is bound to `thisArg` and invoked with three arguments:
      * (value, key, object).
      *
      * @static
@@ -9981,19 +10177,19 @@ module.exports = keyMirror;
      * _.omit(object, _.isNumber);
      * // => { 'user': 'fred' }
      */
-    function omit(object, predicate, thisArg) {
+    var omit = restParam(function(object, props) {
       if (object == null) {
         return {};
       }
-      if (typeof predicate != 'function') {
-        var props = arrayMap(baseFlatten(arguments, false, false, 1), String);
+      if (typeof props[0] != 'function') {
+        var props = arrayMap(baseFlatten(props), String);
         return pickByArray(object, baseDifference(keysIn(object), props));
       }
-      predicate = bindCallback(predicate, thisArg, 3);
+      var predicate = bindCallback(props[0], props[1], 3);
       return pickByCallback(object, function(value, key, object) {
         return !predicate(value, key, object);
       });
-    }
+    });
 
     /**
      * Creates a two dimensional array of the key-value pairs for `object`,
@@ -10027,7 +10223,7 @@ module.exports = keyMirror;
      * names may be specified as individual arguments or as arrays of property
      * names. If `predicate` is provided it is invoked for each property of `object`
      * picking the properties `predicate` returns truthy for. The predicate is
-     * bound to `thisArg` and invoked with three arguments; (value, key, object).
+     * bound to `thisArg` and invoked with three arguments: (value, key, object).
      *
      * @static
      * @memberOf _
@@ -10048,14 +10244,14 @@ module.exports = keyMirror;
      * _.pick(object, _.isString);
      * // => { 'user': 'fred' }
      */
-    function pick(object, predicate, thisArg) {
+    var pick = restParam(function(object, props) {
       if (object == null) {
         return {};
       }
-      return typeof predicate == 'function'
-        ? pickByCallback(object, bindCallback(predicate, thisArg, 3))
-        : pickByArray(object, baseFlatten(arguments, false, false, 1));
-    }
+      return typeof props[0] == 'function'
+        ? pickByCallback(object, bindCallback(props[0], props[1], 3))
+        : pickByArray(object, baseFlatten(props));
+    });
 
     /**
      * Resolves the value of property `key` on `object`. If the value of `key` is
@@ -10100,7 +10296,7 @@ module.exports = keyMirror;
      * `accumulator` object which is the result of running each of its own enumerable
      * properties through `iteratee`, with each invocation potentially mutating
      * the `accumulator` object. The `iteratee` is bound to `thisArg` and invoked
-     * with four arguments; (accumulator, value, key, object). Iterator functions
+     * with four arguments: (accumulator, value, key, object). Iterator functions
      * may exit iteration early by explicitly returning `false`.
      *
      * @static
@@ -10206,7 +10402,7 @@ module.exports = keyMirror;
 
     /**
      * Checks if `n` is between `start` and up to but not including, `end`. If
-     * `end` is not specified it defaults to `start` with `start` becoming `0`.
+     * `end` is not specified it is set to `start` with `start` then set to `0`.
      *
      * @static
      * @memberOf _
@@ -10311,8 +10507,7 @@ module.exports = keyMirror;
     /*------------------------------------------------------------------------*/
 
     /**
-     * Converts `string` to camel case.
-     * See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
+     * Converts `string` to [camel case](https://en.wikipedia.org/wiki/CamelCase).
      *
      * @static
      * @memberOf _
@@ -10354,9 +10549,8 @@ module.exports = keyMirror;
     }
 
     /**
-     * Deburrs `string` by converting latin-1 supplementary letters to basic latin letters.
-     * See [Wikipedia](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
-     * for more details.
+     * Deburrs `string` by converting [latin-1 supplementary letters](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+     * to basic latin letters and removing [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
      *
      * @static
      * @memberOf _
@@ -10370,7 +10564,7 @@ module.exports = keyMirror;
      */
     function deburr(string) {
       string = baseToString(string);
-      return string && string.replace(reLatin1, deburrLetter);
+      return string && string.replace(reLatin1, deburrLetter).replace(reComboMarks, '');
     }
 
     /**
@@ -10399,12 +10593,16 @@ module.exports = keyMirror;
       target = (target + '');
 
       var length = string.length;
-      position = (typeof position == 'undefined' ? length : nativeMin(position < 0 ? 0 : (+position || 0), length)) - target.length;
+      position = typeof position == 'undefined'
+        ? length
+        : nativeMin(position < 0 ? 0 : (+position || 0), length);
+
+      position -= target.length;
       return position >= 0 && string.indexOf(target, position) == position;
     }
 
     /**
-     * Converts the characters "&", "<", ">", '"', "'", and '`', in `string` to
+     * Converts the characters "&", "<", ">", '"', "'", and "\`", in `string` to
      * their corresponding HTML entities.
      *
      * **Note:** No other characters are escaped. To escape additional characters
@@ -10421,9 +10619,8 @@ module.exports = keyMirror;
      * [#108](https://html5sec.org/#108), and [#133](https://html5sec.org/#133) of
      * the [HTML5 Security Cheatsheet](https://html5sec.org/) for more details.
      *
-     * When working with HTML you should always quote attribute values to reduce
-     * XSS vectors. See [Ryan Grove's article](http://wonko.com/post/html-escaping)
-     * for more details.
+     * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
+     * to reduce XSS vectors.
      *
      * @static
      * @memberOf _
@@ -10444,8 +10641,8 @@ module.exports = keyMirror;
     }
 
     /**
-     * Escapes the `RegExp` special characters "\", "^", "$", ".", "|", "?", "*",
-     * "+", "(", ")", "[", "]", "{" and "}" in `string`.
+     * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+     * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
      *
      * @static
      * @memberOf _
@@ -10455,7 +10652,7 @@ module.exports = keyMirror;
      * @example
      *
      * _.escapeRegExp('[lodash](https://lodash.com/)');
-     * // => '\[lodash\]\(https://lodash\.com/\)'
+     * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
      */
     function escapeRegExp(string) {
       string = baseToString(string);
@@ -10465,9 +10662,7 @@ module.exports = keyMirror;
     }
 
     /**
-     * Converts `string` to kebab case.
-     * See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for
-     * more details.
+     * Converts `string` to [kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
      *
      * @static
      * @memberOf _
@@ -10490,9 +10685,8 @@ module.exports = keyMirror;
     });
 
     /**
-     * Pads `string` on the left and right sides if it is shorter then the given
-     * padding length. The `chars` string may be truncated if the number of padding
-     * characters can't be evenly divided by the padding length.
+     * Pads `string` on the left and right sides if it is shorter than `length`.
+     * Padding characters are truncated if they can't be evenly divided by `length`.
      *
      * @static
      * @memberOf _
@@ -10524,14 +10718,13 @@ module.exports = keyMirror;
           leftLength = floor(mid),
           rightLength = ceil(mid);
 
-      chars = createPad('', rightLength, chars);
+      chars = createPadding('', rightLength, chars);
       return chars.slice(0, leftLength) + string + chars;
     }
 
     /**
-     * Pads `string` on the left side if it is shorter then the given padding
-     * length. The `chars` string may be truncated if the number of padding
-     * characters exceeds the padding length.
+     * Pads `string` on the left side if it is shorter than `length`. Padding
+     * characters are truncated if they exceed `length`.
      *
      * @static
      * @memberOf _
@@ -10551,15 +10744,11 @@ module.exports = keyMirror;
      * _.padLeft('abc', 3);
      * // => 'abc'
      */
-    function padLeft(string, length, chars) {
-      string = baseToString(string);
-      return string && (createPad(string, length, chars) + string);
-    }
+    var padLeft = createPadDir();
 
     /**
-     * Pads `string` on the right side if it is shorter then the given padding
-     * length. The `chars` string may be truncated if the number of padding
-     * characters exceeds the padding length.
+     * Pads `string` on the right side if it is shorter than `length`. Padding
+     * characters are truncated if they exceed `length`.
      *
      * @static
      * @memberOf _
@@ -10579,18 +10768,15 @@ module.exports = keyMirror;
      * _.padRight('abc', 3);
      * // => 'abc'
      */
-    function padRight(string, length, chars) {
-      string = baseToString(string);
-      return string && (string + createPad(string, length, chars));
-    }
+    var padRight = createPadDir(true);
 
     /**
      * Converts `string` to an integer of the specified radix. If `radix` is
      * `undefined` or `0`, a `radix` of `10` is used unless `value` is a hexadecimal,
      * in which case a `radix` of `16` is used.
      *
-     * **Note:** This method aligns with the ES5 implementation of `parseInt`.
-     * See the [ES5 spec](https://es5.github.io/#E) for more details.
+     * **Note:** This method aligns with the [ES5 implementation](https://es5.github.io/#E)
+     * of `parseInt`.
      *
      * @static
      * @memberOf _
@@ -10670,8 +10856,7 @@ module.exports = keyMirror;
     }
 
     /**
-     * Converts `string` to snake case.
-     * See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
+     * Converts `string` to [snake case](https://en.wikipedia.org/wiki/Snake_case).
      *
      * @static
      * @memberOf _
@@ -10694,9 +10879,7 @@ module.exports = keyMirror;
     });
 
     /**
-     * Converts `string` to start case.
-     * See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage)
-     * for more details.
+     * Converts `string` to [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
      *
      * @static
      * @memberOf _
@@ -10741,7 +10924,10 @@ module.exports = keyMirror;
      */
     function startsWith(string, target, position) {
       string = baseToString(string);
-      position = position == null ? 0 : nativeMin(position < 0 ? 0 : (+position || 0), string.length);
+      position = position == null
+        ? 0
+        : nativeMin(position < 0 ? 0 : (+position || 0), string.length);
+
       return string.lastIndexOf(target, position) == position;
     }
 
@@ -10752,9 +10938,9 @@ module.exports = keyMirror;
      * properties may be accessed as free variables in the template. If a setting
      * object is provided it takes precedence over `_.templateSettings` values.
      *
-     * **Note:** In the development build `_.template` utilizes sourceURLs for easier debugging.
-     * See the [HTML5 Rocks article on sourcemaps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl)
-     * for more details.
+     * **Note:** In the development build `_.template` utilizes
+     * [sourceURLs](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl)
+     * for easier debugging.
      *
      * For more information on precompiling templates see
      * [lodash's custom builds documentation](https://lodash.com/custom-builds).
@@ -10966,7 +11152,7 @@ module.exports = keyMirror;
      * // => 'abc'
      *
      * _.map(['  foo  ', '  bar  '], _.trim);
-     * // => ['foo', 'bar]
+     * // => ['foo', 'bar']
      */
     function trim(string, chars, guard) {
       var value = string;
@@ -11074,7 +11260,7 @@ module.exports = keyMirror;
      *   'length': 24,
      *   'separator': /,? +/
      * });
-     * //=> 'hi-diddly-ho there...'
+     * // => 'hi-diddly-ho there...'
      *
      * _.trunc('hi-diddly-ho there, neighborino', {
      *   'omission': ' [...]'
@@ -11091,7 +11277,7 @@ module.exports = keyMirror;
       if (options != null) {
         if (isObject(options)) {
           var separator = 'separator' in options ? options.separator : separator;
-          length = 'length' in options ? +options.length || 0 : length;
+          length = 'length' in options ? (+options.length || 0) : length;
           omission = 'omission' in options ? baseToString(options.omission) : omission;
         } else {
           length = +options || 0;
@@ -11193,7 +11379,7 @@ module.exports = keyMirror;
      * @static
      * @memberOf _
      * @category Utility
-     * @param {*} func The function to attempt.
+     * @param {Function} func The function to attempt.
      * @returns {*} Returns the `func` result or error object.
      * @example
      *
@@ -11206,20 +11392,13 @@ module.exports = keyMirror;
      *   elements = [];
      * }
      */
-    function attempt() {
-      var length = arguments.length,
-          func = arguments[0];
-
+    var attempt = restParam(function(func, args) {
       try {
-        var args = Array(length ? length - 1 : 0);
-        while (--length > 0) {
-          args[length - 1] = arguments[length];
-        }
         return func.apply(undefined, args);
       } catch(e) {
         return isError(e) ? e : new Error(e);
       }
-    }
+    });
 
     /**
      * Creates a function that invokes `func` with the `this` binding of `thisArg`
@@ -11356,12 +11535,11 @@ module.exports = keyMirror;
      *
      * var users = [
      *   { 'user': 'barney' },
-     *   { 'user': 'fred' },
-     *   { 'user': 'pebbles' }
+     *   { 'user': 'fred' }
      * ];
      *
      * _.find(users, _.matchesProperty('user', 'fred'));
-     * // => { 'user': 'fred', 'age': 40 }
+     * // => { 'user': 'fred' }
      */
     function matchesProperty(key, value) {
       return baseMatchesProperty(key + '', baseClone(value, true));
@@ -11371,6 +11549,9 @@ module.exports = keyMirror;
      * Adds all own enumerable function properties of a source object to the
      * destination object. If `object` is a function then methods are added to
      * its prototype as well.
+     *
+     * **Note:** Use `_.runInContext` to create a pristine `lodash` function
+     * for mixins to avoid conflicts caused by modifying the original.
      *
      * @static
      * @memberOf _
@@ -11389,7 +11570,7 @@ module.exports = keyMirror;
      *   });
      * }
      *
-     * // use `_.runInContext` to avoid potential conflicts (esp. in Node.js)
+     * // use `_.runInContext` to avoid conflicts (esp. in Node.js)
      * var _ = require('lodash').runInContext();
      *
      * _.mixin({ 'vowels': vowels });
@@ -11439,8 +11620,10 @@ module.exports = keyMirror;
             return function() {
               var chainAll = this.__chain__;
               if (chain || chainAll) {
-                var result = object(this.__wrapped__);
-                (result.__actions__ = arrayCopy(this.__actions__)).push({ 'func': func, 'args': arguments, 'thisArg': object });
+                var result = object(this.__wrapped__),
+                    actions = result.__actions__ = arrayCopy(this.__actions__);
+
+                actions.push({ 'func': func, 'args': arguments, 'thisArg': object });
                 result.__chain__ = chainAll;
                 return result;
               }
@@ -11507,7 +11690,7 @@ module.exports = keyMirror;
      * var getName = _.property('user');
      *
      * _.map(users, getName);
-     * // => ['fred', barney']
+     * // => ['fred', 'barney']
      *
      * _.pluck(_.sortBy(users, getName), 'user');
      * // => ['barney', 'fred']
@@ -11517,7 +11700,7 @@ module.exports = keyMirror;
     }
 
     /**
-     * The inverse of `_.property`; this method creates a function which returns
+     * The opposite of `_.property`; this method creates a function which returns
      * the property value of a given key on `object`.
      *
      * @static
@@ -11543,9 +11726,9 @@ module.exports = keyMirror;
 
     /**
      * Creates an array of numbers (positive and/or negative) progressing from
-     * `start` up to, but not including, `end`. If `end` is not specified it
-     * defaults to `start` with `start` becoming `0`. If `start` is less than
-     * `end` a zero-length range is created unless a negative `step` is specified.
+     * `start` up to, but not including, `end`. If `end` is not specified it is
+     * set to `start` with `start` then set to `0`. If `start` is less than `end`
+     * a zero-length range is created unless a negative `step` is specified.
      *
      * @static
      * @memberOf _
@@ -11672,6 +11855,172 @@ module.exports = keyMirror;
 
     /*------------------------------------------------------------------------*/
 
+    /**
+     * Adds two numbers.
+     *
+     * @static
+     * @memberOf _
+     * @category Math
+     * @param {number} augend The first number to add.
+     * @param {number} addend The second number to add.
+     * @returns {number} Returns the sum.
+     * @example
+     *
+     * _.add(6, 4);
+     * // => 10
+     */
+    function add(augend, addend) {
+      return augend + addend;
+    }
+
+    /**
+     * Gets the maximum value of `collection`. If `collection` is empty or falsey
+     * `-Infinity` is returned. If an iteratee function is provided it is invoked
+     * for each value in `collection` to generate the criterion by which the value
+     * is ranked. The `iteratee` is bound to `thisArg` and invoked with three
+     * arguments: (value, index, collection).
+     *
+     * If a property name is provided for `iteratee` the created `_.property`
+     * style callback returns the property value of the given element.
+     *
+     * If a value is also provided for `thisArg` the created `_.matchesProperty`
+     * style callback returns `true` for elements that have a matching property
+     * value, else `false`.
+     *
+     * If an object is provided for `iteratee` the created `_.matches` style
+     * callback returns `true` for elements that have the properties of the given
+     * object, else `false`.
+     *
+     * @static
+     * @memberOf _
+     * @category Math
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {Function|Object|string} [iteratee] The function invoked per iteration.
+     * @param {*} [thisArg] The `this` binding of `iteratee`.
+     * @returns {*} Returns the maximum value.
+     * @example
+     *
+     * _.max([4, 2, 8, 6]);
+     * // => 8
+     *
+     * _.max([]);
+     * // => -Infinity
+     *
+     * var users = [
+     *   { 'user': 'barney', 'age': 36 },
+     *   { 'user': 'fred',   'age': 40 }
+     * ];
+     *
+     * _.max(users, function(chr) {
+     *   return chr.age;
+     * });
+     * // => { 'user': 'fred', 'age': 40 }
+     *
+     * // using the `_.property` callback shorthand
+     * _.max(users, 'age');
+     * // => { 'user': 'fred', 'age': 40 }
+     */
+    var max = createExtremum(arrayMax);
+
+    /**
+     * Gets the minimum value of `collection`. If `collection` is empty or falsey
+     * `Infinity` is returned. If an iteratee function is provided it is invoked
+     * for each value in `collection` to generate the criterion by which the value
+     * is ranked. The `iteratee` is bound to `thisArg` and invoked with three
+     * arguments: (value, index, collection).
+     *
+     * If a property name is provided for `iteratee` the created `_.property`
+     * style callback returns the property value of the given element.
+     *
+     * If a value is also provided for `thisArg` the created `_.matchesProperty`
+     * style callback returns `true` for elements that have a matching property
+     * value, else `false`.
+     *
+     * If an object is provided for `iteratee` the created `_.matches` style
+     * callback returns `true` for elements that have the properties of the given
+     * object, else `false`.
+     *
+     * @static
+     * @memberOf _
+     * @category Math
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {Function|Object|string} [iteratee] The function invoked per iteration.
+     * @param {*} [thisArg] The `this` binding of `iteratee`.
+     * @returns {*} Returns the minimum value.
+     * @example
+     *
+     * _.min([4, 2, 8, 6]);
+     * // => 2
+     *
+     * _.min([]);
+     * // => Infinity
+     *
+     * var users = [
+     *   { 'user': 'barney', 'age': 36 },
+     *   { 'user': 'fred',   'age': 40 }
+     * ];
+     *
+     * _.min(users, function(chr) {
+     *   return chr.age;
+     * });
+     * // => { 'user': 'barney', 'age': 36 }
+     *
+     * // using the `_.property` callback shorthand
+     * _.min(users, 'age');
+     * // => { 'user': 'barney', 'age': 36 }
+     */
+    var min = createExtremum(arrayMin, true);
+
+    /**
+     * Gets the sum of the values in `collection`.
+     *
+     * @static
+     * @memberOf _
+     * @category Math
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {Function|Object|string} [iteratee] The function invoked per iteration.
+     * @param {*} [thisArg] The `this` binding of `iteratee`.
+     * @returns {number} Returns the sum.
+     * @example
+     *
+     * _.sum([4, 6]);
+     * // => 10
+     *
+     * _.sum({ 'a': 4, 'b': 6 });
+     * // => 10
+     *
+     * var objects = [
+     *   { 'n': 4 },
+     *   { 'n': 6 }
+     * ];
+     *
+     * _.sum(objects, function(object) {
+     *   return object.n;
+     * });
+     * // => 10
+     *
+     * // using the `_.property` callback shorthand
+     * _.sum(objects, 'n');
+     * // => 10
+     */
+    function sum(collection, iteratee, thisArg) {
+      if (thisArg && isIterateeCall(collection, iteratee, thisArg)) {
+        iteratee = null;
+      }
+      var func = getCallback(),
+          noIteratee = iteratee == null;
+
+      if (!(func === baseCallback && noIteratee)) {
+        noIteratee = false;
+        iteratee = func(iteratee, thisArg, 3);
+      }
+      return noIteratee
+        ? arraySum(isArray(collection) ? collection : toIterable(collection))
+        : baseSum(collection, iteratee);
+    }
+
+    /*------------------------------------------------------------------------*/
+
     // Ensure wrappers are instances of `baseLodash`.
     lodash.prototype = baseLodash.prototype;
 
@@ -11766,10 +12115,12 @@ module.exports = keyMirror;
     lodash.reject = reject;
     lodash.remove = remove;
     lodash.rest = rest;
+    lodash.restParam = restParam;
     lodash.shuffle = shuffle;
     lodash.slice = slice;
     lodash.sortBy = sortBy;
     lodash.sortByAll = sortByAll;
+    lodash.sortByOrder = sortByOrder;
     lodash.spread = spread;
     lodash.take = take;
     lodash.takeRight = takeRight;
@@ -11814,6 +12165,7 @@ module.exports = keyMirror;
     /*------------------------------------------------------------------------*/
 
     // Add functions that return unwrapped values when chaining.
+    lodash.add = add;
     lodash.attempt = attempt;
     lodash.camelCase = camelCase;
     lodash.capitalize = capitalize;
@@ -11883,6 +12235,7 @@ module.exports = keyMirror;
     lodash.sortedLastIndex = sortedLastIndex;
     lodash.startCase = startCase;
     lodash.startsWith = startsWith;
+    lodash.sum = sum;
     lodash.template = template;
     lodash.trim = trim;
     lodash.trimLeft = trimLeft;
@@ -11944,31 +12297,44 @@ module.exports = keyMirror;
     });
 
     // Add `LazyWrapper` methods that accept an `iteratee` value.
-    arrayEach(['filter', 'map', 'takeWhile'], function(methodName, index) {
-      var isFilter = index == LAZY_FILTER_FLAG || index == LAZY_WHILE_FLAG;
+    arrayEach(['dropWhile', 'filter', 'map', 'takeWhile'], function(methodName, type) {
+      var isFilter = type != LAZY_MAP_FLAG,
+          isDropWhile = type == LAZY_DROP_WHILE_FLAG;
 
       LazyWrapper.prototype[methodName] = function(iteratee, thisArg) {
-        var result = this.clone(),
+        var filtered = this.__filtered__,
+            result = (filtered && isDropWhile) ? new LazyWrapper(this) : this.clone(),
             iteratees = result.__iteratees__ || (result.__iteratees__ = []);
 
-        result.__filtered__ = result.__filtered__ || isFilter;
-        iteratees.push({ 'iteratee': getCallback(iteratee, thisArg, 3), 'type': index });
+        iteratees.push({
+          'done': false,
+          'count': 0,
+          'index': 0,
+          'iteratee': getCallback(iteratee, thisArg, 1),
+          'limit': -1,
+          'type': type
+        });
+
+        result.__filtered__ = filtered || isFilter;
         return result;
       };
     });
 
     // Add `LazyWrapper` methods for `_.drop` and `_.take` variants.
     arrayEach(['drop', 'take'], function(methodName, index) {
-      var countName = '__' + methodName + 'Count__',
-          whileName = methodName + 'While';
+      var whileName = methodName + 'While';
 
       LazyWrapper.prototype[methodName] = function(n) {
-        n = n == null ? 1 : nativeMax(floor(n) || 0, 0);
+        var filtered = this.__filtered__,
+            result = (filtered && !index) ? this.dropWhile() : this.clone();
 
-        var result = this.clone();
-        if (result.__filtered__) {
-          var value = result[countName];
-          result[countName] = index ? nativeMin(value, n) : (value + n);
+        n = n == null ? 1 : nativeMax(floor(n) || 0, 0);
+        if (filtered) {
+          if (index) {
+            result.__takeCount__ = nativeMin(result.__takeCount__, n);
+          } else {
+            last(result.__iteratees__).limit = n;
+          }
         } else {
           var views = result.__views__ || (result.__views__ = []);
           views.push({ 'size': n, 'type': methodName + (result.__dir__ < 0 ? 'Right' : '') });
@@ -12017,23 +12383,10 @@ module.exports = keyMirror;
       return this.filter(identity);
     };
 
-    LazyWrapper.prototype.dropWhile = function(predicate, thisArg) {
-      var done,
-          lastIndex,
-          isRight = this.__dir__ < 0;
-
-      predicate = getCallback(predicate, thisArg, 3);
-      return this.filter(function(value, index, array) {
-        done = done && (isRight ? index < lastIndex : index > lastIndex);
-        lastIndex = index;
-        return done || (done = !predicate(value, index, array));
-      });
-    };
-
     LazyWrapper.prototype.reject = function(predicate, thisArg) {
-      predicate = getCallback(predicate, thisArg, 3);
-      return this.filter(function(value, index, array) {
-        return !predicate(value, index, array);
+      predicate = getCallback(predicate, thisArg, 1);
+      return this.filter(function(value) {
+        return !predicate(value);
       });
     };
 
@@ -12054,17 +12407,28 @@ module.exports = keyMirror;
 
     // Add `LazyWrapper` methods to `lodash.prototype`.
     baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-      var lodashFunc = lodash[methodName],
+      var lodashFunc = lodash[methodName];
+      if (!lodashFunc) {
+        return;
+      }
+      var checkIteratee = /^(?:filter|map|reject)|While$/.test(methodName),
           retUnwrapped = /^(?:first|last)$/.test(methodName);
 
       lodash.prototype[methodName] = function() {
-        var value = this.__wrapped__,
-            args = arguments,
+        var args = arguments,
+            length = args.length,
             chainAll = this.__chain__,
+            value = this.__wrapped__,
             isHybrid = !!this.__actions__.length,
             isLazy = value instanceof LazyWrapper,
-            onlyLazy = isLazy && !isHybrid;
+            iteratee = args[0],
+            useLazy = isLazy || isArray(value);
 
+        if (useLazy && checkIteratee && typeof iteratee == 'function' && iteratee.length != 1) {
+          // avoid lazy use if the iteratee has a `length` other than `1`
+          isLazy = useLazy = false;
+        }
+        var onlyLazy = isLazy && !isHybrid;
         if (retUnwrapped && !chainAll) {
           return onlyLazy
             ? func.call(value)
@@ -12075,7 +12439,7 @@ module.exports = keyMirror;
           push.apply(otherArgs, args);
           return lodashFunc.apply(lodash, otherArgs);
         };
-        if (isLazy || isArray(value)) {
+        if (useLazy) {
           var wrapper = onlyLazy ? value : new LazyWrapper(this),
               result = func.apply(wrapper, args);
 
@@ -12089,11 +12453,11 @@ module.exports = keyMirror;
       };
     });
 
-    // Add `Array.prototype` functions to `lodash.prototype`.
-    arrayEach(['concat', 'join', 'pop', 'push', 'shift', 'sort', 'splice', 'unshift'], function(methodName) {
-      var func = arrayProto[methodName],
+    // Add `Array` and `String` methods to `lodash.prototype`.
+    arrayEach(['concat', 'join', 'pop', 'push', 'replace', 'shift', 'sort', 'splice', 'split', 'unshift'], function(methodName) {
+      var func = (/^(?:replace|split)$/.test(methodName) ? stringProto : arrayProto)[methodName],
           chainName = /^(?:push|sort|unshift)$/.test(methodName) ? 'tap' : 'thru',
-          retUnwrapped = /^(?:join|pop|shift)$/.test(methodName);
+          retUnwrapped = /^(?:join|pop|replace|shift)$/.test(methodName);
 
       lodash.prototype[methodName] = function() {
         var args = arguments;
@@ -12105,6 +12469,19 @@ module.exports = keyMirror;
         });
       };
     });
+
+    // Map minified function names to their real names.
+    baseForOwn(LazyWrapper.prototype, function(func, methodName) {
+      var lodashFunc = lodash[methodName];
+      if (lodashFunc) {
+        var key = lodashFunc.name,
+            names = realNames[key] || (realNames[key] = []);
+
+        names.push({ 'name': methodName, 'func': lodashFunc });
+      }
+    });
+
+    realNames[createHybridWrapper(null, BIND_KEY_FLAG).name] = [{ 'name': 'wrapper', 'func': null }];
 
     // Add functions to the lazy wrapper.
     LazyWrapper.prototype.clone = lazyClone;
@@ -12165,7 +12542,7 @@ module.exports = keyMirror;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/object-assign/index.js":[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -12193,10 +12570,248 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react-imageloader/lib/index.js":[function(require,module,exports){
+var ImageLoader, ImageLoaderImg, PropTypes, React, ReactLoaderMixin, Status, createFactory, hasSize, id, img, merge, noscript, renderToStaticMarkup, span, _ref,
+  __slice = [].slice;
+
+React = require('react');
+
+merge = require('xtend');
+
+ReactLoaderMixin = require('react-loadermixin');
+
+PropTypes = React.PropTypes;
+
+_ref = React.DOM, span = _ref.span, img = _ref.img, noscript = _ref.noscript;
+
+Status = {
+  PENDING: 'pending',
+  LOADING: 'loading',
+  LOADED: 'loaded',
+  FAILED: 'failed'
+};
+
+hasSize = function(i) {
+  return (i.naturalWidth + i.naturalHeight === 0) || (i.width + i.height === 0);
+};
+
+renderToStaticMarkup = function(el) {
+  return (React.renderToStaticMarkup || React.renderComponentToStaticMarkup)(el);
+};
+
+id = function(x) {
+  return x;
+};
+
+createFactory = function(cls) {
+  return (React.createFactory || id)(cls);
+};
+
+ImageLoaderImg = createFactory(React.createClass({
+  displayName: 'ImageLoaderImage',
+  getInitialState: function() {
+    return {
+      isInitialRender: true
+    };
+  },
+  componentDidMount: function() {
+    return this.setState({
+      isInitialRender: false
+    });
+  },
+  handleLoad: function() {
+    var args, image, _base;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    if (!this.isMounted()) {
+      return;
+    }
+    image = this.refs.image;
+    if ('naturalWidth' in image && !hasSize(image)) {
+      return this.handleError(new Error("Image <" + image.src + "> could not be loaded."));
+    } else {
+      return typeof (_base = this.props).onLoad === "function" ? _base.onLoad.apply(_base, args) : void 0;
+    }
+  },
+  handleError: function() {
+    var args, _base;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    return typeof (_base = this.props).onError === "function" ? _base.onError.apply(_base, args) : void 0;
+  },
+  renderImg: function() {
+    return img(merge(this.props, {
+      ref: 'image',
+      onLoad: this.handleLoad,
+      onError: this.handleError
+    }));
+  },
+  render: function() {
+    var html;
+    if (this.state.isInitialRender) {
+      html = renderToStaticMarkup(noscript(null, this.renderImg()));
+      return span({
+        style: {
+          display: 'none'
+        },
+        dangerouslySetInnerHTML: {
+          __html: html
+        }
+      });
+    } else {
+      return this.renderImg();
+    }
+  }
+}));
+
+module.exports = ImageLoader = React.createClass({
+  displayName: 'ImageLoader',
+  mixins: [ReactLoaderMixin],
+  propTypes: {
+    wrapper: PropTypes.func,
+    preloader: PropTypes.func
+  },
+  getInitialState: function() {
+    return {
+      status: Status.PENDING
+    };
+  },
+  getDefaultProps: function() {
+    return {
+      wrapper: span,
+      loader: ImageLoaderImg
+    };
+  },
+  componentWillReceiveProps: function(nextProps) {
+    if (this.props.src !== nextProps.src) {
+      return this.setState({
+        status: nextProps.src ? Status.LOADING : Status.PENDING
+      });
+    }
+  },
+  getClassName: function() {
+    var className;
+    className = "imageloader " + this.state.status;
+    if (this.props.className) {
+      className += " " + this.props.className;
+    }
+    return className;
+  },
+  getImgProps: function() {
+    var props;
+    props = merge(this.props, {
+      style: merge(this.props.style, {
+        display: this.state.status === Status.LOADED ? null : 'none'
+      })
+    });
+    delete props.wrapper;
+    delete props.preloader;
+    delete props.children;
+    return props;
+  },
+  loaderDidLoad: function() {
+    return this.setState({
+      status: Status.LOADED
+    });
+  },
+  loaderDidError: function() {
+    return this.setState({
+      status: Status.FAILED
+    });
+  },
+  renderChildren: function() {
+    if (Array.isArray(this.props.children)) {
+      return this.props.children.slice(0);
+    } else {
+      return [this.props.children];
+    }
+  },
+  render: function() {
+    var wrapperArgs, _ref1;
+    wrapperArgs = [
+      {
+        className: this.getClassName()
+      }
+    ];
+    if (this.props.src) {
+      wrapperArgs.push(this.renderLoader(ImageLoaderImg, this.getImgProps()));
+    }
+    if (this.props.preloader && this.state.status !== Status.LOADED) {
+      wrapperArgs.push(this.props.preloader());
+    }
+    if (this.state.status === Status.FAILED) {
+      wrapperArgs = wrapperArgs.concat(this.renderChildren());
+    }
+    return (_ref1 = this.props).wrapper.apply(_ref1, wrapperArgs);
+  }
+});
+
+},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js","react-loadermixin":"/Users/Felix/Documents/hec/node_modules/react-loadermixin/lib/index.js","xtend":"/Users/Felix/Documents/hec/node_modules/react-imageloader/node_modules/xtend/immutable.js"}],"/Users/Felix/Documents/hec/node_modules/react-imageloader/node_modules/xtend/immutable.js":[function(require,module,exports){
+module.exports = extend
+
+function extend() {
+    var target = {}
+
+    for (var i = 0; i < arguments.length; i++) {
+        var source = arguments[i]
+
+        for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+                target[key] = source[key]
+            }
+        }
+    }
+
+    return target
+}
+
+},{}],"/Users/Felix/Documents/hec/node_modules/react-loadermixin/lib/index.js":[function(require,module,exports){
+var PropTypes, React, ReactLoaderMixin, merge,
+  __slice = [].slice;
+
+React = require('react');
+
+merge = require('xtend');
+
+PropTypes = React.PropTypes;
+
+module.exports = ReactLoaderMixin = {
+  propTypes: {
+    src: PropTypes.string,
+    onLoad: PropTypes.func,
+    onError: PropTypes.func
+  },
+  renderLoader: function(loader, props) {
+    return loader(merge(props, {
+      src: this.props.src,
+      onLoad: (function(_this) {
+        return function() {
+          var args, _base;
+          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          if (typeof _this.loaderDidLoad === "function") {
+            _this.loaderDidLoad.apply(_this, args);
+          }
+          return typeof (_base = _this.props).onLoad === "function" ? _base.onLoad.apply(_base, args) : void 0;
+        };
+      })(this),
+      onError: (function(_this) {
+        return function() {
+          var args, _base;
+          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          if (typeof _this.loaderDidError === "function") {
+            _this.loaderDidError.apply(_this, args);
+          }
+          return typeof (_base = _this.props).onError === "function" ? _base.onError.apply(_base, args) : void 0;
+        };
+      })(this)
+    }));
+  }
+};
+
+},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js","xtend":"/Users/Felix/Documents/hec/node_modules/react-loadermixin/node_modules/xtend/index.js"}],"/Users/Felix/Documents/hec/node_modules/react-loadermixin/node_modules/xtend/index.js":[function(require,module,exports){
+arguments[4]["/Users/Felix/Documents/hec/node_modules/react-imageloader/node_modules/xtend/immutable.js"][0].apply(exports,arguments)
+},{}],"/Users/Felix/Documents/hec/node_modules/react/addons.js":[function(require,module,exports){
 module.exports = require('./lib/ReactWithAddons');
 
-},{"./lib/ReactWithAddons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactWithAddons.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/AutoFocusMixin.js":[function(require,module,exports){
+},{"./lib/ReactWithAddons":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactWithAddons.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/AutoFocusMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -12223,7 +12838,7 @@ var AutoFocusMixin = {
 
 module.exports = AutoFocusMixin;
 
-},{"./focusNode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/focusNode.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/BeforeInputEventPlugin.js":[function(require,module,exports){
+},{"./focusNode":"/Users/Felix/Documents/hec/node_modules/react/lib/focusNode.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/BeforeInputEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  * All rights reserved.
@@ -12445,7 +13060,7 @@ var BeforeInputEventPlugin = {
 
 module.exports = BeforeInputEventPlugin;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./SyntheticInputEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticInputEvent.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSCore.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./SyntheticInputEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticInputEvent.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/CSSCore.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -12557,7 +13172,7 @@ var CSSCore = {
 module.exports = CSSCore;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSProperty.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/CSSProperty.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -12676,7 +13291,7 @@ var CSSProperty = {
 
 module.exports = CSSProperty;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSPropertyOperations.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/CSSPropertyOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -12811,7 +13426,7 @@ var CSSPropertyOperations = {
 module.exports = CSSPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./CSSProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSProperty.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./camelizeStyleName":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/camelizeStyleName.js","./dangerousStyleValue":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/dangerousStyleValue.js","./hyphenateStyleName":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/hyphenateStyleName.js","./memoizeStringOnly":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/memoizeStringOnly.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CallbackQueue.js":[function(require,module,exports){
+},{"./CSSProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/CSSProperty.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./camelizeStyleName":"/Users/Felix/Documents/hec/node_modules/react/lib/camelizeStyleName.js","./dangerousStyleValue":"/Users/Felix/Documents/hec/node_modules/react/lib/dangerousStyleValue.js","./hyphenateStyleName":"/Users/Felix/Documents/hec/node_modules/react/lib/hyphenateStyleName.js","./memoizeStringOnly":"/Users/Felix/Documents/hec/node_modules/react/lib/memoizeStringOnly.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/CallbackQueue.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -12911,7 +13526,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ChangeEventPlugin.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ChangeEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -13293,7 +13908,7 @@ var ChangeEventPlugin = {
 
 module.exports = ChangeEventPlugin;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js","./isEventSupported":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isEventSupported.js","./isTextInputElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isTextInputElement.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ClientReactRootIndex.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js","./isEventSupported":"/Users/Felix/Documents/hec/node_modules/react/lib/isEventSupported.js","./isTextInputElement":"/Users/Felix/Documents/hec/node_modules/react/lib/isTextInputElement.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ClientReactRootIndex.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -13318,7 +13933,7 @@ var ClientReactRootIndex = {
 
 module.exports = ClientReactRootIndex;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CompositionEventPlugin.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/CompositionEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -13577,7 +14192,7 @@ var CompositionEventPlugin = {
 
 module.exports = CompositionEventPlugin;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./ReactInputSelection":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInputSelection.js","./SyntheticCompositionEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticCompositionEvent.js","./getTextContentAccessor":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getTextContentAccessor.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMChildrenOperations.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./ReactInputSelection":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInputSelection.js","./SyntheticCompositionEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticCompositionEvent.js","./getTextContentAccessor":"/Users/Felix/Documents/hec/node_modules/react/lib/getTextContentAccessor.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/DOMChildrenOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -13752,7 +14367,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 }).call(this,require('_process'))
-},{"./Danger":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Danger.js","./ReactMultiChildUpdateTypes":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMultiChildUpdateTypes.js","./getTextContentAccessor":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getTextContentAccessor.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js":[function(require,module,exports){
+},{"./Danger":"/Users/Felix/Documents/hec/node_modules/react/lib/Danger.js","./ReactMultiChildUpdateTypes":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMultiChildUpdateTypes.js","./getTextContentAccessor":"/Users/Felix/Documents/hec/node_modules/react/lib/getTextContentAccessor.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -14051,7 +14666,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -14248,7 +14863,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js","./escapeTextForBrowser":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/escapeTextForBrowser.js","./memoizeStringOnly":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/memoizeStringOnly.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Danger.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js","./escapeTextForBrowser":"/Users/Felix/Documents/hec/node_modules/react/lib/escapeTextForBrowser.js","./memoizeStringOnly":"/Users/Felix/Documents/hec/node_modules/react/lib/memoizeStringOnly.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/Danger.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -14434,7 +15049,7 @@ var Danger = {
 module.exports = Danger;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./createNodesFromMarkup":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/createNodesFromMarkup.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","./getMarkupWrap":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getMarkupWrap.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DefaultEventPluginOrder.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./createNodesFromMarkup":"/Users/Felix/Documents/hec/node_modules/react/lib/createNodesFromMarkup.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js","./getMarkupWrap":"/Users/Felix/Documents/hec/node_modules/react/lib/getMarkupWrap.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/DefaultEventPluginOrder.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -14474,7 +15089,7 @@ var DefaultEventPluginOrder = [
 
 module.exports = DefaultEventPluginOrder;
 
-},{"./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EnterLeaveEventPlugin.js":[function(require,module,exports){
+},{"./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EnterLeaveEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -14614,7 +15229,7 @@ var EnterLeaveEventPlugin = {
 
 module.exports = EnterLeaveEventPlugin;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./SyntheticMouseEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticMouseEvent.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./SyntheticMouseEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticMouseEvent.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -14686,7 +15301,7 @@ var EventConstants = {
 
 module.exports = EventConstants;
 
-},{"./keyMirror":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventListener.js":[function(require,module,exports){
+},{"./keyMirror":"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EventListener.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -14776,7 +15391,7 @@ var EventListener = {
 module.exports = EventListener;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -15052,7 +15667,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginRegistry.js","./EventPluginUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginUtils.js","./accumulateInto":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/accumulateInto.js","./forEachAccumulated":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/forEachAccumulated.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginRegistry.js":[function(require,module,exports){
+},{"./EventPluginRegistry":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginRegistry.js","./EventPluginUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginUtils.js","./accumulateInto":"/Users/Felix/Documents/hec/node_modules/react/lib/accumulateInto.js","./forEachAccumulated":"/Users/Felix/Documents/hec/node_modules/react/lib/forEachAccumulated.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginRegistry.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -15332,7 +15947,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginUtils.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginUtils.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -15553,7 +16168,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 }).call(this,require('_process'))
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -15695,7 +16310,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 
 }).call(this,require('_process'))
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js","./accumulateInto":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/accumulateInto.js","./forEachAccumulated":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/forEachAccumulated.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js","./accumulateInto":"/Users/Felix/Documents/hec/node_modules/react/lib/accumulateInto.js","./forEachAccumulated":"/Users/Felix/Documents/hec/node_modules/react/lib/forEachAccumulated.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -15740,7 +16355,7 @@ var ExecutionEnvironment = {
 
 module.exports = ExecutionEnvironment;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/HTMLDOMPropertyConfig.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/HTMLDOMPropertyConfig.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -15932,7 +16547,7 @@ var HTMLDOMPropertyConfig = {
 
 module.exports = HTMLDOMPropertyConfig;
 
-},{"./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LinkedStateMixin.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/LinkedStateMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -15973,7 +16588,7 @@ var LinkedStateMixin = {
 
 module.exports = LinkedStateMixin;
 
-},{"./ReactLink":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLink.js","./ReactStateSetters":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactStateSetters.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LinkedValueUtils.js":[function(require,module,exports){
+},{"./ReactLink":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLink.js","./ReactStateSetters":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactStateSetters.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/LinkedValueUtils.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -16129,7 +16744,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 }).call(this,require('_process'))
-},{"./ReactPropTypes":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypes.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LocalEventTrapMixin.js":[function(require,module,exports){
+},{"./ReactPropTypes":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypes.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/LocalEventTrapMixin.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -16179,7 +16794,7 @@ var LocalEventTrapMixin = {
 module.exports = LocalEventTrapMixin;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js","./accumulateInto":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/accumulateInto.js","./forEachAccumulated":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/forEachAccumulated.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/MobileSafariClickEventPlugin.js":[function(require,module,exports){
+},{"./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js","./accumulateInto":"/Users/Felix/Documents/hec/node_modules/react/lib/accumulateInto.js","./forEachAccumulated":"/Users/Felix/Documents/hec/node_modules/react/lib/forEachAccumulated.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/MobileSafariClickEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -16237,7 +16852,7 @@ var MobileSafariClickEventPlugin = {
 
 module.exports = MobileSafariClickEventPlugin;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js":[function(require,module,exports){
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -16284,7 +16899,7 @@ function assign(target, sources) {
 
 module.exports = assign;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -16400,7 +17015,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/React.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -16588,7 +17203,7 @@ React.version = '0.12.2';
 module.exports = React;
 
 }).call(this,require('_process'))
-},{"./DOMPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js","./EventPluginUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginUtils.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactChildren":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactChildren.js","./ReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactContext":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactDOMComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMComponent.js","./ReactDefaultInjection":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultInjection.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactElementValidator":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElementValidator.js","./ReactInstanceHandles":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js","./ReactLegacyElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLegacyElement.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactMultiChild":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMultiChild.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./ReactPropTypes":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypes.js","./ReactServerRendering":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactServerRendering.js","./ReactTextComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTextComponent.js","./deprecated":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/deprecated.js","./onlyChild":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/onlyChild.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js":[function(require,module,exports){
+},{"./DOMPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js","./EventPluginUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginUtils.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactChildren":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactChildren.js","./ReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactContext":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactDOMComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMComponent.js","./ReactDefaultInjection":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultInjection.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactElementValidator":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElementValidator.js","./ReactInstanceHandles":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js","./ReactLegacyElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLegacyElement.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactMultiChild":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMultiChild.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./ReactPropTypes":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypes.js","./ReactServerRendering":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactServerRendering.js","./ReactTextComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTextComponent.js","./deprecated":"/Users/Felix/Documents/hec/node_modules/react/lib/deprecated.js","./onlyChild":"/Users/Felix/Documents/hec/node_modules/react/lib/onlyChild.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -16631,7 +17246,7 @@ var ReactBrowserComponentMixin = {
 module.exports = ReactBrowserComponentMixin;
 
 }).call(this,require('_process'))
-},{"./ReactEmptyComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEmptyComponent.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js":[function(require,module,exports){
+},{"./ReactEmptyComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEmptyComponent.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -16986,7 +17601,7 @@ var ReactBrowserEventEmitter = assign({}, ReactEventEmitterMixin, {
 
 module.exports = ReactBrowserEventEmitter;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js","./EventPluginRegistry":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginRegistry.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactEventEmitterMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEventEmitterMixin.js","./ViewportMetrics":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ViewportMetrics.js","./isEventSupported":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isEventSupported.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCSSTransitionGroup.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js","./EventPluginRegistry":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginRegistry.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactEventEmitterMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEventEmitterMixin.js","./ViewportMetrics":"/Users/Felix/Documents/hec/node_modules/react/lib/ViewportMetrics.js","./isEventSupported":"/Users/Felix/Documents/hec/node_modules/react/lib/isEventSupported.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCSSTransitionGroup.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -17053,7 +17668,7 @@ var ReactCSSTransitionGroup = React.createClass({
 
 module.exports = ReactCSSTransitionGroup;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js","./ReactCSSTransitionGroupChild":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCSSTransitionGroupChild.js","./ReactTransitionGroup":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionGroup.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCSSTransitionGroupChild.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js","./ReactCSSTransitionGroupChild":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCSSTransitionGroupChild.js","./ReactTransitionGroup":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionGroup.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCSSTransitionGroupChild.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -17188,7 +17803,7 @@ var ReactCSSTransitionGroupChild = React.createClass({
 module.exports = ReactCSSTransitionGroupChild;
 
 }).call(this,require('_process'))
-},{"./CSSCore":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSCore.js","./React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js","./ReactTransitionEvents":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionEvents.js","./onlyChild":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/onlyChild.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactChildren.js":[function(require,module,exports){
+},{"./CSSCore":"/Users/Felix/Documents/hec/node_modules/react/lib/CSSCore.js","./React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js","./ReactTransitionEvents":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionEvents.js","./onlyChild":"/Users/Felix/Documents/hec/node_modules/react/lib/onlyChild.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactChildren.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -17338,7 +17953,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 }).call(this,require('_process'))
-},{"./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./traverseAllChildren":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/traverseAllChildren.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js":[function(require,module,exports){
+},{"./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./traverseAllChildren":"/Users/Felix/Documents/hec/node_modules/react/lib/traverseAllChildren.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -17781,7 +18396,7 @@ var ReactComponent = {
 module.exports = ReactComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactOwner.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./keyMirror":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponentBrowserEnvironment.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactOwner.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./keyMirror":"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponentBrowserEnvironment.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -17903,7 +18518,7 @@ var ReactComponentBrowserEnvironment = {
 module.exports = ReactComponentBrowserEnvironment;
 
 }).call(this,require('_process'))
-},{"./ReactDOMIDOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMIDOperations.js","./ReactMarkupChecksum":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMarkupChecksum.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./ReactReconcileTransaction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactReconcileTransaction.js","./getReactRootElementInContainer":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getReactRootElementInContainer.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./setInnerHTML":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/setInnerHTML.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponentWithPureRenderMixin.js":[function(require,module,exports){
+},{"./ReactDOMIDOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMIDOperations.js","./ReactMarkupChecksum":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMarkupChecksum.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./ReactReconcileTransaction":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactReconcileTransaction.js","./getReactRootElementInContainer":"/Users/Felix/Documents/hec/node_modules/react/lib/getReactRootElementInContainer.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./setInnerHTML":"/Users/Felix/Documents/hec/node_modules/react/lib/setInnerHTML.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponentWithPureRenderMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -17952,7 +18567,7 @@ var ReactComponentWithPureRenderMixin = {
 
 module.exports = ReactComponentWithPureRenderMixin;
 
-},{"./shallowEqual":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shallowEqual.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js":[function(require,module,exports){
+},{"./shallowEqual":"/Users/Felix/Documents/hec/node_modules/react/lib/shallowEqual.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -19392,7 +20007,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js","./ReactContext":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactElementValidator":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElementValidator.js","./ReactEmptyComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEmptyComponent.js","./ReactErrorUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactErrorUtils.js","./ReactLegacyElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLegacyElement.js","./ReactOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactOwner.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./ReactPropTransferer":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTransferer.js","./ReactPropTypeLocationNames":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypeLocationNames.js","./ReactPropTypeLocations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypeLocations.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./instantiateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./keyMirror":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js","./mapObject":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/mapObject.js","./monitorCodeUse":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/monitorCodeUse.js","./shouldUpdateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shouldUpdateReactComponent.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactContext.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js","./ReactContext":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactElementValidator":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElementValidator.js","./ReactEmptyComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEmptyComponent.js","./ReactErrorUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactErrorUtils.js","./ReactLegacyElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLegacyElement.js","./ReactOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactOwner.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./ReactPropTransferer":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTransferer.js","./ReactPropTypeLocationNames":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypeLocationNames.js","./ReactPropTypeLocations":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypeLocations.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./instantiateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./keyMirror":"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js","./mapObject":"/Users/Felix/Documents/hec/node_modules/react/lib/mapObject.js","./monitorCodeUse":"/Users/Felix/Documents/hec/node_modules/react/lib/monitorCodeUse.js","./shouldUpdateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/shouldUpdateReactComponent.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactContext.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -19454,7 +20069,7 @@ var ReactContext = {
 
 module.exports = ReactContext;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -19488,7 +20103,7 @@ var ReactCurrentOwner = {
 
 module.exports = ReactCurrentOwner;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -19671,7 +20286,7 @@ var ReactDOM = mapObject({
 module.exports = ReactDOM;
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactElementValidator":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElementValidator.js","./ReactLegacyElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLegacyElement.js","./mapObject":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/mapObject.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMButton.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactElementValidator":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElementValidator.js","./ReactLegacyElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLegacyElement.js","./mapObject":"/Users/Felix/Documents/hec/node_modules/react/lib/mapObject.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMButton.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -19736,7 +20351,7 @@ var ReactDOMButton = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMButton;
 
-},{"./AutoFocusMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/AutoFocusMixin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./keyMirror":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMComponent.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/AutoFocusMixin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./keyMirror":"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -20223,7 +20838,7 @@ assign(
 module.exports = ReactDOMComponent;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSPropertyOperations.js","./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js","./DOMPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactMultiChild":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMultiChild.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./escapeTextForBrowser":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/escapeTextForBrowser.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./isEventSupported":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isEventSupported.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js","./monitorCodeUse":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/monitorCodeUse.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMForm.js":[function(require,module,exports){
+},{"./CSSPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/CSSPropertyOperations.js","./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js","./DOMPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactMultiChild":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMultiChild.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./escapeTextForBrowser":"/Users/Felix/Documents/hec/node_modules/react/lib/escapeTextForBrowser.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./isEventSupported":"/Users/Felix/Documents/hec/node_modules/react/lib/isEventSupported.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js","./monitorCodeUse":"/Users/Felix/Documents/hec/node_modules/react/lib/monitorCodeUse.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMForm.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -20273,7 +20888,7 @@ var ReactDOMForm = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMForm;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./LocalEventTrapMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMIDOperations.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./LocalEventTrapMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMIDOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -20459,7 +21074,7 @@ var ReactDOMIDOperations = {
 module.exports = ReactDOMIDOperations;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSPropertyOperations.js","./DOMChildrenOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMChildrenOperations.js","./DOMPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./setInnerHTML":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/setInnerHTML.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMImg.js":[function(require,module,exports){
+},{"./CSSPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/CSSPropertyOperations.js","./DOMChildrenOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMChildrenOperations.js","./DOMPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./setInnerHTML":"/Users/Felix/Documents/hec/node_modules/react/lib/setInnerHTML.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMImg.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -20507,7 +21122,7 @@ var ReactDOMImg = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMImg;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./LocalEventTrapMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMInput.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./LocalEventTrapMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMInput.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -20685,7 +21300,7 @@ var ReactDOMInput = ReactCompositeComponent.createClass({
 module.exports = ReactDOMInput;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/AutoFocusMixin.js","./DOMPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js","./LinkedValueUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LinkedValueUtils.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMOption.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/AutoFocusMixin.js","./DOMPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js","./LinkedValueUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/LinkedValueUtils.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMOption.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -20738,7 +21353,7 @@ var ReactDOMOption = ReactCompositeComponent.createClass({
 module.exports = ReactDOMOption;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMSelect.js":[function(require,module,exports){
+},{"./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMSelect.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -20922,7 +21537,7 @@ var ReactDOMSelect = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMSelect;
 
-},{"./AutoFocusMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/AutoFocusMixin.js","./LinkedValueUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LinkedValueUtils.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMSelection.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/AutoFocusMixin.js","./LinkedValueUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/LinkedValueUtils.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMSelection.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -21131,7 +21746,7 @@ var ReactDOMSelection = {
 
 module.exports = ReactDOMSelection;
 
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./getNodeForCharacterOffset":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getNodeForCharacterOffset.js","./getTextContentAccessor":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getTextContentAccessor.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMTextarea.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./getNodeForCharacterOffset":"/Users/Felix/Documents/hec/node_modules/react/lib/getNodeForCharacterOffset.js","./getTextContentAccessor":"/Users/Felix/Documents/hec/node_modules/react/lib/getTextContentAccessor.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMTextarea.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -21272,7 +21887,7 @@ var ReactDOMTextarea = ReactCompositeComponent.createClass({
 module.exports = ReactDOMTextarea;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/AutoFocusMixin.js","./DOMPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js","./LinkedValueUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LinkedValueUtils.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultBatchingStrategy.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/AutoFocusMixin.js","./DOMPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js","./LinkedValueUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/LinkedValueUtils.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOM.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultBatchingStrategy.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -21345,7 +21960,7 @@ var ReactDefaultBatchingStrategy = {
 
 module.exports = ReactDefaultBatchingStrategy;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./Transaction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Transaction.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultInjection.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./Transaction":"/Users/Felix/Documents/hec/node_modules/react/lib/Transaction.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultInjection.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -21474,7 +22089,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./BeforeInputEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/BeforeInputEventPlugin.js","./ChangeEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ChangeEventPlugin.js","./ClientReactRootIndex":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ClientReactRootIndex.js","./CompositionEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CompositionEventPlugin.js","./DefaultEventPluginOrder":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DefaultEventPluginOrder.js","./EnterLeaveEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EnterLeaveEventPlugin.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./HTMLDOMPropertyConfig":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/HTMLDOMPropertyConfig.js","./MobileSafariClickEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/MobileSafariClickEventPlugin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactComponentBrowserEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponentBrowserEnvironment.js","./ReactDOMButton":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMButton.js","./ReactDOMComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMComponent.js","./ReactDOMForm":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMForm.js","./ReactDOMImg":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMImg.js","./ReactDOMInput":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMInput.js","./ReactDOMOption":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMOption.js","./ReactDOMSelect":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMSelect.js","./ReactDOMTextarea":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMTextarea.js","./ReactDefaultBatchingStrategy":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultBatchingStrategy.js","./ReactDefaultPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultPerf.js","./ReactEventListener":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEventListener.js","./ReactInjection":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInjection.js","./ReactInstanceHandles":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./SVGDOMPropertyConfig":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SVGDOMPropertyConfig.js","./SelectEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SelectEventPlugin.js","./ServerReactRootIndex":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ServerReactRootIndex.js","./SimpleEventPlugin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SimpleEventPlugin.js","./createFullPageComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/createFullPageComponent.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultPerf.js":[function(require,module,exports){
+},{"./BeforeInputEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/BeforeInputEventPlugin.js","./ChangeEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/ChangeEventPlugin.js","./ClientReactRootIndex":"/Users/Felix/Documents/hec/node_modules/react/lib/ClientReactRootIndex.js","./CompositionEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/CompositionEventPlugin.js","./DefaultEventPluginOrder":"/Users/Felix/Documents/hec/node_modules/react/lib/DefaultEventPluginOrder.js","./EnterLeaveEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/EnterLeaveEventPlugin.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./HTMLDOMPropertyConfig":"/Users/Felix/Documents/hec/node_modules/react/lib/HTMLDOMPropertyConfig.js","./MobileSafariClickEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/MobileSafariClickEventPlugin.js","./ReactBrowserComponentMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactComponentBrowserEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponentBrowserEnvironment.js","./ReactDOMButton":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMButton.js","./ReactDOMComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMComponent.js","./ReactDOMForm":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMForm.js","./ReactDOMImg":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMImg.js","./ReactDOMInput":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMInput.js","./ReactDOMOption":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMOption.js","./ReactDOMSelect":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMSelect.js","./ReactDOMTextarea":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMTextarea.js","./ReactDefaultBatchingStrategy":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultBatchingStrategy.js","./ReactDefaultPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultPerf.js","./ReactEventListener":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEventListener.js","./ReactInjection":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInjection.js","./ReactInstanceHandles":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./SVGDOMPropertyConfig":"/Users/Felix/Documents/hec/node_modules/react/lib/SVGDOMPropertyConfig.js","./SelectEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/SelectEventPlugin.js","./ServerReactRootIndex":"/Users/Felix/Documents/hec/node_modules/react/lib/ServerReactRootIndex.js","./SimpleEventPlugin":"/Users/Felix/Documents/hec/node_modules/react/lib/SimpleEventPlugin.js","./createFullPageComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/createFullPageComponent.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultPerf.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -21734,7 +22349,7 @@ var ReactDefaultPerf = {
 
 module.exports = ReactDefaultPerf;
 
-},{"./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js","./ReactDefaultPerfAnalysis":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultPerfAnalysis.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./performanceNow":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/performanceNow.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultPerfAnalysis.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js","./ReactDefaultPerfAnalysis":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultPerfAnalysis.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./performanceNow":"/Users/Felix/Documents/hec/node_modules/react/lib/performanceNow.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultPerfAnalysis.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -21940,7 +22555,7 @@ var ReactDefaultPerfAnalysis = {
 
 module.exports = ReactDefaultPerfAnalysis;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -22186,7 +22801,7 @@ ReactElement.isValidElement = function(object) {
 module.exports = ReactElement;
 
 }).call(this,require('_process'))
-},{"./ReactContext":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElementValidator.js":[function(require,module,exports){
+},{"./ReactContext":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElementValidator.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -22468,7 +23083,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactPropTypeLocations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypeLocations.js","./monitorCodeUse":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/monitorCodeUse.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEmptyComponent.js":[function(require,module,exports){
+},{"./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactPropTypeLocations":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypeLocations.js","./monitorCodeUse":"/Users/Felix/Documents/hec/node_modules/react/lib/monitorCodeUse.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEmptyComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -22545,7 +23160,7 @@ var ReactEmptyComponent = {
 module.exports = ReactEmptyComponent;
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactErrorUtils.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactErrorUtils.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22577,7 +23192,7 @@ var ReactErrorUtils = {
 
 module.exports = ReactErrorUtils;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEventEmitterMixin.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEventEmitterMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22627,7 +23242,7 @@ var ReactEventEmitterMixin = {
 
 module.exports = ReactEventEmitterMixin;
 
-},{"./EventPluginHub":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEventListener.js":[function(require,module,exports){
+},{"./EventPluginHub":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEventListener.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22811,7 +23426,7 @@ var ReactEventListener = {
 
 module.exports = ReactEventListener;
 
-},{"./EventListener":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventListener.js","./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./ReactInstanceHandles":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./getEventTarget":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventTarget.js","./getUnboundedScrollPosition":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getUnboundedScrollPosition.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInjection.js":[function(require,module,exports){
+},{"./EventListener":"/Users/Felix/Documents/hec/node_modules/react/lib/EventListener.js","./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./ReactInstanceHandles":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./getEventTarget":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventTarget.js","./getUnboundedScrollPosition":"/Users/Felix/Documents/hec/node_modules/react/lib/getUnboundedScrollPosition.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInjection.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22851,7 +23466,7 @@ var ReactInjection = {
 
 module.exports = ReactInjection;
 
-},{"./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js","./EventPluginHub":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js","./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactEmptyComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEmptyComponent.js","./ReactNativeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactNativeComponent.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./ReactRootIndex":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactRootIndex.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInputSelection.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js","./EventPluginHub":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js","./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactEmptyComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEmptyComponent.js","./ReactNativeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactNativeComponent.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./ReactRootIndex":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactRootIndex.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInputSelection.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -22987,7 +23602,7 @@ var ReactInputSelection = {
 
 module.exports = ReactInputSelection;
 
-},{"./ReactDOMSelection":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDOMSelection.js","./containsNode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/containsNode.js","./focusNode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/focusNode.js","./getActiveElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getActiveElement.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js":[function(require,module,exports){
+},{"./ReactDOMSelection":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDOMSelection.js","./containsNode":"/Users/Felix/Documents/hec/node_modules/react/lib/containsNode.js","./focusNode":"/Users/Felix/Documents/hec/node_modules/react/lib/focusNode.js","./getActiveElement":"/Users/Felix/Documents/hec/node_modules/react/lib/getActiveElement.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -23322,7 +23937,7 @@ var ReactInstanceHandles = {
 module.exports = ReactInstanceHandles;
 
 }).call(this,require('_process'))
-},{"./ReactRootIndex":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactRootIndex.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLegacyElement.js":[function(require,module,exports){
+},{"./ReactRootIndex":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactRootIndex.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLegacyElement.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -23569,7 +24184,7 @@ ReactLegacyElementFactory._isLegacyCallWarningEnabled = true;
 module.exports = ReactLegacyElementFactory;
 
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./monitorCodeUse":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/monitorCodeUse.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLink.js":[function(require,module,exports){
+},{"./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./monitorCodeUse":"/Users/Felix/Documents/hec/node_modules/react/lib/monitorCodeUse.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLink.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -23642,7 +24257,7 @@ ReactLink.PropTypes = {
 
 module.exports = ReactLink;
 
-},{"./React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMarkupChecksum.js":[function(require,module,exports){
+},{"./React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMarkupChecksum.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -23690,7 +24305,7 @@ var ReactMarkupChecksum = {
 
 module.exports = ReactMarkupChecksum;
 
-},{"./adler32":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/adler32.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js":[function(require,module,exports){
+},{"./adler32":"/Users/Felix/Documents/hec/node_modules/react/lib/adler32.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -24388,7 +25003,7 @@ ReactMount.renderComponent = deprecated(
 module.exports = ReactMount;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactInstanceHandles":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js","./ReactLegacyElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLegacyElement.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./containsNode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/containsNode.js","./deprecated":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/deprecated.js","./getReactRootElementInContainer":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getReactRootElementInContainer.js","./instantiateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./shouldUpdateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shouldUpdateReactComponent.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMultiChild.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactInstanceHandles":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js","./ReactLegacyElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLegacyElement.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./containsNode":"/Users/Felix/Documents/hec/node_modules/react/lib/containsNode.js","./deprecated":"/Users/Felix/Documents/hec/node_modules/react/lib/deprecated.js","./getReactRootElementInContainer":"/Users/Felix/Documents/hec/node_modules/react/lib/getReactRootElementInContainer.js","./instantiateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./shouldUpdateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/shouldUpdateReactComponent.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMultiChild.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -24816,7 +25431,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 
-},{"./ReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js","./ReactMultiChildUpdateTypes":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMultiChildUpdateTypes.js","./flattenChildren":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/flattenChildren.js","./instantiateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/instantiateReactComponent.js","./shouldUpdateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shouldUpdateReactComponent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMultiChildUpdateTypes.js":[function(require,module,exports){
+},{"./ReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js","./ReactMultiChildUpdateTypes":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMultiChildUpdateTypes.js","./flattenChildren":"/Users/Felix/Documents/hec/node_modules/react/lib/flattenChildren.js","./instantiateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/instantiateReactComponent.js","./shouldUpdateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/shouldUpdateReactComponent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMultiChildUpdateTypes.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -24849,7 +25464,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 
 module.exports = ReactMultiChildUpdateTypes;
 
-},{"./keyMirror":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactNativeComponent.js":[function(require,module,exports){
+},{"./keyMirror":"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactNativeComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -24922,7 +25537,7 @@ var ReactNativeComponent = {
 module.exports = ReactNativeComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactOwner.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactOwner.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25078,7 +25693,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 }).call(this,require('_process'))
-},{"./emptyObject":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyObject.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js":[function(require,module,exports){
+},{"./emptyObject":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyObject.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25162,7 +25777,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 
 }).call(this,require('_process'))
-},{"_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTransferer.js":[function(require,module,exports){
+},{"_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTransferer.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25329,7 +25944,7 @@ var ReactPropTransferer = {
 module.exports = ReactPropTransferer;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./joinClasses":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/joinClasses.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypeLocationNames.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./joinClasses":"/Users/Felix/Documents/hec/node_modules/react/lib/joinClasses.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypeLocationNames.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -25357,7 +25972,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactPropTypeLocationNames;
 
 }).call(this,require('_process'))
-},{"_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypeLocations.js":[function(require,module,exports){
+},{"_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypeLocations.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25381,7 +25996,7 @@ var ReactPropTypeLocations = keyMirror({
 
 module.exports = ReactPropTypeLocations;
 
-},{"./keyMirror":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypes.js":[function(require,module,exports){
+},{"./keyMirror":"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypes.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25735,7 +26350,7 @@ function getPreciseType(propValue) {
 
 module.exports = ReactPropTypes;
 
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactPropTypeLocationNames":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTypeLocationNames.js","./deprecated":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/deprecated.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPutListenerQueue.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactPropTypeLocationNames":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTypeLocationNames.js","./deprecated":"/Users/Felix/Documents/hec/node_modules/react/lib/deprecated.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPutListenerQueue.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25791,7 +26406,7 @@ PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 module.exports = ReactPutListenerQueue;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactReconcileTransaction.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactReconcileTransaction.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25967,7 +26582,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
 
-},{"./CallbackQueue":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CallbackQueue.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactInputSelection":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInputSelection.js","./ReactPutListenerQueue":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPutListenerQueue.js","./Transaction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Transaction.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactRootIndex.js":[function(require,module,exports){
+},{"./CallbackQueue":"/Users/Felix/Documents/hec/node_modules/react/lib/CallbackQueue.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactInputSelection":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInputSelection.js","./ReactPutListenerQueue":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPutListenerQueue.js","./Transaction":"/Users/Felix/Documents/hec/node_modules/react/lib/Transaction.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactRootIndex.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -25998,7 +26613,7 @@ var ReactRootIndex = {
 
 module.exports = ReactRootIndex;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactServerRendering.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactServerRendering.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -26078,7 +26693,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactInstanceHandles":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js","./ReactMarkupChecksum":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMarkupChecksum.js","./ReactServerRenderingTransaction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactServerRenderingTransaction.js","./instantiateReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactServerRenderingTransaction.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactInstanceHandles":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js","./ReactMarkupChecksum":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMarkupChecksum.js","./ReactServerRenderingTransaction":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactServerRenderingTransaction.js","./instantiateReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactServerRenderingTransaction.js":[function(require,module,exports){
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -26191,7 +26806,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
 
-},{"./CallbackQueue":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CallbackQueue.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./ReactPutListenerQueue":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPutListenerQueue.js","./Transaction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Transaction.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactStateSetters.js":[function(require,module,exports){
+},{"./CallbackQueue":"/Users/Felix/Documents/hec/node_modules/react/lib/CallbackQueue.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./ReactPutListenerQueue":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPutListenerQueue.js","./Transaction":"/Users/Felix/Documents/hec/node_modules/react/lib/Transaction.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactStateSetters.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -26297,7 +26912,7 @@ ReactStateSetters.Mixin = {
 
 module.exports = ReactStateSetters;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTestUtils.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTestUtils.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -26709,7 +27324,7 @@ for (eventType in topLevelTypes) {
 
 module.exports = ReactTestUtils;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginHub.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactMount":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactMount.js","./ReactTextComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTextComponent.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTextComponent.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginHub.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js","./ReactBrowserEventEmitter":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactMount":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactMount.js","./ReactTextComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTextComponent.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTextComponent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -26815,7 +27430,7 @@ ReactTextComponentFactory.type = ReactTextComponent;
 
 module.exports = ReactTextComponentFactory;
 
-},{"./DOMPropertyOperations":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMPropertyOperations.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./ReactComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponent.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./escapeTextForBrowser":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/escapeTextForBrowser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionChildMapping.js":[function(require,module,exports){
+},{"./DOMPropertyOperations":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMPropertyOperations.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./ReactComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponent.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./escapeTextForBrowser":"/Users/Felix/Documents/hec/node_modules/react/lib/escapeTextForBrowser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionChildMapping.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -26916,7 +27531,7 @@ var ReactTransitionChildMapping = {
 
 module.exports = ReactTransitionChildMapping;
 
-},{"./ReactChildren":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactChildren.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionEvents.js":[function(require,module,exports){
+},{"./ReactChildren":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactChildren.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionEvents.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -27027,7 +27642,7 @@ var ReactTransitionEvents = {
 
 module.exports = ReactTransitionEvents;
 
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionGroup.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionGroup.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -27216,7 +27831,7 @@ var ReactTransitionGroup = React.createClass({
 
 module.exports = ReactTransitionGroup;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js","./ReactTransitionChildMapping":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionChildMapping.js","./cloneWithProps":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/cloneWithProps.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js","./ReactTransitionChildMapping":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionChildMapping.js","./cloneWithProps":"/Users/Felix/Documents/hec/node_modules/react/lib/cloneWithProps.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -27506,7 +28121,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 }).call(this,require('_process'))
-},{"./CallbackQueue":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CallbackQueue.js","./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./ReactCurrentOwner":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCurrentOwner.js","./ReactPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPerf.js","./Transaction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Transaction.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactWithAddons.js":[function(require,module,exports){
+},{"./CallbackQueue":"/Users/Felix/Documents/hec/node_modules/react/lib/CallbackQueue.js","./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./ReactCurrentOwner":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCurrentOwner.js","./ReactPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPerf.js","./Transaction":"/Users/Felix/Documents/hec/node_modules/react/lib/Transaction.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ReactWithAddons.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -27560,7 +28175,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = React;
 
 }).call(this,require('_process'))
-},{"./LinkedStateMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/LinkedStateMixin.js","./React":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/React.js","./ReactCSSTransitionGroup":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCSSTransitionGroup.js","./ReactComponentWithPureRenderMixin":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactComponentWithPureRenderMixin.js","./ReactDefaultPerf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactDefaultPerf.js","./ReactTestUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTestUtils.js","./ReactTransitionGroup":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTransitionGroup.js","./ReactUpdates":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactUpdates.js","./cloneWithProps":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/cloneWithProps.js","./cx":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/cx.js","./update":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/update.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SVGDOMPropertyConfig.js":[function(require,module,exports){
+},{"./LinkedStateMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/LinkedStateMixin.js","./React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js","./ReactCSSTransitionGroup":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCSSTransitionGroup.js","./ReactComponentWithPureRenderMixin":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactComponentWithPureRenderMixin.js","./ReactDefaultPerf":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactDefaultPerf.js","./ReactTestUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTestUtils.js","./ReactTransitionGroup":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTransitionGroup.js","./ReactUpdates":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactUpdates.js","./cloneWithProps":"/Users/Felix/Documents/hec/node_modules/react/lib/cloneWithProps.js","./cx":"/Users/Felix/Documents/hec/node_modules/react/lib/cx.js","./update":"/Users/Felix/Documents/hec/node_modules/react/lib/update.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SVGDOMPropertyConfig.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -27652,7 +28267,7 @@ var SVGDOMPropertyConfig = {
 
 module.exports = SVGDOMPropertyConfig;
 
-},{"./DOMProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/DOMProperty.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SelectEventPlugin.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/DOMProperty.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SelectEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -27847,7 +28462,7 @@ var SelectEventPlugin = {
 
 module.exports = SelectEventPlugin;
 
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./ReactInputSelection":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInputSelection.js","./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js","./getActiveElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getActiveElement.js","./isTextInputElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isTextInputElement.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js","./shallowEqual":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shallowEqual.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ServerReactRootIndex.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./ReactInputSelection":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInputSelection.js","./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js","./getActiveElement":"/Users/Felix/Documents/hec/node_modules/react/lib/getActiveElement.js","./isTextInputElement":"/Users/Felix/Documents/hec/node_modules/react/lib/isTextInputElement.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js","./shallowEqual":"/Users/Felix/Documents/hec/node_modules/react/lib/shallowEqual.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ServerReactRootIndex.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -27878,7 +28493,7 @@ var ServerReactRootIndex = {
 
 module.exports = ServerReactRootIndex;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SimpleEventPlugin.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/SimpleEventPlugin.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -28306,7 +28921,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 }).call(this,require('_process'))
-},{"./EventConstants":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventConstants.js","./EventPluginUtils":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPluginUtils.js","./EventPropagators":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/EventPropagators.js","./SyntheticClipboardEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticClipboardEvent.js","./SyntheticDragEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticDragEvent.js","./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js","./SyntheticFocusEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticFocusEvent.js","./SyntheticKeyboardEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticKeyboardEvent.js","./SyntheticMouseEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticMouseEvent.js","./SyntheticTouchEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticTouchEvent.js","./SyntheticUIEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticUIEvent.js","./SyntheticWheelEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticWheelEvent.js","./getEventCharCode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventCharCode.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticClipboardEvent.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/Felix/Documents/hec/node_modules/react/lib/EventConstants.js","./EventPluginUtils":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPluginUtils.js","./EventPropagators":"/Users/Felix/Documents/hec/node_modules/react/lib/EventPropagators.js","./SyntheticClipboardEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticClipboardEvent.js","./SyntheticDragEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticDragEvent.js","./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js","./SyntheticFocusEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticFocusEvent.js","./SyntheticKeyboardEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticKeyboardEvent.js","./SyntheticMouseEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticMouseEvent.js","./SyntheticTouchEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticTouchEvent.js","./SyntheticUIEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticUIEvent.js","./SyntheticWheelEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticWheelEvent.js","./getEventCharCode":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventCharCode.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticClipboardEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28352,7 +28967,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 module.exports = SyntheticClipboardEvent;
 
 
-},{"./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticCompositionEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticCompositionEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28398,7 +29013,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticCompositionEvent;
 
 
-},{"./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticDragEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticDragEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28437,7 +29052,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
 
-},{"./SyntheticMouseEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticMouseEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js":[function(require,module,exports){
+},{"./SyntheticMouseEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticMouseEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28595,7 +29210,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.threeArgumentPooler);
 
 module.exports = SyntheticEvent;
 
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/PooledClass.js","./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","./getEventTarget":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventTarget.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticFocusEvent.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./PooledClass":"/Users/Felix/Documents/hec/node_modules/react/lib/PooledClass.js","./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js","./getEventTarget":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventTarget.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticFocusEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28634,7 +29249,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
 
-},{"./SyntheticUIEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticUIEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticInputEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticUIEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticInputEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  * All rights reserved.
@@ -28681,7 +29296,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticInputEvent;
 
 
-},{"./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticKeyboardEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticKeyboardEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28768,7 +29383,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
 
-},{"./SyntheticUIEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticUIEvent.js","./getEventCharCode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventCharCode.js","./getEventKey":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventKey.js","./getEventModifierState":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventModifierState.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticMouseEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticUIEvent.js","./getEventCharCode":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventCharCode.js","./getEventKey":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventKey.js","./getEventModifierState":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventModifierState.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticMouseEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28851,7 +29466,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
 
-},{"./SyntheticUIEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticUIEvent.js","./ViewportMetrics":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ViewportMetrics.js","./getEventModifierState":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventModifierState.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticTouchEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticUIEvent.js","./ViewportMetrics":"/Users/Felix/Documents/hec/node_modules/react/lib/ViewportMetrics.js","./getEventModifierState":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventModifierState.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticTouchEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28899,7 +29514,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
 
-},{"./SyntheticUIEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticUIEvent.js","./getEventModifierState":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventModifierState.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticUIEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticUIEvent.js","./getEventModifierState":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventModifierState.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticUIEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -28961,7 +29576,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
 
-},{"./SyntheticEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticEvent.js","./getEventTarget":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventTarget.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticWheelEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticEvent.js","./getEventTarget":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventTarget.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticWheelEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29022,7 +29637,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
 
-},{"./SyntheticMouseEvent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/SyntheticMouseEvent.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Transaction.js":[function(require,module,exports){
+},{"./SyntheticMouseEvent":"/Users/Felix/Documents/hec/node_modules/react/lib/SyntheticMouseEvent.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/Transaction.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29263,7 +29878,7 @@ var Transaction = {
 module.exports = Transaction;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ViewportMetrics.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/ViewportMetrics.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29295,7 +29910,7 @@ var ViewportMetrics = {
 
 module.exports = ViewportMetrics;
 
-},{"./getUnboundedScrollPosition":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getUnboundedScrollPosition.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/accumulateInto.js":[function(require,module,exports){
+},{"./getUnboundedScrollPosition":"/Users/Felix/Documents/hec/node_modules/react/lib/getUnboundedScrollPosition.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/accumulateInto.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -29361,7 +29976,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/adler32.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/adler32.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29395,7 +30010,7 @@ function adler32(data) {
 
 module.exports = adler32;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/camelize.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/camelize.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29427,7 +30042,7 @@ function camelize(string) {
 
 module.exports = camelize;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/camelizeStyleName.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/camelizeStyleName.js":[function(require,module,exports){
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -29469,7 +30084,7 @@ function camelizeStyleName(string) {
 
 module.exports = camelizeStyleName;
 
-},{"./camelize":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/camelize.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/cloneWithProps.js":[function(require,module,exports){
+},{"./camelize":"/Users/Felix/Documents/hec/node_modules/react/lib/camelize.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/cloneWithProps.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29528,7 +30143,7 @@ function cloneWithProps(child, props) {
 module.exports = cloneWithProps;
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactPropTransferer":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactPropTransferer.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/containsNode.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactPropTransferer":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactPropTransferer.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/containsNode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29572,7 +30187,7 @@ function containsNode(outerNode, innerNode) {
 
 module.exports = containsNode;
 
-},{"./isTextNode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isTextNode.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/createArrayFrom.js":[function(require,module,exports){
+},{"./isTextNode":"/Users/Felix/Documents/hec/node_modules/react/lib/isTextNode.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/createArrayFrom.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29658,7 +30273,7 @@ function createArrayFrom(obj) {
 
 module.exports = createArrayFrom;
 
-},{"./toArray":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/toArray.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/createFullPageComponent.js":[function(require,module,exports){
+},{"./toArray":"/Users/Felix/Documents/hec/node_modules/react/lib/toArray.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/createFullPageComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29719,7 +30334,7 @@ function createFullPageComponent(tag) {
 module.exports = createFullPageComponent;
 
 }).call(this,require('_process'))
-},{"./ReactCompositeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactCompositeComponent.js","./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/createNodesFromMarkup.js":[function(require,module,exports){
+},{"./ReactCompositeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactCompositeComponent.js","./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/createNodesFromMarkup.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29809,7 +30424,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./createArrayFrom":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/createArrayFrom.js","./getMarkupWrap":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getMarkupWrap.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/cx.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./createArrayFrom":"/Users/Felix/Documents/hec/node_modules/react/lib/createArrayFrom.js","./getMarkupWrap":"/Users/Felix/Documents/hec/node_modules/react/lib/getMarkupWrap.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/cx.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29848,7 +30463,7 @@ function cx(classNames) {
 
 module.exports = cx;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/dangerousStyleValue.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/dangerousStyleValue.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29906,7 +30521,7 @@ function dangerousStyleValue(name, value) {
 
 module.exports = dangerousStyleValue;
 
-},{"./CSSProperty":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/CSSProperty.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/deprecated.js":[function(require,module,exports){
+},{"./CSSProperty":"/Users/Felix/Documents/hec/node_modules/react/lib/CSSProperty.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/deprecated.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -29957,7 +30572,7 @@ function deprecated(namespace, oldName, newName, ctx, fn) {
 module.exports = deprecated;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -29991,7 +30606,7 @@ emptyFunction.thatReturnsArgument = function(arg) { return arg; };
 
 module.exports = emptyFunction;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyObject.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/emptyObject.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30015,7 +30630,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = emptyObject;
 
 }).call(this,require('_process'))
-},{"_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/escapeTextForBrowser.js":[function(require,module,exports){
+},{"_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/escapeTextForBrowser.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30056,7 +30671,7 @@ function escapeTextForBrowser(text) {
 
 module.exports = escapeTextForBrowser;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/flattenChildren.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/flattenChildren.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30125,7 +30740,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 
 }).call(this,require('_process'))
-},{"./ReactTextComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactTextComponent.js","./traverseAllChildren":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/traverseAllChildren.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/focusNode.js":[function(require,module,exports){
+},{"./ReactTextComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactTextComponent.js","./traverseAllChildren":"/Users/Felix/Documents/hec/node_modules/react/lib/traverseAllChildren.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/focusNode.js":[function(require,module,exports){
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -30154,7 +30769,7 @@ function focusNode(node) {
 
 module.exports = focusNode;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/forEachAccumulated.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/forEachAccumulated.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30185,7 +30800,7 @@ var forEachAccumulated = function(arr, cb, scope) {
 
 module.exports = forEachAccumulated;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getActiveElement.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getActiveElement.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30214,7 +30829,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventCharCode.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getEventCharCode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30266,7 +30881,7 @@ function getEventCharCode(nativeEvent) {
 
 module.exports = getEventCharCode;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventKey.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getEventKey.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30371,7 +30986,7 @@ function getEventKey(nativeEvent) {
 
 module.exports = getEventKey;
 
-},{"./getEventCharCode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventCharCode.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventModifierState.js":[function(require,module,exports){
+},{"./getEventCharCode":"/Users/Felix/Documents/hec/node_modules/react/lib/getEventCharCode.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/getEventModifierState.js":[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  * All rights reserved.
@@ -30418,7 +31033,7 @@ function getEventModifierState(nativeEvent) {
 
 module.exports = getEventModifierState;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getEventTarget.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getEventTarget.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30449,7 +31064,7 @@ function getEventTarget(nativeEvent) {
 
 module.exports = getEventTarget;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getMarkupWrap.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getMarkupWrap.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30566,7 +31181,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getNodeForCharacterOffset.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/getNodeForCharacterOffset.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30641,7 +31256,7 @@ function getNodeForCharacterOffset(root, offset) {
 
 module.exports = getNodeForCharacterOffset;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getReactRootElementInContainer.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getReactRootElementInContainer.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30676,7 +31291,7 @@ function getReactRootElementInContainer(container) {
 
 module.exports = getReactRootElementInContainer;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getTextContentAccessor.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/getTextContentAccessor.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30713,7 +31328,7 @@ function getTextContentAccessor() {
 
 module.exports = getTextContentAccessor;
 
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/getUnboundedScrollPosition.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/getUnboundedScrollPosition.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30753,7 +31368,7 @@ function getUnboundedScrollPosition(scrollable) {
 
 module.exports = getUnboundedScrollPosition;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/hyphenate.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/hyphenate.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30786,7 +31401,7 @@ function hyphenate(string) {
 
 module.exports = hyphenate;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/hyphenateStyleName.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/hyphenateStyleName.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -30827,7 +31442,7 @@ function hyphenateStyleName(string) {
 
 module.exports = hyphenateStyleName;
 
-},{"./hyphenate":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/hyphenate.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/instantiateReactComponent.js":[function(require,module,exports){
+},{"./hyphenate":"/Users/Felix/Documents/hec/node_modules/react/lib/hyphenate.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/instantiateReactComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30941,7 +31556,7 @@ function instantiateReactComponent(element, parentCompositeType) {
 module.exports = instantiateReactComponent;
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactEmptyComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactEmptyComponent.js","./ReactLegacyElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactLegacyElement.js","./ReactNativeComponent":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactNativeComponent.js","./warning":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactEmptyComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactEmptyComponent.js","./ReactLegacyElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactLegacyElement.js","./ReactNativeComponent":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactNativeComponent.js","./warning":"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -30998,7 +31613,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isEventSupported.js":[function(require,module,exports){
+},{"_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/isEventSupported.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31063,7 +31678,7 @@ function isEventSupported(eventNameSuffix, capture) {
 
 module.exports = isEventSupported;
 
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isNode.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/isNode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31091,7 +31706,7 @@ function isNode(object) {
 
 module.exports = isNode;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isTextInputElement.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/isTextInputElement.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31135,7 +31750,7 @@ function isTextInputElement(elem) {
 
 module.exports = isTextInputElement;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isTextNode.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/isTextNode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31160,7 +31775,7 @@ function isTextNode(object) {
 
 module.exports = isTextNode;
 
-},{"./isNode":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/isNode.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/joinClasses.js":[function(require,module,exports){
+},{"./isNode":"/Users/Felix/Documents/hec/node_modules/react/lib/isNode.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/joinClasses.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31201,7 +31816,7 @@ function joinClasses(className/*, ... */) {
 
 module.exports = joinClasses;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyMirror.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/keyMirror.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -31256,7 +31871,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31292,7 +31907,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/mapObject.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/mapObject.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31345,7 +31960,7 @@ function mapObject(object, callback, context) {
 
 module.exports = mapObject;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/memoizeStringOnly.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/memoizeStringOnly.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31379,7 +31994,7 @@ function memoizeStringOnly(callback) {
 
 module.exports = memoizeStringOnly;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/monitorCodeUse.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/monitorCodeUse.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -31413,7 +32028,7 @@ function monitorCodeUse(eventName, data) {
 module.exports = monitorCodeUse;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/onlyChild.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/onlyChild.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -31453,7 +32068,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/performance.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/performance.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31481,7 +32096,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = performance || {};
 
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/performanceNow.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/performanceNow.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31509,7 +32124,7 @@ var performanceNow = performance.now.bind(performance);
 
 module.exports = performanceNow;
 
-},{"./performance":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/performance.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/setInnerHTML.js":[function(require,module,exports){
+},{"./performance":"/Users/Felix/Documents/hec/node_modules/react/lib/performance.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/setInnerHTML.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31587,7 +32202,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setInnerHTML;
 
-},{"./ExecutionEnvironment":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shallowEqual.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/Felix/Documents/hec/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/shallowEqual.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31631,7 +32246,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/shouldUpdateReactComponent.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/shouldUpdateReactComponent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -31669,7 +32284,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 
 module.exports = shouldUpdateReactComponent;
 
-},{}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/toArray.js":[function(require,module,exports){
+},{}],"/Users/Felix/Documents/hec/node_modules/react/lib/toArray.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -31741,7 +32356,7 @@ function toArray(obj) {
 module.exports = toArray;
 
 }).call(this,require('_process'))
-},{"./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/traverseAllChildren.js":[function(require,module,exports){
+},{"./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/traverseAllChildren.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -31924,7 +32539,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 }).call(this,require('_process'))
-},{"./ReactElement":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactElement.js","./ReactInstanceHandles":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/ReactInstanceHandles.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/update.js":[function(require,module,exports){
+},{"./ReactElement":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactElement.js","./ReactInstanceHandles":"/Users/Felix/Documents/hec/node_modules/react/lib/ReactInstanceHandles.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/update.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -32092,7 +32707,7 @@ function update(value, spec) {
 module.exports = update;
 
 }).call(this,require('_process'))
-},{"./Object.assign":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/Object.assign.js","./invariant":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/invariant.js","./keyOf":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/keyOf.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/warning.js":[function(require,module,exports){
+},{"./Object.assign":"/Users/Felix/Documents/hec/node_modules/react/lib/Object.assign.js","./invariant":"/Users/Felix/Documents/hec/node_modules/react/lib/invariant.js","./keyOf":"/Users/Felix/Documents/hec/node_modules/react/lib/keyOf.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/lib/warning.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014, Facebook, Inc.
@@ -32137,7 +32752,10 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"/Users/Felix/Documents/social_commerce_project/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/Felix/Documents/hec/node_modules/react/lib/emptyFunction.js","_process":"/Users/Felix/Documents/hec/node_modules/browserify/node_modules/process/browser.js"}],"/Users/Felix/Documents/hec/node_modules/react/react.js":[function(require,module,exports){
+module.exports = require('./lib/React');
+
+},{"./lib/React":"/Users/Felix/Documents/hec/node_modules/react/lib/React.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ProductConstants = require('../constants/ProductConstants');
 
@@ -32152,6 +32770,7 @@ var ProductActions = {
 
     // Review a product!
     review: function(product){
+        // we show the overlay (greyish background)
         var $overlay = $("#overlay");
         $overlay.show();
         $overlay.addClass("animated fadeIn");
@@ -32163,8 +32782,11 @@ var ProductActions = {
 
     // The name says it all...
     closeReviewBox: function(){
+
         var $overlay = $("#overlay");
         var $reviewWidget = $("#review-widget");
+
+        // we remove the overlay
         $overlay.addClass("fadeOut");
         $overlay.one(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
@@ -32173,6 +32795,7 @@ var ProductActions = {
                 $(this).removeClass();
             });
         
+        // byebye widget
         $reviewWidget.addClass("bounceOutUp");
         $reviewWidget.one(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
@@ -32183,6 +32806,7 @@ var ProductActions = {
             });
     },
 
+    // We add some more products to the current view
     infiniteScroll: function(){
         AppDispatcher.dispatch({
             actionType: ProductConstants.INFINITE_SCROLL
@@ -32203,6 +32827,17 @@ var ProductActions = {
             reviewData: reviewData
         });
     },
+
+    // set the star rating of the current reviewed product
+    setRating: function(rating){
+        AppDispatcher.dispatch({
+            actionType: ProductConstants.SET_RATING,
+            rating: rating
+        });
+        
+    },
+
+    // delete a review with ajax and optimistic rendering
     deleteReview: function(product){
         $.post(
             '/phase1/review/',
@@ -32215,17 +32850,15 @@ var ProductActions = {
             product: product
         });
     },
-    toggleRecommendIt: function(){
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.TOGGLE_RECOMMEND
-        });
-    },
+
+    // The comment changed, we need to update the store!
     commentChanged: function(comment){
         AppDispatcher.dispatch({
             actionType: ProductConstants.COMMENT_CHANGED,
             data: comment
         });
     },
+
     // Search for products
     doSearch: function(query, sortBy){
         AppDispatcher.dispatch({
@@ -32242,11 +32875,12 @@ module.exports = ProductActions;
 
 
 
-},{"../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/Product.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
+},{"../constants/ProductConstants":"/Users/Felix/Documents/hec/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/hec/src/js/phase1/review_app/dispatcher/AppDispatcher.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/Product.react.jsx":[function(require,module,exports){
+var React = require('react');
 var ProductActions = require('../actions/ProductActions');
 var ProductContainer = require('./ProductsContainer.react.jsx');
 var ProductStore = require('../stores/ProductStore');
+var ImageLoader = require('react-imageloader');
 
 var Product = React.createClass({displayName: "Product",
 
@@ -32262,27 +32896,33 @@ var Product = React.createClass({displayName: "Product",
 
     // De maximum length before cropping
     cropLength: 13,
+
     componentDidMount: function(){
+        $(this.getDOMNode()).fadeIn(300);
         // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
                   .popover(this.popoverOptions);
         }
     },
+
     componentDidUpdate: function(){
-        console.log("product updated");
+        $(this.refs.img.getDOMNode()).hide();
+        $(this.getDOMNode()).fadeIn(300);
         // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover(this.popoverOptions);
     },
-    componentWillUpdate: function(){
 
+    componentWillUpdate: function(){
+        $(this.getDOMNode()).hide();
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover('destroy');
     },
+
     componentWillUnmount: function(){
         // If the name was cropped, deactivate popover
         if(this.cropName)
@@ -32290,24 +32930,29 @@ var Product = React.createClass({displayName: "Product",
     },
 
     shouldComponentUpdate: function(nextProps, nextState){
-
+        // if the product is the same as the one that just got reviewed
+        // OR if the product wasn't already there -> we update it
         if(nextProps.data.id === ProductStore.getLastReviewedId() ||
-                                     nextProps.data.id != this.props.data.id){
+           nextProps.data.id != this.props.data.id){
             ProductStore.resetReviewedId();
-            return true;
+               return true;
         }
-
-        /* if(this.props.data.title === nextProps.data.title)
-           return false; */
+        // no need to update the element!
         return false;
-        
     },
+
     // Review the product
-    reviewIt: function(){
+    openReviewBox: function(){
         ProductActions.review(this.props.data);
     },
+
+    showImage: function(){
+        console.log("onLoad");
+        $(this.refs.img.getDOMNode()).fadeIn(200);
+    },
+
+    // Edit the review
     editReview: function(){
-        console.log(this.props.data.review);
         ProductActions.review(this.props.data);
     },
     render: function(){
@@ -32327,7 +32972,6 @@ var Product = React.createClass({displayName: "Product",
         if(this.props.data.name.length>this.cropLength){
             this.cropName = true;
             name = this.props.data.name.substring(0,this.cropLength)+"...";
-            
         }
         else {
             this.cropName = false;
@@ -32343,24 +32987,24 @@ var Product = React.createClass({displayName: "Product",
         }
         else {
             checkMark= "";
-            opacityControl = "";
             imgReviewedClass="";
-            button = React.createElement("button", {className: "btn btn-info btn-sm", onClick: this.reviewIt}, "I've seen it!");
+            opacityControl = ""
+            button = React.createElement("button", {className: "btn btn-info btn-sm", onClick: this.openReviewBox}, "I've seen it!");
         }
 
         return(
-            React.createElement("div", {className: "product animated fadeIn col-xs-15"}, 
-            React.createElement("div", {className: "product-inner effect6"}, 
-                React.createElement("h5", {className: opacityControl, ref: "name", "data-toggle": "popover", "data-content": this.props.data.name}, name), 
-                React.createElement("div", {className: "img-container"}, 
-                    checkMark, 
-                    React.createElement("div", {className: opacityControl}, 
-                        React.createElement("img", {src: this.props.data.image_path, alt: this.props.data.name})
-                    )
-                ), 
-                React.createElement("p", {className: opacityControl}, this.props.data.caracteristic_1), 
-                button
-            )
+            React.createElement("div", {className: "product col-xs-15", style: {display: "none"}}, 
+                React.createElement("div", {className: "product-inner effect6"}, 
+                    React.createElement("h5", {className: opacityControl, ref: "name", "data-toggle": "popover", "data-content": this.props.data.name}, name), 
+                    React.createElement("div", {className: "checkmark-container"}, 
+                        checkMark, 
+                        React.createElement("div", {className: opacityControl + " img-container"}, 
+                            React.createElement(ImageLoader, {ref: "img", src: this.props.data.sm_image_path, onLoad: this.showImage})
+                        )
+                    ), 
+                    React.createElement("p", {className: opacityControl}, this.props.data.caracteristic_1), 
+                    button
+                )
             )
         );
     }
@@ -32370,9 +33014,8 @@ module.exports = Product;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ProductStore.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ProductsContainer.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","react-imageloader":"/Users/Felix/Documents/hec/node_modules/react-imageloader/lib/index.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
+var React = require('react');
 var Product = require("./Product.react.jsx")
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
@@ -32388,25 +33031,35 @@ function getProductsState(){
  * The right-most container of the review app containing the products
  */
 var ProductsContainer = React.createClass({displayName: "ProductsContainer",
+
     getInitialState: function(){
         return getProductsState();
     },
+
     componentDidMount: function(){
         // We listen to the product store
         ProductStore.addChangeListener(this._onChange);
+
+        // We bind a listener for the infinite scroll
         $(window).scroll(function() {
             // we add 100 for a little buffer!
-            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
                 ProductActions.infiniteScroll();
             }
         });
     },
+
+    componentWillUpdate: function(){
+    },
+
     componentWillUnmount: function(){
         ProductStore.removeChangeListener(this._onChange);
     },
+
     _onChange: function(){
         this.setState(getProductsState());
     },
+
     render: function(){
 
         var products = this.state.products.map(function(m, i){
@@ -32429,30 +33082,36 @@ module.exports = ProductsContainer;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","./Product.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/Product.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ProductStore.js","./Product.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/Product.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewBox.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewApp.react.jsx":[function(require,module,exports){
+var React = require('react');
 var ProductStore = require('../stores/ProductStore');
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
 var SideBar = require("./SideBar.react.jsx");
 var ReviewBox = require("./ReviewBox.react.jsx");
 var ProductsContainer = require("./ProductsContainer.react.jsx");
-var assign = require('object-assign');
 
 var ReviewApp = React.createClass({displayName: "ReviewApp",
+
     getInitialState: function(){
+        // we init the stores
         ProductStore.init(this.props.products, this.props.tags, this.props.number_reviews);
         ReviewBoxStore.init(this.props.reviewElements);
+
+        // lets shuffle the products
         ProductStore.shuffleProducts();
+
+        // We update the text that displays the remaining reviews to do
         ProductStore.updateReviewText();
+
         return null;
     },
+
     componentDidMount: function(){
-        // ===== Scroll to Top ==== 
-        var canChange = true;
+
+        // We show the arrow to scroll back up fast!
         $(window).scroll(function() {
-            if ($(this).scrollTop() >= 500) {        // If page is scrolled more than 50px
+            if ($(this).scrollTop() >= 500) {
                     $('#return-to-top').css("display", "block");
                     $('#return-to-top').addClass("fadeIn");
                     $('#return-to-top').removeClass("fadeOut");
@@ -32462,12 +33121,15 @@ var ReviewApp = React.createClass({displayName: "ReviewApp",
                     $('#return-to-top').removeClass("fadeIn");
             }
         });
-        $('#return-to-top').click(function() {      // When arrow is clicked
+
+        // we bind the scrolling animation
+        $('#return-to-top').click(function() {
             $('body,html').animate({
-                scrollTop : 0                       // Scroll to top of body
+                scrollTop : 0
             }, 500);
         });
     },
+
     render: function(){
         return(
             React.createElement("div", {className: "review-app clearfix", id: "review-app-inner"}, 
@@ -32484,13 +33146,11 @@ module.exports = ReviewApp;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ProductsContainer.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/SideBar.react.jsx","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewBox.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ProductStore.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ProductsContainer.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ProductsContainer.react.jsx","./ReviewBox.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewBox.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/SideBar.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewBox.react.jsx":[function(require,module,exports){
+var React = require('react');
 var ReviewForm = require("./ReviewForm.react.jsx");
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
-var isElementInViewport = require('../../../tools').isElementInViewport;
 
 function getReviewState(){
     return ReviewBoxStore.getReviewState();
@@ -32508,37 +33168,45 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
             hide: 100
         }
     },
+
     getInitialState: function(){
         return getReviewState();
     },
+
     _onChange: function(){
         this.setState(getReviewState());
     },
+
     closeReviewBox: function(){
         ProductActions.closeReviewBox();  
     },
-    componentDidMount: function(){
 
+    componentDidMount: function(){
         ReviewBoxStore.addChangeListener(this._onChange);
     },
+
     componentWillUnmount:function(){
         ReviewBoxStore.removeReviewChangeListener(this._onChange);
     },
+
     componentDidUpdate: function(){
         //we add the popover
         if(this.state.open && this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover(this.popoverOptions);
         }
-        
     },
+
     componentWillUpdate: function(nextProps, nextState){
         //we remove the popover if the state is open (not yet updated)
-        if(this.state.open && this.refs.description && this.state.product.doCropDescription){
+        if(this.state.open &&
+           this.refs.description &&
+           this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover('destroy');
         }
     },
+
     render: function(){
         var description = '';
 
@@ -32549,6 +33217,7 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
         else{
             description = this.state.product.description;
         } 
+
         var reviewWidget =
         React.createElement("div", {id: "review-widget", className: "animated bounceInDown", ref: "reviewWidget"}, 
             React.createElement("div", {className: "row"}, 
@@ -32582,7 +33251,9 @@ var ReviewBox = React.createClass({displayName: "ReviewBox",
                     React.createElement(ReviewForm, {product: this.state.product})
                 )
             )
-        ) 
+        );
+        
+        // we only show the review widget if it's opened
         return(
         React.createElement("div", null, 
             this.state.open ? reviewWidget : null
@@ -32595,18 +33266,21 @@ module.exports = ReviewBox;
 
 
 
-},{"../../../tools":"/Users/Felix/Documents/social_commerce_project/src/js/tools.js","../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ReviewForm.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewForm.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewForm.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ReviewForm.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewForm.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewForm.react.jsx":[function(require,module,exports){
+var React = require('react');
 var ReviewFormTab = require('./ReviewFormTab.react.jsx');
 var ProductActions = require("../actions/ProductActions");
 var ReviewBoxStore = require("../stores/ReviewBoxStore");
+var StarsRating = require("./StarsRating.react.jsx");
 
 var ReviewForm = React.createClass({displayName: "ReviewForm",
+
     // We only need to set initial state since
     // component gets unmounted each time the box closes
     getInitialState: function(){
         return ReviewBoxStore.getReviewData(); 
     },
+
     submitReview: function(){
         // We get the updated data, no need to use an event for that
         var reviewData = ReviewBoxStore.getReviewData();
@@ -32617,105 +33291,98 @@ var ReviewForm = React.createClass({displayName: "ReviewForm",
         // Close the review box
         ProductActions.closeReviewBox();  
     },
+
     // Toggle 'recommendIt' between true and false
     toggleRecommendIt: function(){
         ProductActions.toggleRecommendIt();
     },
+
     // When the comment is changing, set the store
-    // (we could not make use of the store, but still, it's good practice)
+    // (we could not make use of the store, but still,
+    // it's good practice)
     commentChanged: function(){
         ProductActions.commentChanged(this.refs.comment.getDOMNode().value);
     },
+
+    // Delete the review
     deleteReview: function(){
         ProductActions.deleteReview(this.props.product);
         // Close the review box
         ProductActions.closeReviewBox();  
     },
-         editReview: function(){
-             // We get the updated data, no need to use an event for that
-             var reviewData = ReviewBoxStore.getReviewData();
 
-             // Submit the review via Ajax
-             ProductActions.submitReview(this.props.product, reviewData);  
+    render: function(){
+        // The tabs
+        var tabs = this.state.tabs.map(function(re, i){
+            var href = "#tab" + i;
+            return (
+                React.createElement("li", {className: i===0? "active" : "", key: i}, 
+                    React.createElement("a", {href: href, "data-toggle": "tab"}, 
+                        re.name
+                    )
+                )
+            );
+        });
 
-             // Close the review box
-             ProductActions.closeReviewBox();  
-             
-         },
-         render: function(){
+        // the tab content
+        var tabContent = this.state.tabs.map(function(re, i){
+            var id = "tab" + i;
+            return(
+                React.createElement(ReviewFormTab, {active: i === 0 ? true : false, data: re.categories, id: id, key: i})
+            );
+        });
 
-             // The tabs
-             var tabs = this.state.tabs.map(function(re, i){
-                 var href = "#tab" + i;
-                 return (
-                     React.createElement("li", {className: i===0? "active" : "", key: i}, 
-                         React.createElement("a", {href: href, "data-toggle": "tab"}, 
-                             re.name
-                         )
-                     )
-                 );
-             });
+        // are we editing
+        var editing = this.props.product.review ? true : false;
+        var deleteBtn = null;
+        var submitBtnTxt = "Submit";
 
-             // the tab content
-             var tabContent = this.state.tabs.map(function(re, i){
-                 var id = "tab" + i;
-                 return(
-                     React.createElement(ReviewFormTab, {active: i === 0 ? true : false, data: re.categories, id: id, key: i})
-                 );
-             });
+        // if we are editing
+        if(editing){
+            // we set the delete button
+            deleteBtn =
+            React.createElement("button", {className: "btn btn-danger bottom-btn", 
+                    onClick: this.deleteReview}, "Delete");
+            // we change the button text to edit
+            submitBtnTxt = "Edit";
+        }
 
-             var recommendItClasses = "btn btn-default btn-lg";
-             if(this.state.recommendIt) recommendItClasses += " active";
-
-             var editing = this.props.product.review ? true : false;
-             var deleteBtn = null;
-             var submitBtnTxt = "Submit";
-             if(editing){
-                 deleteBtn = React.createElement("button", {className: "btn btn-danger bottom-btn", 
-                                     onClick: this.deleteReview}, "Delete");
-                 submitBtnTxt = "Edit";
-             }
-             return (
-                 React.createElement("div", null, 
-                     React.createElement("div", {role: "tabpanel", className: "tab-panel"}, 
-                         React.createElement("ul", {className: "nav nav-tabs", role: "tablist"}, 
-                             tabs
-                         ), 
-                         React.createElement("div", {className: "tab-content", ref: "tabContent"}, 
-                             tabContent
-                         )
-                     ), 
-                     React.createElement("hr", null), 
-                     React.createElement("textarea", {className: "form-comments", 
-                               placeholder: "Your comments", 
-                               ref: "comment", rows: "3", 
-                               onChange: this.commentChanged, 
-                               defaultValue: this.state.comment}
-                     ), 
-                     React.createElement("div", {"data-toggle": "buttons", id: "recommend"}, 
-                         React.createElement("label", {className: recommendItClasses, onClick: this.toggleRecommendIt}, 
-                             React.createElement("input", {type: "checkbox", autocomplete: "off", value: "checked"}), 
-                             "I recommend it!"
-                         )
-                     ), 
-                     React.createElement("div", {id: "submit-container"}, 
-                         React.createElement("button", {className: "btn btn-success bottom-btn", id: "submit-button", onClick: editing? this.editReview : this.submitReview}, submitBtnTxt), 
-                         deleteBtn
-                         
-                     )
-                 )
-             )
-         }
+        return (
+            React.createElement("div", null, 
+                React.createElement("div", {role: "tabpanel", className: "tab-panel"}, 
+                    React.createElement("ul", {className: "nav nav-tabs", role: "tablist"}, 
+                        tabs
+                    ), 
+                    React.createElement("div", {className: "tab-content", ref: "tabContent"}, 
+                        tabContent
+                    )
+                ), 
+                React.createElement("hr", null), 
+                React.createElement("textarea", {className: "form-comments", 
+                          placeholder: "Your comments", 
+                          ref: "comment", rows: "3", 
+                          onChange: this.commentChanged, 
+                          defaultValue: this.state.comment}
+                ), 
+                React.createElement(StarsRating, {rating: this.state.rating}), 
+                React.createElement("div", {id: "submit-container"}, 
+                    React.createElement("button", {className: "btn btn-primary bottom-btn", id: "submit-button", onClick: this.submitReview}, submitBtnTxt), 
+                    deleteBtn
+                )
+            )
+        )
+    }
 });
 
 module.exports = ReviewForm;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ReviewFormTab.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewFormTab.react.jsx":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../stores/ReviewBoxStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ReviewBoxStore.js","./ReviewFormTab.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewFormTab.react.jsx","./StarsRating.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/StarsRating.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewFormTab.react.jsx":[function(require,module,exports){
 var React = require('react/addons');
 var ProductActions = require('../actions/ProductActions');
 
+/* A tab with toggles */
 var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
     render: function(){
 
@@ -32726,20 +33393,25 @@ var ReviewFormTab = React.createClass({displayName: "ReviewFormTab",
         }
 
         // For each category, there 
-        var that = this;
         var categories = this.props.data.map(function(d, i){
 
+            // For each element in the category
             var elements = d.elements.map(function(e){
+
                 // When the button is toggled
-                function aggregate(){
+                function toggle(){
                     e.isChecked = !e.isChecked;
-                    // Merge the new data with the old!
                 }
+
+                // The element classes
                 var classes = "btn btn-default";
+
+                // If the element is checked
                 if(e.isChecked) classes += " active";
+
                 return (
-                    React.createElement("label", {className: classes, key: e.id, onClick: aggregate}, 
-                        React.createElement("input", {type: "checkbox", autocomplete: "off"}), 
+                    React.createElement("label", {className: classes, key: e.id, onClick: toggle}, 
+                        React.createElement("input", {type: "checkbox", autoComplete: "off"}), 
                         e.name
                     )
                 );
@@ -32767,18 +33439,30 @@ module.exports = ReviewFormTab;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/SideBar.react.jsx":[function(require,module,exports){
-var React = require('react/addons');
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","react/addons":"/Users/Felix/Documents/hec/node_modules/react/addons.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/SideBar.react.jsx":[function(require,module,exports){
+var React = require('react');
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
 
 function getSideBarState(){
     return ProductStore.getTags();
 }
+
+// are we typing in search field
+var typingInSearchField = false,
+
+    // We are waiting some time before searching
+    typingTimeout,
+
+    // to compare if new search is the same as old search.
+    // If it is, we dont refresh!
+    oldSearchValue;
+    
+/* The side bar element with the search form */
 var SideBar = React.createClass({displayName: "SideBar",
 
+    //shuffle the products
     shuffleProducts: function(){
-
         // We set the sort selection to "Random" when shuffle is pressed
         this.refs.selectSort.getDOMNode().value = "Random";
         ProductActions.shuffleProducts();
@@ -32792,54 +33476,49 @@ var SideBar = React.createClass({displayName: "SideBar",
         this.setState(getSideBarState());
     },
 
-    // Are we typing in search field?
-    typingInSearchField: false,
-
-    // We are waiting some time before searching
-    typingTimeout: undefined,
-
-    // to compare if new search is the same as old search. If it is, we dont refresh!
-    oldSearchValue: undefined,
-
     // When we type in search field
     textSearch: function(){
 
-        // We only execute a search query when the user stops typing for more
-        // than 0.2 seconds!
-        if(this.typingInSearchField){
-            clearTimeout(this.typingTimeout);
+        // We only execute a search query when the user stops
+        // typing for more than 0.2 seconds!
+        if(typingInSearchField){
+            clearTimeout(typingTimeout);
         } 
-        this.typingInSearchField = true;
-        this.typingTimeout = setTimeout(function(){
-            this.typingInSearchField = false;
+        typingInSearchField = true;
+        typingTimeout = setTimeout(function(){
+            typingInSearchField = false;
             var newSearchValue = this.refs.searchInput.getDOMNode().value;
-            if(this.oldSearchValue != newSearchValue){
+            if(oldSearchValue != newSearchValue){
                 this.doSearch();
-                this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
-                
+                oldSearchValue = this.refs.searchInput.getDOMNode().value;
             }
         }.bind(this), 200);
     },
 
     componentDidMount: function(){
-        //We set the old search field value at mounting
         ProductStore.addChangeListener(this._onChange);
-        this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
     },
+
     componentWillUnmount: function(){
         ProductStore.removeChangeListener(this._onChange);
     },
+
     shouldComponentUpdate: function(){
         //we dont need to ever update it
         return false;  
     },
+
+    // We search! The tags are accessible from the store
     doSearch: function(){
         ProductActions.doSearch(
             this.refs.searchInput.getDOMNode().value,
             this.refs.selectSort.getDOMNode().value
-      )  
+        );
     },
+
     render: function(){
+
+        // the tags toggles
         var tags_checkbox = this.state.tags.map(function(t, i){
 
             // Handler for clicking on tag toggles
@@ -32850,7 +33529,7 @@ var SideBar = React.createClass({displayName: "SideBar",
 
             return(
                 React.createElement("label", {className: "btn btn-default", onClick: toggleTag, key: i}, 
-                    React.createElement("input", {type: "checkbox", autocomplete: "off"}), 
+                    React.createElement("input", {type: "checkbox", autoComplete: "off"}), 
                     t.name
                 )
             );
@@ -32880,7 +33559,93 @@ module.exports = SideBar;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../stores/ProductStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ProductStore.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/StarsRating.react.jsx":[function(require,module,exports){
+var React = require('react');
+var ProductActions = require('../actions/ProductActions');
+
+// empty star and filled star
+var empty = "fa fa-star-o fa-2x star";
+var full = "fa fa-star fa-2x star";
+
+var StarsRating = React.createClass({displayName: "StarsRating",
+
+    componentDidMount: function(){
+        console.log("component did mount");
+        this.setStars(this.props.rating);
+    },
+
+    // this function sets the stars to filled or empty
+    setStars: function(comparator){
+        for (var i=5; i>0;i--){
+            var ref = "star" + i;
+            if(i <= comparator){
+                this.refs[ref].getDOMNode().className = full;
+            } else {
+                this.refs[ref].getDOMNode().className = empty;
+            }
+        }
+    },
+
+    mouseleaveStar: function(e){
+        this.setStars(parseInt(e.target.id.substr(e.target.id.length - 1)));
+    },
+
+    mouseenterStar: function(e){
+        this.setStars(parseInt(e.target.id.substr(e.target.id.length - 1)));
+    },
+
+    mouseleaveAllStars: function(e){
+        this.setStars(this.props.rating);
+    },
+
+    // when we click a star
+    clickStar: function(e){
+        var num = parseInt(e.target.id.substr(e.target.id.length - 1))
+        this.props.rating = parseInt(num);
+        this.setStars(this.props.rating);
+        ProductActions.setRating(num);
+    },
+
+    render: function(){
+        return (
+            React.createElement("div", {id: "stars-container"}, 
+                React.createElement("span", {onMouseLeave: this.mouseleaveAllStars}, 
+                React.createElement("i", {id: "star1", className: empty, 
+                   onClick: this.clickStar, 
+                   onMouseEnter: this.mouseenterStar, 
+                   onMouseLeave: this.mouseleaveStar, 
+                   ref: "star1"}), 
+                React.createElement("i", {id: "star2", className: empty, 
+                   onClick: this.clickStar, 
+                   onMouseEnter: this.mouseenterStar, 
+                   onMouseLeave: this.mouseleaveStar, 
+                   ref: "star2"}), 
+                React.createElement("i", {id: "star3", className: empty, 
+                   onClick: this.clickStar, 
+                   onMouseEnter: this.mouseenterStar, 
+                   onMouseLeave: this.mouseleaveStar, 
+                   ref: "star3"}), 
+                React.createElement("i", {id: "star4", className: empty, 
+                   onClick: this.clickStar, 
+                   onMouseEnter: this.mouseenterStar, 
+                   onMouseLeave: this.mouseleaveStar, 
+                   ref: "star4"}), 
+                React.createElement("i", {id: "star5", className: empty, 
+                   onClick: this.clickStar, 
+                   onMouseEnter: this.mouseenterStar, 
+                   onMouseLeave: this.mouseleaveStar, 
+                   ref: "star5"})
+                )
+            ) 
+        );
+    }
+})
+
+module.exports = StarsRating;
+
+
+
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/constants/ProductConstants.js":[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -32889,27 +33654,25 @@ module.exports = keyMirror({
     GET_PRODUCTS: null,
     SHUFFLE_PRODUCTS: null,
     SEARCH_PRODUCTS: null,
-    //review box actions
     OPEN_REVIEW_BOX: null,
     CLOSE_REVIEW_BOX: null,
     SUBMIT_REVIEW: null,
-    ALLOW_SLICK_REVIEW_PAGE: null,
-    TOGGLE_RECOMMEND: null,
     COMMENT_CHANGED: null,
     DELETE_REVIEW: null,
-    INFINITE_SCROLL: null
+    INFINITE_SCROLL: null,
+    SET_RATING: null
 });
 
 
 
-},{"keymirror":"/Users/Felix/Documents/social_commerce_project/node_modules/keymirror/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js":[function(require,module,exports){
+},{"keymirror":"/Users/Felix/Documents/hec/node_modules/keymirror/index.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/dispatcher/AppDispatcher.js":[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
 
 
-},{"flux":"/Users/Felix/Documents/social_commerce_project/node_modules/flux/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ProductStore.js":[function(require,module,exports){
+},{"flux":"/Users/Felix/Documents/hec/node_modules/flux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ProductStore.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ProductConstants = require('../constants/ProductConstants');
@@ -32929,44 +33692,7 @@ var _sortBy = 'Random',
     $doneOrNot = $("#done-or-not"),
     $numReviews = $('#num-reviews'),
     _currentIndex = 15,
-    _lastReviewedId,
-    _firstLaunch = true;
-
-function imageLoaded(){
-    // console.log("image preloaded");
-}
-// lets preload the images (the ones not on first screen)
-function preload(sources, chunkSize) {
-    chunkSize = chunkSize || sources.length;
-    var sourcesChunked = _.chunk(sources, chunkSize);
-    var steps = sourcesChunked.length;
-    var current = 0;
-    var inner = function(_current){
-        var imagesTemp = [];
-        var l = sourcesChunked[_current].length;
-        var counter = 0;
-        var callback = function(){
-            console.log("updated counter");
-                counter++;
-                if(counter == l - 1){
-                    if(_current < steps - 1){
-                        inner(++_current);
-                    }
-                    else {
-                        // preloading done
-                    }
-                }
-        };
-        for (var i = 0; i < l; i++) {
-           
-            imagesTemp[i] = new Image();
-	    imagesTemp[i].src = sourcesChunked[_current][i].image_path;
-            imagesTemp[i].onload = callback;
-        }
-    };
-    inner(current);
-}
-
+    _lastReviewedId;
 
 // Return the number of reviewed products by the current user
 function getNumberOfReviewedProducts(products){
@@ -32977,6 +33703,7 @@ function getNumberOfReviewedProducts(products){
     return count;
 }
 
+// The number of products that are currently visible
 function resetCurrentIndex(){
     _currentIndex = 15; 
 }
@@ -33004,17 +33731,24 @@ var ProductStore = assign({}, EventEmitter.prototype, {
 
     // update the text that informs the user about the reviewing state
     updateReviewText: function(){
+        //we set the text to the number 
         $numReviews.text(_num);
+
+        // if the number of reviews is less than 3
         if(_num < 3){
             $doneOrNot.text("Please review "+
                                (3 - _num) +
                                " more before moving on to the next step.");
         }
+
+        // else
         else {
             $doneOrNot.text("You can move on to the next step when you're done!");
             $doneOrNot.append('<div id="icon-wrapper">'+
                               '<a href="/phase1/step2/"><i id="next-icon" class="fa fa-hand-o-right">'+
                               '</i></a></div>');
+
+            // The bouncing 'next icon'
             var done = true;
             $("#next-icon").mouseover(function(){
                 if(done){
@@ -33026,12 +33760,15 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             });
         }
     },
+
     getLastReviewedId: function(){
         return _lastReviewedId;
     },
+
     resetReviewedId: function(id){
         _lastReviewedId = undefined;
     },
+
     // get the product from id
     getProductFromId: function(id){
         for(var i=0, l=_productsOriginal.length;i<l;i++){
@@ -33045,10 +33782,6 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     // Used by the ProductsContainer component to set its state
     getProducts: function(){
         //preload images by chunks of 15
-        if(_firstLaunch){
-            preload(_products, 15);
-            _firstLaunch = false;
-        }
         return {
             products: _products.slice(0, _currentIndex)
         };
@@ -33060,10 +33793,10 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             tags: _tags
         };
     },
+
     // We execute a search query
     doSearch: function(query, sortBy) {
         // what will be returned
-        console.log(sortBy);
         var queryResult = [];
         var regex = new RegExp(query, "i");
         var subset,
@@ -33076,7 +33809,8 @@ var ProductStore = assign({}, EventEmitter.prototype, {
             return t.name;
         });
 
-        // for all products, do check if regex match and intersection for tags
+        // for all products, do check if regex match
+        // and intersection for tags
         _productsOriginal.forEach(function(product){
             subset = tags.length ===  _.intersection(tags, product.tags).length;
             if(regex.test(product.name) && subset){
@@ -33115,22 +33849,25 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         default:
             break;
         }
+
         // the products that will be returned
         _products = queryResult;
         resetCurrentIndex();
     },
+
     shuffleProducts: function(){
         resetCurrentIndex();
         _products = _.shuffle(_products);       
     },
+
+    // Increment the current number of products
     incrementCurrentIndex: function(){
         _currentIndex += 10;
         if(_currentIndex > _products.length){
             _currentIndex = _products.length;
         }
     },
-    triggerNextIconBounce: function(){
-    },
+
     deleteReviewWithId: function(product){
         for(var i = 0; i < _products.length; i++) {
             if(_products[i].id === product.id){
@@ -33143,11 +33880,15 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         ReviewBoxStore.resetReviewData();
         this.updateReviewText();
     },
+
+    // optimistic rendering
     submit_review: function(product, reviewData){
 
-        if(!product.review)
-        // we increment the number of reviews!
+        // if we were not editing the product
+        if(!product.review){
+            // we increment the number of reviews!
             _num++;
+        }
         
         // we update review state
         var boolAnswers = [];
@@ -33165,20 +33906,26 @@ var ProductStore = assign({}, EventEmitter.prototype, {
         product.review = {
             boolAnswers:boolAnswers,
             comment: reviewData.comment,
-            recommendIt: reviewData.recommendIt
+            rating: reviewData.rating
         };
 
         _lastReviewedId = product.id;
 
+        // we reset the data in the review widget
         ReviewBoxStore.resetReviewData();
+
+        // we update the review text
         this.updateReviewText();
     },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
+
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
+
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }
@@ -33205,6 +33952,7 @@ AppDispatcher.register(function(action){
     case ProductConstants.INFINITE_SCROLL:
         ProductStore.incrementCurrentIndex();
         ProductStore.emitChange();
+        break;
     default:
         break;
     }
@@ -33213,7 +33961,7 @@ module.exports = ProductStore;
 
 
 
-},{"../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js","./ReviewBoxStore":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/stores/ReviewBoxStore.js":[function(require,module,exports){
+},{"../constants/ProductConstants":"/Users/Felix/Documents/hec/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/hec/src/js/phase1/review_app/dispatcher/AppDispatcher.js","./ReviewBoxStore":"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ReviewBoxStore.js","events":"/Users/Felix/Documents/hec/node_modules/events/events.js","lodash":"/Users/Felix/Documents/hec/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/hec/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/hec/src/js/phase1/review_app/stores/ReviewBoxStore.js":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ProductActions = require('../actions/ProductActions');
@@ -33222,6 +33970,7 @@ var assign = require('object-assign');
 var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
+
 var _reviewBox = {
     product: {
         id: null,
@@ -33239,17 +33988,21 @@ var _reviewBox = {
 },
     // The max length of the description
     _cropLength = 150,
+
     // The jQuery element containing the elements that will fade
     // The element we will prepend the overlay to
     $reviewApp,
+
     // The clickable overlay
     // Already present
     $overlay,
+
+    // the toggles
     _reviewElementsOriginal,
     _reviewElements,
-    _recommendIt = false,
-    _reviewData,
-    _comment = '';
+
+    // comment, ratings and checked elements
+    _reviewData;
 
 
 function setAllReviewElementsFalse(){
@@ -33262,6 +34015,7 @@ function setAllReviewElementsFalse(){
         }
     
 }
+
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     // Called from root component
@@ -33273,12 +34027,10 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         // We set all elements' isChecked to false
         setAllReviewElementsFalse();
 
-        // Deep copy
-        // _reviewElementsOriginal = $.extend(true, [], reviewElements);
         _reviewData = {
-            comment: _comment,
+            comment: "",
             tabs: _reviewElements,
-            recommendIt: _recommendIt
+            rating: 0
         };
 
         // We set up the overlay for closing the review box
@@ -33296,30 +34048,34 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     // When the user wants to review a movie
     openReviewBox: function(product){
 
-        // The clickable overlay is shown
-        // $overlay.fadeIn(100);
-
-        // We fade the elements with class will-fade
-
         // We set the data
         _reviewBox.product = product;
 
         // if it's already reviewed 
         if(product.review){
-            var reviewData = product.review;
 
-            //we build update review data
-            _reviewData.comment = reviewData.comment;
-            _reviewData.recommendIt = reviewData.recommendIt;
+            // we want to set the data of the review widget
+            // so that its the same as the last time it was
+            // reviewed
+            var r = product.review;
+
+            //we build updated review data
+            _reviewData.comment = r.comment;
+            _reviewData.rating = r.rating;
 
             // we need isChecked to correspond to bool value
             for(var i=0, l=_reviewElements.length; i<l;i++){
                 for(var j=0,m=_reviewElements[i].categories.length;j<m;j++){
                     for(var k=0, n=_reviewElements[i].categories[j].elements.length;k<n;k++){
-                        for(var z = 0; z < reviewData.boolAnswers.length; z++) {
-                            if(_reviewElements[i].categories[j].elements[k].id ===
-                               reviewData.boolAnswers[z].id){
-                                _reviewElements[i].categories[j].elements[k].isChecked = reviewData.boolAnswers[z].val;
+                        for(var z = 0; z < r.boolAnswers.length; z++) {
+                            if(_reviewElements[i]
+                               .categories[j]
+                               .elements[k].id ===
+                               r.boolAnswers[z].id){
+                                _reviewElements[i]
+                                    .categories[j]
+                                    .elements[k]
+                                    .isChecked = r.boolAnswers[z].val;
                             }
                         }
                     }
@@ -33327,51 +34083,60 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
             }
         }
 
-
         // We set open to true
         _reviewBox.open = true;
 
         // Do we crop?
         if(_reviewBox.product.description.length > _cropLength){
             _reviewBox.product.doCropDescription= true;
-            _reviewBox.product.cropDescription =_reviewBox.product.description.substring(0, _cropLength) + "...";
+            _reviewBox.product.cropDescription =
+                _reviewBox.product.description.substring(0, _cropLength) +
+                "...";
         } else {
             _reviewBox.product.doCropDescription = false;
         }
     },
 
     closeReviewBox: function(){
-        // $overlay.fadeOut(100);
         _reviewBox.open = false;
         this.resetReviewData();
     },
+
     resetReviewData: function(){
-        _reviewData.recommendIt = false;
+        _reviewData.rating = 0;
         _reviewData.comment = "";
         setAllReviewElementsFalse();
-        // deep copy
-        // _reviewData.tabs = $.extend(true, [], _reviewElementsOriginal);
     },
+
     getReviewState: function(){
         return _reviewBox;
     },
+
+    setRating: function(rating){
+        _reviewData.rating = rating;
+    },
+
     toggleRecommendIt: function(comment){
         _reviewData.recommendIt = !_reviewData.recommendIt;
     },
+
     commentChanged: function(comment){
         _reviewData.comment = comment;   
     },
+    
     emitChange: function() {
-        console.log("change emitted");
         this.emit(CHANGE_EVENT);
     },
+
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
+
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }
 });
+
 AppDispatcher.register(function(action){
     switch(action.actionType) {
     case ProductConstants.OPEN_REVIEW_BOX:
@@ -33391,6 +34156,9 @@ AppDispatcher.register(function(action){
     case ProductConstants.COMMENT_CHANGED:
         ReviewBoxStore.commentChanged(action.data);
         break;
+    case ProductConstants.SET_RATING:
+        ReviewBoxStore.setRating(action.rating);
+        break;
     default:
         break;
     }
@@ -33399,44 +34167,22 @@ module.exports = ReviewBoxStore;
 
 
 
-},{"../actions/ProductActions":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/actions/ProductActions.js","../constants/ProductConstants":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/social_commerce_project/node_modules/browserify/node_modules/events/events.js","lodash":"/Users/Felix/Documents/social_commerce_project/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/social_commerce_project/node_modules/object-assign/index.js"}],"/Users/Felix/Documents/social_commerce_project/src/js/tools.js":[function(require,module,exports){
-var tools = {};
-tools.isElementInViewport = function(el) {
-
-    //special bonus for those using jQuery
-    if (typeof jQuery === "function" && el instanceof jQuery) {
-        el = el[0];
-    }
-
-    var rect = el.getBoundingClientRect();
-
-    return (
-        rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
-    );
-};
-module.exports = tools;
-
-
-
-},{}],"review-app-bundle":[function(require,module,exports){
+},{"../actions/ProductActions":"/Users/Felix/Documents/hec/src/js/phase1/review_app/actions/ProductActions.js","../constants/ProductConstants":"/Users/Felix/Documents/hec/src/js/phase1/review_app/constants/ProductConstants.js","../dispatcher/AppDispatcher":"/Users/Felix/Documents/hec/src/js/phase1/review_app/dispatcher/AppDispatcher.js","events":"/Users/Felix/Documents/hec/node_modules/events/events.js","lodash":"/Users/Felix/Documents/hec/node_modules/lodash/index.js","object-assign":"/Users/Felix/Documents/hec/node_modules/object-assign/index.js"}],"review-app-bundle":[function(require,module,exports){
 var React = require('react/addons');
 var ReviewApp = require('./components/ReviewApp.react.jsx');
+
 //Called in the django template
 var init = function init(data){
-    
 
     //Rendering of root component
-    React.render(
-        React.createElement(ReviewApp, data),
-        document.getElementById('reviewapp')
-    );
+        React.render(
+            React.createElement(ReviewApp, data),
+            document.getElementById('reviewapp')
+        );
 }
 
 module.exports = init;
 
 
 
-},{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/social_commerce_project/src/js/phase1/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/social_commerce_project/node_modules/react/addons.js"}]},{},["review-app-bundle"]);
+},{"./components/ReviewApp.react.jsx":"/Users/Felix/Documents/hec/src/js/phase1/review_app/components/ReviewApp.react.jsx","react/addons":"/Users/Felix/Documents/hec/node_modules/react/addons.js"}]},{},["review-app-bundle"]);

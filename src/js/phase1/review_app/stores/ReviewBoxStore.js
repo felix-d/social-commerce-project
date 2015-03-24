@@ -6,6 +6,7 @@ var assign = require('object-assign');
 var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
+
 var _reviewBox = {
     product: {
         id: null,
@@ -23,17 +24,21 @@ var _reviewBox = {
 },
     // The max length of the description
     _cropLength = 150,
+
     // The jQuery element containing the elements that will fade
     // The element we will prepend the overlay to
     $reviewApp,
+
     // The clickable overlay
     // Already present
     $overlay,
+
+    // the toggles
     _reviewElementsOriginal,
     _reviewElements,
-    _recommendIt = false,
-    _reviewData,
-    _comment = '';
+
+    // comment, ratings and checked elements
+    _reviewData;
 
 
 function setAllReviewElementsFalse(){
@@ -46,6 +51,7 @@ function setAllReviewElementsFalse(){
         }
     
 }
+
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
     // Called from root component
@@ -57,12 +63,10 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
         // We set all elements' isChecked to false
         setAllReviewElementsFalse();
 
-        // Deep copy
-        // _reviewElementsOriginal = $.extend(true, [], reviewElements);
         _reviewData = {
-            comment: _comment,
+            comment: "",
             tabs: _reviewElements,
-            recommendIt: _recommendIt
+            rating: 0
         };
 
         // We set up the overlay for closing the review box
@@ -80,30 +84,34 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
     // When the user wants to review a movie
     openReviewBox: function(product){
 
-        // The clickable overlay is shown
-        // $overlay.fadeIn(100);
-
-        // We fade the elements with class will-fade
-
         // We set the data
         _reviewBox.product = product;
 
         // if it's already reviewed 
         if(product.review){
-            var reviewData = product.review;
 
-            //we build update review data
-            _reviewData.comment = reviewData.comment;
-            _reviewData.recommendIt = reviewData.recommendIt;
+            // we want to set the data of the review widget
+            // so that its the same as the last time it was
+            // reviewed
+            var r = product.review;
+
+            //we build updated review data
+            _reviewData.comment = r.comment;
+            _reviewData.rating = r.rating;
 
             // we need isChecked to correspond to bool value
             for(var i=0, l=_reviewElements.length; i<l;i++){
                 for(var j=0,m=_reviewElements[i].categories.length;j<m;j++){
                     for(var k=0, n=_reviewElements[i].categories[j].elements.length;k<n;k++){
-                        for(var z = 0; z < reviewData.boolAnswers.length; z++) {
-                            if(_reviewElements[i].categories[j].elements[k].id ===
-                               reviewData.boolAnswers[z].id){
-                                _reviewElements[i].categories[j].elements[k].isChecked = reviewData.boolAnswers[z].val;
+                        for(var z = 0; z < r.boolAnswers.length; z++) {
+                            if(_reviewElements[i]
+                               .categories[j]
+                               .elements[k].id ===
+                               r.boolAnswers[z].id){
+                                _reviewElements[i]
+                                    .categories[j]
+                                    .elements[k]
+                                    .isChecked = r.boolAnswers[z].val;
                             }
                         }
                     }
@@ -111,51 +119,60 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
             }
         }
 
-
         // We set open to true
         _reviewBox.open = true;
 
         // Do we crop?
         if(_reviewBox.product.description.length > _cropLength){
             _reviewBox.product.doCropDescription= true;
-            _reviewBox.product.cropDescription =_reviewBox.product.description.substring(0, _cropLength) + "...";
+            _reviewBox.product.cropDescription =
+                _reviewBox.product.description.substring(0, _cropLength) +
+                "...";
         } else {
             _reviewBox.product.doCropDescription = false;
         }
     },
 
     closeReviewBox: function(){
-        // $overlay.fadeOut(100);
         _reviewBox.open = false;
         this.resetReviewData();
     },
+
     resetReviewData: function(){
-        _reviewData.recommendIt = false;
+        _reviewData.rating = 0;
         _reviewData.comment = "";
         setAllReviewElementsFalse();
-        // deep copy
-        // _reviewData.tabs = $.extend(true, [], _reviewElementsOriginal);
     },
+
     getReviewState: function(){
         return _reviewBox;
     },
+
+    setRating: function(rating){
+        _reviewData.rating = rating;
+    },
+
     toggleRecommendIt: function(comment){
         _reviewData.recommendIt = !_reviewData.recommendIt;
     },
+
     commentChanged: function(comment){
         _reviewData.comment = comment;   
     },
+    
     emitChange: function() {
-        console.log("change emitted");
         this.emit(CHANGE_EVENT);
     },
+
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
     },
+
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
     }
 });
+
 AppDispatcher.register(function(action){
     switch(action.actionType) {
     case ProductConstants.OPEN_REVIEW_BOX:
@@ -174,6 +191,9 @@ AppDispatcher.register(function(action){
         break;
     case ProductConstants.COMMENT_CHANGED:
         ReviewBoxStore.commentChanged(action.data);
+        break;
+    case ProductConstants.SET_RATING:
+        ReviewBoxStore.setRating(action.rating);
         break;
     default:
         break;

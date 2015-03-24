@@ -1,7 +1,8 @@
-var React = require('react/addons');
+var React = require('react');
 var ProductActions = require('../actions/ProductActions');
 var ProductContainer = require('./ProductsContainer.react.jsx');
 var ProductStore = require('../stores/ProductStore');
+var ImageLoader = require('react-imageloader');
 
 var Product = React.createClass({
 
@@ -17,27 +18,33 @@ var Product = React.createClass({
 
     // De maximum length before cropping
     cropLength: 13,
+
     componentDidMount: function(){
+        $(this.getDOMNode()).fadeIn(300);
         // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
                   .popover(this.popoverOptions);
         }
     },
+
     componentDidUpdate: function(){
-        console.log("product updated");
+        $(this.refs.img.getDOMNode()).hide();
+        $(this.getDOMNode()).fadeIn(300);
         // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover(this.popoverOptions);
     },
-    componentWillUpdate: function(){
 
+    componentWillUpdate: function(){
+        $(this.getDOMNode()).hide();
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
                .popover('destroy');
     },
+
     componentWillUnmount: function(){
         // If the name was cropped, deactivate popover
         if(this.cropName)
@@ -45,24 +52,29 @@ var Product = React.createClass({
     },
 
     shouldComponentUpdate: function(nextProps, nextState){
-
+        // if the product is the same as the one that just got reviewed
+        // OR if the product wasn't already there -> we update it
         if(nextProps.data.id === ProductStore.getLastReviewedId() ||
-                                     nextProps.data.id != this.props.data.id){
+           nextProps.data.id != this.props.data.id){
             ProductStore.resetReviewedId();
-            return true;
+               return true;
         }
-
-        /* if(this.props.data.title === nextProps.data.title)
-           return false; */
+        // no need to update the element!
         return false;
-        
     },
+
     // Review the product
-    reviewIt: function(){
+    openReviewBox: function(){
         ProductActions.review(this.props.data);
     },
+
+    showImage: function(){
+        console.log("onLoad");
+        $(this.refs.img.getDOMNode()).fadeIn(200);
+    },
+
+    // Edit the review
     editReview: function(){
-        console.log(this.props.data.review);
         ProductActions.review(this.props.data);
     },
     render: function(){
@@ -82,7 +94,6 @@ var Product = React.createClass({
         if(this.props.data.name.length>this.cropLength){
             this.cropName = true;
             name = this.props.data.name.substring(0,this.cropLength)+"...";
-            
         }
         else {
             this.cropName = false;
@@ -98,24 +109,24 @@ var Product = React.createClass({
         }
         else {
             checkMark= "";
-            opacityControl = "";
             imgReviewedClass="";
-            button = <button className="btn btn-info btn-sm" onClick={this.reviewIt}>I've seen it!</button>;
+            opacityControl = ""
+            button = <button className="btn btn-info btn-sm" onClick={this.openReviewBox}>I've seen it!</button>;
         }
 
         return(
-            <div className="product animated fadeIn col-xs-15">
-            <div className="product-inner effect6">
-                <h5 className={opacityControl} ref="name" data-toggle="popover" data-content={this.props.data.name}>{name}</h5>
-                <div className="img-container">
-                    {checkMark}
-                    <div className={opacityControl}>
-                        <img src={this.props.data.image_path} alt={this.props.data.name}/>
+            <div className="product col-xs-15" style={{display: "none"}}>
+                <div className="product-inner effect6">
+                    <h5 className={opacityControl} ref="name" data-toggle="popover" data-content={this.props.data.name}>{name}</h5>
+                    <div className="checkmark-container">
+                        {checkMark}
+                        <div className={opacityControl + " img-container"}>
+                            <ImageLoader ref="img" src={this.props.data.sm_image_path} onLoad={this.showImage}></ImageLoader>
+                        </div>
                     </div>
+                    <p className={opacityControl}>{this.props.data.caracteristic_1}</p>
+                    {button}
                 </div>
-                <p className={opacityControl}>{this.props.data.caracteristic_1}</p>
-                {button}
-            </div>
             </div>
         );
     }

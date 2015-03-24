@@ -1,4 +1,7 @@
 var gulp = require('gulp');
+var imageResize = require('gulp-image-resize');
+var parallel = require("concurrent-transform");
+var os = require("os");
 var gulpif = require('gulp-if');
 var watchify = require('watchify');
 var debug = require('gulp-debug');
@@ -179,6 +182,14 @@ gulp.task('compress-images', function(){
   return gulp.src('src/images/**').
     pipe(imagemin({progressive: true, optimizationLevel: 7})).
     pipe(gulp.dest('build/images/'));
+});
+
+gulp.task("parallel", function () {
+    return gulp.src("./src/images/products/*.{jpg, jpeg}")
+    .pipe(parallel(
+        imageResize({ width : 121, height: 182  }),
+        os.cpus().length
+    )).pipe(gulp.dest("./src/images/products/small/"));
 });
 
 gulp.task('watch', ['browserify-watch'], function(){

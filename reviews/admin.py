@@ -6,7 +6,7 @@ from reviews.models import\
     ReviewWidget,\
     ReviewBoolAnswer,\
     ReviewComment,\
-    ReviewRecommendIt,\
+    ReviewRating,\
     Reviewing
 from nested_inline.admin import NestedStackedInline, NestedModelAdmin
 
@@ -46,8 +46,8 @@ class ReviewCommentInline(admin.TabularInline):
     model = ReviewComment
 
 
-class ReviewRecommendItInline(admin.TabularInline):
-    model = ReviewRecommendIt
+class ReviewRatingInline(admin.TabularInline):
+    model = ReviewRating
 
 
 @admin.register(Reviewing)
@@ -56,5 +56,5 @@ class ReviewingAdmin(admin.ModelAdmin):
     inlines = [
         ReviewBoolAnswerInline,
         ReviewCommentInline,
-        ReviewRecommendItInline
+        ReviewRatingInline
     ]

@@ -1,9 +1,7 @@
-var React = require('react/addons');
+var React = require('react');
 var ReviewForm = require("./ReviewForm.react.jsx");
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
-var isElementInViewport = require('../../../tools').isElementInViewport;
 
 function getReviewState(){
     return ReviewBoxStore.getReviewState();
@@ -21,37 +19,45 @@ var ReviewBox = React.createClass({
             hide: 100
         }
     },
+
     getInitialState: function(){
         return getReviewState();
     },
+
     _onChange: function(){
         this.setState(getReviewState());
     },
+
     closeReviewBox: function(){
         ProductActions.closeReviewBox();  
     },
-    componentDidMount: function(){
 
+    componentDidMount: function(){
         ReviewBoxStore.addChangeListener(this._onChange);
     },
+
     componentWillUnmount:function(){
         ReviewBoxStore.removeReviewChangeListener(this._onChange);
     },
+
     componentDidUpdate: function(){
         //we add the popover
         if(this.state.open && this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover(this.popoverOptions);
         }
-        
     },
+
     componentWillUpdate: function(nextProps, nextState){
         //we remove the popover if the state is open (not yet updated)
-        if(this.state.open && this.refs.description && this.state.product.doCropDescription){
+        if(this.state.open &&
+           this.refs.description &&
+           this.state.product.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover('destroy');
         }
     },
+
     render: function(){
         var description = '';
 
@@ -62,6 +68,7 @@ var ReviewBox = React.createClass({
         else{
             description = this.state.product.description;
         } 
+
         var reviewWidget =
         <div id="review-widget" className="animated bounceInDown" ref="reviewWidget">
             <div className="row">
@@ -95,7 +102,9 @@ var ReviewBox = React.createClass({
                     <ReviewForm product={this.state.product}/>
                 </div>
             </div>
-        </div> 
+        </div>;
+        
+        // we only show the review widget if it's opened
         return(
         <div>
             {this.state.open ? reviewWidget : null}

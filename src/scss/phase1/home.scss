@@ -1,25 +1,27 @@
 $wrapper-height: 500px;
 body {
+    overflow: hidden;
     background: url("../../images/bg.jpeg") no-repeat center center fixed;
-      -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
+
 #logo {
     position: relative;
     width: 100%;
     text-align: center;
     left: 0;
     
-h1 {
-    color: white;
-    font-size: 6.5em;
-    margin-top: 60px;
-    margin-bottom: 40px;
-    text-shadow: 0 0px 6px rgba(133, 103, 92, 0.53);
-    /* color: white; */
-}
+    h1 {
+        color: white;
+        font-size: 6.5em;
+        margin-top: 60px;
+        margin-bottom: 40px;
+        text-shadow: 0 0px 6px rgba(133, 103, 92, 0.53);
+        /* color: white; */
+    }
     
 }
 #myobj {
@@ -28,7 +30,7 @@ h1 {
     width:100px;
     margin-left: 160px;
     z-index:-1;
-     -ms-transform: rotate(7deg); /* IE 9 */
+    -ms-transform: rotate(7deg); /* IE 9 */
     -webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
     transform: rotate(7deg);
 }
@@ -71,8 +73,6 @@ h1 {
 
 }
 body {
-        background-color: black;
-        overflow: hidden;
 }
 
 #content {
@@ -101,6 +101,7 @@ body {
     /* top: 50%; */
     /* height: $agree-height; */
     /* margin-top: -$agree-height/2; */
+    display: none;
     position: absolute;
     text-align: left;
     /* width: 600px; */
@@ -119,4 +120,7 @@ body {
     height: 500px;
     top: 50%;
     margin-top: -320px;
+}
+#login-error {
+    display: none;
 }

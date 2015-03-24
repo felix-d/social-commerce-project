@@ -1,13 +1,12 @@
 {% extends "base.djhtml" %}
 {% load static %}
 {% block extraheader %}
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.css"/>
     <link href="{% static "css/phase1/review-app.min.css" %}" type="text/css" rel="stylesheet"/>
     <link href="{% static "css/phase1/step1.min.css" %}" type="text/css" rel="stylesheet"/>
 {% endblock %}
 {% block body %}
     <div class="jumbotron">
-        <h1>The Social Commerce Project</h1>
+        <h1>Review It!</h1>
         <p>Hi {{name}}, nice to see you!!</p>
         <p id="number-review-text">
             So far you have reviewed
@@ -52,7 +51,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 text-center">
-                        <button class="btn btn-primary" onclick="dismissInfoPopup();">I got it!</button>
+                        <button class="btn btn-primary" id="info-popup-button">I got it!</button>
                     </div>
                 </div>
             </div>
@@ -61,11 +60,8 @@
     </div>    
 {% endblock %}
 {% block extrafooter %}
-    <script src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js" type="text/javascript"></script>
     <script src="{% static "js/vendor/jquery-ui.min.js" %}" type="text/javascript"></script>
     <script src="{% static "js/dev/ajax-init.js" %}" type="text/javascript"></script>
-    
-    <script src="{% static "js/vendor/jquery.scrollUp.min.js"%}" type="text/javascript"></script>
     <script src="{% static "js/dev/phase1/review-app-bundle.js" %}" type="text/javascript"></script>
     <script src="{% static "js/dev/phase1/step1.js"%}" type="text/javascript"></script>
     <script type="text/javascript">

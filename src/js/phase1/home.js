@@ -1,20 +1,20 @@
 // if login was canceled 
-// $(function(){
-//         var $agreement = $("#agreement"),
-//             $login = $("#login"),
-//             $agreeCheckBox = $("#agree-checkbox"),
-//             $alertAgree = $("#alert-agree"),
-//             $logo = $("#logo");
-//     param = window.location.search.replace("?", "");
-//     if(param=='cancel='){
-//         $agreement.remove();
-//         $login.removeClass();
-//         $login.show();
-//     }
-//     else {
-//         $agreement.show();
-//     }
-// });
+$(function(){
+        var $agreement = $("#agreement"),
+            $login = $("#login"),
+            $loginError= $("#login-error");
+    param = window.location.search.replace("?", "");
+    if(param=='cancel'){
+        $agreement.remove();
+        $login.removeClass();
+        $loginError.show();
+        $login.show();
+    }
+
+    else {
+        $agreement.show();
+    }
+});
 function agreement(){
     var $agreement = $("#agreement"),
         $login = $("#login"),

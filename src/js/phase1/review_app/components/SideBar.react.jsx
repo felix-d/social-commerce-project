@@ -1,14 +1,26 @@
-var React = require('react/addons');
+var React = require('react');
 var ProductStore = require('../stores/ProductStore');
 var ProductActions = require('../actions/ProductActions');
 
 function getSideBarState(){
     return ProductStore.getTags();
 }
+
+// are we typing in search field
+var typingInSearchField = false,
+
+    // We are waiting some time before searching
+    typingTimeout,
+
+    // to compare if new search is the same as old search.
+    // If it is, we dont refresh!
+    oldSearchValue;
+    
+/* The side bar element with the search form */
 var SideBar = React.createClass({
 
+    //shuffle the products
     shuffleProducts: function(){
-
         // We set the sort selection to "Random" when shuffle is pressed
         this.refs.selectSort.getDOMNode().value = "Random";
         ProductActions.shuffleProducts();
@@ -22,54 +34,49 @@ var SideBar = React.createClass({
         this.setState(getSideBarState());
     },
 
-    // Are we typing in search field?
-    typingInSearchField: false,
-
-    // We are waiting some time before searching
-    typingTimeout: undefined,
-
-    // to compare if new search is the same as old search. If it is, we dont refresh!
-    oldSearchValue: undefined,
-
     // When we type in search field
     textSearch: function(){
 
-        // We only execute a search query when the user stops typing for more
-        // than 0.2 seconds!
-        if(this.typingInSearchField){
-            clearTimeout(this.typingTimeout);
+        // We only execute a search query when the user stops
+        // typing for more than 0.2 seconds!
+        if(typingInSearchField){
+            clearTimeout(typingTimeout);
         } 
-        this.typingInSearchField = true;
-        this.typingTimeout = setTimeout(function(){
-            this.typingInSearchField = false;
+        typingInSearchField = true;
+        typingTimeout = setTimeout(function(){
+            typingInSearchField = false;
             var newSearchValue = this.refs.searchInput.getDOMNode().value;
-            if(this.oldSearchValue != newSearchValue){
+            if(oldSearchValue != newSearchValue){
                 this.doSearch();
-                this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
-                
+                oldSearchValue = this.refs.searchInput.getDOMNode().value;
             }
         }.bind(this), 200);
     },
 
     componentDidMount: function(){
-        //We set the old search field value at mounting
         ProductStore.addChangeListener(this._onChange);
-        this.oldSearchValue = this.refs.searchInput.getDOMNode().value;
     },
+
     componentWillUnmount: function(){
         ProductStore.removeChangeListener(this._onChange);
     },
+
     shouldComponentUpdate: function(){
         //we dont need to ever update it
         return false;  
     },
+
+    // We search! The tags are accessible from the store
     doSearch: function(){
         ProductActions.doSearch(
             this.refs.searchInput.getDOMNode().value,
             this.refs.selectSort.getDOMNode().value
-      )  
+        );
     },
+
     render: function(){
+
+        // the tags toggles
         var tags_checkbox = this.state.tags.map(function(t, i){
 
             // Handler for clicking on tag toggles
@@ -80,7 +87,7 @@ var SideBar = React.createClass({
 
             return(
                 <label className="btn btn-default" onClick={toggleTag} key={i}>
-                    <input type="checkbox" autocomplete="off"/>
+                    <input type="checkbox" autoComplete="off"/>
                     {t.name}
                 </label>
             );

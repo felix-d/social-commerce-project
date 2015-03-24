@@ -12,6 +12,7 @@ var ProductActions = {
 
     // Review a product!
     review: function(product){
+        // we show the overlay (greyish background)
         var $overlay = $("#overlay");
         $overlay.show();
         $overlay.addClass("animated fadeIn");
@@ -23,8 +24,11 @@ var ProductActions = {
 
     // The name says it all...
     closeReviewBox: function(){
+
         var $overlay = $("#overlay");
         var $reviewWidget = $("#review-widget");
+
+        // we remove the overlay
         $overlay.addClass("fadeOut");
         $overlay.one(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
@@ -33,6 +37,7 @@ var ProductActions = {
                 $(this).removeClass();
             });
         
+        // byebye widget
         $reviewWidget.addClass("bounceOutUp");
         $reviewWidget.one(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
@@ -43,6 +48,7 @@ var ProductActions = {
             });
     },
 
+    // We add some more products to the current view
     infiniteScroll: function(){
         AppDispatcher.dispatch({
             actionType: ProductConstants.INFINITE_SCROLL
@@ -63,6 +69,17 @@ var ProductActions = {
             reviewData: reviewData
         });
     },
+
+    // set the star rating of the current reviewed product
+    setRating: function(rating){
+        AppDispatcher.dispatch({
+            actionType: ProductConstants.SET_RATING,
+            rating: rating
+        });
+        
+    },
+
+    // delete a review with ajax and optimistic rendering
     deleteReview: function(product){
         $.post(
             '/phase1/review/',
@@ -75,17 +92,15 @@ var ProductActions = {
             product: product
         });
     },
-    toggleRecommendIt: function(){
-        AppDispatcher.dispatch({
-            actionType: ProductConstants.TOGGLE_RECOMMEND
-        });
-    },
+
+    // The comment changed, we need to update the store!
     commentChanged: function(comment){
         AppDispatcher.dispatch({
             actionType: ProductConstants.COMMENT_CHANGED,
             data: comment
         });
     },
+
     // Search for products
     doSearch: function(query, sortBy){
         AppDispatcher.dispatch({

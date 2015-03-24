@@ -55,9 +55,9 @@ def create_review(review_data, user, product):
     comment.save()
 
     # We create the reviewRecommendIt element
-    recommend_it = ReviewRecommendIt(reviewing=reviewing,
-                                     boolean_value=review_data['recommendIt'])
-    recommend_it.save()
+    rating = ReviewRating(reviewing=reviewing,
+                          rating=review_data['rating'])
+    rating.save()
 
     # We create the reviewBoolAnswer for every answer
     for root in review_data['tabs']:
@@ -75,7 +75,6 @@ def create_review(review_data, user, product):
 def del_review(user, product):
     try:
         Reviewing.objects.get(user=user, product=product).delete()
-        print("deleted")
     except:
         pass
 
@@ -144,10 +143,10 @@ class ReviewComment(models.Model):
         return self.text_value
 
 
-class ReviewRecommendIt(models.Model):
+class ReviewRating(models.Model):
     reviewing = models.OneToOneField(Reviewing, primary_key=True)
-    boolean_value = models.BooleanField(default=None)
+    rating = models.IntegerField(default=0)
 
     def __str__(self):
-        return "Recommended it" if self.boolean_value\
-            else "Didn't recommend it"
+        return "Rated {} stars".format(self.rating) if self.rating\
+            else "Not rated"
