@@ -20,7 +20,6 @@ var Product = React.createClass({
     cropLength: 13,
 
     componentDidMount: function(){
-        $(this.getDOMNode()).fadeIn(300);
         // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -30,7 +29,7 @@ var Product = React.createClass({
 
     componentDidUpdate: function(){
         $(this.refs.img.getDOMNode()).hide();
-        $(this.getDOMNode()).fadeIn(300);
+        /* $(this.getDOMNode()).fadeIn(300); */
         // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -38,7 +37,7 @@ var Product = React.createClass({
     },
 
     componentWillUpdate: function(){
-        $(this.getDOMNode()).hide();
+        /* $(this.getDOMNode()).hide(); */
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -115,7 +114,7 @@ var Product = React.createClass({
         }
 
         return(
-            <div className="product col-xs-15" style={{display: "none"}}>
+            <div className="product col-xs-15 animated fadeIn">
                 <div className="product-inner effect6">
                     <h5 className={opacityControl} ref="name" data-toggle="popover" data-content={this.props.data.name}>{name}</h5>
                     <div className="checkmark-container">

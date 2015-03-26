@@ -6,7 +6,7 @@ env.hosts = ['socialcomm@socialcomm.webfactional.com']
 def commit():
     local("git add -A .")
     msg = raw_input("Commit message: ")
-    local("git commit -am '%s'" % msg)
+    local('git commit -am "%s"' % msg)
     local("git push")
 
 
