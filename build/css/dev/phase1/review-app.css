@@ -3,10 +3,6 @@
   #reviewapp #review-app-inner {
     position: relative;
     width: 100%; }
-    #reviewapp #review-app-inner .imageloader {
-      -moz-animation-duration: .5s;
-      -webkit-animation-duration: .5s;
-      animation-duration: .5s; }
     #reviewapp #review-app-inner .product {
       padding: 0px !important; }
       #reviewapp #review-app-inner .product .low-opacity {

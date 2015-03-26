@@ -21,6 +21,7 @@ var Product = React.createClass({
 
     componentDidMount: function(){
         // If the name is cropped, activate popover
+        $(this.refs.img.getDOMNode()).hide();
         if(this.cropName){
             $(this.refs.name.getDOMNode())
                   .popover(this.popoverOptions);
