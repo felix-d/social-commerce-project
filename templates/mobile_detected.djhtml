@@ -1,0 +1,18 @@
+{% extends "base.djhtml" %}
+{% load static %}
+{% block extraheader %}
+    <link href="{% static "css/mobile-detected.min.css" %}" rel="stylesheet"/>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 text-center" id="mobile-text">
+            <h1>We're sorry. Review It! is not meant to work on mobile devices!</h1>
+            <img src="{% static "images/sadcat.jpg" %}" alt="sad cat"/>
+        </div>
+    </div>
+{% endblock %}    
+{% block extrafooter %}
+    <script type="text/javascript">
+     $(".container").addClass("container-mobile");
+    </script>
+{% endblock %}

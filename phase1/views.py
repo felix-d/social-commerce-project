@@ -8,10 +8,19 @@ from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from products.models import get_product_urls
 from .phase1_user_flow import redirect_user_to_current_step
+from custom_user_flow.custom_user_flow import reg_b, reg_v
 
 
 def home(request):
     """THE AGREEMENT PAGE"""
+
+    # Detect mobiles
+    if 'HTTP_USER_AGENT' in request.META:
+        user_agent = request.META['HTTP_USER_AGENT']
+        b = reg_b.search(user_agent)
+        v = reg_v.search(user_agent[0:4])
+        if b or v:
+            return render(request, "mobile_detected.djhtml")
 
     if request.user.is_authenticated() and\
        not request.user.is_superuser:
