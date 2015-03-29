@@ -23,13 +23,22 @@ var ProductsContainer = React.createClass({
         // We listen to the product store
         ProductStore.addChangeListener(this._onChange);
 
-        // We bind a listener for the infinite scroll
-        $(window).scroll(function() {
-            // we add 100 for a little buffer!
-            if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-                ProductActions.infiniteScroll();
-            }
-        });
+        // Just for the ipad... or an android tablet
+        if ('ontouchmove' in document.documentElement){
+            $(window).on('touchmove',function(e){
+                if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+                    ProductActions.infiniteScroll();
+                }
+            });
+        } else {
+            // We bind a listener for the infinite scroll
+            $(window).scroll(function() {
+                // we add 100 for a little buffer!
+                if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+                    ProductActions.infiniteScroll();
+                }
+            });
+        }
     },
 
     componentWillUpdate: function(){

@@ -6,6 +6,7 @@ $product-images-height-normal: 136px;
 
 #reviewapp {
 
+    
     min-height:$review-app-min-height;
 
     #review-app-inner {
@@ -115,6 +116,10 @@ $product-images-height-normal: 136px;
             background-color: #FFF;
             border: 1px solid rgb(221, 221, 221);
             @include box-shadow(0 2px 26px rgba(0, 0, 0, .3), 0 0 0 1px rgba(0, 0, 0, .1));
+            @include ipad {
+                width: 700px;
+                margin-left:-350px;
+            }
             .tab-pane.fade {
                 -webkit-transition: opacity .05s linear;
                 -o-transition: opacity .05s linear;

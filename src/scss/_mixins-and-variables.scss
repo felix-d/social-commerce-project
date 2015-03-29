@@ -1,8 +1,15 @@
 $large-width: 1200px;
 $normal-width: 975px;
+$ipad: 768px;
 
 @mixin large-screen {
     @media screen and (min-width: #{$large-width}){
+        @content;
+    }
+}
+
+@mixin ipad {
+    @media screen and (max-width: #{$ipad}){
         @content;
     }
 }

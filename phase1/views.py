@@ -6,38 +6,20 @@ from reviews.models import create_review, get_review_tree, del_review
 from users.models import set_user_step, get_number_reviews
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
-from products.models import get_product_urls
 from .phase1_user_flow import redirect_user_to_current_step
-from custom_user_flow.custom_user_flow import reg_b, reg_v
+from shared.mobile_agent_detection import no_mobile
 
 
+@no_mobile
 def home(request):
     """THE AGREEMENT PAGE"""
-
-    # Detect mobiles
-    if 'HTTP_USER_AGENT' in request.META:
-        user_agent = request.META['HTTP_USER_AGENT']
-        b = reg_b.search(user_agent)
-        v = reg_v.search(user_agent[0:4])
-        if b or v:
-            return render(request, "mobile_detected.djhtml")
 
     if request.user.is_authenticated() and\
        not request.user.is_superuser:
         return redirect_user_to_current_step(request.user)
 
-    elif 'resetagreement' in request.GET:
-        request.session.pop("agreed", None)
-
-    elif "agreed" in request.session:
-        return HttpResponseRedirect("/phase1/login/")
-
-    urls = get_product_urls()
-    context = dict(
-        urls=urls
-    )
-
-    return render(request, "phase1/home.djhtml", context)
+    context = dict(current_phase=1)
+    return render(request, "home.djhtml", context)
 
 
 # The reviewing page

@@ -1,0 +1,21 @@
+{% extends "base.djhtml" %}
+{% load static %}
+{% block extraheader %}
+    <link href="{% static "css/phase2/wishlist-app.min.css" %}" rel="stylesheet"/>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="wishlist-app"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block extrafooter %}
+<script src="{% static "js/dev/phase2/wishlist-app-bundle.js" %}" type="text/javascript"></script>
+<script type="text/javascript">
+ var init = require("wishlist-app-bundle");
+ init({
+     tags: {{tags|safe}} 
+ });
+</script>
+{% endblock %}

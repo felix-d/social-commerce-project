@@ -24,8 +24,8 @@ def get_env_variable(var_name):
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-CURRENT_PHASE = 1
 
+CURRENT_PHASE = 2
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -56,7 +56,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'phase1',
     'users',
-    'custom_user_flow',
+    'shared',
     'products',
     'questionnaires',
     'reviews',
@@ -74,7 +74,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'custom_user_flow.custom_user_flow.AllauthOverrideMiddleware',
+    'shared.custom_user_flow.AllauthOverrideMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.gzip.GZipMiddleware',
@@ -104,7 +104,10 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-LOGIN_REDIRECT_URL = '/phase1/step1/'
+if(CURRENT_PHASE is 1):
+    LOGIN_REDIRECT_URL = '/phase1/'
+else:
+    LOGIN_REDIRECT_URL = '/phase2/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],

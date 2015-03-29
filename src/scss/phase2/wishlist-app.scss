@@ -1,0 +1,27 @@
+$topmenu-height: 50px;
+
+#wishlist-app{
+    height: 500px;
+}
+
+#productbox{
+    display: none;
+}
+
+#sidebar{
+    margin-top: $topmenu-height;
+    height: 500px;
+    padding: 5px;
+    #shuffle-button{
+        margin-top:20px;
+    }
+}
+
+#topmenu{
+    background-color: #DDD;
+    height: $topmenu-height;
+}
+#products-container{
+    background-color: #BBB;
+    height: 500px;
+}
