@@ -43,7 +43,9 @@ if DEBUG:
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'socialcomm.webfactional.com',
+]
 # Application definition
 
 INSTALLED_APPS = (
