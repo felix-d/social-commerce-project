@@ -104,7 +104,10 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-LOGIN_REDIRECT_URL = '/phase1/step1/'
+if(CURRENT_PHASE is 1):
+    LOGIN_REDIRECT_URL = '/phase1/'
+else:
+    LOGIN_REDIRECT_URL = '/phase2/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],
