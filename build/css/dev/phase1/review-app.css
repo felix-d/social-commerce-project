@@ -74,7 +74,7 @@
       -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
       -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
       box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1); }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 900px) {
         #reviewapp #review-app-inner #review-widget {
           width: 700px;
           margin-left: -350px; } }

@@ -24,6 +24,7 @@ var ReviewApp = React.createClass({
 
     componentDidMount: function(){
 
+        var reviewAppOffset = $(".info-box").offset().top;
         // We show the arrow to scroll back up fast!
         $(window).scroll(function() {
             if ($(this).scrollTop() >= 500) {
@@ -40,7 +41,7 @@ var ReviewApp = React.createClass({
         // we bind the scrolling animation
         $('#return-to-top').click(function() {
             $('body,html').animate({
-                scrollTop : 0
+                scrollTop : reviewAppOffset
             }, 500);
         });
     },

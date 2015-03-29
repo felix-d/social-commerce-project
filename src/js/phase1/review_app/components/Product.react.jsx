@@ -28,9 +28,12 @@ var Product = React.createClass({
         }
     },
 
-    componentDidUpdate: function(){
-        $(this.refs.img.getDOMNode()).hide();
-        /* $(this.getDOMNode()).fadeIn(300); */
+    componentDidUpdate: function(prevprops, prevstate){
+        // we dont hide the picture if we only update the checkmark sign
+        if(prevprops.data.id !== this.props.data.id){
+            $(this.refs.img.getDOMNode()).hide();
+        }
+        
         // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -38,7 +41,6 @@ var Product = React.createClass({
     },
 
     componentWillUpdate: function(){
-        /* $(this.getDOMNode()).hide(); */
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -69,7 +71,6 @@ var Product = React.createClass({
     },
 
     showImage: function(){
-        console.log("onLoad");
         $(this.refs.img.getDOMNode()).fadeIn(200);
     },
 

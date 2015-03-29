@@ -36,7 +36,7 @@ FACEBOOK_APP_SECRET = get_env_variable("FACEBOOK_APP_SECRET")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -104,10 +104,12 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
 if(CURRENT_PHASE is 1):
     LOGIN_REDIRECT_URL = '/phase1/'
 else:
     LOGIN_REDIRECT_URL = '/phase2/'
+
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],

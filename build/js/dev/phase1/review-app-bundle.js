@@ -32906,9 +32906,12 @@ var Product = React.createClass({displayName: "Product",
         }
     },
 
-    componentDidUpdate: function(){
-        $(this.refs.img.getDOMNode()).hide();
-        /* $(this.getDOMNode()).fadeIn(300); */
+    componentDidUpdate: function(prevprops, prevstate){
+        // we dont hide the picture if we only update the checkmark sign
+        if(prevprops.data.id !== this.props.data.id){
+            $(this.refs.img.getDOMNode()).hide();
+        }
+        
         // If the name is cropped, activate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -32916,7 +32919,6 @@ var Product = React.createClass({displayName: "Product",
     },
 
     componentWillUpdate: function(){
-        /* $(this.getDOMNode()).hide(); */
         // If the name was cropped, deactivate popover
         if(this.cropName)
             $(this.refs.name.getDOMNode())
@@ -32947,7 +32949,6 @@ var Product = React.createClass({displayName: "Product",
     },
 
     showImage: function(){
-        console.log("onLoad");
         $(this.refs.img.getDOMNode()).fadeIn(200);
     },
 
@@ -33118,6 +33119,7 @@ var ReviewApp = React.createClass({displayName: "ReviewApp",
 
     componentDidMount: function(){
 
+        var reviewAppOffset = $(".info-box").offset().top;
         // We show the arrow to scroll back up fast!
         $(window).scroll(function() {
             if ($(this).scrollTop() >= 500) {
@@ -33134,7 +33136,7 @@ var ReviewApp = React.createClass({displayName: "ReviewApp",
         // we bind the scrolling animation
         $('#return-to-top').click(function() {
             $('body,html').animate({
-                scrollTop : 0
+                scrollTop : reviewAppOffset
             }, 500);
         });
     },
