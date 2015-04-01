@@ -1,4 +1,6 @@
-$topmenu-height: 50px;
+@import '../_mixins-and-variables';
+
+$topmenu-height: 40px;
 
 #wishlist-app{
     height: 500px;
@@ -17,11 +19,56 @@ $topmenu-height: 50px;
     }
 }
 
+.product-container {
+    height: 200px;
+    padding: 5px;
+    .product {
+        padding: 20px;
+        height: 100%;
+    }
+}
 #topmenu{
-    background-color: #DDD;
+    border-bottom: 1px solid #CCC;
     height: $topmenu-height;
+
+    .tab {
+        height: $topmenu-height;
+        display: inline-block;
+        float: left;
+        bottom: 0;
+        padding: 5px 20px;
+        background-color: white;
+        border: 1px solid #CCC;
+        border-left: none;
+        div {
+            @include vertical-align;
+        }
+    }
+    .active {
+        border-bottom: none;
+    }
+    .no-active {
+        background-color: #F9F9F9;
+        div {
+            opacity: 0.7;
+        }
+        
+    }
+    .tab:first-child{
+        border-left: 1px solid #CCC;
+    }
 }
 #products-container{
-    background-color: #BBB;
+    padding-top: 30px;
     height: 500px;
+
+}
+
+.effect6
+{
+    position:relative;       
+    @include box-shadow(
+        0 1px 4px rgba(0,0,0,0.3),
+        0 0 40px rgba(0,0,0,0.1) inset
+    );
 }

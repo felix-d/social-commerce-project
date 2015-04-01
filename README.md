@@ -16,10 +16,6 @@ http://plnkr.co/edit/HIqqdeQUvPfrc7eOOvfx?p=preview
 
 `pip install -e git+git://github.com/felix-d/django-nested-inline.git#egg=django-nested-inline`
 
-**Dumping db data**
-
-`python manage.py dumpdata --indent=4 -n >! data.json`
-
 **GULP TASKS**
 
 `gulp browserify-watch` watch review-app bundle w/ reactify & watchify and move bundle to build/js/tmp/

@@ -1,5 +1,32 @@
 from django.shortcuts import redirect
+from django.conf import settings
 import re
+
+
+current_phase = settings.CURRENT_PHASE
+
+
+def redirect_user_to_current_step(user):
+        user_step = user.userstep.step
+
+        # Specific to phase1
+        if current_phase is 1:
+            # because 4 is to indicate sharing happened,
+            # we still redirect on 3
+            user_step = 3 if user_step is 4 else user_step
+
+        # Specific to phase2
+        if current_phase is 2:
+            pass
+
+        if user_step is 1:
+                url = "/phase{}/".format(str(current_phase))
+
+        else:
+                url = "/phase{}/step{}/".format(str(current_phase),
+                                                user_step)
+
+        return redirect(url)
 
 
 class AllauthOverrideMiddleware():

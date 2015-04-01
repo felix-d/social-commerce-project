@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from questionnaires.models import get_primary_questionnaire_as_dict
 import json
-from products.models import Tag, Product
-from reviews.models import create_review, get_review_tree, del_review
+from products.models import Tag, Product, get_products
+from reviews.models import create_review, get_review_tree,\
+    get_review_data, del_review
 from users.models import set_user_step, get_number_reviews
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
-from .phase1_user_flow import redirect_user_to_current_step
+from shared.custom_user_flow import redirect_user_to_current_step
 from shared.mobile_agent_detection import no_mobile
 
 
@@ -30,14 +31,17 @@ def step1(request):
        request.user.userstep.step != 1:
         return redirect_user_to_current_step(request.user)
 
-    # Will be set in context
-    products = Product.objects.get_user_products(request.user)
+    products = get_products()
+    # We add the review data for each product
+    for p in products:
+        rd = dict(review=get_review_data(request.user, p['id']))
+        p.update(rd)
     tags = Tag.objects.get_tag_names()
     review_tree = get_review_tree()
     number_reviews = get_number_reviews(request.user)
 
     context_dict = {
-        'products': products,
+        'products': json.dumps(products),
         'tags': tags,
         'name': request.user.first_name,
         'review_elements': review_tree,

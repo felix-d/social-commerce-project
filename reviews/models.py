@@ -1,12 +1,81 @@
 from django.db import models
+from users.models import get_fof, get_friends
 from django.contrib.auth.models import User
 
 
+def get_review_data(user, product):
+    """Returns the review data for a given user and product"""
+
+    rev_info = dict()
+
+    # we get the user review
+    try:
+        reviewing = Reviewing.objects.get(user=user,
+                                          product=product)
+    except:
+        return None
+
+    # we get the bool answers as [{'val': True, 'id': 1}]
+    rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
+                                    id=x['review_element_id']) for x in
+                               list(ReviewBoolAnswer.objects
+                                    .filter(reviewing=reviewing)
+                                    .values('boolean_value',
+                                            'review_element_id'))]
+
+    # we get the comment answer
+    rev_info['comment'] = ReviewComment\
+        .objects\
+        .get(reviewing=reviewing)\
+        .text_value
+
+    # we get the rating
+    rev_info['rating'] = ReviewRating\
+        .objects\
+        .get(reviewing=reviewing)\
+        .rating
+
+    return rev_info
+
+
+def get_reviewers(user, product, types=('a', 'f', 'fof')):
+    """
+    Returns a dictionnary of the form {type1:[id1, id2, id3], type2:...}
+    Accepts 'a' for all reviewers, 'f' for friends and 'fof' for friends
+    of friends
+    """
+    result = dict()
+
+    # we get users ids that did in a list
+    all_reviewers = [x['user_id'] for x
+                     in Reviewing.objects.filter(
+                         product=product).values('user_id')]
+
+    if 'a' in types:
+        result['all_reviewers'] = all_reviewers
+
+    if 'f' in types:
+        friends = [u for u in get_friends(user) if u in all_reviewers]
+        result['f_reviewers'] = friends
+
+    if 'fof' in types:
+        friends_of_friends = [u for u in get_fof(user) if u in all_reviewers]
+        result['fof_reviewers'] = friends_of_friends
+
+    return result
+
+
 def get_review_tree():
+    """Returns the reviewing widget structure"""
 
     # We build the review tree
-    review_widget = ReviewWidget.objects.filter(
-        primary=True)[0]
+    try:
+        review_widget = ReviewWidget.objects.filter(
+            primary=True)[0]
+    except IndexError:
+        review_widget = ReviewWidget.objects.all()[0]
+    except IndexError:
+        raise("Please create a review widget")
 
     review_root_elements = ReviewRootElement.objects.filter(
         review_widget=review_widget)
@@ -73,6 +142,7 @@ def create_review(review_data, user, product):
 
 
 def del_review(user, product):
+    """Delete a review for the given user and product"""
     try:
         Reviewing.objects.get(user=user, product=product).delete()
     except:

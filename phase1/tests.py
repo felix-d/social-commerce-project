@@ -15,17 +15,6 @@ class Phase1Tests(TestCase):
         us.save()
         self.c = Client()
 
-    def user_cant_access_login_if_didnt_agree(self):
-        response = self.c.get('/phase1/login/')
-        self.assertEqual(response.status_code, 302)
-
-    def user_can_access_login_if_agreed(self):
-        session = self.client.session
-        session['agreed'] = True
-        session.save()
-        response = self.c.get('/phase1/login/')
-        self.assertEqual(response.status_code, 200)
-        
     def user_step_is_one_after_signup(self):
         self.c.login(username="test", password="test")
         userstep = User.objects.filter(username="test")[0].userstep
@@ -40,22 +29,28 @@ class Phase1Tests(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_we_cant_access_steps_if_logout(self):
-        response = self.c.get('/phase1/step1/')
-        self.assertEqual(response.status_code, 302)
-        response = self.c.get('/phase1/step2/')
+        response = self.c.get('/phase1/')
         self.assertEqual(response.status_code, 302)
         response = self.c.get('/phase1/step2/')
         self.assertEqual(response.status_code, 302)
 
     def test_we_can_access_step1_if_login(self):
         self.c.login(username="test", password="test")
-        response = self.c.get('/phase1/step1/')
+        response = self.c.get('/phase1/')
         self.assertEqual(response.status_code, 200)
 
     def test_we_cant_access_step2_from_step1_without_condition_if_login(self):
         self.c.login(username="test", password="test")
         response = self.c.get('/phase1/step2/')
         self.assertEqual(response.status_code, 302)
+
+    def test_we_can_access_step2_from_step1_if_login_and_step_is_2(self):
+        self.c.login(username="test", password="test")
+        user = User.objects.get(username="test")
+        user.userstep.step = 2
+        user.userstep.save()
+        response = self.c.get('/phase1/step2/')
+        self.assertEqual(response.status_code, 200)
 
     def test_we_get_redirected_to_step_if_going_to_root_if_login(self):
         self.c.login(username="test", password="test")

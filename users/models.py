@@ -1,5 +1,4 @@
 from django.db import models
-from products.models import Product
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up, user_logged_in
 from django.contrib.auth.models import User
@@ -15,6 +14,27 @@ def is_friendship_exists(a, b):
 
 def get_number_reviews(user):
     return len(user.reviewing_set.all())
+
+
+# return an array of friend ids for the current user
+def get_friends(user):
+    return [f['friend']
+            for f in
+            Friendship.objects.filter(user=user)
+            .values('friend')]
+
+
+# return an array of fof ids for the current user
+def get_fof(user):
+    friends_ids = get_friends(user)
+    fofs = []
+    for fid in friends_ids:
+        friends_of_friend = get_friends(fid)
+        for f in friends_of_friend:
+            if f is not user.id and f not in friends_ids:
+                fofs.append(f)
+
+    return fofs
 
 
 @receiver(user_logged_in)
@@ -86,4 +106,4 @@ class Friendship(models.Model):
 
 class Wish(models.Model):
     user = models.ForeignKey(User)
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey('products.Product')

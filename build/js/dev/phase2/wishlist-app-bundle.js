@@ -19636,7 +19636,24 @@ module.exports = SideBarActions;
 
 
 
-},{"reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductBox.react.jsx":[function(require,module,exports){
+},{"reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Product.react.jsx":[function(require,module,exports){
+var React = require("react");
+
+var Product = React.createClass({displayName: "Product",
+    render: function(){
+        return (
+            React.createElement("div", {className: "product effect6"}, 
+                React.createElement("p", null, "Product")
+            )
+        );
+    }
+})
+
+module.exports = Product;
+
+
+
+},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductBox.react.jsx":[function(require,module,exports){
 var React = require("react");
 
 var ProductBox = React.createClass({displayName: "ProductBox",
@@ -19654,11 +19671,25 @@ module.exports = ProductBox;
 
 },{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
 var React = require("react");
+var Product = require("./Product.react.jsx");
 
 var ProductsContainer = React.createClass({displayName: "ProductsContainer",
+
     render: function(){
+
+        var products = ["p1","p2","p3","p4","p5","p6","p7"];
+
+        products = products.map(function(){
+            return(
+               React.createElement("div", {className: "col-xs-4 product-container"}, 
+                   React.createElement(Product, null)
+               )
+            );
+        })
+
         return (
-            React.createElement("div", {id: "products-container"}
+            React.createElement("div", {id: "products-container"}, 
+                products
             )
         );
     }
@@ -19668,21 +19699,34 @@ module.exports = ProductsContainer;
 
 
 
-},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/SideBar.react.jsx":[function(require,module,exports){
+},{"./Product.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Product.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/SideBar.react.jsx":[function(require,module,exports){
 var React = require("react");
 var SideBarStore = require("../stores/SideBarStore");
 
 var SideBar = React.createClass({displayName: "SideBar",
+
+    // sorting - select sort by
     sort: function(){
         
     },
+
+    // text search
+    textSearch: function(){
+        
+    },
+
+    // shuffle products
     shuffle: function(){
         
     },
+
     getInitialState: function(){
         return SideBarStore.getTags();
     },
+
     render: function(){
+
+        // the tag cloud
         var tags_checkbox = this.state.tags.map(function(t, i){
 
             // Handler for clicking on tag toggles
@@ -19701,6 +19745,12 @@ var SideBar = React.createClass({displayName: "SideBar",
 
         return (
             React.createElement("div", {id: "sidebar"}, 
+
+                /* Search box */
+                React.createElement("h4", null, React.createElement("i", {className: "fa fa-search"}), " Search"), 
+                React.createElement("input", {id: "input-search", ref: "searchInput", type: "text", onChange: this.textSearch}), 
+
+                /* Sorting */
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-sort"}), " Sort by"), 
                 React.createElement("select", {className: "form-control", 
                         ref: "selectSort", 
@@ -19709,12 +19759,16 @@ var SideBar = React.createClass({displayName: "SideBar",
                     React.createElement("option", null, "Title"), 
                     React.createElement("option", null, "Release Year")
                 ), 
+
+                /* Tag cloud */
                 React.createElement("h4", null, React.createElement("i", {className: "fa fa-tags"}), " Tags"), 
                 React.createElement("div", {className: "tags-group", 
                      "data-toggle": "buttons", 
                      ref: "selectedTags"}, 
                     tags_checkbox
                 ), 
+
+                /* Shuffle button */
                 React.createElement("button", {className: "btn btn-primary", 
                         id: "shuffle-button", 
                         onClick: this.shuffle}, 
@@ -19725,7 +19779,7 @@ var SideBar = React.createClass({displayName: "SideBar",
     }
 })
 
-module.exports = SideBar;
+    module.exports = SideBar;
 
 
 
@@ -19734,8 +19788,19 @@ var React = require("react");
 
 var TopMenu = React.createClass({displayName: "TopMenu",
     render: function(){
+
+        var tabs = ["All", "Friends"];
+
+        tabs = tabs.map(function(t, i){
+            var _class = i === 0 ? "tab active" : "tab no-active";
+            return(
+                React.createElement("div", {id: t+"-tab", className: _class}, React.createElement("div", null, t))
+            );
+        })
+
         return (
-            React.createElement("div", {id: "topmenu"}
+            React.createElement("div", {id: "topmenu"}, 
+                tabs
             )
         );
     }

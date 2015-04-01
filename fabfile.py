@@ -1,5 +1,6 @@
 from fabric.api import env, run, cd, local
 
+
 env.hosts = ['socialcomm@socialcomm.webfactional.com']
 
 
@@ -12,12 +13,16 @@ def commit():
 
 def server_pull():
     with cd("/home/socialcomm/webapps/hec/social_commerce_project"):
-        run("workon hec")
         run("git reset --hard HEAD")
         run("git pull")
-        run("./manage.py collectstatic --noinput")
+        run("python3.4 manage.py collectstatic --noinput")
         run("../apache2/bin/restart", pty=False)
 
+
+def create_fixtures():
+    local("python manage.py dumpdata --indent=4 -e contenttypes -e sessions -e admin -e auth.Permission -n > 'data.json'")
+    local("cp -f data.json ./reviews/fixtures/")
+    
 
 def deploy():
     commit()
