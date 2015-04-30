@@ -57,6 +57,7 @@ var ProductActions = {
 
     // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
+        
         $.post(
             '/phase1/review/',
             JSON.stringify({productId: product.id, reviewData: reviewData}),

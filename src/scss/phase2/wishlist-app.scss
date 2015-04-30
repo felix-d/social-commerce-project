@@ -1,5 +1,7 @@
 @import '../_mixins-and-variables';
 
+$product-images-height-normal: 136px;
+$product-images-height-lg: 173px;
 $topmenu-height: 40px;
 
 #wishlist-app{
@@ -20,11 +22,39 @@ $topmenu-height: 40px;
 }
 
 .product-container {
-    height: 200px;
     padding: 5px;
+
+    // The box containing the product
     .product {
+        text-align: center;
         padding: 20px;
         height: 100%;
+
+        // Product name
+        h5 {
+            padding: 5px;
+            margin-bottom: 15px;
+            //so it stays on one line
+            @include large-screen {
+                height:25px;
+            }
+            //two lines
+            @include normal-screen {
+                height: 40px;
+            }
+        }
+
+        // Product cover
+        img {
+            height:$product-images-height-normal;
+            margin-bottom: 10px;
+            @include large-screen {
+                height:$product-images-height-lg;
+            }
+            @include normal-screen {
+                height:$product-images-height-normal;
+            }
+        }
     }
 }
 #topmenu{

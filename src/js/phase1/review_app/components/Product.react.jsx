@@ -118,7 +118,12 @@ var Product = React.createClass({
         return(
             <div className="product col-xs-15 animated fadeIn">
                 <div className="product-inner effect6">
-                    <h5 className={opacityControl} ref="name" data-toggle="popover" data-content={this.props.data.name}>{name}</h5>
+                    <h5 className={opacityControl}
+                        ref="name"
+                        data-toggle="popover"
+                        data-content={this.props.data.name}>
+                        {name}
+                    </h5>
                     <div className="checkmark-container">
                         {checkMark}
                         <div className={opacityControl + " img-container"}>

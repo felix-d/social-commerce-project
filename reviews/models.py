@@ -13,7 +13,7 @@ def get_review_data(user, product):
         reviewing = Reviewing.objects.get(user=user,
                                           product=product)
     except:
-        return None
+        return False
 
     # we get the bool answers as [{'val': True, 'id': 1}]
     rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
@@ -44,23 +44,32 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
     Accepts 'a' for all reviewers, 'f' for friends and 'fof' for friends
     of friends
     """
+
     result = dict()
 
     # we get users ids that did in a list
-    all_reviewers = [x['user_id'] for x
-                     in Reviewing.objects.filter(
-                         product=product).values('user_id')]
+    # note that it contains friends and fof too
+    all_reviewers = [
+        dict(
+            user_id=x.user.id,
+            username=x.user.username
+        )
+        for x in Reviewing.objects.filter(product=product)
+    ]
 
     if 'a' in types:
         result['all_reviewers'] = all_reviewers
 
     if 'f' in types:
-        friends = [u for u in get_friends(user) if u in all_reviewers]
-        result['f_reviewers'] = friends
+        friends = get_friends(user)
+        f_reviewers = [
+            u for u in all_reviewers if u['user_id'] in friends]
+        result['f_reviewers'] = f_reviewers
 
     if 'fof' in types:
-        friends_of_friends = [u for u in get_fof(user) if u in all_reviewers]
-        result['fof_reviewers'] = friends_of_friends
+        fof = get_fof(user)
+        fof_reviewers = [u for u in all_reviewers if u['user_id'] in fof]
+        result['fof_reviewers'] = fof_reviewers
 
     return result
 

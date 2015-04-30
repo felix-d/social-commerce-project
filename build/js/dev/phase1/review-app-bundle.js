@@ -32815,6 +32815,7 @@ var ProductActions = {
 
     // Submit a review with Ajax and optimistic rendering
     submitReview: function(product, reviewData){
+        
         $.post(
             '/phase1/review/',
             JSON.stringify({productId: product.id, reviewData: reviewData}),
@@ -32996,7 +32997,12 @@ var Product = React.createClass({displayName: "Product",
         return(
             React.createElement("div", {className: "product col-xs-15 animated fadeIn"}, 
                 React.createElement("div", {className: "product-inner effect6"}, 
-                    React.createElement("h5", {className: opacityControl, ref: "name", "data-toggle": "popover", "data-content": this.props.data.name}, name), 
+                    React.createElement("h5", {className: opacityControl, 
+                        ref: "name", 
+                        "data-toggle": "popover", 
+                        "data-content": this.props.data.name}, 
+                        name
+                    ), 
                     React.createElement("div", {className: "checkmark-container"}, 
                         checkMark, 
                         React.createElement("div", {className: opacityControl + " img-container"}, 

@@ -1,5 +1,7 @@
 var React = require("react");
 var SideBarStore = require("../stores/SideBarStore");
+var SideBarActions = require("../actions/SideBarActions");
+var ProductsActions = require("../actions/ProductsActions");
 
 var SideBar = React.createClass({
 
@@ -9,8 +11,14 @@ var SideBar = React.createClass({
     },
 
     // text search
-    textSearch: function(){
-        
+    textSearch: function(e){
+        SideBarActions.textSearch(e.target.value);
+        ProductsActions.doSearch();
+    },
+
+    // do search
+    doSearch: function(){
+        ProductsActions.doSearch()
     },
 
     // shuffle products
@@ -30,7 +38,7 @@ var SideBar = React.createClass({
             // Handler for clicking on tag toggles
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
-                /* this.doSearch(); */
+                this.doSearch();
             }.bind(this);
 
             return(

@@ -15,6 +15,7 @@
 <script type="text/javascript">
  var init = require("wishlist-app-bundle");
  init({
+     products: {{products|safe}},
      tags: {{tags|safe}} 
  });
 </script>

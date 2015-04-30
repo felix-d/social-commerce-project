@@ -12,11 +12,29 @@
     margin-top: 20px; }
 
 .product-container {
-  height: 200px;
   padding: 5px; }
   .product-container .product {
+    text-align: center;
     padding: 20px;
     height: 100%; }
+    .product-container .product h5 {
+      padding: 5px;
+      margin-bottom: 15px; }
+      @media screen and (min-width: 1200px) {
+        .product-container .product h5 {
+          height: 25px; } }
+      @media screen and (max-width: 1199px) {
+        .product-container .product h5 {
+          height: 40px; } }
+    .product-container .product img {
+      height: 136px;
+      margin-bottom: 10px; }
+      @media screen and (min-width: 1200px) {
+        .product-container .product img {
+          height: 173px; } }
+      @media screen and (max-width: 1199px) {
+        .product-container .product img {
+          height: 136px; } }
 
 #topmenu {
   border-bottom: 1px solid #CCC;
