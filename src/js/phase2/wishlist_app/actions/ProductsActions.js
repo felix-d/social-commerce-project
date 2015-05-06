@@ -1,7 +1,10 @@
 var Reflux = require("reflux");
 
 var ProductsActions = Reflux.createActions([
-    "doSearch" 
+    "doSearch" ,
+    "doShuffle",
+    "doIncrementCurrentIndex",
+    "doChangePage"
 ]);
 
 module.exports = ProductsActions;

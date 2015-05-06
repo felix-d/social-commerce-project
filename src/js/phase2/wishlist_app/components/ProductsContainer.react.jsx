@@ -1,16 +1,26 @@
 var React = require("react");
+var Reflux = require("reflux");
 var Product = require("./Product.react.jsx");
 var ProductsStore = require("../stores/ProductsStore");
-
-// Get the products
-var getProducts = function(){
-    return ProductsStore.getProducts(); 
-};
+var ProductsActions = require("../actions/ProductsActions");
 
 var ProductsContainer = React.createClass({
+    // We want to listen to the product store and update the products state
+    mixins: [Reflux.connect(ProductsStore)],
 
     getInitialState: function(){
-        return getProducts();
+        return ProductsStore.getProductsState();
+    },
+
+    componentDidMount: function(){
+
+        // We bind a listener for the infinite scroll
+        $(window).scroll(function() {
+            // we add 100 for a little buffer!
+            if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+                ProductsActions.doIncrementCurrentIndex();
+            }
+        });
     },
 
     render: function(){

@@ -61,9 +61,8 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
         result['all_reviewers'] = all_reviewers
 
     if 'f' in types:
-        friends = get_friends(user)
-        f_reviewers = [
-            u for u in all_reviewers if u['user_id'] in friends]
+        f = get_friends(user)
+        f_reviewers = [u for u in all_reviewers if u['user_id'] in f]
         result['f_reviewers'] = f_reviewers
 
     if 'fof' in types:

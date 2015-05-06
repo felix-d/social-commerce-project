@@ -1,34 +1,37 @@
 var React = require("react");
+var Reflux = require("Reflux");
 var SideBarStore = require("../stores/SideBarStore");
 var SideBarActions = require("../actions/SideBarActions");
 var ProductsActions = require("../actions/ProductsActions");
 
 var SideBar = React.createClass({
 
+    mixins: [Reflux.connect(SideBarStore)],
+
+    getInitialState: function(){
+        return SideBarStore.getSideBarState();
+    },
+
     // sorting - select sort by
-    sort: function(){
-        
+    sort: function(e){
+        this.setState({sortBy: e.target.value});
+        SideBarActions.doSortBy(e.target.value);
     },
 
     // text search
     textSearch: function(e){
-        SideBarActions.textSearch(e.target.value);
-        ProductsActions.doSearch();
-    },
-
-    // do search
-    doSearch: function(){
-        ProductsActions.doSearch()
+        this.setState({textSearch: e.target.value});
+        SideBarActions.doTextSearch(e.target.value);
     },
 
     // shuffle products
     shuffle: function(){
-        
+        SideBarActions.doShuffle();
     },
 
-    getInitialState: function(){
-        return SideBarStore.getTags();
+    componentDidUpdate: function(){
     },
+
 
     render: function(){
 
@@ -38,7 +41,7 @@ var SideBar = React.createClass({
             // Handler for clicking on tag toggles
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
-                this.doSearch();
+                SideBarActions.doSearch();
             }.bind(this);
 
             return(
@@ -54,12 +57,13 @@ var SideBar = React.createClass({
 
                 {/* Search box */}
                 <h4><i className="fa fa-search"></i> Search</h4>
-                <input id="input-search" ref="searchInput" type="text" onChange={this.textSearch}/>
+                <input id="input-search" ref="searchInput" type="text" value={this.state.textSearch} onChange={this.textSearch}/>
 
                 {/* Sorting */}
                 <h4><i className="fa fa-sort"></i> Sort by</h4>
                 <select className="form-control"
                         ref="selectSort"
+                        value={this.state.sortBy}
                         onChange={this.sort}>
                     <option>Random</option>
                     <option>Title</option>

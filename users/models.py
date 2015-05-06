@@ -23,6 +23,7 @@ def get_friends(user):
             Friendship.objects.filter(user=user)
             .values('friend')]
 
+
 # return an array of fof ids for the current user
 def get_fof(user):
     friends_ids = get_friends(user)

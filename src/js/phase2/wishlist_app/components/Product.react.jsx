@@ -52,6 +52,14 @@ var Product = React.createClass({
         
     },
 
+    shouldComponentUpdate: function(nextProps, nextState){
+        // we update if the id is not the same for the component
+        if(nextProps.data.id != this.props.data.id){
+            return true;
+        }
+        return false;
+    },
+
     render: function(){
         // We get how many users reviewed the product
         var allr = this.props.data.all_reviewers;
@@ -79,7 +87,7 @@ var Product = React.createClass({
         };
 
         return (
-            <div className="product effect6">
+            <div className="product effect6 animated fadeIn">
 
                 {/* The product name */}
                 <h5 ref="name"
