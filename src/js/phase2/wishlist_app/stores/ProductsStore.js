@@ -8,8 +8,8 @@ var _ = require("lodash");
 var _products,
     _productsOriginal,
     // the current index for infinite scroll
-    CURRENTINDEX = 8,
-    INCREMENTINDEX = 8,
+    CURRENTINDEX = 10,
+    INCREMENTINDEX = 10,
     _currentIndex,
     ALL = 0,
     FRIENDS = 1,
@@ -128,13 +128,23 @@ var ProductsStore = Reflux.createStore({
     },
 
     // When the user changes the current page
-    onDoChangePage: function(page){
-        switch(page){
+    onDoChangePage: function(tab){
 
+        // We set active and no-active classes
+        $(".tab").each(function(i){
+            if(i===tab) $(this).addClass("active").removeClass("no-active");
+            else $(this).removeClass("active").addClass("no-active");
+        });
+
+        // We create the products subset
+        switch(tab){
+
+        // All the products
         case ALL:
             _products = _productsOriginal;
             break;
 
+        // Products reviewed by friends
         case FRIENDS:
             _products = _productsOriginal.filter(function(e, i){
                 if(e.f_reviewers && e.f_reviewers.length > 0){
@@ -145,6 +155,7 @@ var ProductsStore = Reflux.createStore({
             });
             break;
 
+        // Products reviewed by friends of friends
         case FOF:
             _products = _productsOriginal.filter(function(e, i){
                 if(e.fof_reviewers && e.fof_reviewers.length > 0){

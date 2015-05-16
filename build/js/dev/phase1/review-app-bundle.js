@@ -33033,6 +33033,18 @@ function getProductsState(){
     return ProductStore.getProducts();
 }
 
+var infiniteScrollCheck = function(){
+    var $reviewApp = $("#reviewapp");
+    var reviewAppOffset = $reviewApp.offset();
+
+    // the bottom position of the products container
+    var bottom = reviewAppOffset.top + $reviewApp.height();
+
+    // if we can see all the products in the window, we can add some more!
+    if (bottom <= $(window).scrollTop() + $(window).height()) {
+        ProductActions.infiniteScroll();
+    }
+};
 /**
  * PRODUCTS CONTAINER COMPONENT
  * The right-most container of the review app containing the products
@@ -33043,17 +33055,16 @@ var ProductsContainer = React.createClass({displayName: "ProductsContainer",
         return getProductsState();
     },
 
+    componentDidUpdate: function(){
+        infiniteScrollCheck();
+    },
+
     componentDidMount: function(){
         // We listen to the product store
         ProductStore.addChangeListener(this._onChange);
 
-        // We bind a listener for the infinite scroll
-        $(window).scroll(function() {
-            // we add 100 for a little buffer!
-            if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-                ProductActions.infiniteScroll();
-            }
-        });
+        infiniteScrollCheck();
+        $(window).on("resize scroll", infiniteScrollCheck);
     },
 
     componentWillUpdate: function(){

@@ -31714,7 +31714,7 @@ arguments[4]["/Users/Felix/Documents/hec/node_modules/Reflux/src/utils.js"][0].a
 var Reflux = require("reflux");
 
 var ProductsActions = Reflux.createActions([
-    "doSearch" ,
+    "doSearch",
     "doShuffle",
     "doIncrementCurrentIndex",
     "doChangePage"
@@ -31739,9 +31739,22 @@ module.exports = SideBarActions;
 
 
 
+},{"reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js":[function(require,module,exports){
+var Reflux = require("reflux");
+
+var WidgetActions = Reflux.createActions([
+    "doShowWidget",
+    "doHideWidget"
+]);
+
+module.exports = WidgetActions;
+
+
+
 },{"reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Product.react.jsx":[function(require,module,exports){
 var React = require("react");
 var ImageLoader = require('react-imageloader');
+var WidgetActions = require("../actions/WidgetActions");
 
 // The crop length for the product name
 var cropLength = 15,
@@ -31760,6 +31773,10 @@ var Product = React.createClass({displayName: "Product",
     // called on onload
     showImage: function(){
         $(this.refs.img.getDOMNode()).fadeIn(200);
+    },
+
+    showProductWidget: function(){
+        WidgetActions.doShowWidget(this.props.data);
     },
 
     componentWillUpdate: function(){
@@ -31851,7 +31868,7 @@ var Product = React.createClass({displayName: "Product",
                 numReviewersTag, 
 
                 /* Open the box */
-                React.createElement("button", {className: "btn btn-info"}, "More")
+                React.createElement("button", {className: "btn btn-info", onClick: this.showProductWidget}, "More")
             )
         );
     }
@@ -31861,52 +31878,76 @@ module.exports = Product;
 
 
 
-},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js","react-imageloader":"/Users/Felix/Documents/hec/node_modules/react-imageloader/lib/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductBox.react.jsx":[function(require,module,exports){
+},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","react-imageloader":"/Users/Felix/Documents/hec/node_modules/react-imageloader/lib/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductWidget.react.jsx":[function(require,module,exports){
 var React = require("react");
+var Reflux = require("reflux");
+var WidgetStore = require("../stores/WidgetStore");
+var WidgetActions = require("../actions/WidgetActions");
 
-var ProductBox = React.createClass({displayName: "ProductBox",
+var ProductWidget = React.createClass({displayName: "ProductWidget",
+
+    mixins: [Reflux.connect(WidgetStore)],
+
+    closeProductWidget: function(){
+        WidgetActions.doHideWidget()
+    },
+
     render: function(){
         return (
-            React.createElement("div", {id: "productbox"}
+            React.createElement("div", {id: "product-widget", className: "animated bounceInDown", ref: "product-widget"}, 
+                React.createElement("button", {className: "btn btn-danger", onClick: this.closeProductWidget}, "Close")
             )
         );
     }
 })
 
-module.exports = ProductBox;
+module.exports = ProductWidget;
 
 
 
-},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
+},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","../stores/WidgetStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
 var React = require("react");
 var Reflux = require("reflux");
 var Product = require("./Product.react.jsx");
 var ProductsStore = require("../stores/ProductsStore");
 var ProductsActions = require("../actions/ProductsActions");
 
+var infiniteScrollCheck = function(){
+    var $wishlistApp = $("#wishlist-app");
+    var wishlistAppOffset = $wishlistApp.offset();
+
+    // the bottom position of the products container
+    var bottom = wishlistAppOffset.top + $wishlistApp.height();
+
+    // if we can see all the products in the window, we can add some more!
+    if (bottom <= $(window).scrollTop() + $(window).height()) {
+        ProductsActions.doIncrementCurrentIndex();
+    }
+};
+
 var ProductsContainer = React.createClass({displayName: "ProductsContainer",
     // We want to listen to the product store and update the products state
     mixins: [Reflux.connect(ProductsStore)],
 
+    imagesUpdate: true,
+
     getInitialState: function(){
         return ProductsStore.getProductsState();
     },
-
+    componentDidUpdate: function(){
+       infiniteScrollCheck(); 
+    },
     componentDidMount: function(){
+        infiniteScrollCheck();
 
-        // We bind a listener for the infinite scroll
-        $(window).scroll(function() {
-            // we add 100 for a little buffer!
-            if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-                ProductsActions.doIncrementCurrentIndex();
-            }
-        });
+        // when the images are done loading, so we get the correct height
+        $(window).on("resize scroll", infiniteScrollCheck);
     },
 
     render: function(){
         var products = this.state.products.map(function(e, i){
             return (
-               React.createElement("div", {className: "col-xs-3 product-container"}, 
+               React.createElement("div", {className: "col-xs-15 product-container", key: i}, 
                    React.createElement(Product, {data: e, key: i})
                )
             );
@@ -32028,7 +32069,7 @@ var ProductActions = require("../actions/ProductsActions");
 var TopMenu = React.createClass({displayName: "TopMenu",
     render: function(){
 
-        var tabs = ["All", "Friends"];
+        var tabs = ["All", "Friends", "Friends of friends"];
 
         tabs = tabs.map(function(t, i){
             function tabClicked(){
@@ -32038,7 +32079,7 @@ var TopMenu = React.createClass({displayName: "TopMenu",
 
             var _class = i === 0 ? "tab active" : "tab no-active";
             return(
-                React.createElement("div", {id: t+"-tab", className: _class}, React.createElement("div", {onClick: tabClicked, clickable: true}, React.createElement("span", null, t)))
+                React.createElement("div", {id: i+"-tab", key: i, className: _class}, React.createElement("div", {onClick: tabClicked}, React.createElement("span", null, t)))
             );
         })
 
@@ -32056,17 +32097,29 @@ module.exports = TopMenu;
 
 },{"../actions/ProductsActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/ProductsActions.js","../actions/SideBarActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/SideBarActions.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/WishlistApp.react.jsx":[function(require,module,exports){
 var React = require("react");
-var ProductBox = require("./ProductBox.react.jsx");
+var Reflux = require("reflux");
+var ProductWidget = require("./ProductWidget.react.jsx");
 var TopMenu = require("./TopMenu.react.jsx");
 var SideBar = require("./SideBar.react.jsx");
 var ProductsContainer = require("./ProductsContainer.react.jsx");
 var SideBarStore = require("../stores/SideBarStore");
+var WidgetStore = require("../stores/WidgetStore");
 
 var WishlistApp = React.createClass({displayName: "WishlistApp",
+
+    mixins: [Reflux.connect(WidgetStore)],
+    
+    getInitialState: function(){
+        return WidgetStore.getShowWidgetState();
+    },
+
+    componentDidMount: function(){
+        
+    },
     render: function(){
         return(
             React.createElement("div", null, 
-                React.createElement(ProductBox, null), 
+                this.state.showWidget ? React.createElement(ProductWidget, null) : undefined, 
                 React.createElement("div", {className: "row"}, 
                     React.createElement("div", {className: "col-xs-3"}, 
                         React.createElement(SideBar, null)
@@ -32078,7 +32131,7 @@ var WishlistApp = React.createClass({displayName: "WishlistApp",
                             )
                         ), 
                         React.createElement("div", {className: "row"}, 
-                            React.createElement("div", {className: "col-xs-12"}, 
+                            React.createElement("div", {className: "col-xs-12", id: "outer-products-container"}, 
                                 React.createElement(ProductsContainer, null)
                             )
                         )
@@ -32093,7 +32146,7 @@ module.exports = WishlistApp;
 
 
 
-},{"../stores/SideBarStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/SideBarStore.js","./ProductBox.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductBox.react.jsx","./ProductsContainer.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/SideBar.react.jsx","./TopMenu.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/TopMenu.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js":[function(require,module,exports){
+},{"../stores/SideBarStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/SideBarStore.js","../stores/WidgetStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js","./ProductWidget.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductWidget.react.jsx","./ProductsContainer.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx","./SideBar.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/SideBar.react.jsx","./TopMenu.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/TopMenu.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js":[function(require,module,exports){
 var Reflux = require("reflux");
 var ProductActions = require("../actions/ProductsActions");
 var SideBarStore = require("./SideBarStore");
@@ -32104,8 +32157,8 @@ var _ = require("lodash");
 var _products,
     _productsOriginal,
     // the current index for infinite scroll
-    CURRENTINDEX = 8,
-    INCREMENTINDEX = 8,
+    CURRENTINDEX = 10,
+    INCREMENTINDEX = 10,
     _currentIndex,
     ALL = 0,
     FRIENDS = 1,
@@ -32224,13 +32277,23 @@ var ProductsStore = Reflux.createStore({
     },
 
     // When the user changes the current page
-    onDoChangePage: function(page){
-        switch(page){
+    onDoChangePage: function(tab){
 
+        // We set active and no-active classes
+        $(".tab").each(function(i){
+            if(i===tab) $(this).addClass("active").removeClass("no-active");
+            else $(this).removeClass("active").addClass("no-active");
+        });
+
+        // We create the products subset
+        switch(tab){
+
+        // All the products
         case ALL:
             _products = _productsOriginal;
             break;
 
+        // Products reviewed by friends
         case FRIENDS:
             _products = _productsOriginal.filter(function(e, i){
                 if(e.f_reviewers && e.f_reviewers.length > 0){
@@ -32241,6 +32304,7 @@ var ProductsStore = Reflux.createStore({
             });
             break;
 
+        // Products reviewed by friends of friends
         case FOF:
             _products = _productsOriginal.filter(function(e, i){
                 if(e.fof_reviewers && e.fof_reviewers.length > 0){
@@ -32372,7 +32436,74 @@ module.exports = SideBarStore;
 
 
 
-},{"../actions/SideBarActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/SideBarActions.js","../stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","lodash":"/Users/Felix/Documents/hec/node_modules/lodash/index.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"wishlist-app-bundle":[function(require,module,exports){
+},{"../actions/SideBarActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/SideBarActions.js","../stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","lodash":"/Users/Felix/Documents/hec/node_modules/lodash/index.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js":[function(require,module,exports){
+var Reflux = require("reflux");
+var WidgetActions = require("../actions/WidgetActions");
+
+var _showWidget = false,
+    _productData = undefined;
+
+var WidgetStore = Reflux.createStore({
+
+    listenables: [WidgetActions],
+
+    init: function(){
+        
+    },
+
+    // for the wishlist app
+    getShowWidgetState: function(){
+        return {
+            showWidget: _showWidget
+        };
+    },
+
+    // for the widget component
+    getWidgetState: function(){
+        return {
+            productData: _productData
+        };
+    },
+
+    onDoShowWidget: function(productData){
+        // we set the product data
+        _productData = productData;
+        _showWidget = true;
+        // we notify the wishlist app
+        this.trigger(this.getShowWidgetState());
+        
+    },
+
+    onDoHideWidget: function(){
+
+        // The product widget
+        var $productWidget = $("#product-widget");
+
+        // The product widget bounces out
+        $productWidget.addClass("bounceOutUp");
+
+        // When the bounce out animation is done
+        $productWidget.one(
+            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function(){
+
+                _showWidget = false;
+
+                // We remove the class
+                $productWidget.removeClass("bounceOutUp");
+
+                // Now we can trigger to notify the wishlist app
+                this.trigger(this.getShowWidgetState());
+            }.bind(this)
+        ).bind(this);
+    }
+});
+
+module.exports = WidgetStore;
+
+
+
+},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"wishlist-app-bundle":[function(require,module,exports){
 var React = require('react');
 var WishlistApp = require("./components/WishlistApp.react.jsx");
 var SideBarStore = require("./stores/SideBarStore");

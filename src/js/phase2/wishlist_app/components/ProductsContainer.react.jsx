@@ -4,29 +4,42 @@ var Product = require("./Product.react.jsx");
 var ProductsStore = require("../stores/ProductsStore");
 var ProductsActions = require("../actions/ProductsActions");
 
+var infiniteScrollCheck = function(){
+    var $wishlistApp = $("#wishlist-app");
+    var wishlistAppOffset = $wishlistApp.offset();
+
+    // the bottom position of the products container
+    var bottom = wishlistAppOffset.top + $wishlistApp.height();
+
+    // if we can see all the products in the window, we can add some more!
+    if (bottom <= $(window).scrollTop() + $(window).height()) {
+        ProductsActions.doIncrementCurrentIndex();
+    }
+};
+
 var ProductsContainer = React.createClass({
     // We want to listen to the product store and update the products state
     mixins: [Reflux.connect(ProductsStore)],
 
+    imagesUpdate: true,
+
     getInitialState: function(){
         return ProductsStore.getProductsState();
     },
-
+    componentDidUpdate: function(){
+       infiniteScrollCheck(); 
+    },
     componentDidMount: function(){
+        infiniteScrollCheck();
 
-        // We bind a listener for the infinite scroll
-        $(window).scroll(function() {
-            // we add 100 for a little buffer!
-            if($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-                ProductsActions.doIncrementCurrentIndex();
-            }
-        });
+        // when the images are done loading, so we get the correct height
+        $(window).on("resize scroll", infiniteScrollCheck);
     },
 
     render: function(){
         var products = this.state.products.map(function(e, i){
             return (
-               <div className="col-xs-3 product-container">
+               <div className="col-xs-15 product-container" key={i}>
                    <Product data={e} key={i}/>
                </div>
             );

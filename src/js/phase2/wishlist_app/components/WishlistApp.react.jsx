@@ -1,15 +1,27 @@
 var React = require("react");
-var ProductBox = require("./ProductBox.react.jsx");
+var Reflux = require("reflux");
+var ProductWidget = require("./ProductWidget.react.jsx");
 var TopMenu = require("./TopMenu.react.jsx");
 var SideBar = require("./SideBar.react.jsx");
 var ProductsContainer = require("./ProductsContainer.react.jsx");
 var SideBarStore = require("../stores/SideBarStore");
+var WidgetStore = require("../stores/WidgetStore");
 
 var WishlistApp = React.createClass({
+
+    mixins: [Reflux.connect(WidgetStore)],
+    
+    getInitialState: function(){
+        return WidgetStore.getShowWidgetState();
+    },
+
+    componentDidMount: function(){
+        
+    },
     render: function(){
         return(
             <div>
-                <ProductBox/>
+                {this.state.showWidget ? <ProductWidget/> : undefined}
                 <div className="row">
                     <div className="col-xs-3">
                         <SideBar/>
@@ -21,7 +33,7 @@ var WishlistApp = React.createClass({
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xs-12">
+                            <div className="col-xs-12" id="outer-products-container">
                                 <ProductsContainer/>
                             </div>
                         </div>

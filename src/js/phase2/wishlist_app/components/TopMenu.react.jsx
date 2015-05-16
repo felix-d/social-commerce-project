@@ -5,7 +5,7 @@ var ProductActions = require("../actions/ProductsActions");
 var TopMenu = React.createClass({
     render: function(){
 
-        var tabs = ["All", "Friends"];
+        var tabs = ["All", "Friends", "Friends of friends"];
 
         tabs = tabs.map(function(t, i){
             function tabClicked(){
@@ -15,7 +15,7 @@ var TopMenu = React.createClass({
 
             var _class = i === 0 ? "tab active" : "tab no-active";
             return(
-                <div id={t+"-tab"} className={_class}><div onClick={tabClicked} clickable><span>{t}</span></div></div>
+                <div id={i+"-tab"} key={i} className={_class}><div onClick={tabClicked}><span>{t}</span></div></div>
             );
         })
 

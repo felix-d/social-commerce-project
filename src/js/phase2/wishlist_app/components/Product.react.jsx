@@ -1,5 +1,6 @@
 var React = require("react");
 var ImageLoader = require('react-imageloader');
+var WidgetActions = require("../actions/WidgetActions");
 
 // The crop length for the product name
 var cropLength = 15,
@@ -18,6 +19,10 @@ var Product = React.createClass({
     // called on onload
     showImage: function(){
         $(this.refs.img.getDOMNode()).fadeIn(200);
+    },
+
+    showProductWidget: function(){
+        WidgetActions.doShowWidget(this.props.data);
     },
 
     componentWillUpdate: function(){
@@ -109,7 +114,7 @@ var Product = React.createClass({
                 {numReviewersTag}
 
                 {/* Open the box */}
-                <button className="btn btn-info">More</button>
+                <button className="btn btn-info" onClick={this.showProductWidget}>More</button>
             </div>
         );
     }
