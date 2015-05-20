@@ -17,6 +17,20 @@ $topmenu-height: 40px;
     }
 }
 
+#overlay{
+    position:fixed;
+    z-index: 998;
+    width:150%;
+    top: -25%;
+    left: -25%;
+    height:150%;
+    /* display:block; */
+    background-color: rgba(0,0,0,0.4);
+    -webkit-transform: translateZ(0);
+    -moz-animation-duration: .6s;
+    -webkit-animation-duration: .6s;
+    animation-duration: .6s;
+}
 #productbox{
     display: none;
 }
@@ -84,6 +98,11 @@ $topmenu-height: 40px;
         width: 700px;
         margin-left:-350px;
     }
+
+    // the animation when the widget drops down
+    -moz-animation-duration: .6s;
+    -webkit-animation-duration: .6s;
+    animation-duration: .6s;
 }
 
 #topmenu{

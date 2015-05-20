@@ -31935,7 +31935,7 @@ var ProductsContainer = React.createClass({displayName: "ProductsContainer",
         return ProductsStore.getProductsState();
     },
     componentDidUpdate: function(){
-       infiniteScrollCheck(); 
+
     },
     componentDidMount: function(){
         infiniteScrollCheck();
@@ -32469,6 +32469,12 @@ var WidgetStore = Reflux.createStore({
         // we set the product data
         _productData = productData;
         _showWidget = true;
+
+        // we show the overlay
+        var $overlay = $("#overlay");
+        $overlay.show();
+        $overlay.addClass("animated fadeIn");
+
         // we notify the wishlist app
         this.trigger(this.getShowWidgetState());
         
@@ -32478,9 +32484,21 @@ var WidgetStore = Reflux.createStore({
 
         // The product widget
         var $productWidget = $("#product-widget");
+        // the overlay
+        var $overlay = $("#overlay");
 
         // The product widget bounces out
         $productWidget.addClass("bounceOutUp");
+        // The overlay fades out
+        $overlay.addClass("fadeOut");
+
+        // When the overlay fade out animation is done
+        $overlay.one(
+            'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function(){
+                $(this).removeClass();
+                $(this).hide();
+            });
 
         // When the bounce out animation is done
         $productWidget.one(
@@ -32492,8 +32510,10 @@ var WidgetStore = Reflux.createStore({
                 // We remove the class
                 $productWidget.removeClass("bounceOutUp");
 
-                // Now we can trigger to notify the wishlist app
+                // Now we can trigger to notify the wishlist app that the widget
+                // isnt showing anymore
                 this.trigger(this.getShowWidgetState());
+
             }.bind(this)
         ).bind(this);
     }

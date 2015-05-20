@@ -33,6 +33,20 @@
   #wishlist-app {
     min-height: 860px; } }
 
+#overlay {
+  position: fixed;
+  z-index: 998;
+  width: 150%;
+  top: -25%;
+  left: -25%;
+  height: 150%;
+  /* display:block; */
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-transform: translateZ(0);
+  -moz-animation-duration: .6s;
+  -webkit-animation-duration: .6s;
+  animation-duration: .6s; }
+
 #productbox {
   display: none; }
 
@@ -82,7 +96,10 @@
   border: 1px solid #dddddd;
   -webkit-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1); }
+  box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  -moz-animation-duration: .6s;
+  -webkit-animation-duration: .6s;
+  animation-duration: .6s; }
   @media screen and (max-width: 900px) {
     #product-widget {
       width: 700px;

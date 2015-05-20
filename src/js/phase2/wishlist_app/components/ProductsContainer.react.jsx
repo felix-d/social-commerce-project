@@ -27,7 +27,7 @@ var ProductsContainer = React.createClass({
         return ProductsStore.getProductsState();
     },
     componentDidUpdate: function(){
-       infiniteScrollCheck(); 
+
     },
     componentDidMount: function(){
         infiniteScrollCheck();
