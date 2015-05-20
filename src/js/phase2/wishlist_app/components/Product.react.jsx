@@ -3,7 +3,7 @@ var ImageLoader = require('react-imageloader');
 var WidgetActions = require("../actions/WidgetActions");
 
 // The crop length for the product name
-var cropLength = 15,
+var cropLength = 11,
     // The options for the title popover
     popoverOptions = {
         trigger: 'hover',
@@ -27,19 +27,22 @@ var Product = React.createClass({
 
     componentWillUpdate: function(){
         // If the name was cropped, deactivate popover
-        if(this.cropName)
+        if(this.cropName){
             $(this.refs.name.getDOMNode())
                .popover('destroy');
+        }
     },
 
     componentDidUpdate: function(){
         // If the name is cropped, activate popover
-        if(this.cropName)
+        if(this.cropName){
             $(this.refs.name.getDOMNode())
-               .popover(this.popoverOptions);
+               .popover(popoverOptions);
+        }
     },
 
     componentDidMount: function(){
+
         // We hide the image, because it'll show onload
         $(this.refs.img.getDOMNode()).hide();
 
