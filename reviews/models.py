@@ -177,7 +177,6 @@ class ReviewWidget(models.Model):
 
 
 class ReviewRootElement(models.Model):
-    # order = models.SmallIntegerField(default=0)
     name = models.CharField(max_length=255)
     review_widget = models.ForeignKey(ReviewWidget)
 
@@ -188,7 +187,6 @@ class ReviewRootElement(models.Model):
 class ReviewChildGroup(models.Model):
     review_root_element = models.ForeignKey(ReviewRootElement)
     name = models.CharField(max_length=255)
-    # order = models.SmallIntegerField(default=0)
 
     def __str__(self):
         return self.name

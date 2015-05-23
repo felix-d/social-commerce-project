@@ -2,7 +2,7 @@ from django.shortcuts import render
 import json
 from shared.mobile_agent_detection import no_mobile
 from products.models import Tag, get_products
-from reviews.models import get_reviewers, get_review_data
+from reviews.models import get_reviewers, get_review_data, get_review_tree
 from shared.custom_user_flow import redirect_user_to_current_step
 
 
@@ -26,5 +26,7 @@ def main(request):
             p.update(rev_info)
 
     tags = Tag.objects.get_tag_names
-    context = dict(tags=tags, products=json.dumps(products))
+    context = dict(tags=tags,
+                   products=json.dumps(products),
+                   review_elements=get_review_tree())
     return render(request, "phase2/main.djhtml", context)

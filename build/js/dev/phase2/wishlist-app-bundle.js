@@ -31886,6 +31886,39 @@ var React = require("react");
 var Reflux = require("reflux");
 var WidgetStore = require("../stores/WidgetStore");
 var WidgetActions = require("../actions/WidgetActions");
+var Review = require("./Review.react.jsx");
+
+var popoverOptions = {
+    trigger: 'hover',
+    placement: 'left',
+    container: '#product-widget',
+    delay: {
+        show: 400,
+        hide: 100
+    }
+};
+
+var slickOptions = {
+    dots: false,
+    speed: 600,
+    infinite: false,
+    slidesToShow: 6,
+    arrows: true,
+    prevArrow: '<button type="button" class="btn btn-default slick-prev"><i class="fa fa-2x fa-caret-left"></i></button>',
+          nextArrow: '<button type="button" class="btn btn-default slick-next"><i class="fa fa-2x fa-caret-right"></i></button>',
+          slidesToScroll: 6,
+          responsive: [
+              {
+                  breakpoint: 900,
+                  settings: {
+                      slidesToShow: 5,
+                      slidesToScroll: 5,
+                      infinite: true,
+                      dots: false
+                  }
+              }
+          ]
+};
 
 var ProductWidget = React.createClass({displayName: "ProductWidget",
 
@@ -31895,10 +31928,115 @@ var ProductWidget = React.createClass({displayName: "ProductWidget",
         WidgetActions.doHideWidget()
     },
 
+    getInitialState: function(){
+        return WidgetStore.getWidgetState();
+    },
+
+    componentDidMount: function(){
+        //we add the popover if the description is cropped
+        if(this.state.productData.doCropDescription){
+            $(this.refs.description.getDOMNode())
+                  .popover(popoverOptions);
+        }
+
+        // we slick for the reviewers
+        $(".reviewers-inner").slick(slickOptions);
+    },
+
+    componentWillUnmount: function(nextProps, nextState){
+        //we remove the popover if the description is cropped
+        if(this.state.productData.doCropDescription){
+            $(this.refs.description.getDOMNode())
+                  .popover('destroy');
+        }
+    },
+
     render: function(){
+
+        var description = '';
+
+        // Do we crop the description
+        if(this.state.productData.doCropDescription){
+            description = this.state.productData.cropDescription;
+        } 
+        else{
+            description = this.state.productData.description;
+        } 
+
+        // TEMPORARY
+        var reviewers = (
+            React.createElement("div", {className: "reviewers-inner"}, 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}), React.createElement("span", {className: "username"}, "Reviewer1")), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}), React.createElement("span", {className: "username"}, "Reviewer2")), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}), React.createElement("span", {className: "username"}, "Reviewer3")), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
+                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}))
+            )
+        );
+        // if there are reviewers
+        /* if(this.state.productData.all_reviewers){
+           reviewers = this.state.productData.all_reviewers.map(function(e, i){
+           return (
+           <i className="fa fa-user fa-3x"></i>
+           )
+           });
+           } */
+
         return (
             React.createElement("div", {id: "product-widget", className: "animated bounceInDown", ref: "product-widget"}, 
-                React.createElement("button", {className: "btn btn-danger", onClick: this.closeProductWidget}, "Close")
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-xs-12 text-right", style: {paddingRight: '0px', right: '-4px'}}, 
+                        React.createElement("button", {className: "btn btn-default", onClick: this.closeProductWidget}, React.createElement("i", {className: "fa fa-times"}))
+                    )
+                ), 
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-xs-12 text-center"}, 
+                        React.createElement("h2", {className: "product-name"}, this.state.productData.name)
+                    )
+                ), 
+                React.createElement("div", {className: "row inner"}, 
+
+                    React.createElement("div", {className: "col-xs-3"}, 
+                        React.createElement("img", {src: this.state.productData.image_path, alt: this.state.productData.name, className: "product-image"})
+                    ), 
+
+                    React.createElement("div", {className: "col-xs-3"}, 
+                        React.createElement("h4", null, "Release date"), 
+                        React.createElement("p", null, this.state.productData.caracteristic_1), 
+                        React.createElement("h4", null, "Tags"), 
+                        React.createElement("p", null, this.state.productData.tags.join(", ")), 
+                        React.createElement("h4", null, "Overview"), 
+                        React.createElement("p", {className: "description", ref: "description", "data-toggle": "popover", "data-content": this.state.productData.description}, description)
+                    ), 
+
+                    React.createElement("div", {className: "col-xs-6 review-container"}, 
+                        React.createElement(Review, {data: this.state.reviewElements})
+                    )
+                ), 
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-xs-12 reviewers"}, 
+                        React.createElement("h4", null, "Reviewers"), 
+                        reviewers
+                    )
+                ), 
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-xs-12 text-center"}, 
+                        React.createElement("button", {className: "btn btn-add"}, "Add to wishlist")
+                    )
+                )
             )
         );
     }
@@ -31908,13 +32046,15 @@ module.exports = ProductWidget;
 
 
 
-},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","../stores/WidgetStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
+},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","../stores/WidgetStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js","./Review.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Review.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/ProductsContainer.react.jsx":[function(require,module,exports){
 var React = require("react");
 var Reflux = require("reflux");
 var Product = require("./Product.react.jsx");
 var ProductsStore = require("../stores/ProductsStore");
 var ProductsActions = require("../actions/ProductsActions");
 
+// infiniteScrollCheck checks if more products
+// should appear
 var infiniteScrollCheck = function(){
     var $wishlistApp = $("#wishlist-app");
     var wishlistAppOffset = $wishlistApp.offset();
@@ -31938,7 +32078,7 @@ var ProductsContainer = React.createClass({displayName: "ProductsContainer",
         return ProductsStore.getProductsState();
     },
     componentDidUpdate: function(){
-
+        infiniteScrollCheck();
     },
     componentDidMount: function(){
         infiniteScrollCheck();
@@ -31968,7 +32108,38 @@ module.exports = ProductsContainer;
 
 
 
-},{"../actions/ProductsActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/ProductsActions.js","../stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","./Product.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Product.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/SideBar.react.jsx":[function(require,module,exports){
+},{"../actions/ProductsActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/ProductsActions.js","../stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","./Product.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Product.react.jsx","react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/Review.react.jsx":[function(require,module,exports){
+var React = require("react");
+var Reflux = require("reflux");
+
+var Review = React.createClass({displayName: "Review",
+    render: function(){
+
+        var emptyRectangles = (
+            React.createElement("div", {id: "rects"}, 
+                React.createElement("div", {className: "rect", id: "rect1"}), 
+                React.createElement("div", {className: "rect", id: "rect2"}), 
+                React.createElement("div", {className: "rect", id: "rect3"}), 
+                React.createElement("div", {className: "rect", id: "rect4"}), 
+                React.createElement("div", {className: "rect", id: "rect5"})
+            )
+        );
+
+        return (
+            React.createElement("div", {className: "review-inner not-loaded"}, 
+                React.createElement("h4", null, "Review"), 
+                emptyRectangles
+                
+            )
+        );
+    }
+});
+
+module.exports = Review;
+
+
+
+},{"react":"/Users/Felix/Documents/hec/node_modules/react/react.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/SideBar.react.jsx":[function(require,module,exports){
 var React = require("react");
 var Reflux = require("Reflux");
 var SideBarStore = require("../stores/SideBarStore");
@@ -32444,7 +32615,11 @@ var Reflux = require("reflux");
 var WidgetActions = require("../actions/WidgetActions");
 
 var _showWidget = false,
-    _productData = undefined;
+    _productData = undefined,
+    // the maximum length for the description
+    _cropLength = 150,
+    // the review elements that make up the review tree
+    _reviewElements;
 
 var WidgetStore = Reflux.createStore({
 
@@ -32452,6 +32627,10 @@ var WidgetStore = Reflux.createStore({
 
     init: function(){
         
+    },
+
+    setup: function(reviewElements){
+        _reviewElements = reviewElements;
     },
 
     // for the wishlist app
@@ -32464,13 +32643,26 @@ var WidgetStore = Reflux.createStore({
     // for the widget component
     getWidgetState: function(){
         return {
-            productData: _productData
+            productData: _productData,
+            reviewElements: _reviewElements
         };
     },
 
     onDoShowWidget: function(productData){
         // we set the product data
         _productData = productData;
+
+        // Do we crop?
+        if(_productData.description.length > _cropLength){
+            _productData.doCropDescription= true;
+            _productData.cropDescription =
+                _productData.description.substring(0, _cropLength) +
+                "...";
+        } else {
+            _productData.doCropDescription = false;
+        }
+
+        // we show the widget
         _showWidget = true;
 
         // we show the overlay
@@ -32496,15 +32688,20 @@ var WidgetStore = Reflux.createStore({
         $overlay.addClass("fadeOut");
 
         // When the overlay fade out animation is done
-        $overlay.one(
+        //  we could have used one but there is a bug where the event
+        // triggered when the widget appears is not the same
+        // this caused the callback to be triggered twice
+        // its better to just enforce unbinding
+        $overlay.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
-                $(this).removeClass();
                 $(this).hide();
+                $(this).removeClass();
+                $(this).unbind();
             });
 
         // When the bounce out animation is done
-        $productWidget.one(
+        $productWidget.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
 
@@ -32512,6 +32709,7 @@ var WidgetStore = Reflux.createStore({
 
                 // We remove the class
                 $productWidget.removeClass("bounceOutUp");
+                $productWidget.unbind();
 
                 // Now we can trigger to notify the wishlist app that the widget
                 // isnt showing anymore
@@ -32530,6 +32728,7 @@ module.exports = WidgetStore;
 var React = require('react');
 var WishlistApp = require("./components/WishlistApp.react.jsx");
 var SideBarStore = require("./stores/SideBarStore");
+var WidgetStore = require("./stores/WidgetStore");
 var ProductsStore = require("./stores/ProductsStore");
 
 var init = function init(data){
@@ -32538,7 +32737,10 @@ var init = function init(data){
     SideBarStore.setup(data.tags);
 
     // We setup the product store
-    ProductsStore.setup(data.products)
+    ProductsStore.setup(data.products);
+
+    // we setup the widget store
+    WidgetStore.setup(data.reviewElements);
 
     // We render the root component
     React.render(
@@ -32552,4 +32754,4 @@ module.exports = init;
 
 
 
-},{"./components/WishlistApp.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/WishlistApp.react.jsx","./stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","./stores/SideBarStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/SideBarStore.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}]},{},["wishlist-app-bundle"]);
+},{"./components/WishlistApp.react.jsx":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/components/WishlistApp.react.jsx","./stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","./stores/SideBarStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/SideBarStore.js","./stores/WidgetStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js","react":"/Users/Felix/Documents/hec/node_modules/react/react.js"}]},{},["wishlist-app-bundle"]);

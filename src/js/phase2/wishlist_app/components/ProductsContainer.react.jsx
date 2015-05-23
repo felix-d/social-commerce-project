@@ -4,6 +4,8 @@ var Product = require("./Product.react.jsx");
 var ProductsStore = require("../stores/ProductsStore");
 var ProductsActions = require("../actions/ProductsActions");
 
+// infiniteScrollCheck checks if more products
+// should appear
 var infiniteScrollCheck = function(){
     var $wishlistApp = $("#wishlist-app");
     var wishlistAppOffset = $wishlistApp.offset();
@@ -27,7 +29,7 @@ var ProductsContainer = React.createClass({
         return ProductsStore.getProductsState();
     },
     componentDidUpdate: function(){
-
+        infiniteScrollCheck();
     },
     componentDidMount: function(){
         infiniteScrollCheck();

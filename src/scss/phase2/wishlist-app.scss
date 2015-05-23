@@ -87,7 +87,7 @@ $topmenu-height: 40px;
     top: 50%;
     width: 900px;
     margin-left: -450px;
-    margin-top: -287px;
+    margin-top: -336px;
     height: auto;
     padding: 10px 30px;
     z-index: 999;
@@ -98,11 +98,90 @@ $topmenu-height: 40px;
         width: 700px;
         margin-left:-350px;
     }
+    .product-image {
+        width: 90%;
+    }
+    .inner {
+        padding: 15px;
+        position:relative;
+    }
+    // the col containing the review
+    .review-container {
+        position: absolute;
+        right: 0;
+        height: 100%;
+    }
+    .review-inner{
+        /* border: 1px solid rgb(221, 221, 221); */
+        position: relative;
+        height:100%;
+    }
+    .not-loaded {
+    }
+
+    .reviewers {
+        margin-top: 0px;
+        margin-bottom: 30px;
+        text-align: center;
+        h4 {
+            margin-bottom:20px;
+        }
+
+        .reviewers-inner {
+            
+            width: 90%;
+            margin: 0 auto;
+        }
+        .username {
+            display: block;
+        }
+        i {
+            display: inline-block;
+        }
+    }
 
     // the animation when the widget drops down
     -moz-animation-duration: .6s;
     -webkit-animation-duration: .6s;
     animation-duration: .6s;
+}
+.slick-prev {
+    position: absolute;
+    top: 0;
+    left: -35px;
+}
+
+.slick-next {
+    right: -35px;
+    top: 0;
+    position: absolute;
+}
+
+#rects {
+    margin-top: 20px;
+    position: relative;
+    opacity: 0.08;
+    .rect {
+        background-color: rgb(51, 51, 51);
+        height: 15px;
+        margin-bottom: 20px;
+    }
+    #rect1 {
+        width: 40%;
+    }
+    #rect2 {
+        width: 60%;
+    }
+    #rect3 {
+        width: 20%;
+    }
+    #rect4 {
+        width: 80%;
+    }
+    #rect5 {
+        width: 30%;
+    }
+
 }
 
 #topmenu{

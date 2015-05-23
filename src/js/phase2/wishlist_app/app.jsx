@@ -1,6 +1,7 @@
 var React = require('react');
 var WishlistApp = require("./components/WishlistApp.react.jsx");
 var SideBarStore = require("./stores/SideBarStore");
+var WidgetStore = require("./stores/WidgetStore");
 var ProductsStore = require("./stores/ProductsStore");
 
 var init = function init(data){
@@ -9,7 +10,10 @@ var init = function init(data){
     SideBarStore.setup(data.tags);
 
     // We setup the product store
-    ProductsStore.setup(data.products)
+    ProductsStore.setup(data.products);
+
+    // we setup the widget store
+    WidgetStore.setup(data.reviewElements);
 
     // We render the root component
     React.render(

@@ -2,7 +2,11 @@ var Reflux = require("reflux");
 var WidgetActions = require("../actions/WidgetActions");
 
 var _showWidget = false,
-    _productData = undefined;
+    _productData = undefined,
+    // the maximum length for the description
+    _cropLength = 150,
+    // the review elements that make up the review tree
+    _reviewElements;
 
 var WidgetStore = Reflux.createStore({
 
@@ -10,6 +14,10 @@ var WidgetStore = Reflux.createStore({
 
     init: function(){
         
+    },
+
+    setup: function(reviewElements){
+        _reviewElements = reviewElements;
     },
 
     // for the wishlist app
@@ -22,13 +30,26 @@ var WidgetStore = Reflux.createStore({
     // for the widget component
     getWidgetState: function(){
         return {
-            productData: _productData
+            productData: _productData,
+            reviewElements: _reviewElements
         };
     },
 
     onDoShowWidget: function(productData){
         // we set the product data
         _productData = productData;
+
+        // Do we crop?
+        if(_productData.description.length > _cropLength){
+            _productData.doCropDescription= true;
+            _productData.cropDescription =
+                _productData.description.substring(0, _cropLength) +
+                "...";
+        } else {
+            _productData.doCropDescription = false;
+        }
+
+        // we show the widget
         _showWidget = true;
 
         // we show the overlay
@@ -54,15 +75,20 @@ var WidgetStore = Reflux.createStore({
         $overlay.addClass("fadeOut");
 
         // When the overlay fade out animation is done
-        $overlay.one(
+        //  we could have used one but there is a bug where the event
+        // triggered when the widget appears is not the same
+        // this caused the callback to be triggered twice
+        // its better to just enforce unbinding
+        $overlay.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
-                $(this).removeClass();
                 $(this).hide();
+                $(this).removeClass();
+                $(this).unbind();
             });
 
         // When the bounce out animation is done
-        $productWidget.one(
+        $productWidget.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
 
@@ -70,6 +96,7 @@ var WidgetStore = Reflux.createStore({
 
                 // We remove the class
                 $productWidget.removeClass("bounceOutUp");
+                $productWidget.unbind();
 
                 // Now we can trigger to notify the wishlist app that the widget
                 // isnt showing anymore
