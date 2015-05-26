@@ -20,14 +20,14 @@ def server_pull():
 
 
 def create_fixtures():
-    local("python manage.py dumpdata" +
+    local("python manage.py dumpdata " +
           "--indent=4 -e contenttypes " +
           "-e sessions -e admin " +
           "-e auth.Permission -n > 'data.json'")
-    local("cp -f data.json ./reviews/fixtures/")
-    local("cp -f data.json ./phase1/fixtures/")
-    local("cp -f data.json ./phase2/fixtures/")
-    
+    local("cp -f 'data.json' ./reviews/fixtures/")
+    local("cp -f 'data.json' ./phase1/fixtures/")
+    local("cp -f 'data.json' ./phase2/fixtures/")
+
 
 def deploy():
     commit()

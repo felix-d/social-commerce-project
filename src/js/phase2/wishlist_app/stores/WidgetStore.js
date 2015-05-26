@@ -1,5 +1,6 @@
 var Reflux = require("reflux");
 var WidgetActions = require("../actions/WidgetActions");
+var ProductsStore = require("../stores/ProductsStore");
 
 var _showWidget = false,
     _productData = undefined,
@@ -29,9 +30,26 @@ var WidgetStore = Reflux.createStore({
 
     // for the widget component
     getWidgetState: function(){
+        var currentPage = ProductsStore.getCurrentPage();
+        var numReviewers;
+        switch(currentPage){
+        case 0:
+            numReviewers = _productData.all_reviewers ? _productData.all_reviewers.length : 0;
+            break;
+        case 1:
+            numReviewers = _productData.f_reviewers ? _productData.f_reviewers.length : 0;
+            break;
+        case 2:
+            numReviewers = _productData.fof_reviewers ? _productData.fof_reviewers.length : 0;
+            break;
+        default:
+        }
+
         return {
             productData: _productData,
-            reviewElements: _reviewElements
+            reviewElements: _reviewElements,
+            currentPage: ProductsStore.getCurrentPage(),
+            numReviewers: numReviewers
         };
     },
 

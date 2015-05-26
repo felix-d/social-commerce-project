@@ -50,6 +50,7 @@ var ProductActions = {
 
     // We add some more products to the current view
     infiniteScroll: function(){
+        // AppDispatcher.dispatch({
         AppDispatcher.dispatch({
             actionType: ProductConstants.INFINITE_SCROLL
         });

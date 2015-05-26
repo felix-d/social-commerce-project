@@ -33,7 +33,12 @@ var Product = React.createClass({
         }
     },
 
-    componentDidUpdate: function(){
+    componentDidUpdate: function(prevprops, prevstate){
+        // we dont hide the picture if we only update the checkmark sign
+        if(prevprops.data.id !== this.props.data.id){
+            $(this.refs.img.getDOMNode()).hide();
+        }
+        
         // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -62,26 +67,27 @@ var Product = React.createClass({
 
     shouldComponentUpdate: function(nextProps, nextState){
         // we update if the id is not the same for the component
-        if(nextProps.data.id != this.props.data.id){
+        // and if we're not on the same page
+        if(nextProps.data.id != this.props.data.id ||
+        nextProps.currentPage != this.props.currentPage){
             return true;
         }
         return false;
     },
 
     render: function(){
-        // We get how many users reviewed the product
-        var allr = this.props.data.all_reviewers;
-        var numReviewers = allr ? this.props.data.all_reviewers.length : 0;
-        var numReviewersTag;
-        switch(numReviewers){
+
+        var numReviewers;
+        
+        switch(this.props.data.numReviewers){
             case 0:
                 numReviewersTag = <p>Nobody reviewed this product</p>;
                 break;
             case 1:
-                numReviewersTag = <p>{numReviewers} user reviewed this product</p>;
+                numReviewersTag = <p>{this.props.data.numReviewers} user reviewed this product</p>;
                 break;
             default:
-                numReviewersTag = <p>{numReviewers} users reviewed this product</p>;
+                numReviewersTag = <p>{this.props.data.numReviewers} users reviewed this product</p>;
         };
 
         // Name cropping
@@ -105,10 +111,12 @@ var Product = React.createClass({
                 </h5>
 
                 {/* The product image */}
-                <ImageLoader ref="img"
-                             src={this.props.data.sm_image_path}
-                             onLoad={this.showImage}>
-                </ImageLoader>
+                <div className="sm-img-container">
+                    <ImageLoader ref="img"
+                                 src={this.props.data.sm_image_path}
+                                 onLoad={this.showImage}>
+                    </ImageLoader>
+                </div>
 
                 {/* The product date */}
                 <p>{this.props.data.caracteristic_1}</p>

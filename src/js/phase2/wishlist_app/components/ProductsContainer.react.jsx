@@ -42,10 +42,10 @@ var ProductsContainer = React.createClass({
         var products = this.state.products.map(function(e, i){
             return (
                <div className="col-xs-15 product-container" key={i}>
-                   <Product data={e} key={i}/>
+                   <Product data={e} currentPage={this.state.currentPage} key={i}/>
                </div>
             );
-        });
+        }.bind(this));
 
         return (
             <div id="products-container">

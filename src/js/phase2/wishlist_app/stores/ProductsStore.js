@@ -20,6 +20,36 @@ function resetCurrentIndex(){
     _currentIndex = CURRENTINDEX;
 }
 
+function setNumReviewers(products){
+        // We set the number of reviewers given the current page
+        // as a product property
+
+        products.map(function(e){
+            switch(_currentPage){
+                // ALL REVIEWERS
+            case 0:
+                var allr = e.all_reviewers;
+                e.numReviewers = allr ? allr.length : 0;
+                break;
+
+                // FRIENDS
+            case 1:
+                var fr = e.f_reviewers;
+                e.numReviewers = fr ? fr.length : 0;
+                break;
+
+                // FRIENDS OF FRIENDS
+            case 2:
+                var fofr = e.fof_reviewers;
+                e.numReviewers = fofr ? fofr.length : 0;
+                break;
+            default:
+                break;
+            }
+        });
+    return products;
+}
+
 
 var ProductsStore = Reflux.createStore({
 
@@ -38,10 +68,17 @@ var ProductsStore = Reflux.createStore({
         _productsOriginal = _products.slice();
     },
 
+    getCurrentPage: function(){
+        return _currentPage;
+    },
+
     // get the products
     getProductsState: function(){
+        var products = setNumReviewers(_products.slice(0, _currentIndex));
+
         return {
-            products: _products.slice(0, _currentIndex)
+            products: _products.slice(0, _currentIndex),
+            currentPage: _currentPage
         };
     },
 
@@ -54,7 +91,7 @@ var ProductsStore = Reflux.createStore({
         var regex = new RegExp(textSearch, "i");
 
         // are the tags a subset?
-        var isSubset = undefined;
+        var isSubset;
 
         // an array of tag names that are checked
         var filteredTags = tags.filter(function(t){
@@ -141,11 +178,13 @@ var ProductsStore = Reflux.createStore({
 
         // All the products
         case ALL:
+            _currentPage = ALL;
             _products = _productsOriginal;
             break;
 
         // Products reviewed by friends
         case FRIENDS:
+            _currentPage = FRIENDS;
             _products = _productsOriginal.filter(function(e, i){
                 if(e.f_reviewers && e.f_reviewers.length > 0){
                     return true;
@@ -157,6 +196,7 @@ var ProductsStore = Reflux.createStore({
 
         // Products reviewed by friends of friends
         case FOF:
+            _currentPage = FOF;
             _products = _productsOriginal.filter(function(e, i){
                 if(e.fof_reviewers && e.fof_reviewers.length > 0){
                     return true;

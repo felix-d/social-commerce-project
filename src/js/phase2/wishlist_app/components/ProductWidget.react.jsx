@@ -18,17 +18,17 @@ var slickOptions = {
     dots: false,
     speed: 600,
     infinite: false,
-    slidesToShow: 6,
+    slidesToShow: 3,
     arrows: true,
-    prevArrow: '<button type="button" class="btn btn-default slick-prev"><i class="fa fa-2x fa-caret-left"></i></button>',
-          nextArrow: '<button type="button" class="btn btn-default slick-next"><i class="fa fa-2x fa-caret-right"></i></button>',
-          slidesToScroll: 6,
+    prevArrow: '<button type="button" class="btn btn-default slick-prev"><i class="fa fa-caret-left"></i></button>',
+          nextArrow: '<button type="button" class="btn btn-default slick-next"><i class="fa fa-caret-right"></i></button>',
+          slidesToScroll: 3,
           responsive: [
               {
                   breakpoint: 900,
                   settings: {
-                      slidesToShow: 5,
-                      slidesToScroll: 5,
+                      slidesToShow: 3,
+                      slidesToScroll: 3,
                       infinite: true,
                       dots: false
                   }
@@ -49,14 +49,17 @@ var ProductWidget = React.createClass({
     },
 
     componentDidMount: function(){
+
         //we add the popover if the description is cropped
         if(this.state.productData.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover(popoverOptions);
         }
 
+        if(this.state.productData.numReviewers > 3){
         // we slick for the reviewers
-        $(".reviewers-inner").slick(slickOptions);
+            $(".reviewers-inner").slick(slickOptions);
+        }
     },
 
     componentWillUnmount: function(nextProps, nextState){
@@ -64,6 +67,11 @@ var ProductWidget = React.createClass({
         if(this.state.productData.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover('destroy');
+        }
+
+        if(this.state.productData.numReviewers > 3){
+        // we slick for the reviewers
+            $(".reviewers-inner").slick("unslick");
         }
     },
 
@@ -79,37 +87,51 @@ var ProductWidget = React.createClass({
             description = this.state.productData.description;
         } 
 
-        // TEMPORARY
-        var reviewers = (
-            <div className="reviewers-inner">
-                <div><i className="fa fa-user fa-3x"></i><span className="username">Reviewer1</span></div>
-                <div><i className="fa fa-user fa-3x"></i><span className="username">Reviewer2</span></div>
-                <div><i className="fa fa-user fa-3x"></i><span className="username">Reviewer3</span></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-                <div><i className="fa fa-user fa-3x"></i></div>
-            </div>
-        );
-        // if there are reviewers
-        /* if(this.state.productData.all_reviewers){
-           reviewers = this.state.productData.all_reviewers.map(function(e, i){
-           return (
-           <i className="fa fa-user fa-3x"></i>
-           )
-           });
-           } */
+        // We set the class
+        var reviewerClass = this.state.productData.numReviewers > 3 ?
+                            "reviewer slicked" :
+                            "reviewer not-slicked";
+        
+        var getReviewerHTML = function(username){
+            return (
+                <div className={reviewerClass}>
+                    <i className="fa fa-user fa-2x"></i>
+                    <span className="username">{username}</span>
+                </div>
+            );
+        };
+
+        var reviewers;
+        switch(this.state.currentPage){
+            case 0:
+                if(this.state.productData.all_reviewers){
+                    reviewers = this.state.productData.all_reviewers.map(function(e, i){
+                        return getReviewerHTML(e.username);
+                    });
+                }
+                break;
+
+            case 1:
+                if(this.state.productdata.f_reviewers){
+                    reviewers = this.state.productData.f_reviewers.map(function(e, i){
+                        return getReviewerHTML(e.username);
+                    });
+                }
+                break;
+
+            case 2:
+                if(this.state.productData.fof_reviewers){
+                    reviewers = this.state.productData.fof_reviewers.map(function(e, i){
+                        return getReviewerHTML(e.username);
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+
+        reviewers = reviewers ? reviewers : <span>No user reviewed this product</span>;
+        reviewers = <div className="reviewers-inner">{reviewers}</div>;
 
         return (
             <div id="product-widget" className="animated bounceInDown" ref="product-widget">
@@ -139,13 +161,11 @@ var ProductWidget = React.createClass({
                     </div>
 
                     <div className="col-xs-6 review-container">
+                        <div className="reviewers">
+                            <h4>Reviewers</h4>
+                            {reviewers}
+                        </div>
                         <Review data={this.state.reviewElements}/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-xs-12 reviewers">
-                        <h4>Reviewers</h4>
-                        {reviewers}
                     </div>
                 </div>
                 <div className="row">

@@ -31787,7 +31787,12 @@ var Product = React.createClass({displayName: "Product",
         }
     },
 
-    componentDidUpdate: function(){
+    componentDidUpdate: function(prevprops, prevstate){
+        // we dont hide the picture if we only update the checkmark sign
+        if(prevprops.data.id !== this.props.data.id){
+            $(this.refs.img.getDOMNode()).hide();
+        }
+        
         // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
@@ -31816,26 +31821,27 @@ var Product = React.createClass({displayName: "Product",
 
     shouldComponentUpdate: function(nextProps, nextState){
         // we update if the id is not the same for the component
-        if(nextProps.data.id != this.props.data.id){
+        // and if we're not on the same page
+        if(nextProps.data.id != this.props.data.id ||
+        nextProps.currentPage != this.props.currentPage){
             return true;
         }
         return false;
     },
 
     render: function(){
-        // We get how many users reviewed the product
-        var allr = this.props.data.all_reviewers;
-        var numReviewers = allr ? this.props.data.all_reviewers.length : 0;
-        var numReviewersTag;
-        switch(numReviewers){
+
+        var numReviewers;
+        
+        switch(this.props.data.numReviewers){
             case 0:
                 numReviewersTag = React.createElement("p", null, "Nobody reviewed this product");
                 break;
             case 1:
-                numReviewersTag = React.createElement("p", null, numReviewers, " user reviewed this product");
+                numReviewersTag = React.createElement("p", null, this.props.data.numReviewers, " user reviewed this product");
                 break;
             default:
-                numReviewersTag = React.createElement("p", null, numReviewers, " users reviewed this product");
+                numReviewersTag = React.createElement("p", null, this.props.data.numReviewers, " users reviewed this product");
         };
 
         // Name cropping
@@ -31859,9 +31865,11 @@ var Product = React.createClass({displayName: "Product",
                 ), 
 
                 /* The product image */
-                React.createElement(ImageLoader, {ref: "img", 
-                             src: this.props.data.sm_image_path, 
-                             onLoad: this.showImage}
+                React.createElement("div", {className: "sm-img-container"}, 
+                    React.createElement(ImageLoader, {ref: "img", 
+                                 src: this.props.data.sm_image_path, 
+                                 onLoad: this.showImage}
+                    )
                 ), 
 
                 /* The product date */
@@ -31902,17 +31910,17 @@ var slickOptions = {
     dots: false,
     speed: 600,
     infinite: false,
-    slidesToShow: 6,
+    slidesToShow: 3,
     arrows: true,
-    prevArrow: '<button type="button" class="btn btn-default slick-prev"><i class="fa fa-2x fa-caret-left"></i></button>',
-          nextArrow: '<button type="button" class="btn btn-default slick-next"><i class="fa fa-2x fa-caret-right"></i></button>',
-          slidesToScroll: 6,
+    prevArrow: '<button type="button" class="btn btn-default slick-prev"><i class="fa fa-caret-left"></i></button>',
+          nextArrow: '<button type="button" class="btn btn-default slick-next"><i class="fa fa-caret-right"></i></button>',
+          slidesToScroll: 3,
           responsive: [
               {
                   breakpoint: 900,
                   settings: {
-                      slidesToShow: 5,
-                      slidesToScroll: 5,
+                      slidesToShow: 3,
+                      slidesToScroll: 3,
                       infinite: true,
                       dots: false
                   }
@@ -31933,14 +31941,17 @@ var ProductWidget = React.createClass({displayName: "ProductWidget",
     },
 
     componentDidMount: function(){
+
         //we add the popover if the description is cropped
         if(this.state.productData.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover(popoverOptions);
         }
 
+        if(this.state.productData.numReviewers > 3){
         // we slick for the reviewers
-        $(".reviewers-inner").slick(slickOptions);
+            $(".reviewers-inner").slick(slickOptions);
+        }
     },
 
     componentWillUnmount: function(nextProps, nextState){
@@ -31948,6 +31959,11 @@ var ProductWidget = React.createClass({displayName: "ProductWidget",
         if(this.state.productData.doCropDescription){
             $(this.refs.description.getDOMNode())
                   .popover('destroy');
+        }
+
+        if(this.state.productData.numReviewers > 3){
+        // we slick for the reviewers
+            $(".reviewers-inner").slick("unslick");
         }
     },
 
@@ -31963,37 +31979,51 @@ var ProductWidget = React.createClass({displayName: "ProductWidget",
             description = this.state.productData.description;
         } 
 
-        // TEMPORARY
-        var reviewers = (
-            React.createElement("div", {className: "reviewers-inner"}, 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}), React.createElement("span", {className: "username"}, "Reviewer1")), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}), React.createElement("span", {className: "username"}, "Reviewer2")), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}), React.createElement("span", {className: "username"}, "Reviewer3")), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"})), 
-                React.createElement("div", null, React.createElement("i", {className: "fa fa-user fa-3x"}))
-            )
-        );
-        // if there are reviewers
-        /* if(this.state.productData.all_reviewers){
-           reviewers = this.state.productData.all_reviewers.map(function(e, i){
-           return (
-           <i className="fa fa-user fa-3x"></i>
-           )
-           });
-           } */
+        // We set the class
+        var reviewerClass = this.state.productData.numReviewers > 3 ?
+                            "reviewer slicked" :
+                            "reviewer not-slicked";
+        
+        var getReviewerHTML = function(username){
+            return (
+                React.createElement("div", {className: reviewerClass}, 
+                    React.createElement("i", {className: "fa fa-user fa-2x"}), 
+                    React.createElement("span", {className: "username"}, username)
+                )
+            );
+        };
+
+        var reviewers;
+        switch(this.state.currentPage){
+            case 0:
+                if(this.state.productData.all_reviewers){
+                    reviewers = this.state.productData.all_reviewers.map(function(e, i){
+                        return getReviewerHTML(e.username);
+                    });
+                }
+                break;
+
+            case 1:
+                if(this.state.productdata.f_reviewers){
+                    reviewers = this.state.productData.f_reviewers.map(function(e, i){
+                        return getReviewerHTML(e.username);
+                    });
+                }
+                break;
+
+            case 2:
+                if(this.state.productData.fof_reviewers){
+                    reviewers = this.state.productData.fof_reviewers.map(function(e, i){
+                        return getReviewerHTML(e.username);
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+
+        reviewers = reviewers ? reviewers : React.createElement("span", null, "No user reviewed this product");
+        reviewers = React.createElement("div", {className: "reviewers-inner"}, reviewers);
 
         return (
             React.createElement("div", {id: "product-widget", className: "animated bounceInDown", ref: "product-widget"}, 
@@ -32023,13 +32053,11 @@ var ProductWidget = React.createClass({displayName: "ProductWidget",
                     ), 
 
                     React.createElement("div", {className: "col-xs-6 review-container"}, 
+                        React.createElement("div", {className: "reviewers"}, 
+                            React.createElement("h4", null, "Reviewers"), 
+                            reviewers
+                        ), 
                         React.createElement(Review, {data: this.state.reviewElements})
-                    )
-                ), 
-                React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-xs-12 reviewers"}, 
-                        React.createElement("h4", null, "Reviewers"), 
-                        reviewers
                     )
                 ), 
                 React.createElement("div", {className: "row"}, 
@@ -32091,10 +32119,10 @@ var ProductsContainer = React.createClass({displayName: "ProductsContainer",
         var products = this.state.products.map(function(e, i){
             return (
                React.createElement("div", {className: "col-xs-15 product-container", key: i}, 
-                   React.createElement(Product, {data: e, key: i})
+                   React.createElement(Product, {data: e, currentPage: this.state.currentPage, key: i})
                )
             );
-        });
+        }.bind(this));
 
         return (
             React.createElement("div", {id: "products-container"}, 
@@ -32343,6 +32371,36 @@ function resetCurrentIndex(){
     _currentIndex = CURRENTINDEX;
 }
 
+function setNumReviewers(products){
+        // We set the number of reviewers given the current page
+        // as a product property
+
+        products.map(function(e){
+            switch(_currentPage){
+                // ALL REVIEWERS
+            case 0:
+                var allr = e.all_reviewers;
+                e.numReviewers = allr ? allr.length : 0;
+                break;
+
+                // FRIENDS
+            case 1:
+                var fr = e.f_reviewers;
+                e.numReviewers = fr ? fr.length : 0;
+                break;
+
+                // FRIENDS OF FRIENDS
+            case 2:
+                var fofr = e.fof_reviewers;
+                e.numReviewers = fofr ? fofr.length : 0;
+                break;
+            default:
+                break;
+            }
+        });
+    return products;
+}
+
 
 var ProductsStore = Reflux.createStore({
 
@@ -32361,10 +32419,17 @@ var ProductsStore = Reflux.createStore({
         _productsOriginal = _products.slice();
     },
 
+    getCurrentPage: function(){
+        return _currentPage;
+    },
+
     // get the products
     getProductsState: function(){
+        var products = setNumReviewers(_products.slice(0, _currentIndex));
+
         return {
-            products: _products.slice(0, _currentIndex)
+            products: _products.slice(0, _currentIndex),
+            currentPage: _currentPage
         };
     },
 
@@ -32377,7 +32442,7 @@ var ProductsStore = Reflux.createStore({
         var regex = new RegExp(textSearch, "i");
 
         // are the tags a subset?
-        var isSubset = undefined;
+        var isSubset;
 
         // an array of tag names that are checked
         var filteredTags = tags.filter(function(t){
@@ -32464,11 +32529,13 @@ var ProductsStore = Reflux.createStore({
 
         // All the products
         case ALL:
+            _currentPage = ALL;
             _products = _productsOriginal;
             break;
 
         // Products reviewed by friends
         case FRIENDS:
+            _currentPage = FRIENDS;
             _products = _productsOriginal.filter(function(e, i){
                 if(e.f_reviewers && e.f_reviewers.length > 0){
                     return true;
@@ -32480,6 +32547,7 @@ var ProductsStore = Reflux.createStore({
 
         // Products reviewed by friends of friends
         case FOF:
+            _currentPage = FOF;
             _products = _productsOriginal.filter(function(e, i){
                 if(e.fof_reviewers && e.fof_reviewers.length > 0){
                     return true;
@@ -32613,6 +32681,7 @@ module.exports = SideBarStore;
 },{"../actions/SideBarActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/SideBarActions.js","../stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","lodash":"/Users/Felix/Documents/hec/node_modules/lodash/index.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/WidgetStore.js":[function(require,module,exports){
 var Reflux = require("reflux");
 var WidgetActions = require("../actions/WidgetActions");
+var ProductsStore = require("../stores/ProductsStore");
 
 var _showWidget = false,
     _productData = undefined,
@@ -32642,9 +32711,26 @@ var WidgetStore = Reflux.createStore({
 
     // for the widget component
     getWidgetState: function(){
+        var currentPage = ProductsStore.getCurrentPage();
+        var numReviewers;
+        switch(currentPage){
+        case 0:
+            numReviewers = _productData.all_reviewers ? _productData.all_reviewers.length : 0;
+            break;
+        case 1:
+            numReviewers = _productData.f_reviewers ? _productData.f_reviewers.length : 0;
+            break;
+        case 2:
+            numReviewers = _productData.fof_reviewers ? _productData.fof_reviewers.length : 0;
+            break;
+        default:
+        }
+
         return {
             productData: _productData,
-            reviewElements: _reviewElements
+            reviewElements: _reviewElements,
+            currentPage: ProductsStore.getCurrentPage(),
+            numReviewers: numReviewers
         };
     },
 
@@ -32724,7 +32810,7 @@ module.exports = WidgetStore;
 
 
 
-},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"wishlist-app-bundle":[function(require,module,exports){
+},{"../actions/WidgetActions":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/actions/WidgetActions.js","../stores/ProductsStore":"/Users/Felix/Documents/hec/src/js/phase2/wishlist_app/stores/ProductsStore.js","reflux":"/Users/Felix/Documents/hec/node_modules/reflux/index.js"}],"wishlist-app-bundle":[function(require,module,exports){
 var React = require('react');
 var WishlistApp = require("./components/WishlistApp.react.jsx");
 var SideBarStore = require("./stores/SideBarStore");

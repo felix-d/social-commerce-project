@@ -32808,6 +32808,7 @@ var ProductActions = {
 
     // We add some more products to the current view
     infiniteScroll: function(){
+        // AppDispatcher.dispatch({
         AppDispatcher.dispatch({
             actionType: ProductConstants.INFINITE_SCROLL
         });
@@ -32899,8 +32900,9 @@ var Product = React.createClass({displayName: "Product",
     cropLength: 13,
 
     componentDidMount: function(){
-        // If the name is cropped, activate popover
         $(this.refs.img.getDOMNode()).hide();
+
+        // If the name is cropped, activate popover
         if(this.cropName){
             $(this.refs.name.getDOMNode())
                   .popover(this.popoverOptions);

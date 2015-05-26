@@ -68,14 +68,21 @@ $topmenu-height: 40px;
         }
 
         // Product cover
-        img {
-            height:$product-images-height-normal;
+        .sm-img-container {
+            position:relative;
+            width: 90%;
+            margin: 0 auto;
             margin-bottom: 10px;
+            position: relative;
             @include large-screen {
-                height:$product-images-height-lg;
+                height: $product-images-height-lg;
             }
             @include normal-screen {
-                height:$product-images-height-normal;
+                height: $product-images-height-normal;
+            }
+            img {
+                height: 100%;
+                margin: 0 auto;
             }
         }
     }
@@ -87,7 +94,7 @@ $topmenu-height: 40px;
     top: 50%;
     width: 900px;
     margin-left: -450px;
-    margin-top: -336px;
+    margin-top: -265px;
     height: auto;
     padding: 10px 30px;
     z-index: 999;
@@ -107,7 +114,7 @@ $topmenu-height: 40px;
     }
     // the col containing the review
     .review-container {
-        position: absolute;
+        position: relative;
         right: 0;
         height: 100%;
     }
@@ -121,16 +128,19 @@ $topmenu-height: 40px;
 
     .reviewers {
         margin-top: 0px;
-        margin-bottom: 30px;
-        text-align: center;
+        margin-bottom: 20px;
         h4 {
             margin-bottom:20px;
         }
-
         .reviewers-inner {
-            
-            width: 90%;
             margin: 0 auto;
+            width: 80%;
+            text-align: center;
+        }
+        .reviewer.not-slicked {
+            display: inline-block;
+            margin-right: 50px;
+            text-align: center;
         }
         .username {
             display: block;
@@ -147,13 +157,13 @@ $topmenu-height: 40px;
 }
 .slick-prev {
     position: absolute;
-    top: 0;
+    top: 5px;
     left: -35px;
 }
 
 .slick-next {
     right: -35px;
-    top: 0;
+    top: 5px;
     position: absolute;
 }
 
@@ -181,7 +191,6 @@ $topmenu-height: 40px;
     #rect5 {
         width: 30%;
     }
-
 }
 
 #topmenu{
