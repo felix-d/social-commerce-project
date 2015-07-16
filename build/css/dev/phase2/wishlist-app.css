@@ -140,6 +140,16 @@
     /* border: 1px solid rgb(221, 221, 221); */
     position: relative;
     height: 100%; }
+    #product-widget .review-inner .review-anim-enter {
+      opacity: 0.01;
+      transition: opacity .5s ease-in; }
+    #product-widget .review-inner .review-anim-enter.review-anim-enter-active {
+      opacity: 1; }
+    #product-widget .review-inner .review-anim-leave {
+      opacity: 1;
+      transition: opacity .5s ease-in; }
+    #product-widget .review-inner .review-anim-leave.review-anim-leave-active {
+      opacity: 0.01; }
   #product-widget .reviewers {
     margin-top: 0px;
     margin-bottom: 20px; }

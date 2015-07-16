@@ -1,6 +1,5 @@
 var Reflux = require("reflux");
 var ProductActions = require("../actions/ProductsActions");
-var SideBarStore = require("./SideBarStore");
 var _ = require("lodash");
 
 // Protected variables

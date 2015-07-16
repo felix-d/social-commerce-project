@@ -15,13 +15,25 @@ def get_review_data(user, product):
     except:
         return False
 
-    # we get the bool answers as [{'val': True, 'id': 1}]
+    # we get the bool answers as [{'val': True, 'id': 1, 'name': 'was alright', 'chilgroup_id': 1, 'childgroup_name': 'music', ...}]
     rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
-                                    id=x['review_element_id']) for x in
-                               list(ReviewBoolAnswer.objects
+                                    id=x['review_element'],
+                                    name=x['review_element__name'],
+                                    childgroup_id=x['review_element__review_child_group'],
+                                    childgroup=x['review_element__review_child_group__name'],
+                                    rootgroup_id=x['review_element__review_child_group__review_root_element'],
+                                    rootgroup=x['review_element__review_child_group__review_root_element__name']
+                                )
+                               for x in list(ReviewBoolAnswer.objects
                                     .filter(reviewing=reviewing)
                                     .values('boolean_value',
-                                            'review_element_id'))]
+                                            'review_element',
+                                            'review_element__name',
+                                            'review_element__review_child_group',
+                                            'review_element__review_child_group__name',
+                                            'review_element__review_child_group__review_root_element',
+                                            'review_element__review_child_group__review_root_element__name'
+                                        ))]
 
     # we get the comment answer
     rev_info['comment'] = ReviewComment\

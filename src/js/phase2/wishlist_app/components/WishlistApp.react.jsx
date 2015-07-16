@@ -9,10 +9,16 @@ var WidgetStore = require("../stores/WidgetStore");
 
 var WishlistApp = React.createClass({
 
-    mixins: [Reflux.connect(WidgetStore)],
+    mixins: [Reflux.listenTo(WidgetStore, 'showOrHideWidget')],
     
     getInitialState: function(){
-        return WidgetStore.getShowWidgetState();
+        return {
+            showWidget: false
+        };
+    },
+
+    showOrHideWidget(state){
+        this.setState(state);
     },
 
     componentDidMount: function(){

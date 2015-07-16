@@ -67,7 +67,7 @@ var Product = React.createClass({
 
     shouldComponentUpdate: function(nextProps, nextState){
         // we update if the id is not the same for the component
-        // and if we're not on the same page
+        // and if we're not on the same page (all, f, fof)
         if(nextProps.data.id != this.props.data.id ||
         nextProps.currentPage != this.props.currentPage){
             return true;
@@ -112,10 +112,17 @@ var Product = React.createClass({
 
                 {/* The product image */}
                 <div className="sm-img-container">
-                    <ImageLoader ref="img"
-                                 src={this.props.data.sm_image_path}
-                                 onLoad={this.showImage}>
-                    </ImageLoader>
+                    {/* 
+                        <ImageLoader ref="img"
+                        src={this.props.data.sm_image_path}
+                        onLoad={this.showImage}>
+                        </ImageLoader>
+                      */}
+
+                        <img ref="img"
+                             src={this.props.data.sm_image_path}
+                             onLoad={this.showImage}>
+                        </img>
                 </div>
 
                 {/* The product date */}

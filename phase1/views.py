@@ -5,7 +5,8 @@ from products.models import Tag, Product, get_products
 from reviews.models import create_review, get_review_tree,\
     get_review_data, del_review
 from users.models import set_user_step, get_number_reviews
-from django.http import HttpResponseRedirect, JsonResponse, Http404
+from django.http import HttpResponseRedirect, JsonResponse, \
+    HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from shared.custom_user_flow import redirect_user_to_current_step
 from shared.mobile_agent_detection import no_mobile
@@ -53,30 +54,28 @@ def step1(request):
 # Called when a review is posted
 @login_required
 def review(request):
-    if request.method == 'POST':
+    if request.method != 'POST':
+        return HttpResponseBadRequest("Only accessible with POST.")
 
-        json_data = json.loads(request.body.decode('utf-8'))
-        product = Product.objects.get(id=json_data['productId'])
+    json_data = json.loads(request.body.decode('utf-8'))
+    product = Product.objects.get(id=json_data['productId'])
 
-        # if there exists a review already
-        del_review(request.user, product)
+    # if there exists a review already
+    del_review(request.user, product)
 
-        # We are only deleting
-        if not json_data['reviewData']:
-            result = 'success'
-            json_response = {'result': result}
-            return JsonResponse(json_response)
-
-        # we are editing or creating
-        create_review(json_data['reviewData'], request.user, product)
-
-        # success!
+    # We are only deleting
+    if not json_data['reviewData']:
         result = 'success'
         json_response = {'result': result}
         return JsonResponse(json_response)
 
-    # Else what are you doing here????
-    raise Http404("Only accessible with POST")
+    # we are editing or creating
+    create_review(json_data['reviewData'], request.user, product)
+
+    # success!
+    result = 'success'
+    json_response = {'result': result}
+    return JsonResponse(json_response)
 
 
 # The questionnaire page
@@ -107,7 +106,7 @@ def questionnaire(request):
             set_user_step(request.user, 3)
         return HttpResponseRedirect('/phase1/step3/')
 
-    raise Http404("Only accesible with POST")
+    return HttpResponseBadRequest("Only accesible with POST")
 
 
 @login_required
@@ -129,4 +128,4 @@ def shared(request):
         json_response = {'result': result}
         return JsonResponse(json_response)
 
-    raise Http404("Only accesible with POST")
+    return HttpResponseBadRequest("Only accesible with POST")

@@ -122,10 +122,21 @@ $topmenu-height: 40px;
         /* border: 1px solid rgb(221, 221, 221); */
         position: relative;
         height:100%;
+        .review-anim-enter {
+            opacity: 0.01;
+            transition: opacity .5s ease-in;
+        }
+        .review-anim-enter.review-anim-enter-active {
+            opacity: 1;
+        }
+        .review-anim-leave {
+            opacity: 1;
+            transition: opacity .5s ease-in;
+        }
+        .review-anim-leave.review-anim-leave-active {
+            opacity: 0.01;
+        }
     }
-    .not-loaded {
-    }
-
     .reviewers {
         margin-top: 0px;
         margin-bottom: 20px;

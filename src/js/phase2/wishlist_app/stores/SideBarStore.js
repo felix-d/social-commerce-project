@@ -1,6 +1,6 @@
 var Reflux = require("reflux");
 var SideBarActions = require("../actions/SideBarActions");
-var ProductsStore = require("../stores/ProductsStore");
+var ProductsStore = require("./ProductsStore");
 var _ = require("lodash");
 
 var _tags,
@@ -83,6 +83,7 @@ var SideBarStore = Reflux.createStore({
     // shuffle the products
     onDoShuffle: function(){
         _sortBy = "random";
+        console.log(ProductsStore);
         ProductsStore.shuffle();
     },
 

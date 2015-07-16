@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.http import JsonResponse, HttpResponseBadRequest
 import json
 from shared.mobile_agent_detection import no_mobile
-from products.models import Tag, get_products
+from products.models import Tag, get_products, Product
 from reviews.models import get_reviewers, get_review_data, get_review_tree
 from shared.custom_user_flow import redirect_user_to_current_step
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -14,6 +16,34 @@ def home(request):
         return redirect_user_to_current_step(request.user)
     context = dict(current_phase=2)
     return render(request, "home.djhtml", context)
+
+
+def get_review_text(request):
+    """ Get the review text for the given productid"""
+
+    if request.method != 'POST':
+        return HttpResponseBadRequest("Only accessible with POST.")
+
+    json_data = json.loads(request.body.decode('utf-8'))
+
+    try:
+        productid = json_data['productid']
+        product = Product.objects.get(id=productid)
+    except:
+        return HttpResponseBadRequest("The product doesn't exist.")
+
+    try:
+        userid = json_data['userid']
+        user = User.objects.get(id=userid)
+    except:
+        return HttpResponseBadRequest("The user doesn't exist.")
+
+    review_data = get_review_data(user, product)
+
+    if not review_data:
+        return HttpResponseBadRequest("The review doesn't exist.")
+
+    return JsonResponse(review_data)
 
 
 def main(request):

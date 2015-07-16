@@ -128,7 +128,11 @@ var Product = React.createClass({
                     <div className="checkmark-container">
                         {checkMark}
                         <div className={opacityControl + " img-container"}>
-                            <ImageLoader ref="img" src={this.props.data.sm_image_path} onLoad={this.showImage}></ImageLoader>
+                            {/* <ImageLoader ref="img" src={this.props.data.sm_image_path} onLoad={this.showImage}></ImageLoader> */}
+                            <img
+ref="img"
+src={this.props.data.sm_image_path}
+onLoad={this.showImage}></img>
                         </div>
                     </div>
                     <p className={opacityControl}>{this.props.data.caracteristic_1}</p>

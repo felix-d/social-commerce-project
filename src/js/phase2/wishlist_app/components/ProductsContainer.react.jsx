@@ -14,7 +14,7 @@ var infiniteScrollCheck = function(){
     var bottom = wishlistAppOffset.top + $wishlistApp.height();
 
     // if we can see all the products in the window, we can add some more!
-    if (bottom <= $(window).scrollTop() + $(window).height()) {
+    if (bottom <= $(window).scrollTop() + $(window).height() + 150) {
         ProductsActions.doIncrementCurrentIndex();
     }
 };

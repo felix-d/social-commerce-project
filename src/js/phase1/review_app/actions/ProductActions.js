@@ -30,16 +30,17 @@ var ProductActions = {
 
         // we remove the overlay
         $overlay.addClass("fadeOut");
-        $overlay.one(
+        $overlay.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
-                $(this).hide();
-                $(this).removeClass();
+                $overlay.hide();
+                $overlay.removeClass();
+                $overlay.unbind();
             });
         
         // byebye widget
         $reviewWidget.addClass("bounceOutUp");
-        $reviewWidget.one(
+        $reviewWidget.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
                 AppDispatcher.dispatch({
@@ -63,7 +64,7 @@ var ProductActions = {
             '/phase1/review/',
             JSON.stringify({productId: product.id, reviewData: reviewData}),
             function(data){
-                console.log("success");
+                console.log(data);
             });
         AppDispatcher.dispatch({
             actionType: ProductConstants.SUBMIT_REVIEW,

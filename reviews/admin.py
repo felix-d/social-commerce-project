@@ -22,7 +22,6 @@ class ReviewChildGroupInline(NestedStackedInline):
     ]
 
 
-# @admin.register(ReviewRootElement)
 class ReviewRootElementInline(NestedStackedInline):
     model = ReviewRootElement
     inlines = [

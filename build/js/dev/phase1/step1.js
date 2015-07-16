@@ -15,11 +15,12 @@ $(function(){
             function(){
                 $(this).remove();
             });
-        $overlay.one(
+        $overlay.on(
             'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
             function(){
                 $(this).hide();
                 $(this).removeClass();
+                $(this).unbind();
             });
     };
 

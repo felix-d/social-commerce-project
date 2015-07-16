@@ -17,10 +17,12 @@ var infiniteScrollCheck = function(){
     var bottom = reviewAppOffset.top + $reviewApp.height();
 
     // if we can see all the products in the window, we can add some more!
-    if (bottom <= $(window).scrollTop() + $(window).height()) {
+    // the integer is a buffer to fix firefox and safari
+    if (bottom <= $(window).scrollTop() + $(window).height() + 150) {
         ProductActions.infiniteScroll();
     }
 };
+
 /**
  * PRODUCTS CONTAINER COMPONENT
  * The right-most container of the review app containing the products
