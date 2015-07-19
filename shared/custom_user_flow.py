@@ -19,6 +19,7 @@ def redirect_user_to_current_step(user):
         if current_phase is 2:
             pass
 
+        # Both phases
         if user_step is 1:
                 url = "/phase{}/".format(str(current_phase))
 

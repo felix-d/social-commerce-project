@@ -1,11 +1,11 @@
 var React = require("react");
 var Reflux = require("reflux");
-var ProductWidget = require("./ProductWidget.react.jsx");
-var TopMenu = require("./TopMenu.react.jsx");
-var SideBar = require("./SideBar.react.jsx");
-var ProductsContainer = require("./ProductsContainer.react.jsx");
-var SideBarStore = require("../stores/SideBarStore");
-var WidgetStore = require("../stores/WidgetStore");
+var ProductWidget = require("../products/components/ProductWidget.react.jsx");
+var SideBarStore = require("../products/stores/SideBarStore");
+var WidgetStore = require("../widget/stores/WidgetStore");
+var MainMenu = require("./MainMenu.react.jsx");
+var { Row, Col } = require("react-bootstrap");
+var { RouteHandler, Route } = require("react-router");
 
 var WishlistApp = React.createClass({
 
@@ -24,27 +24,17 @@ var WishlistApp = React.createClass({
     componentDidMount: function(){
         
     },
+
     render: function(){
         return(
             <div>
                 {this.state.showWidget ? <ProductWidget/> : undefined}
-                <div className="row">
-                    <div className="col-xs-3">
-                        <SideBar/>
-                    </div>
-                    <div className="col-xs-9">
-                        <div className="row">
-                            <div className="col-xs-12">
-                                <TopMenu />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-12" id="outer-products-container">
-                                <ProductsContainer/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Row>
+                    <Col xs={12}>
+                        <MainMenu/>
+                    </Col>
+                </Row>
+                <RouteHandler/>
             </div>
         );
     }

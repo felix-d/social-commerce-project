@@ -47,6 +47,8 @@
     "react-image-component": "^0.3.0",
     "react-imageloader": "^1.2.0",
     "react-loadermixin": "^1.0.4",
+    "react-router": "^0.13.3",
+    "react-router-bootstrap": "^0.17.2",
     "reactify": "*",
     "reflux": "^0.2.9",
     "underscore": "^1.8.0",

@@ -1,6 +1,6 @@
 var React = require("react");
 var ImageLoader = require('react-imageloader');
-var WidgetActions = require("../actions/WidgetActions");
+var WidgetActions = require("../../widget/actions/WidgetActions");
 
 // The crop length for the product name
 var cropLength = 11,

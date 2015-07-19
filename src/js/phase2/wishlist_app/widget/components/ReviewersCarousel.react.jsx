@@ -1,6 +1,6 @@
 var React = require('react');
 var Reviewer = require("./Reviewer.react.jsx");
-var slickOptions = require("../utils/Config").slickOptions;
+var slickOptions = require("../../utils/Config").slickOptions;
 
 var ReviewersCarousel = React.createClass({
     componentDidMount(){
@@ -28,7 +28,7 @@ var ReviewersCarousel = React.createClass({
 
             case 1:
                 if(this.props.productData.f_reviewers){
-                    reviewers = this.state.productData.f_reviewers.map(function(e, i){
+                    reviewers = this.props.productData.f_reviewers.map(function(e, i){
                         return (<Reviewer key={i} user={e} productData={this.props.productData}/>);
                     }.bind(this));
                 }
@@ -36,7 +36,7 @@ var ReviewersCarousel = React.createClass({
 
             case 2:
                 if(this.props.productData.fof_reviewers){
-                    reviewers = this.state.productData.fof_reviewers.map(function(e, i){
+                    reviewers = this.prop.productData.fof_reviewers.map(function(e, i){
                         return (<Reviewer key={i} user={e} productData={this.props.productData}/>);
                     }.bind(this));
                 }
