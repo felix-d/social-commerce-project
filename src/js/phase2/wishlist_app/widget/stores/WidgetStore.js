@@ -1,5 +1,5 @@
 var WidgetActions = require("../actions/WidgetActions");
-var ProductsStore = require("../stores/ProductsStore");
+var ProductsStore = require("../../products/stores/ProductsStore");
 var Reflux = require("reflux");
 
 var _showWidget = {showWidget: false},

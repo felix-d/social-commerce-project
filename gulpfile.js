@@ -11,6 +11,7 @@ var transform = require('vinyl-transform');
 var browserify = require('browserify');
 var reactify = require('reactify');
 var del = require('del');
+var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
@@ -135,13 +136,15 @@ gulp.task('clean-css', function(){
 
 //Takes all in the dev folder and minify it and gzip it
 gulp.task('compress-js', function() {
-  return gulp.src('./build/js/dev/*.js')
+  return gulp.src('./build/js/dev/**/*.js')
+    .pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(rename(function(path){
       if(!/\.min$/.test(path.basename)){
         path.extname = ".min.js";
       }
     }))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('build/js'))
     .pipe(gzip(gzip_options))
     .pipe(gulp.dest('build/js'));
@@ -162,7 +165,6 @@ gulp.task('move-js', function(){
 });
 
 
-
 //takes css from bower components and move them to dev
 gulp.task('move-css', ['clean-css'], function() {
   return gulp.src(css_vendor_sources).
@@ -178,18 +180,20 @@ gulp.task('compile-sass', ['clean-css'], function() {
 
 //takes the css from temp, minify it and put it in build
 gulp.task('minify-css', ['compile-sass', 'move-css'], function(){
-  return gulp.src("build/css/dev/**/*.css", {base: 'build/css/dev/'}).
-    pipe(minifycss()).
-    pipe(rename(function(path){
+  return gulp.src("build/css/dev/**/*.css", {base: 'build/css/dev/'})
+    .pipe(sourcemaps.init())
+    .pipe(minifycss())
+    .pipe(rename(function(path){
       if(!/\.min$/.test(path.basename)){
         path.dir = "";
         path.extname = ".min.css";
       }
-    })).
-    pipe(gulp.dest('build/css')).
-    pipe(gzip(gzip_options)).
-    pipe(gulp.dest('build/css')).
-    pipe(livereload());
+    }))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('build/css'))
+    .pipe(gzip(gzip_options))
+    .pipe(gulp.dest('build/css'))
+    .pipe(livereload());
 });
 
 gulp.task('prod-styles', [

@@ -16,24 +16,48 @@ def get_review_data(user, product):
         return False
 
     # we get the bool answers as [{'val': True, 'id': 1, 'name': 'was alright', 'chilgroup_id': 1, 'childgroup_name': 'music', ...}]
-    rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
-                                    id=x['review_element'],
-                                    name=x['review_element__name'],
-                                    childgroup_id=x['review_element__review_child_group'],
-                                    childgroup=x['review_element__review_child_group__name'],
-                                    rootgroup_id=x['review_element__review_child_group__review_root_element'],
-                                    rootgroup=x['review_element__review_child_group__review_root_element__name']
-                                )
-                               for x in list(ReviewBoolAnswer.objects
-                                    .filter(reviewing=reviewing)
-                                    .values('boolean_value',
-                                            'review_element',
-                                            'review_element__name',
-                                            'review_element__review_child_group',
-                                            'review_element__review_child_group__name',
-                                            'review_element__review_child_group__review_root_element',
-                                            'review_element__review_child_group__review_root_element__name'
-                                        ))]
+    # rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
+    #                                 id=x['review_element'],
+    #                                 name=x['review_element__name'],
+    #                                 childgroup_id=x['review_element__review_child_group'],
+    #                                 childgroup=x['review_element__review_child_group__name'],
+    #                                 rootgroup_id=x['review_element__review_child_group__review_root_element'],
+    #                                 rootgroup=x['review_element__review_child_group__review_root_element__name']
+    #                             )
+    #                            for x in list(ReviewBoolAnswer.objects
+    #                                 .filter(reviewing=reviewing)
+    #                                 .values('boolean_value',
+    #                                         'review_element',
+    #                                         'review_element__name',
+    #                                         'review_element__review_child_group',
+    #                                         'review_element__review_child_group__name',
+    #                                         'review_element__review_child_group__review_root_element',
+    #                                         'review_element__review_child_group__review_root_element__name'
+    #                                     ))]
+
+    # we get the bool answers as [[{childGroupName: "name", answers: ["blabla", "blabla2"]}]]
+    rba = [dict(
+        childGroupName=x['name'],
+        answers=[r['review_element__name'] for r in ReviewBoolAnswer.objects.filter(
+            reviewing=reviewing
+        ).filter(
+            review_element__review_child_group=x['id']
+        ).filter(
+            boolean_value=True).values('review_element__name')])\
+           for x in ReviewChildGroup.objects.all().values('name', 'id')]
+
+    # we want to concatenate child group answers with the same name
+    rev_info['boolAnswers'] = []
+    seen = []
+    for a in rba:
+        if a['childGroupName'] in seen:
+            for b in rev_info['boolAnswers']:
+                if b['childGroupName'] == a['childGroupName']:
+                    b['answers'] = b['answers'] + a['answers']
+        else:
+            if a['answers']:
+                rev_info['boolAnswers'].append(a)
+        seen.append(a)
 
     # we get the comment answer
     rev_info['comment'] = ReviewComment\
@@ -47,7 +71,9 @@ def get_review_data(user, product):
         .get(reviewing=reviewing)\
         .rating
 
-    return rev_info
+
+    # we only return if not empty
+    return {k: v for k, v in rev_info.items() if v}
 
 
 def get_reviewers(user, product, types=('a', 'f', 'fof')):

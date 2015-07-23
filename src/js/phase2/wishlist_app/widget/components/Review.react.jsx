@@ -1,6 +1,7 @@
 var React = require("react/addons"),
     CSSTransitionGroup = React.addons.CSSTransitionGroup,
     Reflux = require("reflux"),
+    { Link } = require("react-router"),
     ReviewStore = require("../stores/ReviewStore");
 
 var rectangles = (
@@ -74,7 +75,6 @@ var Review = React.createClass({
                 <h4>Review</h4>
                 <div id="review-text">
                     {review}
-                    <Link to="user/{this.state.userid}">Visit profile</Link>
                 </div>
             </div>
         );

@@ -15,28 +15,25 @@ var ReviewStore = Reflux.createStore({
     $.post(
       '/phase2/reviewtext/',
       JSON.stringify({userid: userid, productid: productid}),
-
       // success
       function(data){
 
-        // we format the answers
-        var answers = {};
-        data.boolAnswers.forEach(b => {
-          if(b.val){
-            if(b.childgroup in answers){
-              answers[b.childgroup] += `, ${b.name}`;
-            } else {
-              answers[b.childgroup] = `${b.name}`;
-            }
-          }
-        });
+        _currentReviewData = {}
 
-        _currentReviewData = {
-          userid,
-          answers,
-          comment: data.comment,
-          rating: data.rating
-        };
+        // we format the answers
+        if (data.boolAnswers !== undefined) {
+          _currentReviewData.answers = {};
+          data.boolAnswers.forEach(o => {
+            _currentReviewData.answers[o.childGroupName] = o.answers.join(", ");
+          });
+        }
+        if (data.comment !== undefined) {
+          _currentReviewData.comment = data.comment;
+        }
+        if (data.rating !== undefined) {
+          _currentReviewData.rating = data.rating;
+        }
+        _currentReviewData.userid = userid;
 
         this.trigger(_currentReviewData);
 

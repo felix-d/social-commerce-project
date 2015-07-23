@@ -1,6 +1,6 @@
 var React = require("react");
 var Reflux = require("reflux");
-var ProductWidget = require("../products/components/ProductWidget.react.jsx");
+var ProductWidget = require("../widget/components/ProductWidget.react.jsx");
 var SideBarStore = require("../products/stores/SideBarStore");
 var WidgetStore = require("../widget/stores/WidgetStore");
 var MainMenu = require("./MainMenu.react.jsx");

@@ -4,8 +4,9 @@ var WidgetStore = require("../stores/WidgetStore");
 var WidgetActions = require("../actions/WidgetActions");
 var Review = require("./Review.react.jsx");
 var { Col, Row } = require("react-bootstrap");
-var popoverOptions = require("../utils/Config").widgetPopoverOptions;
+var popoverOptions = require("../../utils/Config").widgetPopoverOptions;
 var ReviewersCarousel = require("./ReviewersCarousel.react.jsx");
+
 var ProductWidget = React.createClass({
 
     closeProductWidget: function(){
