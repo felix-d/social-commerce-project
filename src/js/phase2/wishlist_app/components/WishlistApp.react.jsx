@@ -21,6 +21,9 @@ var WishlistApp = React.createClass({
         this.setState(state);
     },
 
+    componentDidUpdate(){
+    },
+
     componentDidMount: function(){
         
     },

@@ -8,6 +8,7 @@ var { Route, DefaultRoute, Redirect } = Router;
 var ProductsPage = require("./products/components/ProductsPage.react.jsx");
 var ProfilePage = require("./me/components/ProfilePage.react.jsx");
 
+global.debug = require("debug");
 
 var init = function init(data){
 
@@ -27,6 +28,8 @@ var init = function init(data){
             <Redirect from="/" to="products"/>
         </Route>
     );
+
+    
     Router.run(routes, Router.HashLocation, (Root) => {
         React.render(<Root/>, document.getElementById("wishlist-app"));
     });

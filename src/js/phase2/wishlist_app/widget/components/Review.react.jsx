@@ -2,6 +2,7 @@ var React = require("react/addons"),
     CSSTransitionGroup = React.addons.CSSTransitionGroup,
     Reflux = require("reflux"),
     { Link } = require("react-router"),
+    debug = require("debug")(__filename),
     ReviewStore = require("../stores/ReviewStore");
 
 var rectangles = (

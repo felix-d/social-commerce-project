@@ -1,11 +1,15 @@
-var React = require("react");
-var Reflux = require("reflux");
-var WidgetStore = require("../stores/WidgetStore");
-var WidgetActions = require("../actions/WidgetActions");
-var Review = require("./Review.react.jsx");
-var { Col, Row } = require("react-bootstrap");
-var popoverOptions = require("../../utils/Config").widgetPopoverOptions;
-var ReviewersCarousel = require("./ReviewersCarousel.react.jsx");
+'use strict';
+
+var React = require("react"),
+    Reflux = require("reflux"),
+    WidgetStore = require("../stores/WidgetStore"),
+    WidgetActions = require("../actions/WidgetActions"),
+    Review = require("./Review.react.jsx"),
+    { Col, Row } = require("react-bootstrap"),
+    popoverOptions = require("../../utils/Config").widgetPopoverOptions,
+    WishlistActions = require("../../me/actions/WishlistActions"),
+    WishlistStore = require("../../me/stores/WishlistStore"),
+    ReviewersCarousel = require("./ReviewersCarousel.react.jsx");
 
 var ProductWidget = React.createClass({
 
@@ -17,15 +21,12 @@ var ProductWidget = React.createClass({
         WidgetActions.doGetReview(0,0);
     },
 
-    componentDidUpdate(){
-        console.log("componenet did updated");
-    },
-
     getInitialState: function(){
         return WidgetStore.getWidgetState();
     },
 
     componentDidMount: function(){
+
         //we add the popover if the description is cropped
         if(this.state.productData.doCropDescription){
             $(this.refs.description.getDOMNode())
@@ -42,9 +43,21 @@ var ProductWidget = React.createClass({
 
     },
 
+    _addToWishlist(){
+        WishlistActions.add(this.state.productData);
+        WidgetActions.doHideWidget();
+
+    },
+
+    _removeFromWishlist(){
+        WishlistActions.remove(this.state.productData.id);
+        WidgetActions.doHideWidget();
+    },
+
     render: function(){
 
-        var description = '';
+        var description = '',
+            button = null;
 
         // Do we crop the description
         if(this.state.productData.doCropDescription){
@@ -54,6 +67,11 @@ var ProductWidget = React.createClass({
             description = this.state.productData.description;
         } 
 
+        if(WishlistStore.isInWishlist(this.state.productData.id)){
+            button = (<button className="btn btn-danger btn-margin" onClick={this._removeFromWishlist}>Remove from wishlist</button>);
+        } else {
+            button = (<button className="btn btn-add btn-margin" onClick={this._addToWishlist}>Add to wishlist</button>);
+        }
 
         return (
             <div id="product-widget" className="animated bounceInDown" ref="product-widget">
@@ -113,7 +131,7 @@ var ProductWidget = React.createClass({
                 {/* Add to wishlist button */}
                 <Row>
                     <Col xs={12} className="text-center">
-                    <button className="btn btn-add">Add to wishlist</button>
+                        {button}
                     </Col>
                 </Row>
             </div>

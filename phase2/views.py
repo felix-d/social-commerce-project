@@ -46,6 +46,18 @@ def get_review_text(request):
     return JsonResponse(review_data)
 
 
+def get_user_info(request):
+    user = request.user
+    userinfo = dict()
+    userinfo['username'] = user.username
+    try:
+        userinfo['pic'] = user.userimage.url
+    except:
+        pass
+    return JsonResponse(userinfo)
+    
+
+
 def main(request):
     products = get_products()
     for p in products:

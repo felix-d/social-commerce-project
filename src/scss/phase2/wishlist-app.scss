@@ -24,7 +24,7 @@ $topmenu-height: 40px;
     top: -25%;
     left: -25%;
     height:150%;
-    /* display:block; */
+    /* display:lock; */
     background-color: rgba(0,0,0,0.4);
     -webkit-transform: translateZ(0);
     -moz-animation-duration: .6s;
@@ -112,6 +112,9 @@ $topmenu-height: 40px;
         padding: 15px;
         position:relative;
     }
+    .btn-margin {
+        margin-bottom: 20px;
+    }
     // the col containing the review
     .review-container {
         position: relative;
@@ -153,11 +156,16 @@ $topmenu-height: 40px;
             margin-right: 50px;
             text-align: center;
         }
-        .username {
-            display: block;
-        }
-        i {
-            display: inline-block;
+        .reviewer {
+            .username {
+                cursor: pointer;
+                display: block;
+            }
+            i {
+                cursor: pointer;
+                display: inline-block;
+            }
+
         }
     }
 

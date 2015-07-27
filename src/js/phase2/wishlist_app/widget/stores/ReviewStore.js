@@ -18,7 +18,7 @@ var ReviewStore = Reflux.createStore({
       // success
       function(data){
 
-        _currentReviewData = {}
+        _currentReviewData = {};
 
         // we format the answers
         if (data.boolAnswers !== undefined) {
