@@ -2,10 +2,12 @@ var React = require('react');
 var ReviewForm = require("./ReviewForm.react.jsx");
 var ReviewBoxStore = require('../stores/ReviewBoxStore');
 var ProductActions = require('../actions/ProductActions');
+var { Modal, Row, Col } = require("react-bootstrap");
 
 function getReviewState(){
     return ReviewBoxStore.getReviewState();
 }
+
 
 var ReviewBox = React.createClass({
 
@@ -70,39 +72,40 @@ var ReviewBox = React.createClass({
         } 
 
         var reviewWidget =
-        <div id="review-widget" className="animated bounceInDown" ref="reviewWidget">
-            <div className="row">
-                <div className="col-xs-12 text-right" style={{paddingRight: '0px', right: '-4px'}}>
-                    <button className="btn btn-default" onClick={this.closeReviewBox}><i className="fa fa-times"></i></button>
-                </div>
-            </div>
+        <Modal id="review-widget" show={this.state.open} onHide={this.closeReviewBox} bsSize="large">
+            <Modal.Body>
+                <Row>
+                    <Col xs={12} className="text-right">
+                        <button className="btn btn-default" onClick={this.closeReviewBox}><i className="fa fa-times"></i></button>
+                    </Col>
+                </Row>
 
-            <div className="row">
-                <div className="col-xs-12 text-center">
-                    <h2 className="product-name">{this.state.product.name}</h2>
-                </div>
-            </div>
+                <Row>
+                    <Col xs={12} className="text-center">
+                        <h2 className="product-name">{this.state.product.name}</h2>
+                    </Col>
+                </Row>
 
-            <div className="row inner">
+                <Row className="inner">
+                    <Col xs={3}>
+                        <img src={this.state.product.image_path} alt={this.state.product.name} className="product-image"/>
+                    </Col>
 
-                <div className="col-xs-3">
-                    <img src={this.state.product.image_path} alt={this.state.product.name} className="product-image"/>
-                </div>
+                    <Col xs={3}>
+                        <h4>Release date</h4>
+                        <p>{this.state.product.caracteristic_1}</p>
+                        <h4>Tags</h4>
+                        <p>{this.state.product.tags.join(", ")}</p>
+                        <h4>Overview</h4>
+                        <p className="description" id="review-widget__description" ref="description" data-toggle="popover" data-content={this.state.product.description}>{description}</p>
+                    </Col>
 
-                <div className="col-xs-3">
-                    <h4>Release date</h4>
-                    <p>{this.state.product.caracteristic_1}</p>
-                    <h4>Tags</h4>
-                    <p>{this.state.product.tags.join(", ")}</p>
-                    <h4>Overview</h4>
-                    <p className="description" ref="description" data-toggle="popover" data-content={this.state.product.description}>{description}</p>
-                </div>
-
-                <div className="col-xs-6">
-                    <ReviewForm product={this.state.product}/>
-                </div>
-            </div>
-        </div>;
+                    <Col xs={6}>
+                        <ReviewForm product={this.state.product}/>
+                    </Col>
+                </Row>
+            </Modal.Body>
+        </Modal>;
         
         // we only show the review widget if it's opened
         return(

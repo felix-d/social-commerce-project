@@ -15,30 +15,31 @@ var infiniteScrollCheck = function(){
 
     // if we can see all the products in the window, we can add some more!
     if (bottom <= $(window).scrollTop() + $(window).height() + 150) {
-        ProductsActions.doIncrementCurrentIndex();
+        ProductsActions.incrementCurrentIndex();
     }
 };
 
 var ProductsContainer = React.createClass({
+
     // We want to listen to the product store and update the products state
     mixins: [Reflux.connect(ProductsStore)],
 
     imagesUpdate: true,
 
-    getInitialState: function(){
+    getInitialState(){
         return ProductsStore.getProductsState();
     },
-    componentDidUpdate: function(){
+    componentDidUpdate(){
         infiniteScrollCheck();
     },
-    componentDidMount: function(){
+    componentDidMount(){
         infiniteScrollCheck();
 
         // when the images are done loading, so we get the correct height
         $(window).on("resize scroll", infiniteScrollCheck);
     },
 
-    render: function(){
+    render(){
         var products = this.state.products.map(function(e, i){
             return (
                <div className="col-xs-15 product-container" key={i}>

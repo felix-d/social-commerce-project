@@ -1,6 +1,7 @@
 var WidgetActions = require("../actions/WidgetActions");
 var ProductsStore = require("../../products/stores/ProductsStore");
-var Reflux = require("reflux");
+var Reflux = require("reflux"),
+    debug = require("debug")(__filename);
 
 var _showWidget = {showWidget: false},
     _productData = undefined,
@@ -23,6 +24,7 @@ var WidgetStore = Reflux.createStore({
 
   // for the widget component
   getWidgetState: function(){
+
     var currentPage = ProductsStore.getCurrentPage();
     var numReviewers;
     switch(currentPage){
@@ -47,6 +49,9 @@ var WidgetStore = Reflux.createStore({
   },
 
   onDoShowWidget: function(productData){
+
+    debug("Showing widget with data", productData);
+
     // we set the product data
     _productData = productData;
 
@@ -61,61 +66,12 @@ var WidgetStore = Reflux.createStore({
     }
 
     // we show the widget
-    _showWidget.showWidget = true;
-
-    // we show the overlay
-    var $overlay = $("#overlay");
-    $overlay.show();
-    $overlay.addClass("animated fadeIn");
-
-    // we notify the wishlist app
-    this.trigger(_showWidget);
-    
+    this.trigger(true);
   },
 
 
   onDoHideWidget: function(){
-
-    // The product widget
-    var $productWidget = $("#product-widget");
-    // the overlay
-    var $overlay = $("#overlay");
-
-    // The product widget bounces out
-    $productWidget.addClass("bounceOutUp");
-    // The overlay fades out
-    $overlay.addClass("fadeOut");
-
-    // When the overlay fade out animation is done
-    //  we could have used one but there is a bug where the event
-    // triggered when the widget appears is not the same
-    // this caused the callback to be triggered twice
-    // its better to just enforce unbinding
-    $overlay.on(
-      'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-      function(){
-        $(this).hide();
-        $(this).removeClass();
-        $(this).unbind();
-      });
-
-    // When the bounce out animation is done
-    $productWidget.on(
-      'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-      function(){
-
-        _showWidget.showWidget = false;
-
-        // We remove the class
-        $productWidget.removeClass("bounceOutUp");
-        $productWidget.unbind();
-
-        // Now we can trigger to notify the wishlist app that the widget
-        // isnt showing anymore
-        this.trigger(_showWidget);
-
-      }.bind(this)
-    ).bind(this);
+    this.trigger(false);
   }
   });
 

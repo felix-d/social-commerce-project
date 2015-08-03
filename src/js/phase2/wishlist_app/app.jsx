@@ -1,12 +1,17 @@
-var React = require('react');
-var WishlistApp = require("./components/WishlistApp.react.jsx");
-var SideBarStore = require("./products/stores/SideBarStore");
-var WidgetStore = require("./widget/stores/WidgetStore");
-var ProductsStore = require("./products/stores/ProductsStore");
-var Router = require("react-router");
-var { Route, DefaultRoute, Redirect } = Router;
-var ProductsPage = require("./products/components/ProductsPage.react.jsx");
-var ProfilePage = require("./me/components/ProfilePage.react.jsx");
+var React = require('react'),
+    WishlistApp = require("./components/WishlistApp.react.jsx"),
+    SideBarStore = require("./products/stores/SideBarStore"),
+    WidgetStore = require("./widget/stores/WidgetStore"),
+    ProductsStore = require("./products/stores/ProductsStore"),
+    Router = require("react-router"),
+    RouterActions = require("./router/actions/RouterActions"),
+    ProductsActions = require("./products/actions/ProductsActions"),
+    { Route, DefaultRoute, Redirect } = Router,
+    ProductsPage = require("./products/components/ProductsPage.react.jsx"),
+    ProfilePage = require("./me/components/ProfilePage.react.jsx");
+
+require("./router/stores/RouterStore");
+require('superagent-django-csrf');
 
 global.debug = require("debug");
 
@@ -31,6 +36,7 @@ var init = function init(data){
 
     
     Router.run(routes, Router.HashLocation, (Root) => {
+        RouterActions.routeChanged(Router.HashLocation.getCurrentPath());
         React.render(<Root/>, document.getElementById("wishlist-app"));
     });
 };

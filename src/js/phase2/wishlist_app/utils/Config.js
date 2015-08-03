@@ -10,6 +10,12 @@ exports.widgetPopoverOptions = {
     }
 };
 
+exports.productPopoverOptions = {
+  trigger: 'hover',
+  placement: 'auto',
+  container: 'body'
+};
+
 exports.slickOptions = {
   dots: false,
   speed: 600,

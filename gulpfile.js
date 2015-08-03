@@ -216,7 +216,7 @@ gulp.task("parallel", function () {
 });
 
 gulp.task('watch', ['browserify-watch'], function(){
-  gulp.watch('./src/js/**/*.js', ['move-js']);
+  // gulp.watch('./src/js/**/*.js', ['move-js']);
   gulp.watch('./src/scss/**/*.scss', ['prod-styles']);
   livereload.listen(35729);
 });

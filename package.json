@@ -54,6 +54,7 @@
     "reactify": "*",
     "reflux": "^0.2.9",
     "superagent": "^1.2.0",
+    "superagent-django-csrf": "git+https://github.com/felix-d/superagent-django-csrf.git",
     "underscore": "^1.8.0",
     "vinyl-source-stream": "^1.0.0",
     "vinyl-transform": "^1.0.0",

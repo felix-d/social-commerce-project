@@ -17,14 +17,15 @@ var rectangles = (
 var Review = React.createClass({
 
     mixins: [
-        Reflux.listenTo(ReviewStore, 'setReview')
+        Reflux.listenTo(ReviewStore, '_setReview')
     ],
+
+    _setReview(review){
+        this.setState(review);
+    },
 
     getInitialState(){
         return null;
-    },
-    setReview(review){
-        this.setState(review);
     },
     componentWillUpdate(nextProps, nextState){
         $("#review-text").hide();

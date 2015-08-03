@@ -3,6 +3,7 @@
 var Reflux = require("reflux"),
     request = require("superagent");
 
+
 var _userInfo = null;
 
 var UserStore = Reflux.createStore({

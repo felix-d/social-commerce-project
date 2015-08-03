@@ -15,41 +15,42 @@ def get_review_data(user, product):
     except:
         return False
 
-    # we get the bool answers as [[{childGroupName: "name", answers: ["blabla", "blabla2"]}]]
-    rba = [dict(
-        childGroupName=x['name'],
-        answers=[r['review_element__name'] for r in ReviewBoolAnswer.objects.filter(
-            reviewing=reviewing
-        ).filter(
-            review_element__review_child_group=x['id']
-        ).filter(
-            boolean_value=True).values('review_element__name')])\
-           for x in ReviewChildGroup.objects.all().values('name', 'id')]
 
-    # we want to concatenate child group answers with the same name
-    rev_info['boolAnswers'] = []
-    seen = []
-    for a in rba:
-        if a['childGroupName'] in seen:
-            for b in rev_info['boolAnswers']:
-                if b['childGroupName'] == a['childGroupName']:
-                    b['answers'] = b['answers'] + a['answers']
-        else:
-            if a['answers']:
-                rev_info['boolAnswers'].append(a)
-        seen.append(a)
+    rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
+                                    id=x['review_element'],
+                                    name=x['review_element__name'],
+                                    childgroup_id=x['review_element__review_child_group'],
+                                    childgroup=x['review_element__review_child_group__name'],
+                                    rootgroup_id=x['review_element__review_child_group__review_root_element'],
+                                    rootgroup=x['review_element__review_child_group__review_root_element__name']
+                                )
+                               for x in list(ReviewBoolAnswer.objects
+                                    .filter(reviewing=reviewing)
+                                    .values('boolean_value',
+                                            'review_element',
+                                            'review_element__name',
+                                            'review_element__review_child_group',
+                                            'review_element__review_child_group__name',
+                                            'review_element__review_child_group__review_root_element',
+                                            'review_element__review_child_group__review_root_element__name'
+                                        ))]
+    try:
+        # we get the comment answer
+        rev_info['comment'] = ReviewComment\
+            .objects\
+            .get(reviewing=reviewing)\
+            .text_value
+    except:
+        pass
 
-    # we get the comment answer
-    rev_info['comment'] = ReviewComment\
-        .objects\
-        .get(reviewing=reviewing)\
-        .text_value
-
-    # we get the rating
-    rev_info['rating'] = ReviewRating\
-        .objects\
-        .get(reviewing=reviewing)\
-        .rating
+    try:
+        # we get the rating
+        rev_info['rating'] = ReviewRating\
+            .objects\
+            .get(reviewing=reviewing)\
+            .rating
+    except:
+        pass
 
 
     # we only return if not empty
@@ -60,7 +61,7 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
     """
     Returns a dictionnary of the form {type1:[id1, id2, id3], type2:...}
     Accepts 'a' for all reviewers, 'f' for friends and 'fof' for friends
-    of friends
+    of friends. A f and a fof can be in all reviewers.
     """
 
     result = dict()
@@ -72,21 +73,24 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
             user_id=x.user.id,
             username=x.user.username
         )
-        for x in Reviewing.objects.filter(product=product)
+        for x in Reviewing.objects.filter(product=product).exclude(user=user.id)
     ]
 
     if 'a' in types:
-        result['all_reviewers'] = all_reviewers
+        if all_reviewers:
+            result['all_reviewers'] = all_reviewers
 
-    if 'f' in types:
+    if 'f' in types and user.is_authenticated():
         f = get_friends(user)
         f_reviewers = [u for u in all_reviewers if u['user_id'] in f]
-        result['f_reviewers'] = f_reviewers
+        if f_reviewers:
+            result['f_reviewers'] = f_reviewers
 
-    if 'fof' in types:
+    if 'fof' in types and user.is_authenticated():
         fof = get_fof(user)
         fof_reviewers = [u for u in all_reviewers if u['user_id'] in fof]
-        result['fof_reviewers'] = fof_reviewers
+        if fof_reviewers:
+            result['fof_reviewers'] = fof_reviewers
 
     return result
 

@@ -9,8 +9,7 @@ var TopMenu = React.createClass({
 
         tabs = tabs.map(function(t, i){
             function tabClicked(){
-                ProductActions.doChangePage(i);
-                SideBarActions.doResetSideBar();
+                ProductActions.changePage(i);
             }
 
             var _class = i === 0 ? "tab active" : "tab no-active";

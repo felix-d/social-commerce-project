@@ -1,105 +1,115 @@
-var Reflux = require("reflux");
-var SideBarActions = require("../actions/SideBarActions");
-var ProductsStore = require("./ProductsStore");
-var _ = require("lodash");
+var Reflux = require("reflux"),
+    SideBarActions = require("../actions/SideBarActions"),
+    ProductsStore = require("./ProductsStore"),
+    ProductsActions = require("../actions/ProductsActions"),
+    debug = require("debug")(__filename),
+    _ = require("lodash");
 
 var _tags,
     _textSearch,
     _sortBy;
 
 function addIsCheckedFalse(tags){
-    return tags.map(function(t){
-        return {name: t, isChecked: false};
-    });
+  return tags.map(function(t){
+    return {name: t, isChecked: false};
+  });
 }
 
 function resetTagsToFalse(tags){
-    return tags.map(function(t){
-        t.isChecked = false;
-    });
+  return tags.map(function(t){
+    t.isChecked = false;
+  });
 }
 
 function shuffle(){
-    _products = _.suffle(_products);
+  _products = _.suffle(_products);
 }
 
 var SideBarStore = Reflux.createStore({
 
-    listenables: [SideBarActions],
+  listenables: [SideBarActions],
 
-    init: function(){
-        _textSearch = "";
-        _sortBy = "Random";
-    },
+  init(){
+    _textSearch = "";
+    _sortBy = "Random";
+  },
 
-    // setup by us in app.jsx
-    setup: function(tags){
-        _tags = addIsCheckedFalse(tags);
-    },
+  // setup by us in app.jsx
+  setup(tags){
+    _tags = addIsCheckedFalse(tags);
+  },
 
-    // returns the tags as state
-    getTagsState: function(){
-        return {
-            tags: _tags
-        };
-    },
+  // returns the tags as state
+  getTagsState(){
+    return {
+      tags: _tags
+    };
+  },
 
 
-    getSideBarState: function(){
-        return {
-            tags: _tags,
-            sortBy: _sortBy,
-            textSearch: _textSearch
-        };
-    },
+  getSideBarState(){
+    return {
+      tags: _tags,
+      sortBy: _sortBy,
+      textSearch: _textSearch
+    };
+  },
 
-    // return the tags
-    getTags: function(){
-        return _tags;
-    },
+  // return the tags
+  getTags(){
+    return _tags;
+  },
 
-    // get text search value
-    getTextSearch: function(){
-        return _textSearch;
-    },
+  // get text search value
+  getTextSearch(){
+    return _textSearch;
+  },
 
-    // get sort by
-    getSortBy: function(){
-        return _sortBy;
-    },
+  // get sort by
+  getSortBy(){
+    return _sortBy;
+  },
 
-    // when the user inputs in text search
-    onDoTextSearch: function(text){
-        _textSearch = text;
-        ProductsStore.search(_textSearch, _sortBy, _tags);
-    },
+  // when the user inputs in text search
+  onTextSearch(text){
+    debug("onTextSearch");
+    _textSearch = text;
+    
+    ProductsActions.search(_textSearch, _sortBy, _tags);
+  },
 
-    // when the user changes the sort method
-    onDoSortBy: function(sortBy){
-        _sortBy = sortBy;
-        ProductsStore.search(_textSearch, _sortBy, _tags);
-    },
+  // when the user changes the sort method
+  onSortBy(sortBy){
+    debug("onSortBy");
+    _sortBy = sortBy;
+    ProductsActions.search(_textSearch, _sortBy, _tags);
+  },
 
-    // shuffle the products
-    onDoShuffle: function(){
-        _sortBy = "random";
-        console.log(ProductsStore);
-        ProductsStore.shuffle();
-    },
+  // shuffle the products
+  onShuffle(){
+    debug("onShuffle");
+    _sortBy = "random";
+    console.log(ProductsStore);
+    ProductsActions.shuffle();
+    ProductsStore.shuffle();
+  },
 
-    // search with tags
-    onDoSearch: function(){
-        ProductsStore.search(_textSearch, _sortBy, _tags);
-    },
+  // search with tags
+  onSearch(){
+    debug("onSearch");
 
-    // reset everything
-    onDoResetSideBar: function(){
-        resetTagsToFalse(_tags);
-        _sortBy = "random";
-        _textSearch = "";
-        $('.tags-group label').removeClass('active');
-        this.trigger(this.getSideBarState());
-    }
+    ProductsActions.search(_textSearch, _sortBy, _tags);
+  },
+
+  // reset everything
+  onResetSideBar(){
+    debug("onResetSideBar");
+    resetTagsToFalse(_tags);
+    _sortBy = "random";
+    _textSearch = "";
+    $('.tags-group label').removeClass('active');
+    this.trigger(this.getSideBarState());
+  }
 });
 
 

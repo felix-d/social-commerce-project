@@ -4,7 +4,9 @@ var Reflux = require("reflux");
 
 var WishlistActions = Reflux.createActions([
   "add",
-  "remove"
+  "remove",
+  "resetIdLastSetProduct",
+  "setWishlist"
 ]);
 
 module.exports = WishlistActions;

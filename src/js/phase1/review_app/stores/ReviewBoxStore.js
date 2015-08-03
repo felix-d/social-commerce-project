@@ -8,19 +8,19 @@ var _ = require('lodash');
 var CHANGE_EVENT = 'change';
 
 var _reviewBox = {
-    product: {
-        id: null,
-        name: '',
-        image_path: '',
-        caracteristic_1: '',
-        caracteristic_2: '',
-        tags: [],
-        description: '',
-        cropDescription: '',
-        doCropDescription: false
-    },
-    // is it opened
-    open: false
+  product: {
+    id: null,
+    name: '',
+    image_path: '',
+    caracteristic_1: '',
+    caracteristic_2: '',
+    tags: [],
+    description: '',
+    cropDescription: '',
+    doCropDescription: false
+  },
+  // is it opened
+  open: false
 },
     // The max length of the description
     _cropLength = 150,
@@ -42,161 +42,152 @@ var _reviewBox = {
 
 
 function setAllReviewElementsFalse(){
-        for(var i=0, l=_reviewElements.length; i<l;i++){
-            for(var j=0,m=_reviewElements[i].categories.length;j<m;j++){
-                for(var k=0, n=_reviewElements[i].categories[j].elements.length;k<n;k++){
-                    _reviewElements[i].categories[j].elements[k].isChecked = false;
-                }
-            }
-        }
-    
+  for(var i=0, l=_reviewElements.length; i<l;i++){
+    for(var j=0,m=_reviewElements[i].categories.length;j<m;j++){
+      for(var k=0, n=_reviewElements[i].categories[j].elements.length;k<n;k++){
+        _reviewElements[i].categories[j].elements[k].isChecked = false;
+      }
+    }
+  }
+  
 }
 
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
-    // Called from root component
-    init: function(reviewElements){
+  // Called from root component
+  init: function(reviewElements){
 
-        // Put the reference in private var
-        _reviewElements = reviewElements;
+    // Put the reference in private var
+    _reviewElements = reviewElements;
 
-        // We set all elements' isChecked to false
-        setAllReviewElementsFalse();
+    // We set all elements' isChecked to false
+    setAllReviewElementsFalse();
 
-        _reviewData = {
-            comment: "",
-            tabs: _reviewElements,
-            rating: 0
-        };
+    _reviewData = {
+      comment: "",
+      tabs: _reviewElements,
+      rating: 0
+    };
+  },
+  getReviewData: function(){
+    return _reviewData;
+  },
+  // When the user wants to review a movie
+  openReviewBox: function(product){
 
-        // We set up the overlay for closing the review box
-        // and the elements that need to fade on review box
-        // opening
-        $(function(){
-            $reviewApp = $('#review-app-inner');
-            $overlay = $('#overlay');
-        });
+    // We set the data
+    _reviewBox.product = product;
 
-    },
-    getReviewData: function(){
-        return _reviewData;
-    },
-    // When the user wants to review a movie
-    openReviewBox: function(product){
+    // if it's already reviewed 
+    if(product.review){
 
-        // We set the data
-        _reviewBox.product = product;
+      // we want to set the data of the review widget
+      // so that its the same as the last time it was
+      // reviewed
+      var r = product.review;
 
-        // if it's already reviewed 
-        if(product.review){
+      //we build updated review data
+      _reviewData.comment = r.comment;
+      _reviewData.rating = r.rating;
 
-            // we want to set the data of the review widget
-            // so that its the same as the last time it was
-            // reviewed
-            var r = product.review;
-
-            //we build updated review data
-            _reviewData.comment = r.comment;
-            _reviewData.rating = r.rating;
-
-            // we need isChecked to correspond to bool value
-            for(var i=0, l=_reviewElements.length; i<l;i++){
-                for(var j=0,m=_reviewElements[i].categories.length;j<m;j++){
-                    for(var k=0, n=_reviewElements[i].categories[j].elements.length;k<n;k++){
-                        for(var z = 0; z < r.boolAnswers.length; z++) {
-                            if(_reviewElements[i]
-                               .categories[j]
-                               .elements[k].id ===
-                               r.boolAnswers[z].id){
-                                _reviewElements[i]
-                                    .categories[j]
-                                    .elements[k]
-                                    .isChecked = r.boolAnswers[z].val;
-                            }
-                        }
-                    }
-                }
+      // we need isChecked to correspond to bool value
+      for(var i=0, l=_reviewElements.length; i<l;i++){
+        for(var j=0,m=_reviewElements[i].categories.length;j<m;j++){
+          for(var k=0, n=_reviewElements[i].categories[j].elements.length;k<n;k++){
+            for(var z = 0; z < r.boolAnswers.length; z++) {
+              if(_reviewElements[i]
+                 .categories[j]
+                 .elements[k].id ===
+                 r.boolAnswers[z].id){
+                _reviewElements[i]
+                  .categories[j]
+                  .elements[k]
+                  .isChecked = r.boolAnswers[z].val;
+              }
             }
+          }
         }
-
-        // We set open to true
-        _reviewBox.open = true;
-
-        // Do we crop?
-        if(_reviewBox.product.description.length > _cropLength){
-            _reviewBox.product.doCropDescription= true;
-            _reviewBox.product.cropDescription =
-                _reviewBox.product.description.substring(0, _cropLength) +
-                "...";
-        } else {
-            _reviewBox.product.doCropDescription = false;
-        }
-    },
-
-    closeReviewBox: function(){
-        _reviewBox.open = false;
-        this.resetReviewData();
-    },
-
-    resetReviewData: function(){
-        _reviewData.rating = 0;
-        _reviewData.comment = "";
-        setAllReviewElementsFalse();
-    },
-
-    getReviewState: function(){
-        return _reviewBox;
-    },
-
-    setRating: function(rating){
-        _reviewData.rating = rating;
-    },
-
-    toggleRecommendIt: function(comment){
-        _reviewData.recommendIt = !_reviewData.recommendIt;
-    },
-
-    commentChanged: function(comment){
-        _reviewData.comment = comment;   
-    },
-    
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
-
-    addChangeListener: function(callback) {
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+      }
     }
+
+    // We set open to true
+    _reviewBox.open = true;
+
+    // Do we crop?
+    if(_reviewBox.product.description.length > _cropLength){
+      _reviewBox.product.doCropDescription= true;
+      _reviewBox.product.cropDescription =
+        _reviewBox.product.description.substring(0, _cropLength) +
+        "...";
+    } else {
+      _reviewBox.product.doCropDescription = false;
+    }
+  },
+
+  closeReviewBox: function(){
+    _reviewBox.open = false;
+    this.resetReviewData();
+  },
+
+  resetReviewData: function(){
+    _reviewData.rating = 0;
+    _reviewData.comment = "";
+    setAllReviewElementsFalse();
+  },
+
+  getReviewState: function(){
+    return _reviewBox;
+  },
+
+  setRating: function(rating){
+    _reviewData.rating = rating;
+  },
+
+  toggleRecommendIt: function(comment){
+    _reviewData.recommendIt = !_reviewData.recommendIt;
+  },
+
+  commentChanged: function(comment){
+    _reviewData.comment = comment;   
+  },
+  
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
 });
 
 AppDispatcher.register(function(action){
-    switch(action.actionType) {
-    case ProductConstants.OPEN_REVIEW_BOX:
-        ReviewBoxStore.openReviewBox(action.data);
-        ReviewBoxStore.emitChange();
-        break;
-    case ProductConstants.CLOSE_REVIEW_BOX:
-        ReviewBoxStore.closeReviewBox();
-        ReviewBoxStore.emitChange();
-        break;
-    case ProductConstants.AGGREGATE_DATA:
-        ReviewBoxStore.aggregateReviewData(action.data);
-        break;
-    case ProductConstants.TOGGLE_RECOMMEND:
-        ReviewBoxStore.toggleRecommendIt();
-        break;
-    case ProductConstants.COMMENT_CHANGED:
-        ReviewBoxStore.commentChanged(action.data);
-        break;
-    case ProductConstants.SET_RATING:
-        ReviewBoxStore.setRating(action.rating);
-        break;
-    default:
-        break;
-    }
+  switch(action.actionType) {
+  case ProductConstants.OPEN_REVIEW_BOX:
+    ReviewBoxStore.openReviewBox(action.data);
+    ReviewBoxStore.emitChange();
+    break;
+  case ProductConstants.CLOSE_REVIEW_BOX:
+    ReviewBoxStore.closeReviewBox();
+    ReviewBoxStore.emitChange();
+    break;
+  case ProductConstants.AGGREGATE_DATA:
+    ReviewBoxStore.aggregateReviewData(action.data);
+    break;
+  case ProductConstants.TOGGLE_RECOMMEND:
+    ReviewBoxStore.toggleRecommendIt();
+    break;
+  case ProductConstants.COMMENT_CHANGED:
+    ReviewBoxStore.commentChanged(action.data);
+    break;
+  case ProductConstants.SET_RATING:
+    ReviewBoxStore.setRating(action.rating);
+    break;
+  default:
+    break;
+  }
 });
 module.exports = ReviewBoxStore;

@@ -1,5 +1,10 @@
-var WidgetActions = require("../actions/WidgetActions");
-var Reflux = require("reflux");
+
+var WidgetActions = require("../actions/WidgetActions"),
+    Reflux = require("reflux"),
+    request = require("superagent"),
+    debug = require("debug")(__filename);
+
+require('superagent-django-csrf');
 
 var _currentReviewData;
 
@@ -12,37 +17,38 @@ var ReviewStore = Reflux.createStore({
   },
 
   onDoGetReview: function(userid, productid){
-    $.post(
-      '/phase2/reviewtext/',
-      JSON.stringify({userid: userid, productid: productid}),
-      // success
-      function(data){
+    request
+      .post("/phase2/reviewtext/")
+      .send({userid: userid, productid: productid})
+      .end(function(err, data){
 
-        _currentReviewData = {};
+        data = JSON.parse(data.text);
 
-        // we format the answers
-        if (data.boolAnswers !== undefined) {
-          _currentReviewData.answers = {};
-          data.boolAnswers.forEach(o => {
-            _currentReviewData.answers[o.childGroupName] = o.answers.join(", ");
-          });
-        }
-        if (data.comment !== undefined) {
-          _currentReviewData.comment = data.comment;
-        }
-        if (data.rating !== undefined) {
-          _currentReviewData.rating = data.rating;
-        }
-        _currentReviewData.userid = userid;
+        debug("OnDoGetReview", data);
+
+         // we format the answers
+        var answers = {};
+
+        data.boolAnswers.forEach(b => {
+          if(b.val){
+            if(b.childgroup in answers){
+              answers[b.childgroup] += `, ${b.name}`;
+            } else {
+              answers[b.childgroup] = `${b.name}`;
+            }
+          }
+        });
+
+        _currentReviewData = {
+          userid,
+          answers,
+          comment: data.comment,
+          rating: data.rating
+        };
 
         this.trigger(_currentReviewData);
-
-      }.bind(this))
-
-    // error
-      .fail(function(){
-        console.log("Retrieving the review failed");
-      });
+        
+      }.bind(this));
   }
 
 });

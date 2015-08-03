@@ -3,6 +3,7 @@
 var React = require("react"),
     Reflux = require("reflux"),
     {Row, Col} = require("react-bootstrap"),
+    Wishlist = require("./Wishlist.react.jsx"),
     UserStore = require("../stores/UserStore"),
     WishlistStore = require("../stores/WishlistStore");
 
@@ -27,6 +28,7 @@ var ProfilePage = React.createClass({
 
                 {/* Whish List */}
                     <Col xs={9}>
+                    <Wishlist/>
                     </Col>
                 </Row>
                 <Row>

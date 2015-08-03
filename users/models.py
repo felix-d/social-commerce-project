@@ -111,6 +111,13 @@ def complete_social_signup(sender, **kwargs):
     UserImage(user=user).save()
 
 
+def is_wish(user, product):
+    wish = Wish.objects.filter(user=user.id, product=product)
+    if len(wish) is 0:
+        return False
+    else: 
+        return True
+
 # Increment the step count depending on
 # current step
 def set_user_step(user, step):

@@ -1,20 +1,25 @@
-var React = require('react');
-var Reviewer = require("./Reviewer.react.jsx");
-var slickOptions = require("../../utils/Config").slickOptions;
+var React = require('react'),
+    Reviewer = require("./Reviewer.react.jsx"),
+    slickOptions = require("../../utils/Config").slickOptions;
+
+var _$reviewersInner = null;
 
 var ReviewersCarousel = React.createClass({
+
     componentDidMount(){
         if(this.props.productData.numReviewers > 3){
             // we slick for the reviewers
-            $(".reviewers-inner").slick(slickOptions);
+            _$reviewersInner = $(".reviewers-inner").slick(slickOptions);
         }
     },
+
     componentWillUnmount(){
         if(this.props.productData.numReviewers > 3){
             // we slick for the reviewers
-            $(".reviewers-inner").slick("unslick");
+            _$reviewersInner.slick("unslick");
         }
     },
+
     render(){
         var reviewers;
         switch(this.props.currentPage){

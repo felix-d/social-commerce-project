@@ -15,18 +15,18 @@ var SideBar = React.createClass({
     // sorting - select sort by
     sort: function(e){
         this.setState({sortBy: e.target.value});
-        SideBarActions.doSortBy(e.target.value);
+        SideBarActions.sortBy(e.target.value);
     },
 
     // text search
     textSearch: function(e){
         this.setState({textSearch: e.target.value});
-        SideBarActions.doTextSearch(e.target.value);
+        SideBarActions.textSearch(e.target.value);
     },
 
     // shuffle products
     shuffle: function(){
-        SideBarActions.doShuffle();
+        SideBarActions.shuffle();
     },
 
     componentDidUpdate: function(){
@@ -41,7 +41,7 @@ var SideBar = React.createClass({
             // Handler for clicking on tag toggles
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
-                SideBarActions.doSearch();
+                SideBarActions.search();
             }.bind(this);
 
             return(
