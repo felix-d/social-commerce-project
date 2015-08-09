@@ -7,6 +7,7 @@ $wishlist-app-min-height-large: 864px;
 $wishlist-app-min-height-normal: 860px;
 $topmenu-height: 40px;
 
+// The height of the app
 #wishlist-app{
     @include large-screen {
         min-height: $wishlist-app-min-height-large;
@@ -52,6 +53,27 @@ $topmenu-height: 40px;
         text-align: center;
         padding: 20px;
         height: 100%;
+
+        .star-container {
+            position: relative;
+        }
+
+
+        i {
+            position: absolute;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.06);
+            color: yellow;
+            left: 0;
+            right: 0;
+            z-index: 3;
+            font-size: 4em;
+            @include large-screen {
+                top:60px;
+            }
+            @include normal-screen {
+                top: 45px;
+            }
+        }
 
         .low-opacity {
             opacity: 0.3;

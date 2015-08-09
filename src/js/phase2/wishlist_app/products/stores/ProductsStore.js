@@ -1,7 +1,9 @@
 var Reflux = require("reflux"),
     ProductActions = require("../actions/ProductsActions"),
-    SideBarActions = require("../actions/SideBarActions"),
+    FiltersActions = require("../actions/FiltersActions"),
+    FiltersStore = require("./FiltersStore"),
     WishlistActions = require("../../me/actions/WishlistActions"),
+    {ALL, FRIENDS, FOF} = require("../constants/ProductsConstants"),
     _ = require("lodash"),
     debug = require("debug")(__filename);
 
@@ -13,9 +15,8 @@ var _products,
     CURRENTINDEX = 10,
     INCREMENTINDEX = 10,
     _currentIndex,
-    ALL = 0,
-    FRIENDS = 1,
-    FOF = 2,
+    _cache = {
+    },
     _currentPage;
 
 function _resetCurrentIndex(){
@@ -52,6 +53,7 @@ function setNumReviewers(products){
   return products;
 }
 
+
 var ProductsStore = Reflux.createStore({
   listenables: [ProductActions],
 
@@ -81,76 +83,129 @@ var ProductsStore = Reflux.createStore({
       currentPage: _currentPage
     };
   },
+  onSetCache(tab){
+    debug("onSetCache");
+    _cache[tab] = _products;
+  },
+
+  onResetCache(){{
+    _cache = {};
+  }},
 
   // search products with text search, tags and sort
-  onSearch(textSearch, sortBy, tags) {
-    debug("onSearch", textSearch, sortBy, tags);
-    // what we are returning
-    var queryResult = [];
+  onSearch(textSearch, sortBy, tags, tab, checkCache) {
 
-    // the text we are searching
-    var regex = new RegExp(textSearch, "i");
+    debug("onSearch", textSearch, sortBy, tags, tab, checkCache);
 
-    // are the tags a subset?
-    var isSubset;
+    if(checkCache && _cache[tab]) {
+      debug("Getting products from cache.");
+      _products = _cache[tab];
+      _resetCurrentIndex();
+      this.trigger(this.getProductsState());
+      return true;
+    }
 
-    // an array of tag names that are checked
-    var filteredTags = tags.filter(function(t){
-      return t.isChecked;
-    }).map(function(t){
-      return t.name;
-    });
+    // The subset of products for the current tab
+    var tabSubset = null,
+
+        // what we are returning
+        queryResult = [],
+
+        // the text we are searching
+        regex = new RegExp(textSearch, "i"),
+
+        // are the tags a subset?
+        isSubset = null,
+
+        // an array of tag names that are checked
+        filteredTags = tags.filter(function(t){
+          return t.isChecked;
+        }).map(function(t){
+          return t.name;
+        });
+
+    // We filter the products for the current tab
+    switch(tab){
+
+    // All reviewers
+    case ALL:
+      tabSubset = _productsOriginal;
+      break;
+
+    // Friends reviewers
+    case FRIENDS:
+      tabSubset = _productsOriginal.filter(function(e, i){
+        if(e.f_reviewers && e.f_reviewers.length > 0){
+          return true;
+        } else {
+          return false;
+        }
+      });
+      break;
+
+    // Friends of friend reviewers
+    case FOF:
+      tabSubset = _productsOriginal.filter(function(e, i){
+        if(e.fof_reviewers && e.fof_reviewers.length > 0){
+          return true;
+        } else {
+          return false;
+        }
+      });
+      break;
+    default:
+    }
 
     // for all products, do check if regex match
     // and intersection for tags
-    _productsOriginal.forEach(function(product){
+    tabSubset.forEach(function(product){
       isSubset = filteredTags.length ===  _.intersection(filteredTags, product.tags).length;
       if(regex.test(product.name) && isSubset){
         queryResult.push(product);
       }
     });
 
-    // sort the results
-    switch(sortBy){
+      // sort the results
+      switch(sortBy){
 
-      // Random sort
-    case "Random":
-      queryResult = _.shuffle(queryResult);       
-      break;
+        // Random sort
+      case "Random":
+        queryResult = _.shuffle(queryResult);       
+        break;
 
-      // Sort by title
-    case "Title":
-      queryResult.sort(function(a, b){
-        // Compare the 2 titles
-        if(a.name < b.name) return -1;
-        if(a.name > b.name) return 1;
-        return 0;
-      });
-      break;
+        // Sort by title
+      case "Title":
+        queryResult.sort(function(a, b){
+          // Compare the 2 titles
+          if(a.name < b.name) return -1;
+          if(a.name > b.name) return 1;
+          return 0;
+        });
+        break;
 
-      // Sort by release year
-    case "Release Year":
-      queryResult.sort(function(a, b){
-        // Compare the 2 dates
-        if(a.caracteristic_1 > b.caracteristic_1) return -1;
-        if(a.caracteristic_1 < b.caracteristic_1) return 1;
-        return 0;
-      });
-      break;
+        // Sort by release year
+      case "Release Year":
+        queryResult.sort(function(a, b){
+          // Compare the 2 dates
+          if(a.caracteristic_1 > b.caracteristic_1) return -1;
+          if(a.caracteristic_1 < b.caracteristic_1) return 1;
+          return 0;
+        });
+        break;
 
-    default:
-      break;
-    }
+      default:
+        break;
+      }
+      
 
     // the products that will be returned
     _products = queryResult;
     _resetCurrentIndex();
-
     this.trigger(this.getProductsState());
   },
 
   // shuffle products
-  onShuffle(){
+  onShuffle(tab){
     debug("onShuffle");
     _resetCurrentIndex();
     _products = _.shuffle(_products);
@@ -180,7 +235,6 @@ var ProductsStore = Reflux.createStore({
         _products[i].iswish = false;
         break;
       }
-      
     }
   },
 
@@ -204,57 +258,8 @@ var ProductsStore = Reflux.createStore({
     debug("onResetIndex");
     _resetCurrentIndex();
     this.trigger(this.getProductsState());
-  },
-
-  // When the user changes the current page
-  onChangePage(tab) {
-    debug("onChangePage", tab);
-
-    // We set active and no-active classes
-    $(".tab").each(function(i){
-      if(i===tab) $(this).addClass("active").removeClass("no-active");
-      else $(this).removeClass("active").addClass("no-active");
-    });
-
-    // We create the products subset
-    switch(tab){
-
-      // All the products
-    case ALL:
-      _currentPage = ALL;
-      _products = _productsOriginal;
-      break;
-
-      // Products reviewed by friends
-    case FRIENDS:
-      _currentPage = FRIENDS;
-      _products = _productsOriginal.filter(function(e, i){
-        if(e.f_reviewers && e.f_reviewers.length > 0){
-          return true;
-        } else {
-          return false;
-        }
-      });
-      break;
-
-      // Products reviewed by friends of friends
-    case FOF:
-      _currentPage = FOF;
-      _products = _productsOriginal.filter(function(e, i){
-        if(e.fof_reviewers && e.fof_reviewers.length > 0){
-          return true;
-        } else {
-          return false;
-        }
-      });
-      break;
-
-    default:
-      break;
-    }
-
-    this.trigger(this.getProductsState());
   }
+
 });
 
 module.exports = ProductsStore;

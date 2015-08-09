@@ -7,7 +7,9 @@ var ProductsActions = Reflux.createActions([
   "changePage",
   "setIsNotWish",
   "setIsWish",
-  "resetIndex"
+  "resetIndex",
+  "setCache",
+  "resetCache"
 ]);
 
 module.exports = ProductsActions;

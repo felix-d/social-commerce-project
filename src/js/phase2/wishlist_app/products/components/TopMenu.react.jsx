@@ -1,22 +1,42 @@
-var React = require("react");
-var SideBarActions = require("../actions/SideBarActions");
-var ProductActions = require("../actions/ProductsActions");
+var React = require("react"),
+    Reflux = require("reflux"),
+    FiltersActions = require("../actions/FiltersActions"),
+    FiltersStore = require("../stores/FiltersStore"),
+    classNames = require("classnames"),
+    ProductActions = require("../actions/ProductsActions");
 
 var TopMenu = React.createClass({
+
+    
+    mixins: [Reflux.connect(FiltersStore)],
+
+    // We only need the initial state,
+    // the tabs dont change because of external
+    // actions. 
+    getInitialState(){
+        return {
+            activeTab: FiltersStore.getActiveTab()
+        } 
+    },
+
     render: function(){
 
         var tabs = ["All", "Friends", "Friends of friends"];
 
         tabs = tabs.map(function(t, i){
             function tabClicked(){
-                ProductActions.changePage(i);
+                FiltersActions.changeTab(i);
             }
 
-            var _class = i === 0 ? "tab active" : "tab no-active";
+            var classes = classNames("tab", {
+                "active": i === this.state.activeTab,
+                "no-active": i !== this.state.activeTab
+            });
+
             return(
-                <div id={i+"-tab"} key={i} className={_class}><div onClick={tabClicked}><span>{t}</span></div></div>
+                <div id={i+"-tab"} key={i} className={classes}><div onClick={tabClicked}><span>{t}</span></div></div>
             );
-        })
+        }.bind(this))
 
         return (
             <div id="topmenu">

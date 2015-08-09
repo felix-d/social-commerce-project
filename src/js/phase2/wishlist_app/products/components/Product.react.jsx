@@ -111,6 +111,8 @@ var Product = React.createClass({
       "low-opacity": !!this.props.data.iswish
     });
 
+    starIcon = this.props.data.iswish ? <i className="fa fa-star"></i> : null;
+
     // The little message under the picture
     switch(this.props.data.numReviewers){
     case 0:
@@ -136,18 +138,12 @@ var Product = React.createClass({
 
         {/* The product image */}
         <div className="star-container">
-        <div className={imgContainerClassName}>
-        {/* 
-          <ImageLoader ref="img"
-          src={this.props.data.sm_image_path}
-          onLoad={this.showImage}>
-          </ImageLoader>
-          */}
-
-        <img ref="img"
-      src={this.props.data.sm_image_path}
-      onLoad={this._showImage}/>
-        </div>
+            {starIcon}
+            <div className={imgContainerClassName}>
+                <img ref="img"
+            src={this.props.data.sm_image_path}
+            onLoad={this._showImage}/>
+            </div>
         </div>
 
         {/* The product date */}

@@ -1,32 +1,36 @@
-var React = require("react");
-var Reflux = require("Reflux");
-var SideBarStore = require("../stores/SideBarStore");
-var SideBarActions = require("../actions/SideBarActions");
-var ProductsActions = require("../actions/ProductsActions");
+var React = require("react"),
+    Reflux = require("Reflux"),
+    FiltersStore = require("../stores/FiltersStore"),
+    FiltersActions = require("../actions/FiltersActions"),
+    classNames = require("classnames"),
+    ProductsActions = require("../actions/ProductsActions");
 
 var SideBar = React.createClass({
 
-    mixins: [Reflux.connect(SideBarStore)],
+    mixins: [Reflux.connect(FiltersStore)],
 
-    getInitialState: function(){
-        return SideBarStore.getSideBarState();
+    componentWillMount(){
+        FiltersActions.shuffle();
+    },
+    getInitialState() {
+        return FiltersStore.getFiltersState();
     },
 
     // sorting - select sort by
-    sort: function(e){
+    _sort(e) {
         this.setState({sortBy: e.target.value});
-        SideBarActions.sortBy(e.target.value);
+        FiltersActions.sortBy(e.target.value);
     },
 
     // text search
-    textSearch: function(e){
+    _textSearch(e) {
         this.setState({textSearch: e.target.value});
-        SideBarActions.textSearch(e.target.value);
+        FiltersActions.textSearch(e.target.value);
     },
 
     // shuffle products
-    shuffle: function(){
-        SideBarActions.shuffle();
+    _shuffle() {
+        FiltersActions.shuffle();
     },
 
     componentDidUpdate: function(){
@@ -41,30 +45,33 @@ var SideBar = React.createClass({
             // Handler for clicking on tag toggles
             var toggleTag = function(){
                 t.isChecked = !t.isChecked;
-                SideBarActions.search();
+                FiltersActions.search();
             }.bind(this);
 
+            var classes = classNames("btn", "btn-default", {
+                active: t.isChecked
+            });
+
             return(
-                <label className="btn btn-default" onClick={toggleTag} key={i}>
-                    <input type="checkbox" autoComplete="off"/>
+                <label className={classes} onClick={toggleTag} key={i}>
+                    <input type="checkbox"/>
                     {t.name}
                 </label>
             );
         }.bind(this));
-
         return (
             <div id="sidebar">
 
                 {/* Search box */}
                 <h4><i className="fa fa-search"></i> Search</h4>
-                <input id="input-search" ref="searchInput" type="text" value={this.state.textSearch} onChange={this.textSearch}/>
+                <input id="input-search" ref="searchInput" type="text" value={this.state.textSearch} onChange={this._textSearch}/>
 
                 {/* Sorting */}
                 <h4><i className="fa fa-sort"></i> Sort by</h4>
                 <select className="form-control"
                         ref="selectSort"
                         value={this.state.sortBy}
-                        onChange={this.sort}>
+                        onChange={this._sort}>
                     <option>Random</option>
                     <option>Title</option>
                     <option>Release Year</option>
@@ -81,7 +88,7 @@ var SideBar = React.createClass({
                 {/* Shuffle button */}
                 <button className="btn btn-primary"
                         id="shuffle-button"
-                        onClick={this.shuffle}>
+                        onClick={this._shuffle}>
                     Shuffle
                 </button>
             </div>

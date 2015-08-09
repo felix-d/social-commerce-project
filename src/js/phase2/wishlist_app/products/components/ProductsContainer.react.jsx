@@ -1,8 +1,8 @@
-var React = require("react");
-var Reflux = require("reflux");
-var Product = require("./Product.react.jsx");
-var ProductsStore = require("../stores/ProductsStore");
-var ProductsActions = require("../actions/ProductsActions");
+var React = require("react"),
+    Reflux = require("reflux"),
+    Product = require("./Product.react.jsx"),
+    ProductsStore = require("../stores/ProductsStore"),
+    ProductsActions = require("../actions/ProductsActions");
 
 // infiniteScrollCheck checks if more products
 // should appear

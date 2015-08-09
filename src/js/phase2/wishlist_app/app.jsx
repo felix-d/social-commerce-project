@@ -1,6 +1,6 @@
 var React = require('react'),
     WishlistApp = require("./components/WishlistApp.react.jsx"),
-    SideBarStore = require("./products/stores/SideBarStore"),
+    FiltersStore = require("./products/stores/FiltersStore"),
     WidgetStore = require("./widget/stores/WidgetStore"),
     ProductsStore = require("./products/stores/ProductsStore"),
     Router = require("react-router"),
@@ -18,7 +18,7 @@ global.debug = require("debug");
 var init = function init(data){
 
     // We setup the SideBar Store
-    SideBarStore.setup(data.tags);
+    FiltersStore.setup(data.tags);
 
     // We setup the product store
     ProductsStore.setup(data.products);
