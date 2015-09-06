@@ -1,60 +1,62 @@
 var React = require('react'),
     Reviewer = require("./Reviewer.react.jsx"),
-    slickOptions = require("../../utils/Config").slickOptions;
+    Slider = require("react-slick");
 
 var _$reviewersInner = null;
 
 var ReviewersCarousel = React.createClass({
 
-    componentDidMount(){
-        if(this.props.productData.numReviewers > 3){
-            // we slick for the reviewers
-            _$reviewersInner = $(".reviewers-inner").slick(slickOptions);
+  render(){
+    var reviewers;
+    switch(this.props.currentPage){
+      case 0:
+        if(this.props.productData.all_reviewers){
+          reviewers = this.props.productData.all_reviewers.map(function(e, i){
+            return (<div><Reviewer key={i} user={e} productData={this.props.productData}/></div>);
+          }.bind(this));
         }
-    },
+        break;
 
-    componentWillUnmount(){
-        if(this.props.productData.numReviewers > 3){
-            // we slick for the reviewers
-            _$reviewersInner.slick("unslick");
+      case 1:
+        if(this.props.productData.f_reviewers){
+          reviewers = this.props.productData.f_reviewers.map(function(e, i){
+            return (<div><Reviewer key={i} user={e} productData={this.props.productData}/></div>);
+          }.bind(this));
         }
-    },
+        break;
 
-    render(){
-        var reviewers;
-        switch(this.props.currentPage){
-            case 0:
-                if(this.props.productData.all_reviewers){
-                    reviewers = this.props.productData.all_reviewers.map(function(e, i){
-                        return (<Reviewer key={i} user={e} productData={this.props.productData}/>);
-                    }.bind(this));
-                }
-                break;
-
-            case 1:
-                if(this.props.productData.f_reviewers){
-                    reviewers = this.props.productData.f_reviewers.map(function(e, i){
-                        return (<Reviewer key={i} user={e} productData={this.props.productData}/>);
-                    }.bind(this));
-                }
-                break;
-
-            case 2:
-                if(this.props.productData.fof_reviewers){
-                    reviewers = this.prop.productData.fof_reviewers.map(function(e, i){
-                        return (<Reviewer key={i} user={e} productData={this.props.productData}/>);
-                    }.bind(this));
-                }
-                break;
-            default:
-                break;
+      case 2:
+        if(this.props.productData.fof_reviewers){
+          reviewers = this.props.productData.fof_reviewers.map(function(e, i){
+            return (<div><Reviewer key={i} user={e} productData={this.props.productData}/></div>);
+          }.bind(this));
         }
-
-        reviewers = reviewers ? reviewers : <span>No user reviewed this product</span>;
-        reviewers = <div className="reviewers-inner">{reviewers}</div>;
-
-        return reviewers;
+        break;
+      default:
+        break;
     }
+
+    let settings = {
+      dots: true,
+      infinite: false,
+      arrows: true,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 3
+    };
+
+    if(reviewers) {
+      reviewers = <Slider {...settings}>{reviewers}</Slider>;
+    } else {
+      reviewers = <span>No user reviewed this product.</span>;
+    }
+
+    return (
+      <div className="reviewers-inner">
+         {reviewers}
+      </div>
+    )
+  }
 });
 
 module.exports = ReviewersCarousel;

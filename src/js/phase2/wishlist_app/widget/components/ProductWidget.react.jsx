@@ -16,11 +16,11 @@ var ProductWidget = React.createClass({
 
     mixins: [Reflux.listenTo(WidgetStore, 'showWidget')],
 
-    getInitialState: function(){
+    getInitialState(){
         return WidgetStore.getWidgetState();
     },
 
-    componentDidMount: function(){
+    componentDidMount(){
 
         //we add the popover if the description is cropped
         if(this.state.productData.doCropDescription){
@@ -29,7 +29,7 @@ var ProductWidget = React.createClass({
         }
     },
 
-    componentWillUnmount: function(nextProps, nextState){
+    componentWillUnmount(nextProps, nextState){
         //we remove the popover if the description is cropped
         if(this.state.productData.doCropDescription){
             $(this.refs.description.getDOMNode())
@@ -49,7 +49,7 @@ var ProductWidget = React.createClass({
         WidgetActions.doHideWidget();
     },
 
-    _hideWidget: function(){
+    _hideWidget(){
         WidgetActions.doHideWidget()
     },
 

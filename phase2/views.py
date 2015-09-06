@@ -3,8 +3,8 @@ from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 import json
 from shared.mobile_agent_detection import no_mobile
 from products.models import Tag, get_products, Product
-from users.models import is_wish, Wish
-from reviews.models import get_reviewers, get_review_data, get_review_tree
+from users.models import is_wish, Wish, get_friends, get_user
+from reviews.models import get_reviewers, get_review_data, get_review_tree, Reviewing
 from shared.custom_user_flow import redirect_user_to_current_step
 from django.contrib.auth.models import User
 
@@ -28,7 +28,7 @@ def add_to_wishlist(request):
 
     try:
         product = Product.objects.get(id=product_id)
-    except: 
+    except:
         return HttpResponseBadRequest("Product doesn't exist")
 
     if request.user.is_authenticated():
@@ -50,12 +50,14 @@ def remove_from_wishlist(request):
             Wish.objects.filter(user=request.user, product=product_id).delete()
         except:
             return HttpResponseBadRequest("Product wasn't in wishlist.")
-            
+
     return HttpResponse("success")
 
-    
+
 def get_review_text(request):
-    """ Get the review text for the given productid"""
+    """ 
+    Get the review text for the given productid
+    """
 
     if request.method != 'POST':
         return HttpResponseBadRequest("Only accessible with POST.")
@@ -83,15 +85,50 @@ def get_review_text(request):
 
 
 def get_user_info(request):
-    user = request.user
-    userinfo = dict()
-    userinfo['username'] = user.username
+    """
+    We get the username and information for the current user
+    """
+    return JsonResponse(get_user(request.user.id))
+
+
+def get_user_page(request):
+
+    if request.method == 'POST':
+
+        json_data = json.loads(request.body.decode('utf-8'))
+
+        try:
+            user_id = json_data['userid']
+            user = User.objects.get(id=user_id)
+
+        except:
+            return HttpResponseBadRequest("The user doesn't exists.")
+
+    elif request.method == 'GET':
+        user = request.user
+
     try:
-        userinfo['pic'] = user.userimage.url
+        products = [x['product'] for
+                    x in Reviewing.objects.filter(user=user).values("product")]
+        all_products = get_products()
+        reviewed_products = [p for p in all_products if p['id'] in products]
+        for p in reviewed_products:
+            p['review'] = get_review_data(user.id, p['id'])
+
     except:
-        pass
-    return JsonResponse(userinfo)
-    
+        return HttpResponseBadRequest("Retrieving reviewed products failed.")
+
+    friends = get_friends(user)
+    friends_res = []
+    for f in friends:
+        friends_res.append(get_user(f))
+    response = dict(
+        user=get_user(user.id),
+        friends=friends_res,
+        products=reviewed_products
+    )
+
+    return JsonResponse(response)
 
 
 def main(request):

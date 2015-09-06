@@ -4,7 +4,7 @@ var ProductsActions = Reflux.createActions([
   "search",
   "shuffle",
   "incrementCurrentIndex",
-  "changePage",
+  "changeTab",
   "setIsNotWish",
   "setIsWish",
   "resetIndex",

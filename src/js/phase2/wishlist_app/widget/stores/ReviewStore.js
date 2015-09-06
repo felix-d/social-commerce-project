@@ -2,11 +2,13 @@
 var WidgetActions = require("../actions/WidgetActions"),
     Reflux = require("reflux"),
     request = require("superagent"),
+    UsersActions = require("../../users/actions/UsersActions"),
     debug = require("debug")(__filename);
 
 require('superagent-django-csrf');
 
-var _currentReviewData;
+let _currentReviewData,
+    _reviewer = null;
 
 var ReviewStore = Reflux.createStore({
 
@@ -16,11 +18,17 @@ var ReviewStore = Reflux.createStore({
     
   },
 
-  onDoGetReview: function(userid, productid){
+  onDoGetReview: function(user, productid){
+
+    console.log(user);
+    let userid = user.id;
+    
     request
       .post("/phase2/reviewtext/")
       .send({userid: userid, productid: productid})
       .end(function(err, data){
+
+        _reviewer = user;
 
         data = JSON.parse(data.text);
 
@@ -43,7 +51,8 @@ var ReviewStore = Reflux.createStore({
           userid,
           answers,
           comment: data.comment,
-          rating: data.rating
+          rating: data.rating,
+          reviewer: _reviewer
         };
 
         this.trigger(_currentReviewData);

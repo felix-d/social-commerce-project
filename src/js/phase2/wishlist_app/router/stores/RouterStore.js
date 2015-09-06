@@ -3,6 +3,7 @@
 var Reflux = require("reflux"),
     RouterActions = require("../actions/RouterActions"),
     ProductsActions = require("../../products/actions/ProductsActions"),
+    UsersActions = require("../../users/actions/UsersActions"),
     debug = require("debug")(__filename);
 
 var _lastPath = null;
@@ -13,13 +14,14 @@ var RouterStore = Reflux.createStore({
 
   onRouteChanged(path){
     debug("onRouteChanged", path);
-    switch(path){
-    case "/products":
+    if(path === "/products") {
       if(_lastPath !== path && _lastPath !== null) {
         ProductsActions.resetIndex(); 
       }
-      break;
-    default:
+    }
+    else if(path.match(/^\/users/)) {
+      // We load the user info to show his page
+      UsersActions.getUserPage(path.match(/[0-9]+$/)[0]);
     }
     _lastPath = path;
   }

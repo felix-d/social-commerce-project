@@ -7,7 +7,7 @@ var Reflux = require("reflux"),
     debug = require("debug")(__filename),
     request = require("superagent");
 
-var _wishlist = [],
+var _wishlist = null,
     _lastSetProductId = null;
 
 var WishlistStore = Reflux.createStore({
@@ -38,6 +38,9 @@ var WishlistStore = Reflux.createStore({
 
   onAdd(w) {
     w.iswish = true;
+    if(_wishlist === null) {
+      _wishlist = [];
+    }
     _wishlist.push(w);
     _lastSetProductId = w.id;
 
@@ -82,8 +85,6 @@ var WishlistStore = Reflux.createStore({
   onResetIdLastSetProduct(){
     _lastSetProductId = null;
   }
-
-  
 });
 
 module.exports = WishlistStore;

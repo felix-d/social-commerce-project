@@ -1,11 +1,12 @@
-var React = require("react/addons"),
-    CSSTransitionGroup = React.addons.CSSTransitionGroup,
-    Reflux = require("reflux"),
-    { Link } = require("react-router"),
-    debug = require("debug")(__filename),
-    ReviewStore = require("../stores/ReviewStore");
+const React = require("react/addons"),
+      CSSTransitionGroup = React.addons.CSSTransitionGroup,
+      Reflux = require("reflux"),
+      trim = require("lodash").trim,
+      { Link } = require("react-router"),
+      debug = require("debug")(__filename),
+      ReviewStore = require("../stores/ReviewStore");
 
-var rectangles = (
+const rectangles = (
     <div id="rects">
         <div className="rect" id="rect1"></div>
         <div className="rect" id="rect2"></div>
@@ -37,49 +38,61 @@ var Review = React.createClass({
 
     render(){
 
-        var revData = [],
-            review;
+      var revData = [],
+          review = null,
+          username = null,
+          comment = null,
+          rating = null;
 
-       // If the state is empty, lets return rectangles 
-        if(this.state === null){
-            review = rectangles;
-        }
+      // If the state is empty, lets return rectangles 
+      if(this.state === null){
+        review = rectangles;
+      }
 
-        // Else, everything is fine
-        else {
-            for(k in this.state.answers){
-                revData.push(
-                    <div key={k}>
-                        <span key={k}>{k}: </span>
-                        <span>
-                            {this.state.answers[k]}
-                        </span>
-                    </div>
-                );
-            }
-            review = (
-                <div>
-                    <div>
-                        {revData}
-                    </div>
-                    <div>
-                        {this.state.comment}
-                    </div>
-                    <div>
-                        {this.state.rating}
-                    </div>
-                </div>
-            );
-        }
 
-        return (
-            <div className="review-inner">
-                <h4>Review</h4>
-                <div id="review-text">
-                    {review}
-                </div>
+      // Else, everything is fine
+      else {
+        for(let k in this.state.answers){
+          revData.push(
+            <div key={k}>
+               <span key={k}><strong>{k}</strong>: </span>
+               <span>
+                  {this.state.answers[k]}
+               </span>
             </div>
+          );
+        }
+
+        comment = trim(this.state.comment) === "" ? null : (<span><strong>Comment: </strong> {this.state.comment}</span>);
+
+        rating = this.state.rating ? null : (<span><strong>Rating: </strong> {this.state.rating}</span>);
+
+        review = (
+          <div key="">
+             <div>
+                {revData}
+             </div>
+             <div>
+                {comment}
+             </div>
+             <div>
+                {rating}
+             </div>
+             <Link to={`/users/${this.state.reviewer.id}`}>
+                 See {this.state.reviewer.username} profile
+             </Link>
+          </div>
         );
+      }
+
+      return (
+        <div className="review-inner">
+           <h4>Review</h4>
+           <div id="review-text">
+              {review}
+           </div>
+        </div>
+      );
     }
 });
 

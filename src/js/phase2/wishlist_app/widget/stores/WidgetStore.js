@@ -1,5 +1,6 @@
 var WidgetActions = require("../actions/WidgetActions");
 var ProductsStore = require("../../products/stores/ProductsStore");
+var FiltersStore = require("../../products/stores/FiltersStore");
 var Reflux = require("reflux"),
     debug = require("debug")(__filename);
 
@@ -25,7 +26,7 @@ var WidgetStore = Reflux.createStore({
   // for the widget component
   getWidgetState: function(){
 
-    var currentPage = ProductsStore.getCurrentPage();
+    var currentPage = FiltersStore.getCurrentTab();
     var numReviewers;
     switch(currentPage){
     case 0:
@@ -43,7 +44,7 @@ var WidgetStore = Reflux.createStore({
     return {
       productData: _productData,
       reviewElements: _reviewElements,
-      currentPage: ProductsStore.getCurrentPage(),
+      currentPage: FiltersStore.getCurrentTab(),
       numReviewers: numReviewers
     };
   },

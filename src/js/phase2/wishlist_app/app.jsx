@@ -8,7 +8,8 @@ var React = require('react'),
     ProductsActions = require("./products/actions/ProductsActions"),
     { Route, DefaultRoute, Redirect } = Router,
     ProductsPage = require("./products/components/ProductsPage.react.jsx"),
-    ProfilePage = require("./me/components/ProfilePage.react.jsx");
+    ProfilePage = require("./me/components/ProfilePage.react.jsx"),
+    UserPage = require("./users/components/UserPage.react.jsx");
 
 require("./router/stores/RouterStore");
 require('superagent-django-csrf');
@@ -30,6 +31,7 @@ var init = function init(data){
         <Route path="/" name="root" handler={WishlistApp}>
             <Route name="products" path="products" handler={ProductsPage}/>
             <Route name="profile" path="me" handler={ProfilePage}/>
+            <Route name="users" path="users/:userId" handler={UserPage}/>
             <Redirect from="/" to="products"/>
         </Route>
     );

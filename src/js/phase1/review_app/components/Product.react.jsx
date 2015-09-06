@@ -1,10 +1,11 @@
-var React = require('react');
-var ProductActions = require('../actions/ProductActions');
-var ProductContainer = require('./ProductsContainer.react.jsx');
-var ProductStore = require('../stores/ProductStore');
-var ImageLoader = require('react-imageloader');
+let React = require('react'),
+    { Col, Row } = require("react-bootstrap"),
+    ProductActions = require('../actions/ProductActions'),
+    ProductContainer = require('./ProductsContainer.react.jsx'),
+    ProductStore = require('../stores/ProductStore'),
+    ImageLoader = require('react-imageloader');
 
-var Product = React.createClass({
+let Product = React.createClass({
 
     // Options for the popover
     popoverOptions: {
@@ -34,10 +35,7 @@ var Product = React.createClass({
         if(prevprops.data.id !== this.props.data.id){
             $(this.refs.img.getDOMNode()).hide();
         }
-        
-        // If the name is cropped, activate popover
-        if(this.cropName)
-            $(this.refs.name.getDOMNode())
+        $(this.refs.name.getDOMNode())
                .popover(this.popoverOptions);
     },
 
@@ -58,9 +56,9 @@ var Product = React.createClass({
         // if the product is the same as the one that just got reviewed
         // OR if the product wasn't already there -> we update it
         if(nextProps.data.id === ProductStore.getLastReviewedId() ||
-           nextProps.data.id != this.props.data.id){
-            ProductStore.resetReviewedId();
-               return true;
+            nextProps.data.id != this.props.data.id){
+                ProductStore.resetReviewedId();
+                return true;
         }
         // no need to update the element!
         return false;
@@ -95,7 +93,7 @@ var Product = React.createClass({
         // Do we crop the length?
         if(this.props.data.name.length>this.cropLength){
             this.cropName = true;
-            name = this.props.data.name.substring(0,this.cropLength)+"...";
+            name = this.props.data.name.substring(0,this.cropLength) + "...";
         }
         else {
             this.cropName = false;
@@ -117,7 +115,7 @@ var Product = React.createClass({
         }
 
         return(
-            <div className="product col-xs-15 animated fadeIn">
+            <Col xs={15} className="product animated fadeIn">
                 <div className="product-inner effect6">
                     <h5 className={opacityControl}
                         ref="name"
@@ -138,7 +136,7 @@ onLoad={this.showImage}></img>
                     <p className={opacityControl}>{this.props.data.caracteristic_1}</p>
                     {button}
                 </div>
-            </div>
+            </Col>
         );
     }
 });

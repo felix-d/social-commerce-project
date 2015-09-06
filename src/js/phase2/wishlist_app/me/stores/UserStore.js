@@ -1,31 +1,36 @@
 'use strict';
 
-var Reflux = require("reflux"),
-    request = require("superagent");
+const Reflux = require("reflux"),
+      debug = require("debug")(__filename),
+      request = require("superagent");
 
 
-var _userInfo = null;
+let _userInfo = {
+  user: {
+    pic: null,
+    username: null
+  },
+  friends: null,
+  products: null
+};
 
-var UserStore = Reflux.createStore({
+let UserStore = Reflux.createStore({
 
   init(){
-    request.get('/phase2/me/')
+    request.get('/phase2/userpage/')
       .end(function(err, res){
         if(res !== undefined){
           _userInfo = JSON.parse(res.text);
+          debug("Got user info", _userInfo);
           this.trigger(_userInfo);
         }
       }.bind(this));
   },
 
-  getUserInfo(){
+  getInitialState(){
     return _userInfo;
-  },
-
-  getWishlist(){
-    return _wishlist;
   }
-  
+
 });
 
 module.exports = UserStore;

@@ -37,3 +37,14 @@ exports.slickOptions = {
     }
   ]
 };
+
+exports.slickOptionsWishList = {
+  dots: false,
+  speed: 600,
+  infinite: true,
+  slidesToShow: 3,
+  arrows: true,
+  prevArrow: '<button type="button" class="btn btn-default slick-prev"><i class="fa fa-caret-left"></i></button>',
+  nextArrow: '<button type="button" class="btn btn-default slick-next"><i class="fa fa-caret-right"></i></button>',
+  slidesToScroll: 3
+};

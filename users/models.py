@@ -40,6 +40,18 @@ def get_fof(user):
     return fofs
 
 
+def get_user(user):
+    try:
+        u = User.objects.get(id=user)
+    except:
+        pass
+    try:
+        url = u.userimage.url
+    except:
+        url = ""
+    return dict(id=u.id, username=u.username, pic=url)
+
+    
 @receiver(user_logged_in)
 def facebook_api_requests(sender, **kwargs):
     # We start by getting the token

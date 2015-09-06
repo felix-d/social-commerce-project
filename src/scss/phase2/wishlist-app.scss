@@ -2,10 +2,11 @@
 @import '../_bootstrap-custom';
 
 $product-images-height-normal: 136px;
-$product-images-height-lg: 173px;
+$product-images-height-large: 173px;
 $wishlist-app-min-height-large: 864px;
 $wishlist-app-min-height-normal: 860px;
 $topmenu-height: 40px;
+
 
 // The height of the app
 #wishlist-app{
@@ -68,10 +69,12 @@ $topmenu-height: 40px;
             z-index: 3;
             font-size: 4em;
             @include large-screen {
-                top:60px;
+              left: 4px;
+              top:60px;
             }
             @include normal-screen {
-                top: 45px;
+              left: 3px;
+              top: 45px;
             }
         }
 
@@ -101,7 +104,7 @@ $topmenu-height: 40px;
             margin-bottom: 10px;
             position: relative;
             @include large-screen {
-                height: $product-images-height-lg;
+                height: $product-images-height-large;
             }
             @include normal-screen {
                 height: $product-images-height-normal;
@@ -181,16 +184,40 @@ $topmenu-height: 40px;
     }
 }
 
-.slick-prev {
-    position: absolute;
-    top: 5px;
-    left: -35px;
+.profile-pic-container {
+  img {
+    width: 200px;
+    height:200px;
+  }
 }
 
-.slick-next {
-    right: -35px;
-    top: 5px;
-    position: absolute;
+.product-list__product {
+  text-align: center;
+  img {
+    width: 73px;
+    height: 110px;
+    margin: 0 auto;
+    display:block;
+  }
+  h4 {
+    
+  }
+}
+.slick-next:before, .slick-prev:before {
+                       
+  color: black !important;
+}
+.slick-prev.slick-disabled:before, .slick-next.slick-disabled:before {
+  opacity: 0!important;
+}
+
+.friend-container {
+  text-align: center;
+  img {
+    width: 100px;
+    margin: 0 auto;
+    display:block;
+  }
 }
 
 #rects {
@@ -200,7 +227,7 @@ $topmenu-height: 40px;
     .rect {
         background-color: rgb(51, 51, 51);
         height: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     #rect1 {
         width: 40%;
@@ -281,3 +308,56 @@ $topmenu-height: 40px;
     transition: opacity .3s ease-in;
 }
 
+
+#wishlist-container{
+  /* white-space:nowrap; */
+  &__inner {
+  }
+  /* overflow-x: auto; */
+}
+
+
+.wishlist-container__wish {
+  margin-right: 12px;
+  margin-left: 12px;
+  width: 120px;
+
+  h5 {
+    text-align: center;
+    font-size: 1.1em;
+  }
+
+  button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+
+  .sm-img-container {
+
+    margin: 0 auto;
+    position: relative;
+    
+    @include large-screen {
+        /* min-height: $product-images-height-large; */
+        height: 110px;
+    }
+
+    @include normal-screen {
+        /* min-height: $product-images-height-normal; */
+        height: 110px;
+    }
+    
+    img {
+      display: block;
+      margin: 0 auto 10px;
+      height: 100%;
+    }
+  }
+}
+
+.user-page {
+  &__see-review-button {
+    margin-top: 10px;
+  }
+}

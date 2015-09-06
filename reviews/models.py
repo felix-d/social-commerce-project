@@ -69,10 +69,7 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
     # we get users ids that did in a list
     # note that it contains friends and fof too
     all_reviewers = [
-        dict(
-            user_id=x.user.id,
-            username=x.user.username
-        )
+        dict(id=x.user.id, username=x.user.username)
         for x in Reviewing.objects.filter(product=product).exclude(user=user.id)
     ]
 
@@ -82,13 +79,16 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
 
     if 'f' in types and user.is_authenticated():
         f = get_friends(user)
-        f_reviewers = [u for u in all_reviewers if u['user_id'] in f]
+        f_reviewers = [u for u in all_reviewers if u['id'] in f]
         if f_reviewers:
             result['f_reviewers'] = f_reviewers
 
     if 'fof' in types and user.is_authenticated():
         fof = get_fof(user)
-        fof_reviewers = [u for u in all_reviewers if u['user_id'] in fof]
+        fof_reviewers = [u for u in all_reviewers if u['id'] in fof]
+        # We remove friends from friends of friends
+        if f:
+            fof_reviewers = [u for u in fof_reviewers if u['id'] not in f]
         if fof_reviewers:
             result['fof_reviewers'] = fof_reviewers
 

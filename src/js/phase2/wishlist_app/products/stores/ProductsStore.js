@@ -3,7 +3,7 @@ var Reflux = require("reflux"),
     FiltersActions = require("../actions/FiltersActions"),
     FiltersStore = require("./FiltersStore"),
     WishlistActions = require("../../me/actions/WishlistActions"),
-    {ALL, FRIENDS, FOF} = require("../constants/ProductsConstants"),
+    { ALL, FRIENDS, FOF } = require("../constants/ProductsConstants"),
     _ = require("lodash"),
     debug = require("debug")(__filename);
 
@@ -16,19 +16,19 @@ var _products,
     INCREMENTINDEX = 10,
     _currentIndex,
     _cache = {
-    },
-    _currentPage;
+    };
 
 function _resetCurrentIndex(){
   _currentIndex = CURRENTINDEX;
 }
 
 function setNumReviewers(products){
+  let _currentTab = FiltersStore.getCurrentTab();
   // We set the number of reviewers given the current page
   // as a product property
 
   products.map(function(v){
-    switch(_currentPage){
+    switch(_currentTab){
       // ALL REVIEWERS
     case 0:
       var allr = v.all_reviewers;
@@ -50,7 +50,7 @@ function setNumReviewers(products){
       break;
     }
   });
-  return products;
+  
 }
 
 
@@ -59,7 +59,6 @@ var ProductsStore = Reflux.createStore({
 
   init() {
     // initialization
-    _currentPage = ALL;
     _resetCurrentIndex();
   },
 
@@ -70,9 +69,6 @@ var ProductsStore = Reflux.createStore({
     WishlistActions.setWishlist(_productsOriginal.filter(p => p.iswish));
   },
 
-  getCurrentPage() {
-    return _currentPage;
-  },
 
   // get the products
   getProductsState() {
@@ -80,7 +76,7 @@ var ProductsStore = Reflux.createStore({
 
     return {
       products: _products.slice(0, _currentIndex),
-      currentPage: _currentPage
+      currentPage: FiltersStore.getCurrentTab()
     };
   },
   onSetCache(tab){

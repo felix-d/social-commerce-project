@@ -1,28 +1,49 @@
-var React = require("react/addons"),
+"use strict";
+
+let React = require("react/addons"),
     CSSTransitionGroup = React.addons.CSSTransitionGroup,
     Reflux = require("reflux"),
     Wish = require("./Wish.react.jsx"),
-    WishlistStore = require("../stores/WishlistStore");
+    Slider = require("react-slick"),
+    WishlistStore = require("../stores/WishlistStore"),
+    slickOptions = require("../../utils/Config").slickOptionsWishList;
 
-var Wishlist = React.createClass({
+let _$wishlist;
+
+let Wishlist = React.createClass({
 
     mixins: [Reflux.connect(WishlistStore, 'wishlist')],
 
-    getInitialState(){
-        return WishlistStore.getWishlist();
-    },
+  getInitialState(){
+    return WishlistStore.getWishlist();
+  },
 
     render(){
 
-        var wishes  = this.state.wishlist.map((v, i) => <Wish product={v} key={i}/>);
-        return (
-            <div id="wishlist-container">
-                <h3>Your Wishlist</h3>
-                <CSSTransitionGroup transitionName="fadeIn">
-                {wishes}
-                </CSSTransitionGroup>
-            </div>
-        );
+      // Wrapping wish with div to workaround a bug with react slider
+      let wishes = this.state.wishlist && this.state.wishlist.map(
+        (v, i) => <div key={v.id}><Wish product={v} key={v.id} /></div>);
+
+      let settings = {
+        dots: true,
+        infinite: false,
+        arrows: true,
+        speed: 500,
+        slidesToShow: 7,
+        slidesToScroll: 7
+      };
+
+      wishes = wishes ? <Slider {...settings}>{wishes}</Slider> : null;
+
+
+      return (
+        <div id="wishlist-container">
+           <h3>Your Wishlist</h3>
+           <div id="wishlist-container__inner">
+              {wishes}
+           </div>
+        </div>
+      );
     }
 });
 

@@ -9,6 +9,7 @@ var _ = require('underscore');
 var source = require('vinyl-source-stream');
 var transform = require('vinyl-transform');
 var browserify = require('browserify');
+var babelify = require("babelify");
 var reactify = require('reactify');
 var del = require('del');
 var sourcemaps = require('gulp-sourcemaps');
@@ -103,6 +104,7 @@ function browserifyShare(bundle) {
   });
 
   b.transform('reactify', {es6: true});
+  b.transform('babelify');
   if(watch){
     b = watchify(b);
     b.on('update', function(){

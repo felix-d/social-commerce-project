@@ -86,6 +86,7 @@ var Product = React.createClass({
   render: function(){
 
     var numReviewers,
+        numReviewersTag,
         opacityControl,
         textClassName,
         imgContainerClassName,
@@ -125,6 +126,12 @@ var Product = React.createClass({
       numReviewersTag = `${this.props.data.numReviewers} users reviewed this product`;
     };
 
+
+    let buttonClassnames = classnames("btn", {
+      "btn-info": !this.props.data.iswish,
+      "btn-danger": this.props.data.iswish
+    });
+
     return (
         <div className="product effect6 animated fadeIn">
 
@@ -153,10 +160,12 @@ var Product = React.createClass({
         <p className={textClassName}>{numReviewersTag}</p>
 
         {/* Open the box */}
-        <button className="btn btn-info" onClick={this._showProductWidget}>More</button>
+        <button className={buttonClassnames} onClick={this._showProductWidget}>
+           {this.props.data.iswish ? "Remove" : "More Info"}
+        </button>
         </div>
     );
   }
-})
+});
 
 module.exports = Product;

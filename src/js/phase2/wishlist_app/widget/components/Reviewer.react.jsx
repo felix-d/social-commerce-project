@@ -4,7 +4,7 @@ var classNames = require('classnames');
 
 var Reviewer = React.createClass({
     getReview(){
-        WidgetActions.doGetReview(this.props.user.user_id, this.props.productData.id);
+        WidgetActions.doGetReview(this.props.user, this.props.productData.id);
     },
     render(){
         var slicked = this.props.productData.numReviewers > 3;
