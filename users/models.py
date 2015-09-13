@@ -4,13 +4,13 @@ from allauth.account.signals import user_signed_up, user_logged_in
 from django.contrib.auth.models import User
 from allauth.socialaccount.models import SocialAccount, SocialToken
 import requests
-import os
 from django.core.files.base import File
 from django.core.files.temp import NamedTemporaryFile
 
 
 def is_friendship_exists(a, b):
-    if Friendship.objects.filter(user=a, friend=b):
+    if Friendship.objects.filter(user=a, friend=b) or\
+       Friendship.objects.filter(user=b, friend=a):
         return True
     return False
 
@@ -66,6 +66,10 @@ def facebook_api_requests(sender, **kwargs):
     # Then we get his friends
     facebook_set_friendships(user, base_url, userid, token)
 
+    # Then we calculate mutual friends
+    # facebook_set_mutual_friends(user, base_url, userid, token)
+    
+
     # We create a userimage object if the user hasnt one already
     UserImage.objects.get_or_create(user=user)
     # facebook_get_save_image_file(user, base_url, userid, token)
@@ -87,6 +91,18 @@ def facebook_set_friendships(user, base_url, userid, token):
                 )
         except:
             pass
+
+def facebook_set_mutual_friends(user, base_url, userid, token):
+    url_fetch_mutual_friends = base_url + str(1375274282788732) +\
+                               "?fields=context.fields%28mutual_friends%29&access_token=" + str(token)
+    context_id = requests.get(url_fetch_mutual_friends).json()['context']['id']
+
+    url_fetch_mutual_friends = base_url + context_id + '/all_mutual_friends?access_token=' + str(token)
+    data = requests.get(url_fetch_mutual_friends).json()['context']['id']
+    print(data)
+    
+    
+    
 
     
 def facebook_get_save_image_url(user, base_url, userid, token):
@@ -166,6 +182,15 @@ class Friendship(models.Model):
     """.format(self.user.first_name, self.user.last_name,
                self.friend.first_name, self.friend.last_name)
 
+# class MutualFriends(models.Model):
+#     user = models.ForeignKey(User, related_name="the_user")
+#     second_user = models.ForeignKey(User, related_name="the_second_user")
+#     mutual_friends = models.IntegerField()
+
+#     def __str__(self):
+#         return '{} and {} have {} mutual friends.'.format(
+#             self.user.username, self.second_user.username, self.mutual_friends)
+        
 
 class Wish(models.Model):
     user = models.ForeignKey(User)
