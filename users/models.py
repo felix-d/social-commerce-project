@@ -1,3 +1,4 @@
+import functools
 from django.db import models
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up, user_logged_in
@@ -8,18 +9,12 @@ from django.core.files.base import File
 from django.core.files.temp import NamedTemporaryFile
 
 
-def is_friendship_exists(a, b):
-    if Friendship.objects.filter(user=a, friend=b) or\
-       Friendship.objects.filter(user=b, friend=a):
-        return True
-    return False
-
-
 def get_number_reviews(user):
     return len(user.reviewing_set.all())
 
 
 # return an array of friend ids for the current user
+@functools.lru_cache()
 def get_friends(user):
     return [f['friend']
             for f in
@@ -28,6 +23,7 @@ def get_friends(user):
 
 
 # return an array of fof ids for the current user
+@functools.lru_cache()
 def get_fof(user):
     friends_ids = get_friends(user)
     fofs = []
@@ -38,6 +34,23 @@ def get_fof(user):
                 fofs.append(f)
 
     return fofs
+
+
+# return an array of ids of user having mutual friends with user
+@functools.lru_cache()
+def get_users_share_mutual_friends(user):
+    mutual_friends = MutualFriends.objects.filter(user=user)
+    mutual_friends = [mf.second_user.id for mf in mutual_friends]
+    print(mutual_friends)
+    return mutual_friends
+
+
+# return an array of ids of user having mutual likes with user
+@functools.lru_cache()
+def get_users_share_mutual_likes(user):
+    mutual_likes = MutualLikes.objects.filter(user=user)
+    mutual_likes = [ml.second_user.id for ml in mutual_likes]
+    return mutual_likes
 
 
 def get_user(user):
@@ -57,18 +70,15 @@ def facebook_api_requests(sender, **kwargs):
     # We start by getting the token
     user = kwargs.pop('user')
     social_account = SocialAccount.objects.get(user=user)
+    userid = social_account.uid
     token = SocialToken.objects.get(account=social_account)
-    userid = SocialAccount.objects.get(user=user).uid
 
     # We do an api call
     base_url = "https://graph.facebook.com/v2.4/"
 
-    # Then we get his friends
     facebook_set_friendships(user, base_url, userid, token)
-
-    # Then we calculate mutual friends
-    # facebook_set_mutual_friends(user, base_url, userid, token)
-    
+    facebook_set_mutual_friends(user, base_url, token)
+    facebook_set_mutual_likes(user, base_url, token)
 
     # We create a userimage object if the user hasnt one already
     UserImage.objects.get_or_create(user=user)
@@ -84,27 +94,53 @@ def facebook_set_friendships(user, base_url, userid, token):
         friend_id = f['id']
         try:
             friend = SocialAccount.objects.get(uid=friend_id).user
-            if not is_friendship_exists(user, friend):
-                Friendship.objects.get_or_create(
-                    user=user,
-                    friend=friend
-                )
+            Friendship.objects.get_or_create(
+                user=user,
+                friend=friend
+            )
+            Friendship.objects.get_or_create(
+                user=friend,
+                friend=user
+            )
         except:
             pass
 
-def facebook_set_mutual_friends(user, base_url, userid, token):
-    url_fetch_mutual_friends = base_url + str(1375274282788732) +\
-                               "?fields=context.fields%28mutual_friends%29&access_token=" + str(token)
-    context_id = requests.get(url_fetch_mutual_friends).json()['context']['id']
 
-    url_fetch_mutual_friends = base_url + context_id + '/all_mutual_friends?access_token=' + str(token)
-    data = requests.get(url_fetch_mutual_friends).json()['context']['id']
-    print(data)
-    
-    
-    
+def facebook_set_mutual_friends(user, base_url, token):
+    friends = Friendship.objects.filter(user=user.pk).values('friend')
+    friends_sa = SocialAccount.objects.filter(user__in=friends)
+    for friend_sa in friends_sa:
+        url_fetch_mutual_friends = base_url + str(friend_sa.uid) +\
+                                   "?fields=context.fields" +\
+                                   "%28all_mutual_friends%29&access_token=" + str(token)
+        try:
+            data = requests.get(url_fetch_mutual_friends).json()
+            total_count = int(data['context']['all_mutual_friends']['summary']['total_count'])
+            MutualFriends.objects.get_or_create(user=user,
+                                                second_user=friend_sa.user,
+                                                mutual_friends=total_count)
+        except:
+            pass
 
-    
+
+def facebook_set_mutual_likes(user, base_url, token):
+    friends = Friendship.objects.filter(user=user.pk).values('friend')
+    friends_sa = SocialAccount.objects.filter(user__in=friends)
+    for friend_sa in friends_sa:
+        url_fetch_mutual_friends = base_url + str(friend_sa.uid) +\
+                                   "?fields=context.fields" +\
+                                   "%28mutual_likes%29&access_token=" + str(token)
+        try:
+            data = requests.get(url_fetch_mutual_friends).json()
+            total_count = int(data['context']['mutual_likes']['summary']['total_count'])
+            if total_count > 0:
+                MutualLikes.objects.get_or_create(user=user,
+                                                  second_user=friend_sa.user,
+                                                  mutual_likes=total_count)
+        except:
+            pass
+
+
 def facebook_get_save_image_url(user, base_url, userid, token):
     """Saves a user profile picture url instead of the picture in the media folder"""
     url_fetch_profile_pic = base_url + userid + "/picture?redirect=false&type=large&access_token=" + str(token)
@@ -112,7 +148,7 @@ def facebook_get_save_image_url(user, base_url, userid, token):
     user.userimage.url = url
     user.userimage.save()
 
-    
+
 def facebook_get_save_image_file(user, base_url, userid, token):
     """Save a user profile picture in the media folder, takes more time"""
     # we delete the old image
@@ -128,7 +164,7 @@ def facebook_get_save_image_file(user, base_url, userid, token):
         File(img_temp)
     )
 
-    
+
 # we create a user step bound to the user
 # and set its value to 1
 @receiver(user_signed_up)
@@ -182,15 +218,26 @@ class Friendship(models.Model):
     """.format(self.user.first_name, self.user.last_name,
                self.friend.first_name, self.friend.last_name)
 
-# class MutualFriends(models.Model):
-#     user = models.ForeignKey(User, related_name="the_user")
-#     second_user = models.ForeignKey(User, related_name="the_second_user")
-#     mutual_friends = models.IntegerField()
 
-#     def __str__(self):
-#         return '{} and {} have {} mutual friends.'.format(
-#             self.user.username, self.second_user.username, self.mutual_friends)
-        
+class MutualFriends(models.Model):
+    user = models.ForeignKey(User, related_name="the_user_mutualf")
+    second_user = models.ForeignKey(User, related_name="the_second_user_mutualf")
+    mutual_friends = models.IntegerField()
+
+    def __str__(self):
+        return '{} and {} have {} mutual friends.'.format(
+            self.user.username, self.second_user.username, self.mutual_friends)
+
+
+class MutualLikes(models.Model):
+    user = models.ForeignKey(User, related_name="the_user_mutuall")
+    second_user = models.ForeignKey(User, related_name="the_second_user_mutuall")
+    mutual_likes = models.IntegerField()
+
+    def __str__(self):
+        return '{} and {} have {} mutual likes.'.format(
+            self.user.username, self.second_user.username, self.mutual_likes)
+
 
 class Wish(models.Model):
     user = models.ForeignKey(User)

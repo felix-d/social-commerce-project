@@ -3,7 +3,7 @@ var Reflux = require("reflux"),
     FiltersActions = require("../actions/FiltersActions"),
     FiltersStore = require("./FiltersStore"),
     WishlistActions = require("../../me/actions/WishlistActions"),
-    { ALL, FRIENDS, FOF } = require("../constants/ProductsConstants"),
+    { ALL, FRIENDS, FOF, MF, ML } = require("../constants/ProductsConstants"),
     _ = require("lodash"),
     debug = require("debug")(__filename);
 
@@ -29,25 +29,36 @@ function setNumReviewers(products){
 
   products.map(function(v){
     switch(_currentTab){
-      // ALL REVIEWERS
-    case 0:
-      var allr = v.all_reviewers;
-      v.numReviewers = allr ? allr.length : 0;
-      break;
+        // ALL REVIEWERS
+      case ALL:
+        var allr = v.all_reviewers;
+        v.numReviewers = allr ? allr.length : 0;
+        break;
 
-      // FRIENDS
-    case 1:
-      var fr = v.f_reviewers;
-      v.numReviewers = fr ? fr.length : 0;
-      break;
+        // FRIENDS
+      case FRIENDS:
+        var fr = v.f_reviewers;
+        v.numReviewers = fr ? fr.length : 0;
+        break;
 
-      // FRIENDS OF FRIENDS
-    case 2:
-      var fofr = v.fof_reviewers;
-      v.numReviewers = fofr ? fofr.length : 0;
-      break;
-    default:
-      break;
+        // FRIENDS OF FRIENDS
+      case FOF:
+        var fofr = v.fof_reviewers;
+        v.numReviewers = fofr ? fofr.length : 0;
+        break;
+  
+      case MF:
+        var mf = v.mutual_f_reviewers;
+        v.numReviewers = mf ? mf.length : 0;
+        break;
+
+      case ML:
+        var ml = v.mutual_l_reviewers;
+        v.numReviewers = ml ? ml.length : 0;
+        break;
+
+      default:
+        break;
     }
   });
   
@@ -123,46 +134,68 @@ var ProductsStore = Reflux.createStore({
     // We filter the products for the current tab
     switch(tab){
 
-    // All reviewers
-    case ALL:
-      tabSubset = _productsOriginal;
-      break;
+        // All reviewers
+      case ALL:
+        tabSubset = _productsOriginal;
+        break;
 
-    // Friends reviewers
-    case FRIENDS:
-      tabSubset = _productsOriginal.filter(function(e, i){
-        if(e.f_reviewers && e.f_reviewers.length > 0){
-          return true;
-        } else {
-          return false;
-        }
-      });
-      break;
+        // Friends reviewers
+      case FRIENDS:
+        tabSubset = _productsOriginal.filter(function(e, i){
+          if(e.f_reviewers && e.f_reviewers.length > 0){
+            return true;
+          } else {
+            return false;
+          }
+        });
+        break;
 
-    // Friends of friend reviewers
-    case FOF:
-      tabSubset = _productsOriginal.filter(function(e, i){
-        if(e.fof_reviewers && e.fof_reviewers.length > 0){
-          return true;
-        } else {
-          return false;
-        }
-      });
-      break;
-    default:
+        // Friends of friend reviewers
+      case FOF:
+        tabSubset = _productsOriginal.filter(function(e, i){
+          if(e.fof_reviewers && e.fof_reviewers.length > 0){
+            return true;
+          } else {
+            return false;
+          }
+        });
+        break;
+
+        // Friends with mutual friends
+      case MF:
+        tabSubset = _productsOriginal.filter(function(e, i){
+          if(e.mutual_f_reviewers && e.mutual_f_reviewers.length > 0){
+            return true;
+          } else {
+            return false;
+          }
+        });
+        break;
+
+        // Friends with mutual likes
+      case ML:
+        tabSubset = _productsOriginal.filter(function(e, i){
+          if(e.mutual_l_reviewers && e.mutual_l_reviewers.length > 0){
+            return true;
+          } else {
+            return false;
+          }
+        });
+        break;
+      default:
     }
 
     // for all products, do check if regex match
     // and intersection for tags
-    tabSubset.forEach(function(product){
+    tabSubset && tabSubset.forEach(function(product){
       isSubset = filteredTags.length ===  _.intersection(filteredTags, product.tags).length;
       if(regex.test(product.name) && isSubset){
         queryResult.push(product);
       }
     });
 
-      // sort the results
-      switch(sortBy){
+    // sort the results
+    switch(sortBy){
 
         // Random sort
       case "Random":
@@ -191,8 +224,8 @@ var ProductsStore = Reflux.createStore({
 
       default:
         break;
-      }
-      
+    }
+    
 
     // the products that will be returned
     _products = queryResult;

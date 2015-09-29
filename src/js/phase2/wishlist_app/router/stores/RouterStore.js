@@ -14,16 +14,12 @@ var RouterStore = Reflux.createStore({
 
   onRouteChanged(path){
     debug("onRouteChanged", path);
-    if(path === "/products") {
-      if(_lastPath !== path && _lastPath !== null) {
-        ProductsActions.resetIndex(); 
-      }
-    }
-    else if(path.match(/^\/users/)) {
-      // We load the user info to show his page
-      UsersActions.getUserPage(path.match(/[0-9]+$/)[0]);
-    }
-    _lastPath = path;
+    // if(path === "/products") {
+    //   if(_lastPath !== path && _lastPath !== null) {
+    //     ProductsActions.resetIndex(); 
+    //   }
+    // }
+    // _lastPath = path;
   }
 });
 

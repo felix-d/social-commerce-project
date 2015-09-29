@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var Reflux = require("reflux");
+var Reflux = require('reflux');
 
 var WishlistActions = Reflux.createActions([
-  "add",
-  "remove",
-  "resetIdLastSetProduct",
-  "setWishlist"
+  'add',
+  'remove',
+  'resetIdLastSetProduct',
+  'setWishlist'
 ]);
 
 module.exports = WishlistActions;

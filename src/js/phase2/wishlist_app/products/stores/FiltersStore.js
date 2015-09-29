@@ -1,7 +1,7 @@
 var Reflux = require("reflux"),
     FiltersActions = require("../actions/FiltersActions"),
     ProductsActions = require("../actions/ProductsActions"),
-    { ALL, FRIENDS, FOF } = require("../constants/ProductsConstants"),
+    { ALL, FRIENDS, FOF, MF, ML } = require("../constants/ProductsConstants"),
     debug = require("debug")(__filename),
     _ = require("lodash");
 
@@ -131,6 +131,14 @@ var FiltersStore = Reflux.createStore({
       // Products reviewed by friends of friends
     case FOF:
       _tab = FOF;
+      break;
+
+    case MF:
+      _tab = MF;
+      break;
+
+    case ML:
+      _tab = ML;
       break;
 
     default:

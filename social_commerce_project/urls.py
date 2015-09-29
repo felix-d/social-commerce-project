@@ -11,7 +11,6 @@ else:
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^admin/sync', 'users.views.sync'),
     url(r'^$', current_home),
     url(r'^phase1/', include("phase1.urls")),
     url(r'^phase2/', include("phase2.urls")),

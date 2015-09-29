@@ -14,8 +14,24 @@ const UserPage = React.createClass({
 
   _userInfoLoaded: false,
 
+  _mayGetUserPage(checkProps) {
+    if(this.props.params.userId != checkProps.params.userId) {
+      UsersActions.getUserPage(this.props.params.userId);
+    }
+  },
+
+  componentDidMount(){
+    UsersActions.getUserPage(this.props.params.userId);
+  },
+
+  
+  componentDidUpdate(prevProps) {
+    this._mayGetUserPage(prevProps);
+  },
+
   componentWillUpdate(nextProps, nextState) {
     this._userInfoLoaded = nextState === this.state ? false : true;
+    this._mayGetUserPage(nextProps);
   },
 
   render(){

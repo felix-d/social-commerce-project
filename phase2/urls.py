@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from phase2 import views
+from analytics.views import endpoint
 
 urlpatterns = patterns(
     '',
@@ -8,5 +9,6 @@ urlpatterns = patterns(
     url(r'^me/$', views.get_user_info, name="get-user-info"),
     url(r'^addwish/$', views.add_to_wishlist, name="add-wish"),
     url(r'^removewish/$', views.remove_from_wishlist, name="remove-wish"),
+    url('r^analytics/$', endpoint),
     url(r'^userpage/$', views.get_user_page, name="user-page")
 )

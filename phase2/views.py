@@ -116,7 +116,7 @@ def get_user_page(request):
             p['review'] = get_review_data(user.id, p['id'])
 
     except:
-        return HttpResponseBadRequest("Retrieving reviewed products failed.")
+        pass
 
     friends = get_friends(user)
     friends_res = []

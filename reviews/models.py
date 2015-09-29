@@ -1,5 +1,6 @@
 from django.db import models
-from users.models import get_fof, get_friends
+from users.models import get_fof, get_friends, MutualFriends, MutualLikes,\
+    get_users_share_mutual_likes, get_users_share_mutual_friends
 from django.contrib.auth.models import User
 
 
@@ -57,7 +58,7 @@ def get_review_data(user, product):
     return {k: v for k, v in rev_info.items() if v}
 
 
-def get_reviewers(user, product, types=('a', 'f', 'fof')):
+def get_reviewers(user, product, types=('a', 'f', 'fof', 'mf', 'ml')):
     """
     Returns a dictionnary of the form {type1:[id1, id2, id3], type2:...}
     Accepts 'a' for all reviewers, 'f' for friends and 'fof' for friends
@@ -91,6 +92,18 @@ def get_reviewers(user, product, types=('a', 'f', 'fof')):
             fof_reviewers = [u for u in fof_reviewers if u['id'] not in f]
         if fof_reviewers:
             result['fof_reviewers'] = fof_reviewers
+
+    if 'mf' in types and user.is_authenticated():
+        mutual_friends = get_users_share_mutual_friends(user)
+        mutual_friends_rev = [u for u in all_reviewers if u['id'] in mutual_friends]
+        if mutual_friends_rev:
+            result['mutual_f_reviewers'] = mutual_friends_rev
+
+    if 'ml' in types and user.is_authenticated():
+        mutual_likes = get_users_share_mutual_likes(user)
+        mutual_likes_rev = [u for u in all_reviewers if u['id'] in mutual_likes]
+        if mutual_likes_rev:
+            result['mutual_likes_rev'] = mutual_likes_rev
 
     return result
 

@@ -21,7 +21,7 @@ var TopMenu = React.createClass({
 
     render: function(){
 
-        var tabs = ["All", "Friends", "Friends of friends"];
+        var tabs = ["All", "Friends", "Friends of friends", "Friends with mutual friends", "Friends with mutual likes"];
 
         tabs = tabs.map(function(t, i){
             function tabClicked(){

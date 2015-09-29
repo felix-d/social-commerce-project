@@ -3,10 +3,9 @@ var React = require("react"),
     WidgetActions = require("../../widget/actions/WidgetActions"),
     WishlistStore = require("../../me/stores/WishlistStore"),
     WishlistActions = require("../../me/actions/WishlistActions"),
+    { OverlayTrigger, Popover } = require('react-bootstrap'),
     classnames = require("classnames"),
-    Reflux = require("reflux"),
-    popoverOptions = require("../../utils/Config").popoverOptions;
-
+    Reflux = require("reflux");
 
 // The crop length for the product name
 var cropLength = 11;
@@ -15,9 +14,6 @@ var Product = React.createClass({
 
   mixins: [Reflux.connect(WishlistStore)],
   
-  // are we cropping?
-  _cropName: false,
-
   // called on onload
   _showImage: function(){
     $(this.refs.img.getDOMNode()).fadeIn(200);
@@ -27,45 +23,17 @@ var Product = React.createClass({
     WidgetActions.doShowWidget(this.props.data);
   },
 
-  componentWillUpdate: function(){
-    // If the name was cropped, deactivate popover
-    if(this._cropName){
-      $(this.refs.name.getDOMNode())
-        .popover('destroy');
-    }
-  },
 
   componentDidUpdate: function(prevprops, prevstate){
-
     // we dont hide the picture if we only update the checkmark sign
     if(prevprops.data.id !== this.props.data.id){
       $(this.refs.img.getDOMNode()).hide();
     }
-    
-    // If the name is cropped, activate popover
-    if(this._cropName){
-      $(this.refs.name.getDOMNode())
-        .popover(popoverOptions);
-    }
   },
 
   componentDidMount: function(){
-
     // We hide the image, because it'll show onload
     $(this.refs.img.getDOMNode()).hide();
-
-    // We load the popover
-    if(this._cropName){
-      $(this.refs.name.getDOMNode())
-        .popover(popoverOptions);
-    }
-  },
-
-  componentWillUnmount: function(){
-    // If the name was cropped, deactivate popover
-    if(this._cropName)
-      $(this.refs.name.getDOMNode()).popover('destroy');
-    
   },
 
   shouldComponentUpdate: function(nextProps, nextState){
@@ -90,17 +58,24 @@ var Product = React.createClass({
         opacityControl,
         textClassName,
         imgContainerClassName,
-        starIcon;
-
+        starIcon,
+        name;
 
     // Name cropping
-    var name;
     if(this.props.data.name.length > cropLength){
-      this._cropName = true; 
-      name = this.props.data.name.substring(0, cropLength) + "...";
+      const popover = (<Popover>{this.props.data.name}</Popover>);
+      name = (
+        <OverlayTrigger trigger="hover"
+                        ref="trigger"
+                        placement="top"
+                        overlay={popover}>
+           <h5>
+              {this.props.data.name.substring(0, cropLength) + "..."}
+           </h5>
+        </OverlayTrigger>
+      );
     } else {
-      this._cropName = false;
-      name = this.props.data.name;
+      name = (<h5>{this.props.data.name}</h5>);
     };
 
     // Control of the opacity changes
@@ -112,7 +87,7 @@ var Product = React.createClass({
       "low-opacity": !!this.props.data.iswish
     });
 
-    starIcon = this.props.data.iswish ? <i className="fa fa-star"></i> : null;
+    starIcon = this.props.data.iswish ? (<i className="fa fa-star"></i>) : null;
 
     // The little message under the picture
     switch(this.props.data.numReviewers){
@@ -136,12 +111,7 @@ var Product = React.createClass({
         <div className="product effect6 animated fadeIn">
 
         {/* The product name */}
-        <h5 ref="name"
-      data-toggle="popover"
-      data-content={this.props.data.name}
-      className={textClassName}>
-        {name}
-      </h5>
+           {name}
 
         {/* The product image */}
         <div className="star-container">
