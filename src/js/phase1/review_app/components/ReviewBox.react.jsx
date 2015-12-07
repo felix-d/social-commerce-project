@@ -8,7 +8,6 @@ function getReviewState(){
     return ReviewBoxStore.getReviewState();
 }
 
-
 var ReviewBox = React.createClass({
 
     // Popover options for the product description

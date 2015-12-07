@@ -55,7 +55,7 @@ function setAllReviewElementsFalse(){
 var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
   // Called from root component
-  init: function(reviewElements){
+  init(reviewElements) {
 
     // Put the reference in private var
     _reviewElements = reviewElements;
@@ -69,6 +69,21 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
       rating: 0
     };
   },
+
+  setInitialData(reviewElements) {
+    // Put the reference in private var
+    _reviewElements = reviewElements;
+
+    // We set all elements' isChecked to false
+    setAllReviewElementsFalse();
+
+    _reviewData = {
+      comment: "",
+      tabs: _reviewElements,
+      rating: 0
+    };
+  },
+    
   getReviewData: function(){
     return _reviewData;
   },
@@ -166,28 +181,32 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action){
   switch(action.actionType) {
-  case ProductConstants.OPEN_REVIEW_BOX:
-    ReviewBoxStore.openReviewBox(action.data);
-    ReviewBoxStore.emitChange();
-    break;
-  case ProductConstants.CLOSE_REVIEW_BOX:
-    ReviewBoxStore.closeReviewBox();
-    ReviewBoxStore.emitChange();
-    break;
-  case ProductConstants.AGGREGATE_DATA:
-    ReviewBoxStore.aggregateReviewData(action.data);
-    break;
-  case ProductConstants.TOGGLE_RECOMMEND:
-    ReviewBoxStore.toggleRecommendIt();
-    break;
-  case ProductConstants.COMMENT_CHANGED:
-    ReviewBoxStore.commentChanged(action.data);
-    break;
-  case ProductConstants.SET_RATING:
-    ReviewBoxStore.setRating(action.rating);
-    break;
-  default:
-    break;
+    case ProductConstants.OPEN_REVIEW_BOX:
+      ReviewBoxStore.openReviewBox(action.data);
+      ReviewBoxStore.emitChange();
+      break;
+    case ProductConstants.CLOSE_REVIEW_BOX:
+      ReviewBoxStore.closeReviewBox();
+      ReviewBoxStore.emitChange();
+      break;
+    case ProductConstants.AGGREGATE_DATA:
+      ReviewBoxStore.aggregateReviewData(action.data);
+      break;
+    case ProductConstants.TOGGLE_RECOMMEND:
+      ReviewBoxStore.toggleRecommendIt();
+      break;
+    case ProductConstants.COMMENT_CHANGED:
+      ReviewBoxStore.commentChanged(action.data);
+      break;
+    case ProductConstants.SET_RATING:
+      ReviewBoxStore.setRating(action.rating);
+      break;
+    case ProductConstants.SET_INITIAL_DATA:
+      ReviewBoxStore.setInitialData(action.data.reviewElements);
+      break;
+      
+    default:
+      break;
   }
 });
 module.exports = ReviewBoxStore;

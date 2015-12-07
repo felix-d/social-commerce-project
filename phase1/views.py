@@ -24,6 +24,27 @@ def home(request):
     return render(request, "home.djhtml", context)
 
 
+def get_initial_data(request):
+    products = get_products()
+
+    # We add the review data for each product
+    for p in products:
+        rd = dict(review=get_review_data(request.user, p['id']))
+        p.update(rd)
+    tags = Tag.objects.get_tag_names()
+    review_tree = get_review_tree()
+    number_reviews = get_number_reviews(request.user)
+
+    data = {
+        'products': products,
+        'tags': tags,
+        'name': request.user.first_name,
+        'reviewElements': review_tree,
+        'numberReviews': number_reviews
+    }
+    return JsonResponse(data)
+
+
 # The reviewing page
 @login_required
 def step1(request):
