@@ -7,6 +7,7 @@ import ProductActions from '../actions/ProductActions';
 import SideBar from './SideBar.react.jsx';
 import ReviewBox from './ReviewBox.react.jsx';
 import ProductsContainer from './ProductsContainer.react.jsx';
+import InitModal from './InitModal.react.jsx';
 
 export default React.createClass({
 
@@ -66,12 +67,13 @@ export default React.createClass({
     if (!this.state.showProducts) { return null; }
     return (
       <div className="review-app clearfix" id="review-app-inner">
-         <ReviewBox/>
-         <SideBar/>
-         <ProductsContainer/>
-         <a id="return-to-top" className="animated fadeOut">
-           <i className="fa fa-chevron-up"></i>
-         </a>
+        <InitModal />
+        <ReviewBox/>
+        <SideBar/>
+        <ProductsContainer/>
+        <a id="return-to-top" className="animated fadeOut">
+          <i className="fa fa-chevron-up"></i>
+        </a>
       </div>
     );
   },

@@ -183,7 +183,6 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     _lastReviewedId = product.id;
 
     ReviewBoxStore.resetReviewData();
-    this.updateReviewText();
   },
 
   // optimistic rendering

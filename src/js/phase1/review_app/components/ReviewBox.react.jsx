@@ -35,14 +35,14 @@ export default React.createClass({
     if (this.state.open &&
        this.refs.description &&
        this.state.product.doCropDescription) {
-      $(this.refs.description.getDOMNode()).popover('destroy');
+      $(this.refs.description).popover('destroy');
     }
   },
 
   componentDidUpdate() {
     // we add the popover
     if (this.state.open && this.state.product.doCropDescription) {
-      $(this.refs.description.getDOMNode()).popover(popoverOptions);
+      $(this.refs.description).popover(popoverOptions);
     }
   },
 

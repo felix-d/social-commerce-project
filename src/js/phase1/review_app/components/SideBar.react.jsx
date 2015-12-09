@@ -37,7 +37,7 @@ export default React.createClass({
   // shuffle the products
   shuffleProducts() {
     // We set the sort selection to "Random" when shuffle is pressed
-    this.refs.selectSort.getDOMNode().value = 'Random';
+    this.refs.selectSort.value = 'Random';
     ProductActions.shuffleProducts();
   },
 
@@ -56,10 +56,10 @@ export default React.createClass({
     typingInSearchField = true;
     typingTimeout = setTimeout(function callback() {
       typingInSearchField = false;
-      const newSearchValue = this.refs.searchInput.getDOMNode().value;
+      const newSearchValue = this.refs.searchInput.value;
       if (oldSearchValue !== newSearchValue) {
         this.doSearch();
-        oldSearchValue = this.refs.searchInput.getDOMNode().value;
+        oldSearchValue = this.refs.searchInput.value;
       }
     }.bind(this), 200);
   },
@@ -67,8 +67,8 @@ export default React.createClass({
   // We search! The tags are accessible from the store
   doSearch() {
     ProductActions.doSearch(
-      this.refs.searchInput.getDOMNode().value,
-      this.refs.selectSort.getDOMNode().value
+      this.refs.searchInput.value,
+      this.refs.selectSort.value
     );
   },
 

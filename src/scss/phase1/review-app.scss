@@ -12,6 +12,13 @@ $product-images-height-normal: 136px;
   transition: opacity 0.2s;
 }
 
+.init-modal {
+  &__btn-container {
+    text-align: center; 
+    margin-top: 10px;
+  }
+}
+
 #reviewapp {
     
     min-height:$review-app-min-height;

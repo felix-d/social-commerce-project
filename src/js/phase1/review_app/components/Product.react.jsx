@@ -5,11 +5,6 @@ import classnames from 'classnames';
 import ProductActions from '../actions/ProductActions';
 import ProductStore from '../stores/ProductStore';
 
-const popoverOptions = {
-  trigger: 'hover',
-  placement: 'auto',
-  container: 'body',
-};
 
 export default React.createClass({
 
@@ -30,7 +25,7 @@ export default React.createClass({
 
     if (this.props.data.name.length > this.props.cropLength) {
       cropName = true;
-      displayName = this.props.data.name.substring(0, this.cropLength) + '...';
+      displayName = this.props.data.name.substring(0, this.props.cropLength) + '...';
     } else {
       displayName = this.props.data.name;
     }
@@ -72,7 +67,6 @@ export default React.createClass({
   render() {
 
     // the name of the movie
-    let name = null;
     let opacityControl = null;
     let checkMark = null;
     let button = null;
@@ -80,15 +74,6 @@ export default React.createClass({
     const imgClass = classnames('show-image', {
       active: this.state.imgActive,
     });
-
-    // Do we crop the length?
-    if (this.props.data.name.length > this.cropLength) {
-      this.cropName = true;
-      name = this.props.data.name.substring(0, this.cropLength) + '...';
-    } else {
-      this.cropName = false;
-      name = this.props.data.name;
-    }
 
     // Check if the product was reviewed
     if (this.props.data.review) {
@@ -99,15 +84,25 @@ export default React.createClass({
       button = <button className="btn btn-info btn-sm" onClick={this._openReviewBox}>I've seen it!</button>;
     }
 
+    let nameComponent = (
+      <h5 className={opacityControl}>
+      {this.state.displayName}
+          </h5>
+    );
+
+    if (this.state.cropName) {
+      const popover = (<Popover id={this.props.data.name}>{this.props.data.name}</Popover>);
+      nameComponent = (
+        <OverlayTrigger trigger={['hover', 'focus']} overlay={popover}>
+          {nameComponent}
+        </OverlayTrigger>
+      );
+    }
+
     return (
       <Col xs={15} className="product animated fadeIn">
         <div className="product-inner effect6">
-          <h5 className={opacityControl}
-              ref="name"
-              data-toggle="popover"
-              data-content={this.props.data.name}>
-            {name}
-          </h5>
+          {nameComponent}
           <div className="checkmark-container">
             {checkMark}
             <div className={opacityControl + ' img-container'}>

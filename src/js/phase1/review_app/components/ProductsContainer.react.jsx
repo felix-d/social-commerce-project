@@ -7,7 +7,7 @@ import ProductActions from '../actions/ProductActions';
 
 function getProductsState() {
   return {
-    products: ProductStore.getProducts(),
+    ...ProductStore.getProducts(),
   };
 }
 
@@ -17,7 +17,7 @@ function infiniteScrollCheck() {
 
   const bottom = reviewAppOffset.top + $reviewApp.height();
 
-  if (bottom <= $(window).scrollTop() + $(window).height() + 150) {
+  if (bottom <= $(window).scrollTop() + $(window).height() + 200) {
     ProductActions.infiniteScroll();
   }
 }
@@ -51,6 +51,7 @@ export default React.createClass({
 
     if (!this.state.products) { return null; }
 
+    debugger;
     const products = this.state.products.map(m => <Product data={m} key={m.name}/>);
 
     return (

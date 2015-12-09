@@ -6,103 +6,110 @@ var StarsRating = require("./StarsRating.react.jsx");
 
 var ReviewForm = React.createClass({
 
-    // We only need to set initial state since
-    // component gets unmounted each time the box closes
-    getInitialState: function(){
-        return ReviewBoxStore.getReviewData(); 
-    },
+  propTypes: {
+    product: React.PropTypes.object,
+  },
 
-    submitReview: function(){
-        // We get the updated data, no need to use an event for that
-        var reviewData = ReviewBoxStore.getReviewData();
+  // We only need to set initial state since
+  // component gets unmounted each time the box closes
+  getInitialState() {
+    return ReviewBoxStore.getReviewData();
+  },
 
-        // Submit the review via Ajax
-        ProductActions.submitReview(this.props.product, reviewData);  
+  submitReview() {
+    // We get the updated data, no need to use an event for that
+    var reviewData = ReviewBoxStore.getReviewData();
 
-        // Close the review box
-        ProductActions.closeReviewBox();  
-    },
+    // Submit the review via Ajax
+    ProductActions.submitReview(this.props.product, reviewData);
 
-    // Toggle 'recommendIt' between true and false
-    toggleRecommendIt: function(){
-        ProductActions.toggleRecommendIt();
-    },
+    // Close the review box
+    ProductActions.closeReviewBox();
+  },
 
-    // When the comment is changing, set the store
-    // (we could not make use of the store, but still,
-    // it's good practice)
-    commentChanged: function(){
-        ProductActions.commentChanged(this.refs.comment.getDOMNode().value);
-    },
+  // Toggle 'recommendIt' between true and false
+  toggleRecommendIt() {
+    ProductActions.toggleRecommendIt();
+  },
 
-    // Delete the review
-    deleteReview: function(){
-        ProductActions.deleteReview(this.props.product);
-        // Close the review box
-        ProductActions.closeReviewBox();  
-    },
+  // When the comment is changing, set the store
+  // (we could not make use of the store, but still,
+  // it's good practice)
+  commentChanged() {
+    ProductActions.commentChanged(this.refs.comment.getDOMNode().value);
+  },
 
-    render: function(){
-        // The tabs
-        var tabs = this.state.tabs.map(function(re, i){
-            var href = "#tab" + i;
-            return (
-                <li className={i===0? "active" : ""} key={i}>
-                    <a href={href} data-toggle="tab">
-                        {re.name}
-                    </a>
-                </li>
-            );
-        });
+  // Delete the review
+  deleteReview() {
+    ProductActions.deleteReview(this.props.product);
+    // Close the review box
+    ProductActions.closeReviewBox();
+  },
 
-        // the tab content
-        var tabContent = this.state.tabs.map(function(re, i){
-            var id = "tab" + i;
-            return(
-                <ReviewFormTab active={i === 0 ? true : false} data={re.categories} id={id} key={i}/>
-            );
-        });
+  render() {
+    // The tabs
+    var tabs = this.state.tabs.map((re, i) => {
+      var href = '#tab' + i;
+      return (
+        <li className={i === 0 ? 'active' : ''} key={i}>
+          <a href={href} data-toggle="tab">
+            {re.name}
+          </a>
+        </li>
+      );
+    });
 
-        // are we editing
-        var editing = this.props.product.review ? true : false;
-        var deleteBtn = null;
-        var submitBtnTxt = "Submit";
+    // the tab content
+    var tabContent = this.state.tabs.map((re, i) => {
+      var id = 'tab' + i;
+      return (
+        <ReviewFormTab active={i === 0 ? true : false} data={re.categories} id={id} key={i}/>
+      );
+    });
 
-        // if we are editing
-        if(editing){
-            // we set the delete button
-            deleteBtn =
-            <button className="btn btn-danger bottom-btn"
-                    onClick={this.deleteReview}>Delete</button>;
-            // we change the button text to edit
-            submitBtnTxt = "Edit";
-        }
+    // are we editing
+    var editing = this.props.product.review ? true : false;
+    var deleteBtn = null;
+    var submitBtnTxt = 'Submit';
 
-        return (
-            <div>
-                <div role="tabpanel" className="tab-panel">
-                    <ul className="nav nav-tabs" role="tablist">
-                        {tabs}
-                    </ul>
-                    <div className="tab-content" ref="tabContent">
-                        {tabContent}
-                    </div>
-                </div>
-                <hr />
-                <textarea className="form-comments"
-                          placeholder="Your comments"
-                          ref="comment" rows="3"
-                          onChange={this.commentChanged}
-                          defaultValue={this.state.comment}>
-                </textarea>
-                <StarsRating rating={this.state.rating}/>
-                <div id="submit-container">
-                    <button className="btn btn-primary bottom-btn" id="submit-button" onClick={this.submitReview}>{submitBtnTxt}</button>
-                    {deleteBtn}
-                </div>
-            </div>
-        )
+    // if we are editing
+    if (editing) {
+      // we set the delete button
+      deleteBtn = (
+      <button className="btn btn-danger bottom-btn"
+              onClick={this.deleteReview}>
+        Delete
+      </button>
+      );
+      // we change the button text to edit
+      submitBtnTxt = 'Edit';
     }
+
+    return (
+      <div>
+        <div role="tabpanel" className="tab-panel">
+          <ul className="nav nav-tabs" role="tablist">
+            {tabs}
+          </ul>
+          <div className="tab-content" ref="tabContent">
+            {tabContent}
+          </div>
+        </div>
+        <hr />
+        <textarea className="form-comments"
+                  placeholder="Your comments"
+                  ref="comment" rows="3"
+                  onChange={this.commentChanged}
+                  defaultValue={this.state.comment}>
+        </textarea>
+        <StarsRating rating={this.state.rating}/>
+        <div id="submit-container">
+          <button className="btn btn-primary bottom-btn" id="submit-button" onClick={this.submitReview}>{submitBtnTxt}</button>
+          {deleteBtn}
+        </div>
+      </div>
+    )
+  }
 });
 
 module.exports = ReviewForm;

@@ -17,9 +17,9 @@ var StarsRating = React.createClass({
         for (var i=5; i>0;i--){
             var ref = "star" + i;
             if(i <= comparator){
-                this.refs[ref].getDOMNode().className = full;
+                this.refs[ref].className = full;
             } else {
-                this.refs[ref].getDOMNode().className = empty;
+                this.refs[ref].className = empty;
             }
         }
     },
