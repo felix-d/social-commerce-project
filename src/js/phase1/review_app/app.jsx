@@ -1,16 +1,18 @@
-var React = require('react');
-var ReviewApp = require('./components/ReviewApp.react.jsx');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-global.debug = require("debug");
+import ReviewApp from './components/ReviewApp.react.jsx';
 
-//Called in the django template
-var init = function init(data){
+global.debug = require('debug');
 
-    //Rendering of root component
-        React.render(
-            React.createElement(ReviewApp, data),
-            document.getElementById('reviewapp')
-        );
-}
+// Called in the django template
+var init = function init(data) {
+
+  // Rendering of root component
+  ReactDOM.render(
+    React.createElement(ReviewApp, data),
+    document.getElementById('reviewapp')
+  );
+};
 
 module.exports = init;

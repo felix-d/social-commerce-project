@@ -1,43 +1,44 @@
-const React = require('react/addons');
-const { PureRenderMixin } = React.addons;
-const ProductStore = require('../stores/ProductStore');
-const ProductActions = require('../actions/ProductActions');
+import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-function getSideBarState(){
+import ProductStore from '../stores/ProductStore';
+import ProductActions from '../actions/ProductActions';
+
+
+function getSideBarState() {
   return ProductStore.getTags();
 }
 
 // are we typing in search field
-var typingInSearchField = false,
+let typingInSearchField = false;
+// We are waiting some time before searching
+let typingTimeout = null;
+// to compare if new search is the same as old search.
+// If it is, we dont refresh!
+let oldSearchValue = null;
 
-    // We are waiting some time before searching
-    typingTimeout,
 
-    // to compare if new search is the same as old search.
-    // If it is, we dont refresh!
-    oldSearchValue;
-
-/* The side bar element with the search form */
-var SideBar = React.createClass({
+export default React.createClass({
 
   mixins: [PureRenderMixin],
 
-  //shuffle the products
-  shuffleProducts() {
-    // We set the sort selection to "Random" when shuffle is pressed
-    this.refs.selectSort.getDOMNode().value = "Random";
-    ProductActions.shuffleProducts();
+  getInitialState() {
+    return getSideBarState();
   },
 
   componentDidMount() {
     ProductStore.addChangeListener(this._onChange);
   },
+
   componentWillUnmount() {
     ProductStore.removeChangeListener(this._onChange);
   },
 
-  getInitialState() {
-    return getSideBarState();
+  // shuffle the products
+  shuffleProducts() {
+    // We set the sort selection to "Random" when shuffle is pressed
+    this.refs.selectSort.getDOMNode().value = 'Random';
+    ProductActions.shuffleProducts();
   },
 
   _onChange() {
@@ -49,14 +50,14 @@ var SideBar = React.createClass({
 
     // We only execute a search query when the user stops
     // typing for more than 0.2 seconds!
-    if(typingInSearchField){
+    if (typingInSearchField) {
       clearTimeout(typingTimeout);
-    } 
+    }
     typingInSearchField = true;
-    typingTimeout = setTimeout(function(){
+    typingTimeout = setTimeout(function callback() {
       typingInSearchField = false;
-      var newSearchValue = this.refs.searchInput.getDOMNode().value;
-      if(oldSearchValue != newSearchValue){
+      const newSearchValue = this.refs.searchInput.getDOMNode().value;
+      if (oldSearchValue !== newSearchValue) {
         this.doSearch();
         oldSearchValue = this.refs.searchInput.getDOMNode().value;
       }
@@ -72,20 +73,19 @@ var SideBar = React.createClass({
   },
 
   render() {
-    
     // We haven't received the data yet.
-    if(!this.state.tags){ return null; }
+    if (!this.state.tags) { return null; }
 
     // the tags toggles
-    var tags_checkbox = this.state.tags.map(function(t, i){
+    var tagsCheckbox = this.state.tags.map(function mapper(t, i) {
 
       // Handler for clicking on tag toggles
-      var toggleTag = function(){
+      var toggleTag = function toggleTag() {
         t.isChecked = !t.isChecked;
         this.doSearch();
       }.bind(this);
 
-      return(
+      return (
         <label className="btn btn-default" onClick={toggleTag} key={i}>
            <input type="checkbox" autoComplete="off"/>
            {t.name}
@@ -93,7 +93,7 @@ var SideBar = React.createClass({
       );
     }.bind(this));
 
-    return(
+    return (
       <div className="side-bar col-xs-3 will-fade">
          <h4><i className="fa fa-search"></i> Search</h4>
          <input id="input-search" ref="searchInput" type="text" onChange={this.textSearch}/>
@@ -105,12 +105,10 @@ var SideBar = React.createClass({
          </select>
          <h4><i className="fa fa-tags"></i> Tags</h4>
          <div className="tags-group" data-toggle="buttons" ref="selectedTags">
-            {tags_checkbox}
+            {tagsCheckbox}
          </div>
          <button className="btn btn-primary" id="shuffle-button" onClick={this.shuffleProducts}>Shuffle</button>
       </div>
     );
-  }
+  },
 });
-
-module.exports = SideBar;

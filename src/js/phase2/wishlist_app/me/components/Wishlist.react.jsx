@@ -1,50 +1,46 @@
-"use strict";
+import React from 'react';
+import Reflux from 'reflux';
+import Slider from 'react-slick';
 
-let React = require("react/addons"),
-    CSSTransitionGroup = React.addons.CSSTransitionGroup,
-    Reflux = require("reflux"),
-    Wish = require("./Wish.react.jsx"),
-    Slider = require("react-slick"),
-    WishlistStore = require("../stores/WishlistStore"),
-    slickOptions = require("../../utils/Config").slickOptionsWishList;
+import Wish from './Wish.react.jsx';
+import WishlistStore from '../stores/WishlistStore';
 
-let _$wishlist;
+const settings = {
+  dots: true,
+  infinite: false,
+  arrows: true,
+  speed: 500,
+  slidesToShow: 7,
+  slidesToScroll: 7,
+};
 
-let Wishlist = React.createClass({
+export default React.createClass({
 
-    mixins: [Reflux.connect(WishlistStore, 'wishlist')],
+  mixins: [Reflux.connect(WishlistStore, 'wishlist')],
 
-  getInitialState(){
+  getInitialState() {
     return WishlistStore.getWishlist();
   },
 
-    render(){
+  render() {
 
-      // Wrapping wish with div to workaround a bug with react slider
-      let wishes = this.state.wishlist && this.state.wishlist.map(
-        (v, i) => <div key={v.id}><Wish product={v} key={v.id} /></div>);
+    let wishes = null;
 
-      let settings = {
-        dots: true,
-        infinite: false,
-        arrows: true,
-        speed: 500,
-        slidesToShow: 7,
-        slidesToScroll: 7
-      };
-
-      wishes = wishes ? <Slider {...settings}>{wishes}</Slider> : null;
-
-
-      return (
-        <div id="wishlist-container">
-           <h3>Your Wishlist</h3>
-           <div id="wishlist-container__inner">
-              {wishes}
-           </div>
-        </div>
-      );
+    // Wrapping wish with div to workaround a bug with react slider
+    if (this.state.wishlist) {
+      wishes = this.state.wishlist.map(
+        v => <div key={v.id}><Wish product={v} key={v.id} /></div>);
     }
-});
 
-module.exports = Wishlist;
+    wishes = wishes ? <Slider {...settings}>{wishes}</Slider> : null;
+
+    return (
+      <div id="wishlist-container">
+        <h3>Your Wishlist</h3>
+        <div id="wishlist-container__inner">
+          {wishes}
+        </div>
+      </div>
+    );
+  },
+});

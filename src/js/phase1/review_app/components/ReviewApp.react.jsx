@@ -1,69 +1,78 @@
-var React = require('react');
-var ProductStore = require('../stores/ProductStore');
-var ReviewBoxStore = require('../stores/ReviewBoxStore');
-var ProductActions = require('../actions/ProductActions');
-var SideBar = require("./SideBar.react.jsx");
-var ReviewBox = require("./ReviewBox.react.jsx");
-var ProductsContainer = require("./ProductsContainer.react.jsx");
+import React from 'react';
 
-var ReviewApp = React.createClass({
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-  _onChange(){
-    
-  },
-  componentWillUnmount() {
-    ProductsStore.removeChangeListener(this._onChange);
+import ProductStore from '../stores/ProductStore';
+import ProductActions from '../actions/ProductActions';
+import SideBar from './SideBar.react.jsx';
+import ReviewBox from './ReviewBox.react.jsx';
+import ProductsContainer from './ProductsContainer.react.jsx';
+
+export default React.createClass({
+
+  mixins: [PureRenderMixin],
+
+  getInitialState() {
+    return {
+      showProducts: false,
+    };
   },
 
   componentDidMount() {
-
     ProductStore.addChangeListener(this._onChange);
-
     // Lets fetch initial data
     ProductActions.fetchInitialData();
+  },
 
-    // we init the stores
-    /*     ProductStore.init(this.props.products, this.props.tags, this.props.number_reviews); */
-    /*     ReviewBoxStore.init(this.props.reviewElements); */
+  componentDidUpdate(lastProps, lastState) {
+    // When we receive the response, we bind the infinite scrolling
+    // listener.
+    if (this.state.showProducts && !lastState.showProducts) {
+      // This code use jquery to handle the scrolling.
+      var reviewAppOffset = $('#reviewapp').offset().top;
 
-    // lets shuffle the products
-    ProductStore.shuffleProducts();
+      // We show the arrow to scroll back up fast!
+      $(window).scroll(function handler() {
+        if ($(this).scrollTop() >= 500) {
+          $('#return-to-top').css('display', 'block');
+          $('#return-to-top').addClass('fadeIn');
+          $('#return-to-top').removeClass('fadeOut');
+        } else {
+          $('#return-to-top').addClass('fadeOut');
+          $('#return-to-top').removeClass('fadeIn');
+        }
+      });
 
-    // We update the text that displays the remaining reviews to do
-    ProductStore.updateReviewText();
+      // we bind the scrolling animation
+      $('#return-to-top').click(function handler() {
+        $('body,html').animate({
+          scrollTop: reviewAppOffset,
+        }, 500);
+      });
+    }
+  },
 
-    var reviewAppOffset = $(".info-box").offset().top;
-    // We show the arrow to scroll back up fast!
-    $(window).scroll(function() {
-      if ($(this).scrollTop() >= 500) {
-        $('#return-to-top').css("display", "block");
-        $('#return-to-top').addClass("fadeIn");
-        $('#return-to-top').removeClass("fadeOut");
-        
-      } else {
-        $('#return-to-top').addClass("fadeOut");
-        $('#return-to-top').removeClass("fadeIn");
-      }
-    });
+  componentWillUnmount() {
+    ProductStore.removeChangeListener(this._onChange);
+  },
 
-    // we bind the scrolling animation
-    $('#return-to-top').click(function() {
-      $('body,html').animate({
-        scrollTop : reviewAppOffset
-      }, 500);
+  _onChange() {
+    this.setState({
+      showProducts: !!ProductStore.getProducts(),
     });
   },
 
-  render: function(){
-    return(
-      <div className="review-app clearfix" id="review-app-inner"> 
+  render() {
+    if (!this.state.showProducts) { return null; }
+    return (
+      <div className="review-app clearfix" id="review-app-inner">
          <ReviewBox/>
          <SideBar/>
          <ProductsContainer/>
-         <a id="return-to-top" className="animated fadeOut"><i className="fa fa-chevron-up"></i></a>
+         <a id="return-to-top" className="animated fadeOut">
+           <i className="fa fa-chevron-up"></i>
+         </a>
       </div>
     );
-  }
+  },
 });
-
-module.exports = ReviewApp;

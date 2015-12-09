@@ -1,144 +1,127 @@
-let React = require('react'),
-    { Col, Row } = require("react-bootstrap"),
-    ProductActions = require('../actions/ProductActions'),
-    ProductContainer = require('./ProductsContainer.react.jsx'),
-    ProductStore = require('../stores/ProductStore'),
-    ImageLoader = require('react-imageloader');
+import React from 'react';
+import { Col, Popover, OverlayTrigger } from 'react-bootstrap';
+import classnames from 'classnames';
 
-let Product = React.createClass({
+import ProductActions from '../actions/ProductActions';
+import ProductStore from '../stores/ProductStore';
 
-    // Options for the popover
-    popoverOptions: {
-        trigger: 'hover',
-        placement: 'auto',
-        container: 'body'
-    },
+const popoverOptions = {
+  trigger: 'hover',
+  placement: 'auto',
+  container: 'body',
+};
 
-    // Do we need to crop the name
-    cropName: false,
+export default React.createClass({
 
-    // De maximum length before cropping
-    cropLength: 13,
+  propTypes: {
+    data: React.PropTypes.object,
+    cropLength: React.PropTypes.number,
+  },
 
-    componentDidMount: function(){
-        $(this.refs.img.getDOMNode()).hide();
+  getDefaultProps() {
+    return {
+      cropLength: 13,
+    };
+  },
 
-        // If the name is cropped, activate popover
-        if(this.cropName){
-            $(this.refs.name.getDOMNode())
-                  .popover(this.popoverOptions);
-        }
-    },
+  getInitialState() {
+    let cropName = false;
+    let displayName = null;
 
-    componentDidUpdate: function(prevprops, prevstate){
-        // we dont hide the picture if we only update the checkmark sign
-        if(prevprops.data.id !== this.props.data.id){
-            $(this.refs.img.getDOMNode()).hide();
-        }
-        $(this.refs.name.getDOMNode())
-               .popover(this.popoverOptions);
-    },
-
-    componentWillUpdate: function(){
-        // If the name was cropped, deactivate popover
-        if(this.cropName)
-            $(this.refs.name.getDOMNode())
-               .popover('destroy');
-    },
-
-    componentWillUnmount: function(){
-        // If the name was cropped, deactivate popover
-        if(this.cropName)
-            $(this.refs.name.getDOMNode()).popover('destroy');
-    },
-
-    shouldComponentUpdate: function(nextProps, nextState){
-        // if the product is the same as the one that just got reviewed
-        // OR if the product wasn't already there -> we update it
-        if(nextProps.data.id === ProductStore.getLastReviewedId() ||
-            nextProps.data.id != this.props.data.id){
-                ProductStore.resetReviewedId();
-                return true;
-        }
-        // no need to update the element!
-        return false;
-    },
-
-    // Review the product
-    openReviewBox: function(){
-        ProductActions.review(this.props.data);
-    },
-
-    showImage: function(){
-        $(this.refs.img.getDOMNode()).fadeIn(200);
-    },
-
-    // Edit the review
-    editReview: function(){
-        ProductActions.review(this.props.data);
-    },
-    render: function(){
-
-        // the name of the movie
-        var name,
-            // the class set on reviewed products
-            imgReviewedClass,
-            // We reduce the opacity of reviewed products
-            opacityControl,
-            // the check mark on reviewed products
-            checkMark,
-            // the review button
-            button;
-
-        // Do we crop the length?
-        if(this.props.data.name.length>this.cropLength){
-            this.cropName = true;
-            name = this.props.data.name.substring(0,this.cropLength) + "...";
-        }
-        else {
-            this.cropName = false;
-            name = this.props.data.name;
-        }
-
-        // Check if the product was reviewed
-        if(this.props.data.review){
-            imgReviewedClass="reviewed";
-            opacityControl = "low-opacity"
-            checkMark = <i className="fa fa-check-circle"></i>;
-            button = <button className="btn btn-success btn-sm" onClick={this.editReview}>Edit</button>;
-        }
-        else {
-            checkMark= "";
-            imgReviewedClass="";
-            opacityControl = ""
-            button = <button className="btn btn-info btn-sm" onClick={this.openReviewBox}>I've seen it!</button>;
-        }
-
-        return(
-            <Col xs={15} className="product animated fadeIn">
-                <div className="product-inner effect6">
-                    <h5 className={opacityControl}
-                        ref="name"
-                        data-toggle="popover"
-                        data-content={this.props.data.name}>
-                        {name}
-                    </h5>
-                    <div className="checkmark-container">
-                        {checkMark}
-                        <div className={opacityControl + " img-container"}>
-                            {/* <ImageLoader ref="img" src={this.props.data.sm_image_path} onLoad={this.showImage}></ImageLoader> */}
-                            <img
-ref="img"
-src={this.props.data.sm_image_path}
-onLoad={this.showImage}></img>
-                        </div>
-                    </div>
-                    <p className={opacityControl}>{this.props.data.caracteristic_1}</p>
-                    {button}
-                </div>
-            </Col>
-        );
+    if (this.props.data.name.length > this.props.cropLength) {
+      cropName = true;
+      displayName = this.props.data.name.substring(0, this.cropLength) + '...';
+    } else {
+      displayName = this.props.data.name;
     }
-});
+    return {
+      imgActive: false,
+      cropName,
+      displayName,
+    };
+  },
 
-module.exports = Product;
+  shouldComponentUpdate(nextProps, nextState) {
+    // if the product is the same as the one that just got reviewed
+    // OR if the product wasn't already there
+    // OR the image is now loaded -> we update it
+    if (nextProps.data.id === ProductStore.getLastReviewedId() ||
+        nextProps.data.id !== this.props.data.id ||
+        nextState.imgActive !== this.state.imgActive) {
+      ProductStore.resetReviewedId();
+      return true;
+    }
+    // no need to update the element!
+    return false;
+  },
+
+  _openReviewBox() {
+    ProductActions.review(this.props.data);
+  },
+
+  _showImage() {
+    this.setState({
+      imgActive: true,
+    });
+  },
+
+  _editReview() {
+    ProductActions.review(this.props.data);
+  },
+
+  render() {
+
+    // the name of the movie
+    let name = null;
+    let opacityControl = null;
+    let checkMark = null;
+    let button = null;
+
+    const imgClass = classnames('show-image', {
+      active: this.state.imgActive,
+    });
+
+    // Do we crop the length?
+    if (this.props.data.name.length > this.cropLength) {
+      this.cropName = true;
+      name = this.props.data.name.substring(0, this.cropLength) + '...';
+    } else {
+      this.cropName = false;
+      name = this.props.data.name;
+    }
+
+    // Check if the product was reviewed
+    if (this.props.data.review) {
+      opacityControl = 'low-opacity';
+      checkMark = <i className="fa fa-check-circle"></i>;
+      button = <button className="btn btn-success btn-sm" onClick={this._editReview}>Edit</button>;
+    } else {
+      button = <button className="btn btn-info btn-sm" onClick={this._openReviewBox}>I've seen it!</button>;
+    }
+
+    return (
+      <Col xs={15} className="product animated fadeIn">
+        <div className="product-inner effect6">
+          <h5 className={opacityControl}
+              ref="name"
+              data-toggle="popover"
+              data-content={this.props.data.name}>
+            {name}
+          </h5>
+          <div className="checkmark-container">
+            {checkMark}
+            <div className={opacityControl + ' img-container'}>
+              <img
+                  ref="img"
+                  className={imgClass}
+                  src={this.props.data.sm_image_path}
+                  onLoad={this._showImage}></img>
+            </div>
+          </div>
+          <p className={opacityControl}>{this.props.data.caracteristic_1}</p>
+          {button}
+        </div>
+      </Col>
+    );
+  },
+});

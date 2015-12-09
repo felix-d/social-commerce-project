@@ -1,46 +1,34 @@
-var React = require("react"),
-    ImageLoader = require('react-imageloader'),
-    WidgetActions = require("../../widget/actions/WidgetActions"),
-    WishlistStore = require("../../me/stores/WishlistStore"),
-    WishlistActions = require("../../me/actions/WishlistActions"),
-    { OverlayTrigger, Popover } = require('react-bootstrap'),
-    classnames = require("classnames"),
-    Reflux = require("reflux");
+import React from 'react';
+import classnames from 'classnames';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import Reflux from 'reflux';
+
+import WidgetActions from '../../widget/actions/WidgetActions';
+import WishlistStore from '../../me/stores/WishlistStore';
+import WishlistActions from '../../me/actions/WishlistActions';
 
 // The crop length for the product name
-var cropLength = 11;
+const cropLength = 11;
 
-var Product = React.createClass({
+export default React.createClass({
+
+  propTypes: {
+    data: React.PropTypes.object,
+    currentPage: React.PropTypes.number,
+  },
 
   mixins: [Reflux.connect(WishlistStore)],
-  
-  // called on onload
-  _showImage: function(){
-    $(this.refs.img.getDOMNode()).fadeIn(200);
-  },
 
-  _showProductWidget: function(){
-    WidgetActions.doShowWidget(this.props.data);
-  },
-
-
-  componentDidUpdate: function(prevprops, prevstate){
-    // we dont hide the picture if we only update the checkmark sign
-    if(prevprops.data.id !== this.props.data.id){
-      $(this.refs.img.getDOMNode()).hide();
-    }
-  },
-
-  componentDidMount: function(){
+  componentDidMount() {
     // We hide the image, because it'll show onload
-    $(this.refs.img.getDOMNode()).hide();
+    $(this.refs.img).hide();
   },
 
-  shouldComponentUpdate: function(nextProps, nextState){
+  shouldComponentUpdate(nextProps) {
     // we update if the id is not the same for the component
     // and if we're not on the same page (all, f, fof)
     // or if the product just got add or removed from whishlist
-    if(nextProps.data.id !== this.props.data.id ||
+    if (nextProps.data.id !== this.props.data.id ||
        nextProps.currentPage !== this.props.currentPage ||
        WishlistStore.getIdLastSetProduct() === this.props.data.id) {
 
@@ -51,18 +39,32 @@ var Product = React.createClass({
     return false;
   },
 
-  render: function(){
+  componentDidUpdate(prevprops) {
+    // we dont hide the picture if we only update the checkmark sign
+    if (prevprops.data.id !== this.props.data.id) {
+      $(this.refs.img).hide();
+    }
+  },
 
-    var numReviewers,
-        numReviewersTag,
-        opacityControl,
-        textClassName,
-        imgContainerClassName,
-        starIcon,
-        name;
+  // called on onload
+  _showImage() {
+    $(this.refs.img).fadeIn(200);
+  },
+
+  _showProductWidget() {
+    WidgetActions.doShowWidget(this.props.data);
+  },
+
+  render() {
+
+    let numReviewersTag = null;
+    let textClassName = null;
+    let imgContainerClassName = null;
+    let starIcon = null;
+    let name = null;
 
     // Name cropping
-    if(this.props.data.name.length > cropLength){
+    if (this.props.data.name.length > cropLength) {
       const popover = (<Popover>{this.props.data.name}</Popover>);
       name = (
         <OverlayTrigger trigger="hover"
@@ -70,41 +72,40 @@ var Product = React.createClass({
                         placement="top"
                         overlay={popover}>
            <h5>
-              {this.props.data.name.substring(0, cropLength) + "..."}
+              {this.props.data.name.substring(0, cropLength) + '...'}
            </h5>
         </OverlayTrigger>
       );
     } else {
       name = (<h5>{this.props.data.name}</h5>);
-    };
+    }
 
     // Control of the opacity changes
     textClassName = classnames({
-      "low-opacity": !!this.props.data.iswish
+      'low-opacity': !!this.props.data.iswish,
     });
-    
-    imgContainerClassName = classnames("sm-img-container", {
-      "low-opacity": !!this.props.data.iswish
+
+    imgContainerClassName = classnames('sm-img-container', {
+      'low-opacity': !!this.props.data.iswish,
     });
 
     starIcon = this.props.data.iswish ? (<i className="fa fa-star"></i>) : null;
 
     // The little message under the picture
-    switch(this.props.data.numReviewers){
-    case 0:
-      numReviewersTag = "Nobody reviewed this product";
-      break;
-    case 1:
-      numReviewersTag = `${this.props.data.numReviewers} user reviewed this product`;
-      break;
-    default:
-      numReviewersTag = `${this.props.data.numReviewers} users reviewed this product`;
-    };
+    switch (this.props.data.numReviewers) {
+      case 0:
+        numReviewersTag = 'Nobody reviewed this product';
+        break;
+      case 1:
+        numReviewersTag = `${this.props.data.numReviewers} user reviewed this product`;
+        break;
+      default:
+        numReviewersTag = `${this.props.data.numReviewers} users reviewed this product`;
+    }
 
-
-    let buttonClassnames = classnames("btn", {
-      "btn-info": !this.props.data.iswish,
-      "btn-danger": this.props.data.iswish
+    const buttonClassnames = classnames('btn', {
+      'btn-info': !this.props.data.iswish,
+      'btn-danger': this.props.data.iswish,
     });
 
     return (
@@ -131,11 +132,9 @@ var Product = React.createClass({
 
         {/* Open the box */}
         <button className={buttonClassnames} onClick={this._showProductWidget}>
-           {this.props.data.iswish ? "Remove" : "More Info"}
+           {this.props.data.iswish ? 'Remove' : 'More Info'}
         </button>
         </div>
     );
-  }
+  },
 });
-
-module.exports = Product;

@@ -1,10 +1,9 @@
-const React = require("react/addons"),
-      CSSTransitionGroup = React.addons.CSSTransitionGroup,
-      Reflux = require("reflux"),
-      trim = require("lodash").trim,
-      { Link } = require("react-router"),
-      debug = require("debug")(__filename),
-      ReviewStore = require("../stores/ReviewStore");
+import React from 'react';
+import Reflux from 'reflux';
+import { trim } from 'lodash';
+import { Link } from 'react-router';
+import ReviewStore from '../stores/ReviewStore';
+
 
 const rectangles = (
     <div id="rects">
@@ -15,85 +14,86 @@ const rectangles = (
     </div>
 );
 
-var Review = React.createClass({
+export default React.createClass({
 
-    mixins: [
-        Reflux.listenTo(ReviewStore, '_setReview')
-    ],
+  mixins: [
+    Reflux.listenTo(ReviewStore, '_setReview'),
+  ],
 
-    _setReview(review){
-        this.setState(review);
-    },
+  getInitialState() {
+    return null;
+  },
 
-    getInitialState(){
-        return null;
-    },
-    componentWillUpdate(nextProps, nextState){
-        $("#review-text").hide();
-    },
+  componentWillUpdate() {
+    $("#review-text").hide(); // eslint-disable-line
+  },
 
-    componentDidUpdate(){
-        $("#review-text").fadeIn();
-    },
+  componentDidUpdate() {
+    $("#review-text").fadeIn(); // eslint-disable-line
+  },
 
-    render(){
-
-      var revData = [],
-          review = null,
-          username = null,
-          comment = null,
-          rating = null;
-
-      // If the state is empty, lets return rectangles 
-      if(this.state === null){
-        review = rectangles;
-      }
+  _setReview(review) {
+    this.setState(review);
+  },
 
 
-      // Else, everything is fine
-      else {
-        for(let k in this.state.answers){
-          revData.push(
-            <div key={k}>
-               <span key={k}><strong>{k}</strong>: </span>
-               <span>
-                  {this.state.answers[k]}
-               </span>
-            </div>
-          );
-        }
+  render() {
 
-        comment = trim(this.state.comment) === "" ? null : (<span><strong>Comment: </strong> {this.state.comment}</span>);
+    const revData = [];
 
-        rating = this.state.rating ? null : (<span><strong>Rating: </strong> {this.state.rating}</span>);
+    let review = null;
+    let comment = null;
+    let rating = null;
 
-        review = (
-          <div key="">
-             <div>
-                {revData}
-             </div>
-             <div>
-                {comment}
-             </div>
-             <div>
-                {rating}
-             </div>
-             <Link to={`/users/${this.state.reviewer.id}`}>
-                 See {this.state.reviewer.username} profile
-             </Link>
+    // If the state is empty, lets return rectangles
+    if (this.state === null) {
+      review = rectangles;
+    } else {
+      this.state.answers.forEach((elem, i) => {
+        revData.push(
+          <div key={i}>
+            <span key={i}><strong>{i}</strong>: </span>
+            <span>
+              {elem}
+            </span>
           </div>
+        );
+
+      });
+
+      if (trim(this.state.comment) !== '') {
+        comment = (
+          <span><strong>Comment: </strong> {this.state.comment}</span>
         );
       }
 
-      return (
-        <div className="review-inner">
-           <h4>Review</h4>
-           <div id="review-text">
-              {review}
-           </div>
+      rating = this.state.rating ? null : (<span><strong>Rating: </strong> {this.state.rating}</span>);
+
+      review = (
+        <div key="">
+          <div>
+            {revData}
+          </div>
+          <div>
+            {comment}
+          </div>
+          <div>
+            {rating}
+          </div>
+          <Link to={`/users/${this.state.reviewer.id}`}>
+            See {this.state.reviewer.username} profile
+          </Link>
         </div>
       );
     }
-});
 
-module.exports = Review;
+    return (
+      <div className="review-inner">
+        <h4>Review</h4>
+        <div id="review-text">
+          {review}
+        </div>
+      </div>
+    );
+  },
+});

@@ -1,21 +1,20 @@
 from django.db import models
-from users.models import get_fof, get_friends, MutualFriends, MutualLikes,\
-    get_users_share_mutual_likes, get_users_share_mutual_friends
 from django.contrib.auth.models import User
+
+from users import utils as user_utils
 
 
 def get_review_data(user, product):
-    """Returns the review data for a given user and product"""
+    """Returns the review data for a given user and product."""
 
     rev_info = dict()
 
     # we get the user review
     try:
-        reviewing = Reviewing.objects.get(user=user,
-                                          product=product)
+        reviewing = Reviewing.objects.get(
+            user=user, product=product)
     except:
         return False
-
 
     rev_info['boolAnswers'] = [dict(val=x['boolean_value'],
                                     id=x['review_element'],
@@ -53,7 +52,6 @@ def get_review_data(user, product):
     except:
         pass
 
-
     # we only return if not empty
     return {k: v for k, v in rev_info.items() if v}
 
@@ -69,23 +67,22 @@ def get_reviewers(user, product, types=('a', 'f', 'fof', 'mf', 'ml')):
 
     # we get users ids that did in a list
     # note that it contains friends and fof too
-    all_reviewers = [
-        dict(id=x.user.id, username=x.user.username)
-        for x in Reviewing.objects.filter(product=product).exclude(user=user.id)
-    ]
+    all_reviewers = [dict(id=x.user.id, username=x.user.username) for
+                     x in Reviewing.objects.filter(product=product)
+                     .exclude(user=user.id)]
 
     if 'a' in types:
         if all_reviewers:
             result['all_reviewers'] = all_reviewers
 
     if 'f' in types and user.is_authenticated():
-        f = get_friends(user)
+        f = user_utils.get_friends(user)
         f_reviewers = [u for u in all_reviewers if u['id'] in f]
         if f_reviewers:
             result['f_reviewers'] = f_reviewers
 
     if 'fof' in types and user.is_authenticated():
-        fof = get_fof(user)
+        fof = user_utils.get_fof(user)
         fof_reviewers = [u for u in all_reviewers if u['id'] in fof]
         # We remove friends from friends of friends
         if f:
@@ -94,13 +91,14 @@ def get_reviewers(user, product, types=('a', 'f', 'fof', 'mf', 'ml')):
             result['fof_reviewers'] = fof_reviewers
 
     if 'mf' in types and user.is_authenticated():
-        mutual_friends = get_users_share_mutual_friends(user)
-        mutual_friends_rev = [u for u in all_reviewers if u['id'] in mutual_friends]
+        mutual_friends = user_utils.get_users_share_mutual_friends(user)
+        mutual_friends_rev = [u for u in all_reviewers if
+                              u['id'] in mutual_friends]
         if mutual_friends_rev:
             result['mutual_f_reviewers'] = mutual_friends_rev
 
     if 'ml' in types and user.is_authenticated():
-        mutual_likes = get_users_share_mutual_likes(user)
+        mutual_likes = user_utils.get_users_share_mutual_likes(user)
         mutual_likes_rev = [u for u in all_reviewers if u['id'] in mutual_likes]
         if mutual_likes_rev:
             result['mutual_likes_rev'] = mutual_likes_rev
@@ -113,11 +111,9 @@ def get_review_tree():
 
     # We build the review tree
     try:
-        review_widget = ReviewWidget.objects.filter(
-            primary=True)[0]
-    except IndexError:
-        review_widget = ReviewWidget.objects.all()[0]
-    except IndexError:
+        review_widget = ReviewWidget.objects.get(
+            primary=True)
+    except Exception:
         raise("Please create a review widget")
 
     review_root_elements = ReviewRootElement.objects.filter(

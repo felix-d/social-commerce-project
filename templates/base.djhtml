@@ -17,7 +17,6 @@
     </head>
     <body>
         <div id="main-wrapper">
-            <div id="overlay"></div>
             <div class="container">
                 {% block body %}
                 {% endblock %}

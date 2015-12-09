@@ -4,6 +4,13 @@ $review-app-min-height: 710px;
 $product-images-height-lg: 173px;
 $product-images-height-normal: 136px;
 
+.show-image {
+  opacity: 0;
+}
+.show-image.active {
+  opacity: 1;
+  transition: opacity 0.2s;
+}
 
 #reviewapp {
     

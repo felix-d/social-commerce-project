@@ -28,34 +28,19 @@ http://plnkr.co/edit/HIqqdeQUvPfrc7eOOvfx?p=preview
 
 `gulp watch` browserify-watch, compile css + js and live reload chrome
 
-* * *
-### TODO
-#### ~~Creating User objects when logging in with Facebook API~~
-Currently using [django-allauth](https://github.com/pennersr/django-allauth).
-Adding more authentication methods would be a walk in the park
-#### ~~Getting the products to fill the database~~
-The script [tools/get_movies.py](https://github.com/felix-d/social-commerce-project/blob/master/tools/get_movies.py) fetches from [The Movie Database Api](https://www.themoviedb.org/documentation/api) the information of 275 movies and their poster images.
-The images are stored in [tools/images/](https://github.com/felix-d/social-commerce-project/tree/master/tools/images)
-The information is stored in [tools/movies.csv](https://github.com/felix-d/social-commerce-project/blob/master/tools/movies.csv#L9)
-#### ~~Writing a script to fill the database from the csv file~~
-#### ~~Extend user model with step field~~
-The user model was extended with a one to one relationship to UserStep. This is the clean and recommended way of extending the User model
-according to Django docs.
-#### ~~Implement a middleware to intercept http requests and redirect the user depending on his status and step count~~
-#### ~~Creating products app model~~
-#### ~~Creating questionnaires app model~~
-#### ~~Creating reviews app models~~
-#### ~~Creating users app models~~
-#### ~~Creating analytics app models~~
-#### ~~Updating friendships on logging~~
+For `gulp-image-resize`, you need to install imagemagick and graphicsmagick.
 
-Now when a user logs in, a new friendship is created in the database if it doesn't exist yet
+OSX
 
-#### ~~Create a reviewing app with React + Flux for phase1~~~
-#### ~~Create questionnaire page from the questionnaire models~~
-#### ~~Add share dialog with javascript sdk and ajax callback to update step count~~
-#### User-agent sniffing to prevent mobile users from using the app
-#### Add error handling for faulty ajax calls
-#### Change static files urls to dynamic urls to choose between dev and prod given a predefined setting (template tag?)
-#### Write gulp tasks for prod (concatenation & minification)
-#### ...
+```
+brew install imagemagick
+brew install graphicsmagick
+```
+
+Linux
+
+```
+apt-get install imagemagick
+apt-get install graphicsmagick
+```
+

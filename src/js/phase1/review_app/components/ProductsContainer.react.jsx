@@ -1,77 +1,64 @@
-var React = require('react');
-var Product = require("./Product.react.jsx");
-var { Col } = require('reat-bootstrap');
-var ProductStore = require('../stores/ProductStore');
-var ProductActions = require('../actions/ProductActions');
-var ReviewBox = require("./ReviewBox.react.jsx");
+import React from 'react';
+import Product from './Product.react.jsx';
+import { Col } from 'react-bootstrap';
+import ProductStore from '../stores/ProductStore';
+import ProductActions from '../actions/ProductActions';
 
-//Return the products
-function getProductsState(){
-  let products = ProductStore.getProducts();
-  return products;
+
+function getProductsState() {
+  return {
+    products: ProductStore.getProducts(),
+  };
 }
 
-var infiniteScrollCheck = function(){
-  var $reviewApp = $("#reviewapp");
-  var reviewAppOffset = $reviewApp.offset();
+function infiniteScrollCheck() {
+  const $reviewApp = $('#reviewapp');
+  const reviewAppOffset = $reviewApp.offset();
 
-  // the bottom position of the products container
-  var bottom = reviewAppOffset.top + $reviewApp.height();
+  const bottom = reviewAppOffset.top + $reviewApp.height();
 
-  // if we can see all the products in the window, we can add some more!
-  // the integer is a buffer to fix firefox and safari
   if (bottom <= $(window).scrollTop() + $(window).height() + 150) {
     ProductActions.infiniteScroll();
   }
-};
+}
 
-/**
- * PRODUCTS CONTAINER COMPONENT
- * The right-most container of the review app containing the products
- */
-var ProductsContainer = React.createClass({
+export default React.createClass({
 
-  getInitialState: function(){
+  getInitialState() {
     return getProductsState();
   },
 
-  componentDidUpdate: function(){
-    infiniteScrollCheck();
-  },
-
-  componentDidMount: function(){
+  componentDidMount() {
     // We listen to the product store
     ProductStore.addChangeListener(this._onChange);
     infiniteScrollCheck();
-    $(window).on("resize scroll", infiniteScrollCheck);
+    $(window).on('resize scroll', infiniteScrollCheck);
   },
 
-  componentWillUnmount: function(){
+  componentDidUpdate() {
+    infiniteScrollCheck();
+  },
+
+  componentWillUnmount() {
     ProductStore.removeChangeListener(this._onChange);
   },
 
-  _onChange: function(){
+  _onChange() {
     this.setState(getProductsState());
   },
 
-  render: function(){
+  render() {
 
-    if(!this.state.products) { return null; }
+    if (!this.state.products) { return null; }
 
-    var products = this.state.products.map(function(m, i){
-      return(
-        <Product data={m} key={i}/>
-      );
-    })
+    const products = this.state.products.map(m => <Product data={m} key={m.name}/>);
 
-      return(
-        <Col xs={9} className="product-pages">
-           <div id="products" className="will-fade">
-              {products}
-           </div>
-        </Col>
-      );
-  }
+    return (
+      <Col xs={9} className="product-pages">
+        <div id="products" className="will-fade">
+          {products}
+        </div>
+      </Col>
+    );
+  },
 });
-
-module.exports = ProductsContainer;

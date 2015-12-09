@@ -34,6 +34,8 @@ SECRET_KEY = get_env_variable("SOCIAL_COMMERCE_SECRET_KEY")
 FACEBOOK_APP_ID = get_env_variable("FACEBOOK_APP_ID")
 FACEBOOK_APP_SECRET = get_env_variable("FACEBOOK_APP_SECRET")
 
+FACEBOOK_API_URL = 'https://graph.facebook.com/v2.4/'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

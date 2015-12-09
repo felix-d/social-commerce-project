@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 import json
 from shared.mobile_agent_detection import no_mobile
 from products.models import Tag, get_products, Product
-from users.models import is_wish, Wish, get_friends, get_user
+from users.utils import is_wish, get_friends, get_user
 from reviews.models import get_reviewers, get_review_data, get_review_tree, Reviewing
 from shared.custom_user_flow import redirect_user_to_current_step
 from django.contrib.auth.models import User

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import json
+import time
 import os
 import csv
 from urllib.request import urlopen
@@ -28,14 +29,19 @@ def main():
             "/discover/movie",
             sort_by="popularity.desc",
             page=p_number)
+        if page is None:
+            continue
         results = page["results"]
-
         for r in results:
+            time.sleep(0.1)
+            if r is None:
+                continue
             # we need to query the api again for
             # the description and tags
             movieid = str(r['id'])
             movie = tmdbApi.getResponse("/movie/" + movieid)
-
+            if movie is None:
+                continue
             # we write to csv file
             output = []
             title = movie['original_title']
@@ -75,7 +81,7 @@ def get_env_variable(var_name):
 
 
 def download_image(url):
-    filepath = 'images/' + os.path.basename(url)
+    filepath = os.path.join('../src/images/products/', os.path.basename(url))
     f = open(filepath, 'wb')
     img = urlopen(url).read()
     f.write(img)
@@ -92,8 +98,12 @@ class ApiManager:
             'api_key=' + self.api_key + "&"
         for key in kwargs.keys():
             fullUrl += key + "=" + kwargs[key] + "&"
-        response = urlopen(fullUrl).read().decode()
-        return json.loads(response)
+        try:
+            response = urlopen(fullUrl).read().decode()
+            return json.loads(response)
+        except Exception as e:
+            print(e)
+            pass
 
 
 if __name__ == "__main__":
