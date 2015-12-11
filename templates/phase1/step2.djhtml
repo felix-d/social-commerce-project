@@ -2,7 +2,7 @@
 {% block body %}
     <div class="row">
         <div class="col-xs-12">
-            <h1>This is the form page</h1>
+            <h2>This is the form page</h2>
         </div>
     </div>
     <div class="row">
@@ -31,6 +31,6 @@
                 </div>
             </form>
         </div>
-    </div>    
-    <p><a href="{% url 'auth_logout' %}">Logout</a></p>
+    </div>
+    <!-- <p><a href="{% url 'auth_logout' %}">Logout</a></p> -->
 {% endblock %}

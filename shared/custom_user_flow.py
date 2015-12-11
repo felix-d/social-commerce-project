@@ -7,7 +7,8 @@ current_phase = settings.CURRENT_PHASE
 
 
 def redirect_user_to_current_step(user):
-        user_step = user.userstep.step
+        user_step = getattr(user.userstep,
+                            'phase{}_step'.format(current_phase))
 
         # Specific to phase1
         if current_phase is 1:
@@ -31,8 +32,10 @@ def redirect_user_to_current_step(user):
 
 
 class AllauthOverrideMiddleware():
-    """
-    A middleware to implement a custom user flow
+    """A middleware to implement a custom user flow.
+
+    This middleware ensures we don't use django allauth urls
+    by redirecting to the home page if an error occurs.
     """
     def __init__(self):
         # allauth urls

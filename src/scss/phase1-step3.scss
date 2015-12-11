@@ -1,0 +1,36 @@
+#particles-js{
+    width:100%;
+    height:100%;
+    position:fixed;
+    z-index: -1;
+}
+
+
+.content {
+    left: 50%;
+    width:500px;
+    top:50%;
+    height:300px;
+    margin-top: -150px;
+    margin-left: -250px;
+    position: fixed;
+    
+}
+#content-success {
+    display:none;
+}
+body{
+    overflow: hidden;
+    background: url("../images/bg.jpeg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#sharing {
+    margin-top:30px;
+    margin-bottom:10px;
+}
+
+

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django import http
 
-from questionnaires.models import get_primary_questionnaire_as_dict
+from questionnaires.utils import get_questionnaire_as_dict
 from products.models import Tag, Product, get_products
 from reviews.models import create_review, get_review_tree,\
     get_review_data, del_review
@@ -34,7 +34,7 @@ def step1(request):
     """PAGE -- The main phase 1 reviewing page that loads
     the React app."""
     if not request.user.is_superuser and\
-       request.user.userstep.step != 1:
+       request.user.userstep.phase1_step != 1:
         return redirect_user_to_current_step(request.user)
 
     products = get_products()
@@ -61,14 +61,14 @@ def step2(request):
     """PAGE -- The questionnaire."""
     if not request.user.is_superuser and\
        get_number_reviews(request.user) >= 3 and\
-       request.user.userstep.step == 1:
-        set_user_step(request.user, 2)
+       request.user.userstep.phase1_step == 1:
+        set_user_step(request.user, step=2, phase=1)
 
     if not request.user.is_superuser and\
-       request.user.userstep.step != 2:
+       request.user.userstep.phase1_step != 2:
         return redirect_user_to_current_step(request.user)
 
-    questionnaire = get_primary_questionnaire_as_dict()
+    questionnaire = get_questionnaire_as_dict(phase=1)
     context_dict = {
         'questionnaire': questionnaire
     }
@@ -80,7 +80,7 @@ def step3(request):
     """PAGE - The last page where the user is invited to share
     the experience."""
     if not request.user.is_superuser and\
-       request.user.userstep.step < 3:
+       request.user.userstep.phase1_step < 3:
         return redirect_user_to_current_step(request.user)
     return render(request, 'phase1/step3.djhtml')
 
@@ -149,7 +149,7 @@ def questionnaire(request):
     if request.method == "POST":
         # If is valid
         if not request.user.is_superuser:
-            set_user_step(request.user, 3)
+            set_user_step(request.user, step=3, phase=1)
         return http.HttpResponseRedirect('/phase1/step3/')
 
     return http.HttpResponseBadRequest("Only accesible with POST")
@@ -160,7 +160,7 @@ def shared(request):
     """ENDPOINT -- We validate if the experience was shared."""
     if request.method == "POST":
         # If is valid===l
-        set_user_step(request.user, 4)
+        set_user_step(request.user, step=4, phase=1)
         result = 'success'
         json_response = {'result': result}
         return http.JsonResponse(json_response)

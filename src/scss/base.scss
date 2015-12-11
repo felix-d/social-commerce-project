@@ -6,21 +6,24 @@ html, body {
 body {
     font-family: 'Open Sans', sans-serif;
 }
+.panel {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 5px;
+}
 h1 {
     font-size: 63px;
 }
 .example-enter {
-      opacity: 0.01;
-        transition: opacity .5s ease-in;
-
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
 }
 .example-enter.example-enter-active {
-      opacity: 1;
-
+  opacity: 1;
 }
 
 h1 {
-    font-family: 'Lobster', cursive;
+  font-family: 'Lobster', cursive;
 }
 
 .alert {

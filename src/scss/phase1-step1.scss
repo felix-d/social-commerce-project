@@ -1,0 +1,55 @@
+@import 'mixins-and-variables';
+
+.info-box {
+    text-align:right;
+    height: 45px;
+    padding: 5px;
+    .next-button {
+        margin-right: 40px;
+    }
+    .well {
+        margin-top:5px;
+        text-align:left;
+    }
+}
+#info-button {
+    width: 35px;
+}
+#icon-wrapper {
+    display: inline-block;
+    width:72px;
+    margin-left: 20px;
+    line-height: 1em;
+    height:42px;
+    font-size: 2em;
+    position: relative;
+}
+#next-icon {
+}
+#overlay{
+    position:fixed;
+    z-index: 998;
+    width:150%;
+    top: -25%;
+    left: -25%;
+    height:150%;
+    display:block;
+    background-color: rgba(0,0,0,0.4);
+    -webkit-transform: translateZ(0);
+}
+#info-popup{
+    display: block;
+    z-index: 999;
+    position: fixed;
+    width: 300px;
+    margin: 0 auto;
+    height:200px;
+    top:50%;
+    margin-top: -100px;
+    left: 50%;
+    margin-left: -150px;
+            @include box-shadow(0 2px 26px rgba(0, 0, 0, .3), 0 0 0 1px rgba(0, 0, 0, .1));
+    .panel{
+        margin-bottom: 0px;
+    }
+}

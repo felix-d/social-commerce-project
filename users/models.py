@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 class UserStep(models.Model):
     """This model holds the user step count"""
     user = models.OneToOneField(User)
-    step = models.IntegerField(default=1)
+    phase1_step = models.IntegerField(default=1)
+    phase2_step = models.IntegerField(default=1)
 
 
 class UserImage(models.Model):
