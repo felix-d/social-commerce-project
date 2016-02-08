@@ -1,46 +1,29 @@
-var React = require('react'),
-    WishlistApp = require("./components/WishlistApp.react.jsx"),
-    FiltersStore = require("./products/stores/FiltersStore"),
-    WidgetStore = require("./widget/stores/WidgetStore"),
-    ProductsStore = require("./products/stores/ProductsStore"),
-    Router = require("react-router"),
-    RouterActions = require("./router/actions/RouterActions"),
-    ProductsActions = require("./products/actions/ProductsActions"),
-    { Route, DefaultRoute, Redirect } = Router,
-    ProductsPage = require("./products/components/ProductsPage.react.jsx"),
-    ProfilePage = require("./me/components/ProfilePage.react.jsx"),
-    UserPage = require("./users/components/UserPage.react.jsx");
+import 'superagent-django-csrf';
+import { createHashHistory } from 'history';
 
-require("./router/stores/RouterStore");
-require('superagent-django-csrf');
+import React from 'react';
+import { render } from 'react-dom';
+import { Route, Router, Redirect, IndexRedirect } from 'react-router';
 
-global.debug = require("debug");
+import WishlistApp from './components/WishlistApp.react.jsx';
+import ProductsPage from './products/components/ProductsPage.react.jsx';
+import ProfilePage from './me/components/ProfilePage.react.jsx';
+import UserPage from './users/components/UserPage.react.jsx';
 
-var init = function init(data){
+global.debug = require('debug');
 
-    // We setup the SideBar Store
-    FiltersStore.setup(data.tags);
+const history = createHashHistory({queryKey: false});
 
-    // We setup the product store
-    ProductsStore.setup(data.products);
+var routes = (
+  <Router history={history}>
+    <Route path="/" component={WishlistApp}>
+      <IndexRedirect to="products"/>
+      <Route path="products" component={ProductsPage}/>
+      <Route path="profile" component={ProfilePage}/>
+      <Route path="users/:userId" component={UserPage}/>
+      <Redirect from="*" to="products"/>
+    </Route>
+  </Router>
+);
 
-    // we setup the widget store
-    WidgetStore.setup(data.reviewElements);
-
-    var routes = (
-        <Route path="/" name="root" handler={WishlistApp}>
-            <Route name="products" path="products" handler={ProductsPage}/>
-            <Route name="profile" path="me" handler={ProfilePage}/>
-            <Route name="users" path="users/:userId" handler={UserPage}/>
-            <Redirect from="/" to="products"/>
-        </Route>
-    );
-
-    
-    Router.run(routes, Router.HashLocation, (Root) => {
-        RouterActions.routeChanged(Router.HashLocation.getCurrentPath());
-        React.render(<Root/>, document.getElementById("wishlist-app"));
-    });
-};
-
-module.exports = init;
+render(routes, document.getElementById('wishlist-app'));

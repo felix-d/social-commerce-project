@@ -1,9 +1,9 @@
 // if login was canceled 
-$(function(){
+$(function() {
         var $agreement = $("#agreement"),
             $login = $("#login"),
             $loginError= $("#login-error");
-    param = window.location.search.replace("?", "");
+    var param = window.location.search.replace("?", "");
     if(param=='cancel'){
         $agreement.remove();
         $login.removeClass();

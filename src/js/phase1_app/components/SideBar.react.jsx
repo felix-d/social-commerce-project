@@ -54,14 +54,14 @@ export default React.createClass({
       clearTimeout(typingTimeout);
     }
     typingInSearchField = true;
-    typingTimeout = setTimeout(function callback() {
+    typingTimeout = setTimeout(() => {
       typingInSearchField = false;
       const newSearchValue = this.refs.searchInput.value;
       if (oldSearchValue !== newSearchValue) {
         this.doSearch();
         oldSearchValue = this.refs.searchInput.value;
       }
-    }.bind(this), 200);
+    }, 200);
   },
 
   // We search! The tags are accessible from the store

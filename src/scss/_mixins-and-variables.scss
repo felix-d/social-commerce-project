@@ -1,11 +1,11 @@
 $large-width: 1200px;
-$normal-width: 975px;
-$ipad: 900px;
 
 // Colors
 $info: #5bc0de;
 $warning: #f0ad4e;
 $success: #5cb85c;
+$primary: #337ab7;
+$danger: #d9534f;
 
 @mixin large-screen {
   @media screen and (min-width: #{$large-width}){

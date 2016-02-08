@@ -7,9 +7,10 @@ import HelpModal from './HelpModal.react.jsx';
 
 function getState() {
   const numReviews = ProductStore.getNumReviews();
+  const requiredReviews = ProductStore.getNumRequiredReviews();
   return {
     numReviews,
-    requiredReviews: 5,
+    requiredReviews,
   };
 }
 
@@ -19,6 +20,7 @@ function getInfoNavItem(numR, numReq) {
   if (numR === 1) {
     text = `1 product reviewed, only ${numReq - numR} left!`;
   } else if (numR === 0) {
+    navitemId = 'navbar-info--danger';
     text = `0 product reviewed, only ${numReq - numR} left!`;
   } else if (numR < numReq) {
     text = `${numR} products reviewed, only ${numReq - numR} left!`;
@@ -72,6 +74,7 @@ export default React.createClass({
           {infoNavItem}
           <NavItem id="navbar-help" eventKey={1} onClick={this._openHelpModal} >Help <Glyphicon className="nav-glyph" glyph="question-sign"/></NavItem>
           <NavItem id="navbar-next" eventKey={1} href="step2" disabled={disabled}>Continue <Glyphicon className="nav-glyph" glyph="arrow-right"/></NavItem>
+            <NavItem href="/logout/" className="logout-button">Logout</NavItem>
         </Nav>
       </Navbar>
       </span>

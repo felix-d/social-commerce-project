@@ -1,7 +1,7 @@
 {% extends "base.djhtml" %}
 {% load static %}
 {% block extraheader %}
-    <link href="{% static "css/phase1-step3.min.css" %}" rel="stylesheet"/>
+    <link href="{% static "css/step3.min.css" %}" rel="stylesheet"/>
 {% endblock %}
 {% block body %}
 

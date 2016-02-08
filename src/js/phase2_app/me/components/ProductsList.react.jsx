@@ -1,95 +1,84 @@
-const React = require("react"),
-      Slider = require("react-slick"),
-      debug = require("debug")(__filename),
-      Review = require("../../components/Review.react.jsx"),
-      {Button, OverlayTrigger, Popover} = require("react-bootstrap");
+import React from 'react';
+import Slider from 'react-slick';
+import Review from '../../components/Review.react.jsx';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import track from '../../tracking';
 
 const cropMax = 10;
 
 const PopoverButton = React.createClass({
-  componentDidMount() {
-    console.log("mounted");
+
+  propTypes: {
+    overlay: React.PropTypes.object,
+    userid: React.PropTypes.number,
+    itemid: React.PropTypes.number,
   },
-  getInitialState() {
-    return {
-      isShowing: false
-    }
+
+  _seeingReview() {
+    track('REVIEW_VIEWED_IN_REVIEWER_PAGE', {
+      itemId: this.props.itemid,
+      userId: this.props.userid,
+    });
   },
-  hide() {
-    this.refs["trigger"].hide();
-    this.setState({isShowing: false});
-  },
-  _click() {
-    this.setState({isShowing: !this.state.isShowing});
-  },
+
   render() {
     return (
       <OverlayTrigger trigger="click"
-                      placement="top"
+                      placement="bottom"
+                      rootClose
                       ref="trigger"
                       overlay={this.props.overlay}>
-         <Button className="btn btn-info user-page__see-review-button" onClick={this._click}>
-            {this.state.isShowing ? "Hide review" : "See review"}
+         <Button onClick={this._seeingReview} bsSize="xs" bsStyle="info" className="user-page__see-review-button">
+            See review
          </Button>
       </OverlayTrigger>
     );
-  }
+  },
 });
 
 const ProductsList = React.createClass({
 
-  _$slickArrows: null,
-
-  _popoverButtons: [],
-
-  componentDidMount(){
-    // We hide popovers when we click on an arrow
-    this._$slickArrows = $(".slick-prev, .slick-next");
-    this._$slickArrows.click(event => {
-      this._popoverButtons.forEach(p => {
-        p.hide();
-      })
-    });
+  propTypes: {
+    numSlides: React.PropTypes.number,
+    review: React.PropTypes.object,
+    products: React.PropTypes.array,
+    userid: React.PropTypes.number,
+    imgClass: React.PropTypes.string,
   },
 
-
-  componentwillunmount(){
-    this._$slickArrows.unbind("click");
+  getDefaultProps() {
+    return {
+      numSlides: 5,
+    };
   },
 
-  render(){
+  render() {
 
     let slider = null;
 
-    
-    if(this.props.products) {
-      
+    if (this.props.products) {
       const settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         arrows: true,
         speed: 500,
-        slidesToShow: 9,
-        slidesToScroll: 9 
+        slidesToShow: this.props.numSlides,
+        slidesToScroll: 1,
       };
 
-      let review = this.props.review || false,
-          button = null;
+      let review = this.props.review || false;
+      let button = null;
+      const products = this.props.products.map(p => {
 
-      let products = this.props.products.map(p => {
+        let original = null;
+        let name = p.name;
+        let shortName = null;
 
-        let cropName = false,
-            original = null,
-            name = p.name,
-            shortName = null,
-            img = null;
-        
-        if(p.name.length > cropMax){
+        if (p.name.length > cropMax) {
           original = p.name;
-          shortName = original.substring(0, cropMax + 3) + "...";
-          
+          shortName = original.substring(0, cropMax - 3) + '...';
           name = (
-            <OverlayTrigger trigger={["hover", "focus"]}
+            <OverlayTrigger trigger={['hover', 'focus']}
                             placement="top"
                             overlay={<Popover>{original}</Popover>}>
                <span>{shortName}</span>
@@ -97,31 +86,43 @@ const ProductsList = React.createClass({
           );
         }
 
-        if(review){
-          let props = {
+        if (review) {
+          const props = {
             answers: p.review.boolAnswers,
             rating: p.review.rating,
-            comment: p.review.comment
+            comment: p.review.comment,
           };
-          review = p.review.boolAnswers || p.review.rating || p.review.comment ? <Review {...props}/> : "The review is empty.";
+          const key = `${p.id}:${this.props.userid}`;
+          review = p.review.boolAnswers || p.review.rating || p.review.comment ?
+                   <Review key={key} {...props}/> : 'The review is empty.';
 
-          let popover = <Popover>{review}</Popover>;
-
-          button = <PopoverButton overlay={popover} ref={pb => this._popoverButtons.push(pb)}/>;
+          const popover = <Popover key={key}>{review}</Popover>;
+          button = (
+            <PopoverButton
+                userid={this.props.userid}
+                itemid={p.id}
+                key={key}
+                overlay={popover}/>
+          );
         }
-        
+        let imgClass = 'product-list__product__img';
+        imgClass = this.props.imgClass ? `${imgClass}--${this.props.imgClass}` : imgClass;
         return (
-        <div className="product-list__product" key={p.id}>
-           <h5>{name}</h5>
-          <img src={p.sm_image_path} alt=""/>
-           {button}
-        </div>
+          <div key={p.id}>
+            <div className="product-list__product">
+              <div className="product-list__product__inner effect6">
+                <h5>{name}</h5>
+                <img src={p.sm_image_path} className={imgClass} alt=""/>
+                {button}
+              </div>
+            </div>
+          </div>
         );
       });
       slider = <Slider {...settings}>{products}</Slider>;
     }
     return slider;
-  }
+  },
 });
 
 module.exports = ProductsList;

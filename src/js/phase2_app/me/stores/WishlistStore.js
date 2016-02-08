@@ -1,29 +1,40 @@
-'use strict';
-
 var Reflux = require("reflux"),
     WishlistActions = require("../actions/WishlistActions"),
     ProductsActions = require("../../products/actions/ProductsActions"),
     ProductStore = require("../../products/stores/ProductsStore"),
+    APIActions  = require('../../products/actions/APIActions'),
     debug = require("debug")(__filename),
     request = require("superagent");
 
 var _wishlist = null,
     _lastSetProductId = null;
 
+let REQUIRED_NUMBER_WISHES = 999999;
+
 var WishlistStore = Reflux.createStore({
 
-  listenables: WishlistActions,
+  listenables: [WishlistActions, APIActions],
 
-  init(){
+  getNumWishes() {
+    return _wishlist && _wishlist.length;
+  },
+
+  getReqNumWishes() {
+    return REQUIRED_NUMBER_WISHES;
   },
 
   getWishlist() {
     return {
-      wishlist: _wishlist 
+      wishlist: _wishlist,
     };
   },
 
-  getIdLastSetProduct(){
+  onFetchInitialDataCompleted(data) {
+    REQUIRED_NUMBER_WISHES = data.minwishes;
+    this.trigger(_wishlist);
+  },
+
+  getIdLastSetProduct() {
     return _lastSetProductId;
   },
 
@@ -38,7 +49,7 @@ var WishlistStore = Reflux.createStore({
 
   onAdd(w) {
     w.iswish = true;
-    if(_wishlist === null) {
+    if (_wishlist === null) {
       _wishlist = [];
     }
     _wishlist.push(w);

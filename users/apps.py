@@ -18,7 +18,6 @@ class MyAppConfig(AppConfig):
 
 
 def set_facebook_data():
-    print("setting facebook data")
     users = User.objects.all()
     for user in users:
         account = SocialAccount.objects.get(user=user)

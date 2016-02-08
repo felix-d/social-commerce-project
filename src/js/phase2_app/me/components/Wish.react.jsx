@@ -1,65 +1,72 @@
-"use strict";
+import React from 'react';
+import WishlistActions from '../actions/WishlistActions';
+import { OverlayTrigger, Popover, Button } from 'react-bootstrap';
+import track from '../../tracking';
 
-let React = require("react"),
-    WishlistActions = require("../actions/WishlistActions"),
-    { OverlayTrigger, Popover } = require("react-bootstrap");
+const maxLength = 11;
 
-let maxLength = 14;
+function isNotLatin(name) {
+  if (name.charCodeAt(0) > 127) {
+    return true;
+  } else {
+    return false;
+  }
+}
+export default React.createClass({
 
-let Wish = React.createClass({
+  propTypes: {
+    product: React.PropTypes.object,
+  },
 
-  _cropped: false,
-  _fullname: null,
-  _name: null,
-
-  _remove(){
+  getInitialState() {
+    const fullname = this.props.product.name;
+    let thisMaxLength = maxLength;
+    let cropped = false;
+    let name = null;
+    if (isNotLatin(fullname)) {
+      thisMaxLength = 7;
+    }
+    if (this.props.product.name.length > thisMaxLength) {
+      cropped = true;
+      name = this.props.product.name.substring(0, thisMaxLength - 3) + '...';
+    } else {
+      name = this.props.product.name;
+    }
+    return {
+      cropped,
+      fullname,
+      name,
+    };
+  },
+  _remove() {
+    track('ITEM_REMOVED_FROM_WISHLIST', {itemId: this.props.product.id});
     WishlistActions.remove(this.props.product);
   },
 
-  _crop(props){
-    if(props.product.name.length > maxLength) {
-      this._cropped = true;
-      this._fullname = props.product.name;
-      this._name = props.product.name.substring(0, maxLength - 3) + "...";
-    } else {
-      this._name = props.product.name;
-    }
-  },
+  render() {
 
-  componentWillMount(){
-    this._crop(this.props);
-  },
+    let name = <h5>{this.state.name}</h5>;
 
-  componentWillUpdate(nextProps){
-    this._crop(nextProps);
-  },
-  
-  render(){
-
-    let name = <h5>{this._name}</h5>;
-
-    if(this._cropped) {
+    if (this.state.cropped) {
       name = (
         <div>
-        <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={<Popover>{this._fullname}</Popover>}>
-           {name}
-        </OverlayTrigger>
+          <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={<Popover id={`popover-${this.name}`}>{this.state.fullname}</Popover>}>
+            {name}
+          </OverlayTrigger>
         </div>
       );
     }
-    
+
     return (
       <div className="wishlist-container__wish">
-            {name}
-            <div className="sm-img-container">
-               <img src={this.props.product.sm_image_path} alt=""/>
-            </div>
-            <button className="btn btn-default" onClick={this._remove}>
-               Remove
-            </button>
+        <div className="wishlist-container__wish__inner effect6">
+        {name}
+        <div className="sm-img-container">
+          <img src={this.props.product.sm_image_path} alt=""/>
+        </div>
+        <Button bsStyle="btn-danger" bsSize="xs" onClick={this._remove}>Remove</Button>
+        </div>
       </div>
     );
-  }
+  },
 });
-
-module.exports = Wish;

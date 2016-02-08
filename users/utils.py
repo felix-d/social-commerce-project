@@ -1,6 +1,7 @@
 import functools
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from .models import Wish, Friendship, MutualFriends, MutualLikes
 
@@ -44,8 +45,12 @@ def get_friends(user):
     :param user: User instance or id.
     :rtype: list of int
     """
-    return (Friendship.objects.filter(user=user)
-            .values_list('friend', flat=True))
+    if not isinstance(user, int):
+        user = user.pk
+    friendships = Friendship.objects.filter(
+        Q(user=user) | Q(friend=user)).values('friend__pk', 'user__pk')
+    return list(set([x['friend__pk'] if x['friend__pk'] != user
+                     else x['user__pk'] for x in friendships]))
 
 
 @functools.lru_cache()
@@ -102,3 +107,7 @@ def get_user(user):
     except:
         pass
     return dict(id=_user.id, username=_user.username, pic=url)
+
+def get_number_wishes(user):
+    """Get the number of wishes of a user."""
+    return Wish.objects.filter(user=user).count()

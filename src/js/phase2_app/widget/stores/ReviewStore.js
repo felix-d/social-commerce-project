@@ -14,49 +14,51 @@ var ReviewStore = Reflux.createStore({
 
   listenables: [WidgetActions],
 
-  init: function(){
-    
-  },
+  onDoGetReview(user, productid) {
 
-  onDoGetReview: function(user, productid){
-
-    console.log(user);
+    debug('Getting review for user', user, 'and product', productid);
     let userid = user.id;
     
     request
       .post("/phase2/reviewtext/")
       .send({userid: userid, productid: productid})
       .end(function(err, data){
+        if (err) {
+          console.log(err);
+        } else {
+          _reviewer = user;
 
-        _reviewer = user;
+          data = JSON.parse(data.text);
 
-        data = JSON.parse(data.text);
+          debug("OnDoGetReview", data);
 
-        debug("OnDoGetReview", data);
+          // we format the answers
+          let answers = {};
 
-         // we format the answers
-        var answers = {};
-
-        data.boolAnswers.forEach(b => {
-          if(b.val){
-            if(b.childgroup in answers){
-              answers[b.childgroup] += `, ${b.name}`;
-            } else {
-              answers[b.childgroup] = `${b.name}`;
-            }
+          if (data.boolAnswers) {
+            data.boolAnswers.forEach(b => {
+              if(b.val){
+                if(b.childgroup in answers){
+                  answers[b.childgroup] += `, ${b.name}`;
+                } else {
+                  answers[b.childgroup] = `${b.name}`;
+                }
+              }
+            });
           }
-        });
 
-        _currentReviewData = {
-          userid,
-          answers,
-          comment: data.comment,
-          rating: data.rating,
-          reviewer: _reviewer
-        };
+          _currentReviewData = {
+            userid,
+            answers,
+            productid,
+            comment: data.comment,
+            rating: data.rating,
+            reviewer: _reviewer
+          };
 
-        this.trigger(_currentReviewData);
-        
+          this.trigger(_currentReviewData);
+        }
+
       }.bind(this));
   }
 

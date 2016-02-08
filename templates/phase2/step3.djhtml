@@ -1,0 +1,30 @@
+{% extends "base.djhtml" %}
+{% load static %}
+{% block extraheader %}
+    <link href="{% static "css/step3.min.css" %}" rel="stylesheet"/>
+{% endblock %}
+{% block body %}
+
+    <div class="content" id="content">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Thank you!</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit. Nulla pretium risus id ornare
+                    ornare. Phasellus porttitor nisi sed cursus
+                    volutpat. Duis nibh ipsum, imperdiet ut luctus id,
+                    lacinia non mauris. Vestibulum id risus nec enim
+                    iaculis semper. Phasellus egestas ornare augue
+                    vitae sagittis. Sed pretium, enim sed tincidunt
+                    imperdiet, ante velit auctor odio, et egestas elit
+                    mi vel libero. Integer venenatis ac tortor ut
+                    imperdiet.imentum vitae. Aliquam et semper sapien.
+                </p>
+            </div>
+            <div class="text-center" id="sharing">
+              <a class="btn btn-primary" href="{% url 'auth_logout' %}">Quit</a>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

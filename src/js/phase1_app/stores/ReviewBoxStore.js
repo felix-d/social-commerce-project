@@ -113,7 +113,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
               if(_reviewElements[i]
                  .categories[j]
                  .elements[k].id ===
-                 r.boolAnswers[z].id){
+                 r.boolAnswers[z].id) {
                 _reviewElements[i]
                   .categories[j]
                   .elements[k]
@@ -180,7 +180,7 @@ var ReviewBoxStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action){
-  switch(action.actionType) {
+  switch (action.actionType) {
     case ProductConstants.OPEN_REVIEW_BOX:
       ReviewBoxStore.openReviewBox(action.data);
       ReviewBoxStore.emitChange();
@@ -190,7 +190,7 @@ AppDispatcher.register(function(action){
       ReviewBoxStore.emitChange();
       break;
     case ProductConstants.AGGREGATE_DATA:
-      ReviewBoxStore.aggregateReviewData(action.data);
+      // ReviewBoxStore.aggregateReviewData(action.data);
       break;
     case ProductConstants.TOGGLE_RECOMMEND:
       ReviewBoxStore.toggleRecommendIt();

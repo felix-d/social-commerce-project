@@ -1,15 +1,15 @@
 from django.shortcuts import redirect
 from django.conf import settings
 import re
+from phases.models import Phase
 
 
-current_phase = settings.CURRENT_PHASE
+current_phase = Phase.objects.all().first().phase
 
 
 def redirect_user_to_current_step(user):
         user_step = getattr(user.userstep,
                             'phase{}_step'.format(current_phase))
-
         # Specific to phase1
         if current_phase is 1:
             # because 4 is to indicate sharing happened,
@@ -27,7 +27,6 @@ def redirect_user_to_current_step(user):
         else:
                 url = "/phase{}/step{}/".format(str(current_phase),
                                                 user_step)
-
         return redirect(url)
 
 

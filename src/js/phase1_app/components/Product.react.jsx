@@ -110,7 +110,7 @@ export default React.createClass({
                   ref="img"
                   className={imgClass}
                   src={this.props.data.sm_image_path}
-                  onLoad={this._showImage}></img>
+                  onLoad={this._showImage}/>
             </div>
           </div>
           <p className={opacityControl}>{this.props.data.caracteristic_1}</p>

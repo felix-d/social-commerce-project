@@ -31,6 +31,6 @@ export default React.createClass({
         </div>
         </Modal.Body>
       </Modal>
-    )
-  }
-})
+    );
+  },
+});

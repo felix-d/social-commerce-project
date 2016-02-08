@@ -1,51 +1,118 @@
-var React = require('react'),
-    Reviewer = require("./Reviewer.react.jsx"),
-    Slider = require("react-slick");
+import React from 'react';
+import Reflux from 'reflux';
+import Reviewer from './Reviewer.react.jsx';
+import Slider from 'react-slick';
+import UserStore from '../../me/stores/UserStore';
+import { A, F, FOF, MF, ML } from '../../products/constants/ProductsConstants';
 
-var _$reviewersInner = null;
 
-var ReviewersCarousel = React.createClass({
+const ReviewersCarousel = React.createClass({
 
-  render(){
-    var reviewers;
-    switch(this.props.currentPage){
-      case 0:
-        if(this.props.productData.all_reviewers){
-          reviewers = this.props.productData.all_reviewers.map(function(e, i){
-            return (<div><Reviewer key={i} user={e} productData={this.props.productData}/></div>);
-          }.bind(this));
-        }
-        break;
+  propTypes: {
+    currentPage: React.PropTypes.string,
+    productData: React.PropTypes.object,
+  },
 
-      case 1:
-        if(this.props.productData.f_reviewers){
-          reviewers = this.props.productData.f_reviewers.map(function(e, i){
-            return (<div><Reviewer key={i} user={e} productData={this.props.productData}/></div>);
-          }.bind(this));
-        }
-        break;
+  mixins: [Reflux.listenTo(UserStore, 'onUserStoreChange')],
 
-      case 2:
-        if(this.props.productData.fof_reviewers){
-          reviewers = this.props.productData.fof_reviewers.map(function(e, i){
-            return (<div><Reviewer key={i} user={e} productData={this.props.productData}/></div>);
-          }.bind(this));
-        }
-        break;
-      default:
-        break;
+  getInitialState() {
+    return {
+      displayAllReviews: UserStore.displayAllReviews(),
+    };
+  },
+
+  onUserStoreChange() {
+    this.setState({
+      displayAllReviews: UserStore.displayAllReviews(),
+    });
+  },
+
+  render() {
+    let reviewers;
+    if (this.state.displayAllReviews) {
+      if (this.props.productData.all_reviewers) {
+        reviewers = this.props.productData.all_reviewers.map((e, i) => {
+          return (
+            <div className="sm-reviewer" key={i}>
+              <Reviewer key={i} user={e} productData={this.props.productData}/>
+            </div>
+          );
+        });
+      }
+    } else {
+      switch (this.props.currentPage) {
+        case A:
+          if (this.props.productData.all_reviewers) {
+            reviewers = this.props.productData.all_reviewers.map((e, i) => {
+              return (
+                <div className="sm-reviewer" key={i}>
+                  <Reviewer key={i} user={e} productData={this.props.productData}/>
+                </div>
+              );
+            });
+          }
+          break;
+
+        case F:
+          if (this.props.productData.f_reviewers) {
+            reviewers = this.props.productData.f_reviewers.map((e, i) => {
+              return (
+                <div className="sm-reviewer" key={i}>
+                  <Reviewer key={i} user={e} productData={this.props.productData}/>
+                </div>
+              );
+            });
+          }
+          break;
+
+        case FOF:
+          if (this.props.productData.fof_reviewers) {
+            reviewers = this.props.productData.fof_reviewers.map((e, i) => {
+              return (
+                <div className="sm-reviewer" key={i}>
+                  <Reviewer key={i} user={e} productData={this.props.productData}/>
+                </div>
+              );
+            });
+          }
+          break;
+        case MF:
+          if (this.props.productData.fof_reviewers) {
+            reviewers = this.props.productData.mf_reviewers.map((e, i) => {
+              return (
+                <div className="sm-reviewer" key={i}>
+                  <Reviewer key={i} user={e} productData={this.props.productData}/>
+                </div>
+              );
+            });
+          }
+          break;
+        case ML:
+          if (this.props.productData.fof_reviewers) {
+            reviewers = this.props.productData.ml_reviewers.map((e, i) => {
+              return (
+                <div className="sm-reviewer" key={i}>
+                  <Reviewer key={i} user={e} productData={this.props.productData}/>
+                </div>
+              );
+            });
+          }
+          break;
+        default:
+          break;
+      }
     }
 
-    let settings = {
-      dots: true,
+    const settings = {
+      dots: false,
       infinite: false,
       arrows: true,
       speed: 500,
       slidesToShow: 3,
-      slidesToScroll: 3
+      slidesToScroll: 1,
     };
 
-    if(reviewers) {
+    if (reviewers) {
       reviewers = <Slider {...settings}>{reviewers}</Slider>;
     } else {
       reviewers = <span>No user reviewed this product.</span>;
@@ -55,8 +122,8 @@ var ReviewersCarousel = React.createClass({
       <div className="reviewers-inner">
          {reviewers}
       </div>
-    )
-  }
+    );
+  },
 });
 
 module.exports = ReviewersCarousel;

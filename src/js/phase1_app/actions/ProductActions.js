@@ -1,17 +1,16 @@
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const ProductConstants = require('../constants/ProductConstants');
-const request =  require('superagent');
+const request = require('superagent');
 
 var ProductActions = {
 
-  
   // We fetch the initial data
   fetchInitialData() {
     request.get('get-initial-data/')
       .end((err, data) => {
         AppDispatcher.dispatch({
           actionType: ProductConstants.SET_INITIAL_DATA,
-          data: JSON.parse(data.text)
+          data: JSON.parse(data.text),
         });
       });
   },
@@ -19,7 +18,7 @@ var ProductActions = {
   // Shuffle the products!
   shuffleProducts() {
     AppDispatcher.dispatch({
-      actionType: ProductConstants.SHUFFLE_PRODUCTS
+      actionType: ProductConstants.SHUFFLE_PRODUCTS,
     });
   },
 
@@ -28,14 +27,14 @@ var ProductActions = {
     // we show the overlay (greyish background)
     AppDispatcher.dispatch({
       actionType: ProductConstants.OPEN_REVIEW_BOX,
-      data: product
+      data: product,
     });
   },
 
   // The name says it all...
   closeReviewBox() {
     AppDispatcher.dispatch({
-      actionType: ProductConstants.CLOSE_REVIEW_BOX
+      actionType: ProductConstants.CLOSE_REVIEW_BOX,
     });
   },
 
@@ -43,23 +42,19 @@ var ProductActions = {
   infiniteScroll() {
     // AppDispatcher.dispatch({
     AppDispatcher.dispatch({
-      actionType: ProductConstants.INFINITE_SCROLL
+      actionType: ProductConstants.INFINITE_SCROLL,
     });
   },
 
   // Submit a review with Ajax and optimistic rendering
   submitReview(product, reviewData) {
-    
     $.post(
       '/phase1/review/',
-      JSON.stringify({productId: product.id, reviewData: reviewData}),
-      function(data){
-        console.log(data);
-      });
+      JSON.stringify({productId: product.id, reviewData: reviewData}));
     AppDispatcher.dispatch({
       actionType: ProductConstants.SUBMIT_REVIEW,
-      product: product,
-      reviewData: reviewData
+      product,
+      reviewData,
     });
   },
 
@@ -67,22 +62,16 @@ var ProductActions = {
   setRating(rating) {
     AppDispatcher.dispatch({
       actionType: ProductConstants.SET_RATING,
-      rating: rating
+      rating,
     });
-    
   },
 
   // delete a review with ajax and optimistic rendering
   deleteReview(product) {
-    $.post(
-      '/phase1/review/',
-      JSON.stringify({productId: product.id}),
-      function(data){
-        console.log("success");
-      });
+    $.post('/phase1/review/', JSON.stringify({productId: product.id}));
     AppDispatcher.dispatch({
       actionType: ProductConstants.DELETE_REVIEW,
-      product: product
+      product,
     });
   },
 
@@ -90,7 +79,19 @@ var ProductActions = {
   commentChanged(comment) {
     AppDispatcher.dispatch({
       actionType: ProductConstants.COMMENT_CHANGED,
-      data: comment
+      data: comment,
+    });
+  },
+
+  closeNextStepModal() {
+    AppDispatcher.dispatch({
+      actionType: ProductConstants.NEXT_STEP_MODAL_CLOSED,
+    });
+  },
+
+  initModalClosed() {
+    AppDispatcher.dispatch({
+      actionType: ProductConstants.INIT_MODAL_CLOSED,
     });
   },
 
@@ -99,11 +100,11 @@ var ProductActions = {
     AppDispatcher.dispatch({
       actionType: ProductConstants.SEARCH_PRODUCTS,
       data: {
-        query: query,
-        sortBy: sortBy
-      }
+        query,
+        sortBy,
+      },
     });
-  }
+  },
 };
 
 module.exports = ProductActions;

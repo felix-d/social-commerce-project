@@ -35,9 +35,11 @@ export default React.createClass({
     $(window).on('resize scroll', infiniteScrollCheck);
   },
 
-  componentDidUpdate() {
-    infiniteScrollCheck();
-  },
+  // This was doing a max recursion error. I dont know why its there actually.
+  // I dont remember why I did that.
+  // componentDidUpdate() {
+    // infiniteScrollCheck();
+  // },
 
   componentWillUnmount() {
     ProductStore.removeChangeListener(this._onChange);
@@ -51,7 +53,6 @@ export default React.createClass({
 
     if (!this.state.products) { return null; }
 
-    debugger;
     const products = this.state.products.map(m => <Product data={m} key={m.name}/>);
 
     return (

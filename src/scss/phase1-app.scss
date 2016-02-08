@@ -9,7 +9,7 @@ $product-images-height-normal: 136px;
 }
 .show-image.active {
   opacity: 1;
-  transition: opacity 0.2s;
+  transition: opacity 0.1s;
 }
 
 .init-modal {
@@ -26,6 +26,15 @@ $product-images-height-normal: 136px;
       color: $warning;
       &:hover {
         color: $warning;
+      }
+    }
+  }
+  &--danger {
+    a {
+      cursor: default;
+      color: $danger;
+      &:hover {
+        color: $danger;
       }
     }
   }
@@ -102,12 +111,7 @@ $product-images-height-normal: 136px;
                 right: 0;
                 z-index: 3;
                 font-size: 3em;
-                @include large-screen {
-                    top:60px;
-                }
-                @include normal-screen {
-                    top: 45px;
-                }
+                top:60px;
             }
 
             //inner container
@@ -121,13 +125,7 @@ $product-images-height-normal: 136px;
                     padding: 5px;
                     margin-bottom: 15px;
                     //so it stays on one line
-                    @include large-screen {
-                        height:25px;
-                    }
-                    //two lines
-                    @include normal-screen {
-                        height: 40px;
-                    }
+                    height:25px;
                 }
                 .checkmark-container {
                     position:relative;
@@ -142,12 +140,7 @@ $product-images-height-normal: 136px;
                         height:100%;
                         margin: 0 auto;
                     }
-                    @include large-screen {
-                        height: $product-images-height-lg;
-                    }
-                    @include normal-screen {
-                        height: $product-images-height-normal;
-                    }
+                    height: $product-images-height-lg;
                     
                 }
             }
@@ -318,4 +311,21 @@ $product-images-height-normal: 136px;
 }
 #return-to-top:hover i {
     color: #fff;
+}
+
+.init-modal__current-step {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
+  padding-top: 10px;
+}
+
+.next-step-modal {
+  &__btn-container {
+    text-align: center; 
+    margin-top: 10px;
+    .btn:first-child {
+      margin-right: 10px;
+    }
+  }
 }

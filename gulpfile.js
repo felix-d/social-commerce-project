@@ -13,6 +13,8 @@ var rename = require('gulp-rename');
 var parallel = require('concurrent-transform');
 var sass = require('gulp-sass');
 var imagemin = require('gulp-imagemin');
+var when = require('when');
+var gulpBabel = require('gulp-babel');
 
 /*
  * SCSS
@@ -42,6 +44,9 @@ gulp.task('build-scss', function gulpHandler() {
 gulp.task('build-standalone-js', function gulHandler() {
   return gulp.src('./src/js/*.js')
     .pipe(sourcemaps.init())
+    .pipe(gulpBabel({
+      presets: ['es2015', 'stage-0']
+    }))
     .pipe(uglify())
     .pipe(rename(function renameHandler(path) {
       if (!/\.min$/.test(path.basename)) {
@@ -63,19 +68,28 @@ var bundles = [{
 }, {
   root: './src/js/phase2_app/app.jsx',
   name: 'phase2-app',
+}, {
+  root: './src/js/track/track.js',
+  name: 'track',
 }];
 
 var rebundle = function rebundle(bundler, name) {
   console.log('-> Bundling ' + name + '...');
-  return bundler.bundle()
-    .on('error', function handler(err) { console.error(err); this.emit('end'); })
-    .pipe(source(name + '.min.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
+  return when.promise(function promiseHandler(resolve) {
+    bundler.bundle()
+      .on('error', function handler(err) { console.error(err); this.emit('end'); })
+      .pipe(source(name + '.min.js'))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({ loadMaps: true }))
     // .pipe(uglify())
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./build/js'))
-    .on('end', function handler() { console.log('++ Done bundling ' + name + '!'); });
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest('./build/js'))
+      .on('end', function handler() {
+        console.log('++ Done bundling ' + name + '!');
+        resolve();
+      });
+
+  });
 
 };
 
@@ -84,7 +98,7 @@ var updateHandler = function updateHandler(boundRebundle) {
 };
 
 function compile(watchBundle) {
-  var last = null;
+  var asyncs = [];
   for (var i = 0; i < bundles.length; i++) {
     var name = bundles[i].name;
     var root = bundles[i].root;
@@ -94,14 +108,18 @@ function compile(watchBundle) {
     if (watchBundle) {
       bundler.on('update', updateHandler.bind(this, boundRebundle));
     }
-    last = boundRebundle();
+    asyncs.push(when(boundRebundle()));
   }
-  return last;
+  return when.join.apply(this, asyncs);
 }
 
 function watch() {
   compile(true);
 }
+
+gulp.task('build-bundles', function taskHandler() {
+  return compile();
+});
 
 
 /*
@@ -129,8 +147,9 @@ gulp.task('build-images', ['compress-images'], function taskHandler() { return; 
  * MAIN TASKS
  ****************/
 
-gulp.task('build', ['build-scss', 'build-standalone-js', 'build-images'], function handler() {
-  return compile();
+gulp.task('build', ['build-scss', 'build-standalone-js', 'build-images', 'build-bundles'], function handler() {
+  console.log('Build completed.');
+  process.exit(0);
 });
 gulp.task('watch', ['build-scss', 'build-standalone-js', 'build-images'], function handler() {
   gulp.watch('./src/scss/**/*.scss', ['build-scss']);

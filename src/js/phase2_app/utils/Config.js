@@ -1,5 +1,6 @@
 'use strict';
 
+exports.TRACKING_URL = '/track/';
 exports.widgetPopoverOptions = {
     trigger: 'hover',
     placement: 'left',

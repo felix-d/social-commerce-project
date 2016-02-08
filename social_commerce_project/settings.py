@@ -24,8 +24,9 @@ def get_env_variable(var_name):
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+MIN_NUMBER_REVIEWS = 5
+MIN_NUMBER_WISHES = 5
 
-CURRENT_PHASE = 1
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -65,6 +66,7 @@ INSTALLED_APPS = (
     'analytics',
     'allauth',
     'allauth.account',
+    'phases',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'nested_inline'
@@ -106,10 +108,8 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-if(CURRENT_PHASE is 1):
-    LOGIN_REDIRECT_URL = '/phase1/'
-else:
-    LOGIN_REDIRECT_URL = '/phase2/'
+LOGIN_REDIRECT_URL = '/login-success/'
+LOGIN_URL = '/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],

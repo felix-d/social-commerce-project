@@ -1,6 +1,7 @@
 import requests
 
 from django.conf import settings
+from django.db.models import Q
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files.base import File
 
@@ -45,13 +46,17 @@ def facebook_set_friendships(user, userid, token):
     url_fetch_friends = (settings.FACEBOOK_API_URL + userid +
                          "/friends?access_token=" + str(token))
     friends_using_app = requests.get(url_fetch_friends).json()['data']
+    print(friends_using_app)
     for f in friends_using_app:
         friend_id = f['id']
         try:
             friend = SocialAccount.objects.get(uid=friend_id).user
-            # We create mirroring relationships.
-            Friendship.objects.get_or_create(user=user, friend=friend)
-            Friendship.objects.get_or_create(user=friend, friend=user)
+            # We check if the relation exists
+            friendship_exists = Friendship.objects.filter(
+                Q(user=user, friend=friend) |
+                Q(friend=user, user=friend)).exists()
+            if not friendship_exists:
+                Friendship.objects.create(user=user, friend=friend)
         except:
             pass
 

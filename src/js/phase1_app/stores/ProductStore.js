@@ -12,10 +12,13 @@ var _sortBy = 'Random',
     _productsOriginal,
     _num,
     _tags,
-    _numberOfReviews,
+    _initModalShown = false,
+    _nextStepModalShown = false,
     _products,
     _currentIndex = 20,
     _lastReviewedId;
+
+let MIN_NUMBER_REVIEWS =  999999;
 
 // Return the number of reviewed products by the current user
 function getNumberOfReviewedProducts(products) {
@@ -25,6 +28,7 @@ function getNumberOfReviewedProducts(products) {
   }
   return count;
 }
+
 
 // The number of products that are currently visible
 function resetCurrentIndex() {
@@ -41,8 +45,6 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     // We add a field to every tags
     _tags = tags.map(t => ({name: t, isChecked: false}));
 
-    _numberOfReviews = getNumberOfReviewedProducts(_productsOriginal);
-
     // We do a shallow copy to _products, which is the rendered array
     _products = _productsOriginal.slice();
 
@@ -50,15 +52,22 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     _num = num;
   },
 
-  // Sets the initial data after having called fetchInitialData()
-  setInitialData({ products, numberReviews, tags }) {
+  isInitModalShown() {
+    return _initModalShown;
+  },
 
+  isNextStepModalShown() {
+    return _nextStepModalShown;
+  },
+
+  // Sets the initial data after having called fetchInitialData()
+  setInitialData({ products, numberReviews, tags, minreviews }) {
+
+    MIN_NUMBER_REVIEWS = minreviews;
     _productsOriginal = products;
 
     // We add a field to every tags
     _tags = tags.map(t => ({name: t, isChecked: false}));
-
-    _numberOfReviews = getNumberOfReviewedProducts(_productsOriginal);
 
     // We do a shallow copy to _products, which is the rendered array
     _products = _productsOriginal.slice();
@@ -219,6 +228,10 @@ var ProductStore = assign({}, EventEmitter.prototype, {
     _lastReviewedId = product.id;
   },
 
+  getNumRequiredReviews() {
+    return MIN_NUMBER_REVIEWS;
+  },
+
   emitChange() {
     this.emit(CHANGE_EVENT);
   },
@@ -256,6 +269,14 @@ AppDispatcher.register(function handler(action) {
       break;
     case ProductConstants.SET_INITIAL_DATA:
       ProductStore.setInitialData(action.data);
+      ProductStore.emitChange();
+      break;
+    case ProductConstants.INIT_MODAL_CLOSED:
+      _initModalShown = true;
+      ProductStore.emitChange();
+      break;
+    case ProductConstants.NEXT_STEP_MODAL_CLOSED:
+      _nextStepModalShown = true;
       ProductStore.emitChange();
       break;
     default:

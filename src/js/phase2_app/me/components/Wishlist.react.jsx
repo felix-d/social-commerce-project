@@ -1,9 +1,11 @@
 import React from 'react';
+import { Badge, Glyphicon } from 'react-bootstrap';
 import Reflux from 'reflux';
 import Slider from 'react-slick';
 
 import Wish from './Wish.react.jsx';
 import WishlistStore from '../stores/WishlistStore';
+import { isEmpty } from 'lodash';
 
 const settings = {
   dots: true,
@@ -26,18 +28,29 @@ export default React.createClass({
 
     let wishes = null;
 
-    // Wrapping wish with div to workaround a bug with react slider
     if (this.state.wishlist) {
       wishes = this.state.wishlist.map(
         v => <div key={v.id}><Wish product={v} key={v.id} /></div>);
     }
 
-    wishes = wishes ? <Slider {...settings}>{wishes}</Slider> : null;
+    if (this.state.wishlist && !isEmpty(this.state.wishlist)) {
+      wishes = <Slider {...settings}>{wishes}</Slider>;
+    }
+
+    const placeholders = Array.apply(null, Array(settings.slidesToShow)).map((v, i) =>
+      <div key={i} className="emptywish"/>
+    );
 
     return (
       <div id="wishlist-container">
-        <h3>Your Wishlist</h3>
+        <h3>
+          <Glyphicon glyph="star"/>
+          Your Wishlist
+          <Badge>{this.state.wishlist && this.state.wishlist.length}</Badge></h3>
         <div id="wishlist-container__inner">
+          <div className="emptywishes">
+            {placeholders}
+          </div>
           {wishes}
         </div>
       </div>

@@ -1,49 +1,57 @@
-var React = require("react"),
-    Reflux = require("reflux"),
-    FiltersActions = require("../actions/FiltersActions"),
-    FiltersStore = require("../stores/FiltersStore"),
-    classNames = require("classnames"),
-    ProductActions = require("../actions/ProductsActions");
+import React from 'react';
+import Reflux from 'reflux';
+import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
-var TopMenu = React.createClass({
+import FiltersActions from '../actions/FiltersActions';
+import FiltersStore from '../stores/FiltersStore';
+import track from '../../tracking';
 
-    
-    mixins: [Reflux.connect(FiltersStore)],
+export default React.createClass({
 
-    // We only need the initial state,
-    // the tabs dont change because of external
-    // actions. 
-    getInitialState(){
-        return {
-            activeTab: FiltersStore.getActiveTab()
-        } 
-    },
+  mixins: [Reflux.connect(FiltersStore)],
 
-    render: function(){
+  getInitialState() {
+    return {
+      tabs: FiltersStore.getTabs(),
+      activeTab: FiltersStore.getActiveTab(),
+    };
+  },
 
-        var tabs = ["All", "Friends", "Friends of friends", "Friends with mutual friends", "Friends with mutual likes"];
+  render() {
+    if (!this.state.tabs) { return null; }
+    const allowedTabs = isEmpty(this.state.tabs) ? ['a', 'f', 'fof', 'mf', 'ml'] : this.state.tabs;
+    const display = {
+      a: 'All',
+      f: 'Friends',
+      fof: 'Friends of friends',
+      mf: 'Friends with most mutual friends',
+      ml: 'Friends with most mutual likes',
+    };
 
-        tabs = tabs.map(function(t, i){
-            function tabClicked(){
-                FiltersActions.changeTab(i);
-            }
+    const tabs = allowedTabs.sort().map((tab, i) => {
+      function tabClicked() {
+        FiltersActions.changeTab(tab);
+        track('TAB_VISITED', {tab});
+      }
+      const classes = classnames('tab', {
+        'active': tab === this.state.activeTab,
+        'no-active': tab !== this.state.activeTab,
+      });
 
-            var classes = classNames("tab", {
-                "active": i === this.state.activeTab,
-                "no-active": i !== this.state.activeTab
-            });
+      return (
+        <div id={i + '-tab'} key={i} className={classes}>
+          <div onClick={tabClicked}>
+            <span>{display[tab]}</span>
+          </div>
+        </div>
+      );
+    });
 
-            return(
-                <div id={i+"-tab"} key={i} className={classes}><div onClick={tabClicked}><span>{t}</span></div></div>
-            );
-        }.bind(this))
-
-        return (
-            <div id="topmenu">
-                {tabs}
-            </div>
-        );
-    }
-})
-
-module.exports = TopMenu;
+    return (
+      <div id="topmenu">
+        {tabs}
+      </div>
+    );
+  },
+});

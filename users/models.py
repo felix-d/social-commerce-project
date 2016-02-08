@@ -54,3 +54,38 @@ class MutualLikes(models.Model):
 class Wish(models.Model):
     user = models.ForeignKey(User)
     product = models.ForeignKey('products.Product')
+
+TABS = (
+    ('a', 'All'),
+    ('f', 'Friends'),
+    ('fof', 'Friends of friends'),
+    ('mf', 'Most mutual friends'),
+    ('ml', 'Most Mutual likes'),
+)
+
+
+class Tab(models.Model):
+    tab = models.CharField(max_length=4, choices=TABS, unique=True)
+
+    def __str__(self):
+        return self.tab
+
+
+class ControlGroup(models.Model):
+    tabs = models.ManyToManyField(Tab)
+    show_user_pictures = models.BooleanField(default=True)
+    display_reviews_in_user_pages = models.BooleanField(default=True)
+    network_traversing = models.BooleanField(default=True)
+    display_all_reviews = models.BooleanField(default=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class UserControlGroup(models.Model):
+    user = models.OneToOneField(User)
+    control_group = models.ForeignKey(ControlGroup)
+
+    def __str__(self):
+        return self.control_group.name

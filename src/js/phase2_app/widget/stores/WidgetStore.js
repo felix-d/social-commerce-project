@@ -1,79 +1,86 @@
-var WidgetActions = require("../actions/WidgetActions");
-var ProductsStore = require("../../products/stores/ProductsStore");
-var FiltersStore = require("../../products/stores/FiltersStore");
-var Reflux = require("reflux"),
-    debug = require("debug")(__filename);
+import Reflux from 'reflux';
 
-var _showWidget = {showWidget: false},
-    _productData = undefined,
-    // the maximum length for the description
-    _cropLength = 150,
-    // the review elements that make up the review tree
-    _reviewElements;
+import WidgetActions from '../actions/WidgetActions';
+import APIActions from '../../products/actions/APIActions';
+import FiltersStore from '../../products/stores/FiltersStore';
 
-var WidgetStore = Reflux.createStore({
+const debug = require('debug')(__filename);
 
-  listenables: [WidgetActions],
+const _cropLength = 150;
 
-  init: function(){
-    
-  },
+let _productData = null;
+let _reviewElements = null;
+let _showWidget = false;
 
-  setup: function(reviewElements){
-    _reviewElements = reviewElements;
-  },
+export default Reflux.createStore({
+
+  listenables: [WidgetActions, APIActions],
 
   // for the widget component
-  getWidgetState: function(){
+  getWidgetState() {
 
-    var currentPage = FiltersStore.getCurrentTab();
-    var numReviewers;
-    switch(currentPage){
-    case 0:
-      numReviewers = _productData.all_reviewers ? _productData.all_reviewers.length : 0;
-      break;
-    case 1:
-      numReviewers = _productData.f_reviewers ? _productData.f_reviewers.length : 0;
-      break;
-    case 2:
-      numReviewers = _productData.fof_reviewers ? _productData.fof_reviewers.length : 0;
-      break;
-    default:
+    if (_productData === null) {
+      return {
+        showWidget: _showWidget,
+      };
+    }
+
+    const currentPage = FiltersStore.getCurrentTab();
+    let numReviewers = null;
+
+    switch (currentPage) {
+      case 0:
+        numReviewers = _productData.all_reviewers ? _productData.all_reviewers.length : 0;
+        break;
+      case 1:
+        numReviewers = _productData.f_reviewers ? _productData.f_reviewers.length : 0;
+        break;
+      case 2:
+        numReviewers = _productData.fof_reviewers ? _productData.fof_reviewers.length : 0;
+        break;
+      default:
     }
 
     return {
       productData: _productData,
       reviewElements: _reviewElements,
       currentPage: FiltersStore.getCurrentTab(),
-      numReviewers: numReviewers
+      showWidget: _showWidget,
+      numReviewers,
     };
   },
 
-  onDoShowWidget: function(productData){
+  onFetchInitialDataCompleted(data) {
+    debug('onFetchInitialDataCompleted');
+    const { reviewElements } = data;
+    _reviewElements = reviewElements;
+  },
 
-    debug("Showing widget with data", productData);
+  onDoShowWidget(productData) {
+
+    debug('Showing widget with data', productData);
 
     // we set the product data
     _productData = productData;
 
     // Do we crop?
-    if(_productData.description.length > _cropLength){
-      _productData.doCropDescription= true;
-      _productData.cropDescription =
-        _productData.description.substring(0, _cropLength) +
-        "...";
+    if (_productData.description.length > _cropLength) {
+      _productData.doCropDescription = true;
+      _productData.cropDescription = _productData.description.substring(0, _cropLength) + '...';
     } else {
       _productData.doCropDescription = false;
     }
 
+    _showWidget = true;
+
     // we show the widget
-    this.trigger(true);
+    this.trigger(this.getWidgetState());
   },
 
 
-  onDoHideWidget: function(){
-    this.trigger(false);
-  }
-  });
-
-module.exports = WidgetStore;
+  onDoHideWidget() {
+    debug('onDoHideWidget');
+    _showWidget = false;
+    this.trigger(this.getWidgetState());
+  },
+});

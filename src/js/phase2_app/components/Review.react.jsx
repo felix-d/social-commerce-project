@@ -1,5 +1,5 @@
-const React = require("react"),
-      { Popover } = require("react-bootstrap");
+import React from 'react';
+import { Glyphicon } from 'react-bootstrap';
 
 const Review = React.createClass({
 
@@ -21,7 +21,11 @@ const Review = React.createClass({
     }
 
     if(this.props.rating){
-      rating = (<span><strong>Rating:</strong> {this.props.rating}</span>);
+      rating = [...Array(this.props.rating).keys()].map(() =>
+        <Glyphicon glyph="star"/>);
+      const remaining = 5 - rating.length;
+      rating = rating.concat([...Array(remaining).keys()].map(() =>
+        <Glyphicon glyph="star-empty"/>));
     }
     if(this.props.comment) {
       comment = (<span><strong>Comment:</strong> {this.props.comment}</span>) 
@@ -29,14 +33,14 @@ const Review = React.createClass({
     
     return (
       <div>
-         <div>
+         <div className="rating-stars">
+            {rating}
+         </div>
+         <div className="rating-data">
             {revData}
          </div>
-         <div>
+         <div className="rating-comment">
             {comment}
-         </div>
-         <div>
-            {rating}
          </div>
       </div>
     );

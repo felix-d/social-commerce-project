@@ -1,8 +1,8 @@
 var React = require('react');
 var ReviewFormTab = require('./ReviewFormTab.react.jsx');
-var ProductActions = require("../actions/ProductActions");
-var ReviewBoxStore = require("../stores/ReviewBoxStore");
-var StarsRating = require("./StarsRating.react.jsx");
+var ProductActions = require('../actions/ProductActions');
+var ReviewBoxStore = require('../stores/ReviewBoxStore');
+var StarsRating = require('./StarsRating.react.jsx');
 
 var ReviewForm = React.createClass({
 
@@ -36,7 +36,7 @@ var ReviewForm = React.createClass({
   // (we could not make use of the store, but still,
   // it's good practice)
   commentChanged() {
-    ProductActions.commentChanged(this.refs.comment.getDOMNode().value);
+    ProductActions.commentChanged(this.refs.comment.value);
   },
 
   // Delete the review

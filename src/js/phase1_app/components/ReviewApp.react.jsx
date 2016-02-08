@@ -9,6 +9,7 @@ import ReviewBox from './ReviewBox.react.jsx';
 import ProductsContainer from './ProductsContainer.react.jsx';
 import InitModal from './InitModal.react.jsx';
 import MenuBar from './MenuBar.react.jsx';
+import NextStepModal from './NextStepModal.jsx';
 
 export default React.createClass({
 
@@ -17,6 +18,10 @@ export default React.createClass({
   getInitialState() {
     return {
       showProducts: false,
+      initModalShown: ProductStore.isInitModalShown(),
+      nextStepModalShown: ProductStore.isNextStepModalShown(),
+      numberReviews: ProductStore.getNumReviews(),
+      numberRequiredReviews: ProductStore.getNumRequiredReviews(),
     };
   },
 
@@ -57,7 +62,15 @@ export default React.createClass({
   _onChange() {
     this.setState({
       showProducts: !!ProductStore.getProducts(),
+      initModalShown: ProductStore.isInitModalShown(),
+      nextStepModalShown: ProductStore.isNextStepModalShown(),
+      numberReviews: ProductStore.getNumReviews(),
+      numberRequiredReviews: ProductStore.getNumRequiredReviews(),
     });
+  },
+
+  _hideNextStepModal() {
+    ProductActions.closeNextStepModal();
   },
 
   render() {
@@ -67,6 +80,11 @@ export default React.createClass({
         <MenuBar/>
       <div className="review-app clearfix" id="review-app-inner">
         <InitModal />
+        <NextStepModal
+            show={this.state.initModalShown &&
+                  this.state.numberReviews >= this.state.numberRequiredReviews &&
+                  !this.state.nextStepModalShown}
+            close={this._hideNextStepModal}/>
         <ReviewBox/>
         <SideBar/>
         <ProductsContainer/>

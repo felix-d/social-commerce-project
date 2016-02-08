@@ -1,0 +1,49 @@
+@import 'mixins-and-variables';
+body, html {
+    background-color: #F5F5F5;
+}
+.form {
+
+  .info {
+    display: block;
+    margin: 40px 0 20px 0;
+  }
+  border: 1px solid #E0E0E0;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  background-color: #FFF;
+  padding: 40px 70px;
+  h1 {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+    i {
+      font-size: 0.7em;
+    }
+  }
+  h2 {
+    margin-top: 25px;
+    margin-bottom: 30px;
+  }
+  .form-group {
+    margin-bottom: 30px;
+  }
+  .form-group.submit {
+    margin-top: 50px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+  hr {
+    margin: 40px 0;
+  }
+  .form-logout {
+    bottom: 20px;
+    float:right;
+    position: relative;
+    display: inline-block;
+    color: $danger;
+    &:hover {
+      color: darken($danger, 10%);
+    }
+  }
+}

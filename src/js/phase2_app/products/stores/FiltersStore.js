@@ -1,58 +1,54 @@
-var Reflux = require("reflux"),
-    FiltersActions = require("../actions/FiltersActions"),
-    ProductsActions = require("../actions/ProductsActions"),
-    { ALL, FRIENDS, FOF, MF, ML } = require("../constants/ProductsConstants"),
-    debug = require("debug")(__filename),
-    _ = require("lodash");
+import Reflux from 'reflux';
 
-var _tags,
-    _textSearch = "",
-    _sortBy = "Random",
-    _tab = ALL;
+import ProductsActions from '../actions/ProductsActions';
+import FiltersActions from '../actions/FiltersActions';
+import APIActions from '../actions/APIActions';
 
-function addIsCheckedFalse(tags){
-  return tags.map(function(t){
-    return {name: t, isChecked: false};
-  });
+import { A, F, FOF, MF, ML } from '../constants/ProductsConstants';
+
+const debug = require('debug')(__filename);
+
+let _tags = null;
+let _textSearch = null;
+let _sortBy = 'Random';
+let _tab = A;
+let _tabs = null;
+
+function addIsCheckedFalse(tags) {
+  return tags.map(t => ({name: t, isChecked: false}));
 }
 
-function resetTagsToFalse(tags){
-  return tags.map(function(t){
-    t.isChecked = false;
-  });
+function resetTagsToFalse(tags) {
+  return tags.forEach(t => t.isChecked = false);
 }
 
-function shuffle(){
-  _products = _.suffle(_products);
-}
+export default Reflux.createStore({
 
-var FiltersStore = Reflux.createStore({
+  listenables: [FiltersActions, APIActions],
 
-  listenables: [FiltersActions],
-
-  // setup by us in app.jsx
-  setup(tags){
-    _tags = addIsCheckedFalse(tags);
-  },
-
-  // returns the tags as state
-  getTagsState(){
+  getTagsState() {
     return {
-      tags: _tags
+      tags: _tags,
     };
   },
 
-  getFiltersState(){
-    return {
+  getFiltersState() {
+    const state = {
       activeTab: _tab,
+      tabs: _tabs,
       tags: _tags,
       sortBy: _sortBy,
-      textSearch: _textSearch
+      textSearch: _textSearch,
     };
+    return state;
   },
 
-  getActiveTab(){
+  getActiveTab() {
     return _tab;
+  },
+
+  getTabs() {
+    return _tabs;
   },
 
   getCurrentTab() {
@@ -60,33 +56,40 @@ var FiltersStore = Reflux.createStore({
   },
 
   // return the tags
-  getTags(){
+  getTags() {
     return _tags;
   },
 
   // get text search value
-  getTextSearch(){
+  getTextSearch() {
     return _textSearch;
   },
 
   // get sort by
-  getSortBy(){
+  getSortBy() {
     return _sortBy;
   },
 
+  onFetchInitialDataCompleted(data) {
+    debug('onFetchInitialDataCompleted', data);
+    const { tags, tabs } = data;
+    _tags = addIsCheckedFalse(tags);
+    _tabs = tabs || [];
+    this.trigger(this.getFiltersState());
+  },
+
   // when the user inputs in text search
-  onTextSearch(text){
-    debug("onTextSearch");
+  onTextSearch(text) {
+    debug('onTextSearch');
     _textSearch = text;
-    
     ProductsActions.search(_textSearch, _sortBy, _tags, _tab);
     ProductsActions.resetCache();
     ProductsActions.setCache(_tab);
   },
 
   // when the user changes the sort method
-  onSortBy(sortBy){
-    debug("onSortBy");
+  onSortBy(sortBy) {
+    debug('onSortBy');
     _sortBy = sortBy;
     ProductsActions.search(_textSearch, _sortBy, _tags, _tab);
     ProductsActions.resetCache();
@@ -94,9 +97,9 @@ var FiltersStore = Reflux.createStore({
   },
 
   // shuffle the products
-  onShuffle(){
-    debug("onShuffle");
-    _sortBy = "Random";
+  onShuffle() {
+    debug('onShuffle');
+    _sortBy = 'Random';
     ProductsActions.shuffle();
     ProductsActions.resetCache();
     ProductsActions.setCache(_tab);
@@ -104,8 +107,8 @@ var FiltersStore = Reflux.createStore({
   },
 
   // search with tags
-  onSearch(){
-    debug("onSearch");
+  onSearch() {
+    debug('onSearch');
     ProductsActions.search(_textSearch, _sortBy, _tags, _tab);
     ProductsActions.resetCache();
     ProductsActions.setCache(_tab);
@@ -113,52 +116,39 @@ var FiltersStore = Reflux.createStore({
 
   // When the user changes the current tab
   onChangeTab(tab) {
-    debug("onChangePage", tab);
+    debug('onChangePage', tab);
 
     // We create the products subset
-    switch(tab){
-
-      // All the products
-    case ALL:
-      _tab = ALL;
-      break;
-
-      // Products reviewed by friends
-    case FRIENDS:
-      _tab = FRIENDS;
-      break;
-
-      // Products reviewed by friends of friends
-    case FOF:
-      _tab = FOF;
-      break;
-
-    case MF:
-      _tab = MF;
-      break;
-
-    case ML:
-      _tab = ML;
-      break;
-
-    default:
+    switch (tab) {
+      case A:
+        _tab = A;
+        break;
+      case F:
+        _tab = F;
+        break;
+      case FOF:
+        _tab = FOF;
+        break;
+      case MF:
+        _tab = MF;
+        break;
+      case ML:
+        _tab = ML;
+        break;
+      default:
     }
     ProductsActions.search(_textSearch, _sortBy, _tags, _tab, true);
     ProductsActions.setCache(_tab);
     this.trigger(this.getFiltersState());
   },
-    
 
-  // reset everything
-  onResetSideBar(){
-    debug("onResetSideBar");
+  onResetSideBar() {
+    debug('onResetSideBar');
     resetTagsToFalse(_tags);
-    _sortBy = "random";
-    _textSearch = "";
+    _sortBy = 'random';
+    _textSearch = '';
     // $('.tags-group label').removeClass('active');
     this.trigger(this.getFiltersState());
-  }
+  },
 });
 
-
-module.exports = FiltersStore;
