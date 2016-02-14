@@ -1,6 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
-import { Col, Row, Modal, Popover, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row, Modal } from 'react-bootstrap';
 
 import WidgetStore from '../stores/WidgetStore';
 import WidgetActions from '../actions/WidgetActions';
@@ -8,6 +8,7 @@ import WishlistActions from '../../me/actions/WishlistActions';
 
 import Review from './Review.react.jsx';
 import ReviewersCarousel from './ReviewersCarousel.react.jsx';
+import ProductDescription from '../../components/ProductDescription.react.jsx';
 import track from '../../tracking';
 
 
@@ -23,7 +24,7 @@ export default React.createClass({
     if (this.state.showWidget && !lastState.showWidget) {
       track('ITEM_VISITED', {itemId: this.state.productData.id});
     } else if (!this.state.showWidget && lastState.showWidget) {
-      track('ITEM_WIDGET_CLOSED', {itemId: this.state.productData.id});
+      track('ITEM_CLOSED', {itemId: this.state.productData.id});
     }
   },
 
@@ -50,7 +51,6 @@ export default React.createClass({
     }
 
     let button = null;
-    let descriptionComponent = null;
 
     if (this.state.productData.iswish === true) {
       button = (<button className="btn btn-danger btn-margin" onClick={this._removeFromWishlist}>Remove from wishlist</button>);
@@ -58,23 +58,6 @@ export default React.createClass({
       button = (<button className="btn btn-add btn-margin" onClick={this._addToWishlist}>Add to wishlist</button>);
     }
 
-    // Do we crop the description
-    if (this.state.productData.doCropDescription) {
-      const popover = (
-        <Popover id={this.state.productData.name}>
-          {this.state.productData.description}
-        </Popover>
-      );
-      descriptionComponent = (
-        <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={popover}>
-          <p>
-            {this.state.productData.cropDescription}
-          </p>
-        </OverlayTrigger>
-      );
-    } else {
-      descriptionComponent = <span>{this.state.productData.description}</span>;
-    }
 
     return (
       <Modal show={this.state.showWidget} onHide={this._hideWidget} bsSize="large" id="product-widget">
@@ -100,12 +83,7 @@ export default React.createClass({
 
             {/* Product info */}
             <Col xs={3}>
-              <h4>Release date</h4>
-              <p>{this.state.productData.caracteristic_1}</p>
-              <h4>Tags</h4>
-              <p>{this.state.productData.tags.join(', ')}</p>
-              <h4>Overview</h4>
-              <div>{descriptionComponent}</div>
+              <ProductDescription data={this.state.productData}/>
             </Col>
 
             {/* Reviewers */}

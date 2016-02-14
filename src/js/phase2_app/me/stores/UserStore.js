@@ -2,6 +2,7 @@ import Reflux from 'reflux';
 import request from 'superagent';
 import UserActions from '../actions/UserActions';
 import APIActions from '../../products/actions/APIActions';
+import WishlistActions from '../../me/actions/WishlistActions';
 
 const debug = require('debug')(__filename);
 
@@ -37,7 +38,7 @@ function getState() {
 
 export default Reflux.createStore({
 
-  listenables: [UserActions, APIActions],
+  listenables: [UserActions, APIActions, WishlistActions],
 
   init() {
     request.get('/phase2/userpage/')
@@ -48,6 +49,24 @@ export default Reflux.createStore({
           this.trigger(getState());
         }
       });
+  },
+  onAdd(w) {
+    _userInfo.products = _userInfo.products.map(p => {
+      if (w.id === p.id) {
+        p.iswish = true;
+      }
+      return p;
+    });
+    this.trigger(getState());
+  },
+
+  onRemove(w) {
+    _userInfo.products = _userInfo.products.map(p => {
+      if (w.id === p.id) {
+        p.iswish = false;
+      }
+      return p;
+    });
   },
 
   isNetworkTraversingAllowed() {
@@ -68,12 +87,12 @@ export default Reflux.createStore({
 
   onFetchInitialDataCompleted(data) {
     const {
-      showUserPics,
+      showUsersPics,
       displayReviewsInUserPages,
       networkTraversing,
       displayAllReviews,
     } = data;
-    _showUsersPics = showUserPics;
+    _showUsersPics = showUsersPics;
     _displayReviewsInUserPages = displayReviewsInUserPages;
     _networkTraversing = networkTraversing;
     _displayAllReviews = displayAllReviews;

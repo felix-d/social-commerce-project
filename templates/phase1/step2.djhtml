@@ -48,7 +48,7 @@
                 {% endif %}
               {% endfor %}
               <div class="form-group submit">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
               <p><a class="form-logout" href="{% url 'auth_logout' %}">Logout</a></p>
@@ -62,8 +62,9 @@
     <script src="{% static "js/track.min.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
      window.onbeforeunload = function() {
-       window.track('LEFT_WEBSITE_PHASE_1');
-       return 'The task is not finished, are you sure you want to quit?';
+       if (window.activeElement.id === 'submit') { return; }
+       window.track('LEAVING_WEBSITE', {phase: 1});
+       return 'The task is not finished!';
      }
     </script>
 {% endblock %}

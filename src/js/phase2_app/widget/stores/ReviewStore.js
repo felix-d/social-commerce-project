@@ -1,4 +1,4 @@
-
+import { isNumber } from 'lodash';
 var WidgetActions = require("../actions/WidgetActions"),
     Reflux = require("reflux"),
     request = require("superagent"),
@@ -15,9 +15,11 @@ var ReviewStore = Reflux.createStore({
   listenables: [WidgetActions],
 
   onDoGetReview(user, productid) {
-
+    let userid = user;
+    if (!isNumber(user)) {
+      userid = user.id;
+    }
     debug('Getting review for user', user, 'and product', productid);
-    let userid = user.id;
     
     request
       .post("/phase2/reviewtext/")

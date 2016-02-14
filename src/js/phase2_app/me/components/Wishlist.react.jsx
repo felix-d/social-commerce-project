@@ -13,7 +13,7 @@ const settings = {
   arrows: true,
   speed: 500,
   slidesToShow: 7,
-  slidesToScroll: 7,
+  slidesToScroll: 1,
 };
 
 export default React.createClass({

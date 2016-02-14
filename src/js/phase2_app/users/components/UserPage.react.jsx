@@ -81,7 +81,6 @@ const UserPage = React.createClass({
     let pic = null;
     let friends = null;
     let products = null;
-
     if (this.state && this.state.user) {
       username = capitalize(this.state.user.username) || null;
       pic = getPic(this.state.user.pic) || null;
@@ -100,6 +99,7 @@ const UserPage = React.createClass({
     if (this.state && this.state.products) {
       products = (
         <ProductsList
+            showCheck={true}
             numSlides={7}
             userid={this.state.user.id}
             products={this.state.products}

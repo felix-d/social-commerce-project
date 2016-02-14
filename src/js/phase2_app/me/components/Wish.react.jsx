@@ -64,7 +64,7 @@ export default React.createClass({
         <div className="sm-img-container">
           <img src={this.props.product.sm_image_path} alt=""/>
         </div>
-        <Button bsStyle="btn-danger" bsSize="xs" onClick={this._remove}>Remove</Button>
+        <Button bsStyle="danger" bsSize="xs" onClick={this._remove}>Remove</Button>
         </div>
       </div>
     );

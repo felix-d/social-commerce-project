@@ -16,6 +16,8 @@ const UsersStore = Reflux.createStore({
     return _userPage;
   },
 
+
+
   onGetUserPage(id) {
     if (cache[id]) {
       debug('Getting userPage from cache.');

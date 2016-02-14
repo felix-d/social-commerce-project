@@ -1,55 +1,53 @@
 import React from 'react';
+import Reflux from 'reflux';
+import classnames from 'classnames';
 import Slider from 'react-slick';
-import Review from '../../components/Review.react.jsx';
+import UserPageProductModal from './UserPageProductModal.react.jsx';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import track from '../../tracking';
+import WidgetActions from '../../widget/actions/WidgetActions';
+import WishlistStore from '../stores/WishlistStore';
 
 const cropMax = 10;
 
-const PopoverButton = React.createClass({
-
-  propTypes: {
-    overlay: React.PropTypes.object,
-    userid: React.PropTypes.number,
-    itemid: React.PropTypes.number,
-  },
-
-  _seeingReview() {
-    track('REVIEW_VIEWED_IN_REVIEWER_PAGE', {
-      itemId: this.props.itemid,
-      userId: this.props.userid,
-    });
-  },
-
-  render() {
-    return (
-      <OverlayTrigger trigger="click"
-                      placement="bottom"
-                      rootClose
-                      ref="trigger"
-                      overlay={this.props.overlay}>
-         <Button onClick={this._seeingReview} bsSize="xs" bsStyle="info" className="user-page__see-review-button">
-            See review
-         </Button>
-      </OverlayTrigger>
-    );
-  },
-});
+// track('REVIEW_VIEWED_IN_REVIEWER_PAGE', {
 
 const ProductsList = React.createClass({
 
   propTypes: {
     numSlides: React.PropTypes.number,
-    review: React.PropTypes.object,
+    review: React.PropTypes.bool,
     products: React.PropTypes.array,
     userid: React.PropTypes.number,
+    showCheck: React.PropTypes.bool,
     imgClass: React.PropTypes.string,
   },
+
+  mixins: [Reflux.connect(WishlistStore)],
+
 
   getDefaultProps() {
     return {
       numSlides: 5,
+      showCheck: false,
     };
+  },
+
+  seeMore(p) {
+    track('ITEM_VISITED', {itemId: p.id});
+    WidgetActions.doGetReview(this.props.userid, p.id);
+    this.setState({
+      showDetails: true,
+      data: p,
+    });
+  },
+
+  hideDetails() {
+    WidgetActions.doHideWidget();
+    track('ITEM_CLOSED', {itemId: this.state.data.id});
+    this.setState({
+      showDetails: false,
+    });
   },
 
   render() {
@@ -57,6 +55,7 @@ const ProductsList = React.createClass({
     let slider = null;
 
     if (this.props.products) {
+
       const settings = {
         dots: false,
         infinite: false,
@@ -66,8 +65,6 @@ const ProductsList = React.createClass({
         slidesToScroll: 1,
       };
 
-      let review = this.props.review || false;
-      let button = null;
       const products = this.props.products.map(p => {
 
         let original = null;
@@ -86,34 +83,56 @@ const ProductsList = React.createClass({
           );
         }
 
-        if (review) {
-          const props = {
-            answers: p.review.boolAnswers,
-            rating: p.review.rating,
-            comment: p.review.comment,
-          };
-          const key = `${p.id}:${this.props.userid}`;
-          review = p.review.boolAnswers || p.review.rating || p.review.comment ?
-                   <Review key={key} {...props}/> : 'The review is empty.';
-
-          const popover = <Popover key={key}>{review}</Popover>;
-          button = (
-            <PopoverButton
-                userid={this.props.userid}
-                itemid={p.id}
-                key={key}
-                overlay={popover}/>
-          );
-        }
         let imgClass = 'product-list__product__img';
         imgClass = this.props.imgClass ? `${imgClass}--${this.props.imgClass}` : imgClass;
+
+        let textClassName = null;
+        let starIcon = null;
+        let imgContainerClassName = null;
+        let button = null;
+        // Control of the opacity changes
+        textClassName = classnames({
+          'low-opacity': !!p.iswish,
+        });
+
+        imgContainerClassName = classnames('sm-img-container', {
+          'low-opacity': !!p.iswish,
+        });
+        const starClass = classnames('fa fa-star', {
+          'small': !this.props.showCheck,
+        });
+        starIcon = p.iswish ? (<i className={starClass}></i>) : null;
+        button = p.iswish ? (
+          <Button
+              className="user-page-check-btn"
+              bsStyle="danger"
+              onClick={this.seeMore.bind(this, p)}>
+            Remove
+          </Button>
+        ) : (
+          <Button
+              className="user-page-check-btn"
+              bsStyle="info"
+              onClick={this.seeMore.bind(this, p)}>
+            Click
+          </Button>
+        );
+
         return (
           <div key={p.id}>
             <div className="product-list__product">
               <div className="product-list__product__inner effect6">
-                <h5>{name}</h5>
-                <img src={p.sm_image_path} className={imgClass} alt=""/>
-                {button}
+                <h5 className={textClassName}>{name}</h5>
+                <div className="star-container">
+                  {starIcon}
+                  <div className={imgContainerClassName}>
+                    <img className={imgClass}
+                         src={p.sm_image_path}
+                         className={imgClass}
+                         alt=""/>
+                  </div>
+                </div>
+                {this.props.showCheck ? button : null}
               </div>
             </div>
           </div>
@@ -121,7 +140,19 @@ const ProductsList = React.createClass({
       });
       slider = <Slider {...settings}>{products}</Slider>;
     }
-    return slider;
+    return (
+      <div>
+      {this.state ? (
+        <UserPageProductModal
+            className="col-xs-12"
+            data={this.state.data}
+            show={this.state.showDetails}
+            review={this.props.review}
+            hide={this.hideDetails}/>
+      ) : null}
+        {slider}
+      </div>
+    );
   },
 });
 

@@ -4,30 +4,28 @@ import re
 from phases.models import Phase
 
 
-current_phase = Phase.objects.all().first().phase
-
-
 def redirect_user_to_current_step(user):
-        user_step = getattr(user.userstep,
-                            'phase{}_step'.format(current_phase))
-        # Specific to phase1
-        if current_phase is 1:
-            # because 4 is to indicate sharing happened,
-            # we still redirect on 3
-            user_step = 3 if user_step is 4 else user_step
+    current_phase = Phase.objects.all().first().phase
+    user_step = getattr(user.userstep,
+                        'phase{}_step'.format(current_phase))
+    # Specific to phase1
+    if current_phase is 1:
+        # because 4 is to indicate sharing happened,
+        # we still redirect on 3
+        user_step = 3 if user_step is 4 else user_step
 
-        # Specific to phase2
-        if current_phase is 2:
-            pass
+    # Specific to phase2
+    if current_phase is 2:
+        pass
 
-        # Both phases
-        if user_step is 1:
-                url = "/phase{}/".format(str(current_phase))
+    # Both phases
+    if user_step is 1:
+            url = "/phase{}/".format(str(current_phase))
 
-        else:
-                url = "/phase{}/step{}/".format(str(current_phase),
-                                                user_step)
-        return redirect(url)
+    else:
+            url = "/phase{}/step{}/".format(str(current_phase),
+                                            user_step)
+    return redirect(url)
 
 
 class AllauthOverrideMiddleware():

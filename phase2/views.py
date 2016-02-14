@@ -101,7 +101,7 @@ def get_initial_data(request):
             p.update(rev_info)
 
         # we update with wishlist tag
-        p['iswish'] = is_wish(request.user, p['id'])
+        p['iswish'] = is_wish(request.user.pk, p['id'])
 
     tags = Tag.objects.get_tag_names()
     try:
@@ -238,8 +238,8 @@ def get_user_page(request):
         all_products = get_products()
         reviewed_products = [p for p in all_products if p['id'] in products]
         for p in reviewed_products:
+            p['iswish'] = is_wish(request.user.pk, p['id'])
             p['review'] = utils.get_review_data(user.id, p['id'])
-
     except:
         pass
 

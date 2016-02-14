@@ -54,7 +54,6 @@ var WishlistStore = Reflux.createStore({
     }
     _wishlist.push(w);
     _lastSetProductId = w.id;
-
     request
       .post("/phase2/addwish/")
       .send({product: w.id})

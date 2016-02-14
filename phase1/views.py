@@ -48,6 +48,7 @@ def step1(request):
             p.update(rd)
         tags = Tag.objects.get_tag_names()
         number_reviews = get_number_reviews(request.user)
+        review_tree = get_review_tree()
     
         context_dict = {
             'products': json.dumps(products),

@@ -27,7 +27,7 @@ export default React.createClass({
   render() {
     return (
       <div>
-        <Row>
+        <Row className="profile__upper-row">
           {/* Profile picture */}
           <Col xs={3}>
             <h3 className="username">
@@ -53,9 +53,11 @@ export default React.createClass({
                 <i className="fa fa-users"></i>
                 Your friends
               </h3>
-              <FriendsList slidesToShow={5}
-                           trackFriendClicked={this._trackFriendClicked}
-                           friends={this.state.friends}/>
+              <FriendsList
+                  networkTraversing={true}
+                  slidesToShow={5}
+                  trackFriendClicked={this._trackFriendClicked}
+                  friends={this.state.friends}/>
             </Col>
           </div>
           {/* Shit you've reviewed */}
@@ -65,7 +67,10 @@ export default React.createClass({
                 <Glyphicon glyph="ok"/>
                 Products you have reviewed.
               </h3>
-              <ProductsList imgClass="profile" products={this.state.products}/>
+              <ProductsList
+                  showCheck={false}
+                  imgClass="profile"
+                  products={this.state.products}/>
             </Col>
           </div>
         </Row>

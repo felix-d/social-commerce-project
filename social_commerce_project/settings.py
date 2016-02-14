@@ -109,7 +109,7 @@ SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = '/login-success/'
-LOGIN_URL = '/'
+# LOGIN_URL = '/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],

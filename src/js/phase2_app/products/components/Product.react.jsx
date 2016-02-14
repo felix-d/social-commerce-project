@@ -58,7 +58,7 @@ export default React.createClass({
   },
 
   onWishlistChange() {
-    // pass
+    this.setState({});
   },
 
   _showImage() {

@@ -17,13 +17,14 @@ def set_user_step(user, step, phase=1):
     user.userstep.save()
 
 
-def is_wish(user, product):
+def is_wish(user_pk, product):
     """Is there a wish for current user and product.
 
     :rtype: bool
     """
+
     wish_count = Wish.objects.filter(
-        user=user.id, product=product).count()
+        user__pk=user_pk, product=product).count()
     return False if wish_count is 0 else True
 
 

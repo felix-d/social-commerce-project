@@ -63,14 +63,6 @@ export default Reflux.createStore({
     // we set the product data
     _productData = productData;
 
-    // Do we crop?
-    if (_productData.description.length > _cropLength) {
-      _productData.doCropDescription = true;
-      _productData.cropDescription = _productData.description.substring(0, _cropLength) + '...';
-    } else {
-      _productData.doCropDescription = false;
-    }
-
     _showWidget = true;
 
     // we show the widget

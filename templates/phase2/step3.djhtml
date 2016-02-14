@@ -22,7 +22,7 @@
                 </p>
             </div>
             <div class="text-center" id="sharing">
-              <a class="btn btn-primary" href="{% url 'auth_logout' %}">Quit</a>
+              <a class="btn btn-info" href="{% url 'auth_logout' %}">Quit</a>
             </div>
         </div>
     </div>

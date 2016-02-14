@@ -21,7 +21,7 @@
                     imperdiet.imentum vitae. Aliquam et semper sapien.
                 </p>
                 <div class="text-center" id="sharing">
-                    <button class="btn btn-primary" onclick='shareTheProject()'>Share the project</button>
+                    <button class="btn btn-info" onclick='shareTheProject()'>Share the project</button>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
                     imperdiet.imentum vitae. Aliquam et semper sapien.
                 </p>
                 <div class="text-center" id="sharing">
-                    <a class="btn btn-primary" href="{% url 'auth_logout' %}">Quit</a>
+                    <a class="btn btn-info" href="{% url 'auth_logout' %}">Quit</a>
                 </div>
             </div>
         </div>
