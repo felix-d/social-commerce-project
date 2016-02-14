@@ -18,7 +18,9 @@
     <script src="{% static "js/track.min.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
      window.onbeforeunload = function() {
-       if (document.activeElement.parentElement.id === 'navbar-next') { return; }
+       debugger;
+       if (document.activeElement.parentElement.id === 'navbar-next' ||
+           document.activeElement.id === 'modal-next') { return; }
        window.track('LEAVING_WEBSITE', {phase: 2});
        return 'The task is not finished!';
      }

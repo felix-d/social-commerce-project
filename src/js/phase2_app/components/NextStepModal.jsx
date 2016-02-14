@@ -27,7 +27,7 @@ export default React.createClass({
           </p>
         <div className="next-step-modal__btn-container">
           <Button bsStyle="primary" onClick={this.props.close}>Continue reviewing</Button>
-          <Button bsStyle="success" href="step2" onClick={this.taskFinished}>Go to next step!</Button>
+          <Button bsStyle="success" href="step2" id="modal-next" onClick={this.taskFinished}>Go to next step!</Button>
         </div>
         </Modal.Body>
       </Modal>
