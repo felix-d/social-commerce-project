@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from 'react-loader';
 
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
@@ -74,7 +75,10 @@ export default React.createClass({
   },
 
   render() {
-    if (!this.state.showProducts) { return null; }
+    const loaderOptions = {
+      color: '#444',
+      zIndex: 10,
+    };
     return (
       <div>
         <MenuBar/>
@@ -86,11 +90,15 @@ export default React.createClass({
                   !this.state.nextStepModalShown}
             close={this._hideNextStepModal}/>
         <ReviewBox/>
-        <SideBar/>
-        <ProductsContainer/>
-        <a id="return-to-top" className="animated fadeOut">
-          <i className="fa fa-chevron-up"></i>
-        </a>
+        <Loader {...loaderOptions} loaded={this.state.showProducts} className="spinner">
+          <div>
+            <SideBar/>
+            <ProductsContainer/>
+            <a id="return-to-top" className="animated fadeOut">
+              <i className="fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </Loader>
       </div>
       </div>
     );

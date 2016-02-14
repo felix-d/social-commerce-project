@@ -3,6 +3,11 @@
 $review-app-min-height: 710px;
 $product-images-height-lg: 173px;
 $product-images-height-normal: 136px;
+.spinner {
+  height: 1200px;
+  top: 50%;
+  position: fixed!important;
+}
 
 .show-image {
   opacity: 0;

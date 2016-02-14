@@ -11,7 +11,6 @@ import UserStore from '../me/stores/UserStore';
 import UserActions from '../me/actions/UserActions';
 import WishlistStore from '../me/stores/WishlistStore';
 import NextStepModal from './NextStepModal.jsx';
-import track from '../tracking';
 
 export default React.createClass({
 
