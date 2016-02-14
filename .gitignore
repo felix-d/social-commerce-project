@@ -5,5 +5,4 @@ bower_components/
 *#
 static/
 data.json
-build/
 *.sqlite3

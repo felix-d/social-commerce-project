@@ -1,0 +1,1 @@
+{"version":3,"sources":["mobile-detected.scss"],"names":[],"mappings":"AAAiB,kBACb,UAAc,YAGH,gBACX,UAAW,IAGC,iBACZ,MAAO","file":"mobile-detected.min.css","sourcesContent":[".container-mobile {\n    min-width: 0px!important;\n}\n\n#mobile-text h1{\n    font-size: 3.0em;\n}\n\n#mobile-text img {\n    width: 80%;\n}\n\n"],"sourceRoot":"/source/"}
