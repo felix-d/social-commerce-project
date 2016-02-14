@@ -24,7 +24,8 @@ def get_env_variable(var_name):
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-CURRENT_PHASE = 1
+MIN_NUMBER_REVIEWS = 5
+MIN_NUMBER_WISHES = 5
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -34,9 +35,11 @@ SECRET_KEY = get_env_variable("SOCIAL_COMMERCE_SECRET_KEY")
 FACEBOOK_APP_ID = get_env_variable("FACEBOOK_APP_ID")
 FACEBOOK_APP_SECRET = get_env_variable("FACEBOOK_APP_SECRET")
 
+FACEBOOK_API_URL = 'https://graph.facebook.com/v2.4/'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -65,6 +68,7 @@ INSTALLED_APPS = (
     'analytics',
     'allauth',
     'allauth.account',
+    'phases',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'nested_inline'
@@ -106,12 +110,8 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 SOCIALACCOUNT_AUTO_SIGNUP = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-
-if(CURRENT_PHASE is 1):
-    LOGIN_REDIRECT_URL = '/phase1/'
-else:
-    LOGIN_REDIRECT_URL = '/phase2/'
-
+LOGIN_REDIRECT_URL = '/login-success/'
+# LOGIN_URL = '/'
 SOCIALACCOUNT_PROVIDERS =\
     {'facebook': {'SCOPE':
                   ['email', 'user_friends'],
@@ -127,12 +127,10 @@ ROOT_URLCONF = 'social_commerce_project.urls'
 WSGI_APPLICATION = 'social_commerce_project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'soc',
         'USER': 'socialcomm',
         'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
@@ -140,6 +138,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -154,21 +153,25 @@ USE_L10N = True
 USE_TZ = True
 
 
+# the url from wich updloaded medias are served
 MEDIA_URL = '/media/'
+
 # absolute path to the media directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-STATIC_PATH = "./build/"
+STATIC_PATH = os.path.join(BASE_DIR, 'build')
 
+# the url from which static files are served
 STATIC_URL = '/static/'
 
+# this is where django looks to collect statics
 STATICFILES_DIRS = (
     STATIC_PATH,
 )
 
-STATIC_ROOT = "/home/socialcomm/webapps/htdocs/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Our template directory path
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 
