@@ -130,12 +130,12 @@ WSGI_APPLICATION = 'social_commerce_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'soc',
         'USER': 'socialcomm',
         'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'PORT': '5432',
     }
 }
 
