@@ -15,7 +15,7 @@ def server_pull():
     with cd("/home/socialcomm/webapps/hec/social_commerce_project"):
         run("git reset --hard HEAD")
         run("git pull")
-        run("python3.4 manage.py collectstatic --noinput")
+        run("python3.5 manage.py collectstatic --noinput")
         run("../apache2/bin/restart", pty=False)
 
 
