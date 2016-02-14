@@ -35,6 +35,10 @@ class MutualFriends(models.Model):
         User, related_name="the_second_user_mutualf")
     mutual_friends = models.IntegerField()
 
+    class Meta:
+        verbose_name = 'Mutual Friend'
+        verbose_name_plural = 'Mutual Friends'
+
     def __str__(self):
         return '{} and {} have {} mutual friends.'.format(
             self.user.username, self.second_user.username, self.mutual_friends)
@@ -45,6 +49,10 @@ class MutualLikes(models.Model):
     second_user = models.ForeignKey(
         User, related_name='the_second_user_mutuall')
     mutual_likes = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Mutual Like'
+        verbose_name_plural = 'Mutual Likes'
 
     def __str__(self):
         return '{} and {} have {} mutual likes.'.format(
@@ -78,6 +86,10 @@ class ControlGroup(models.Model):
     network_traversing = models.BooleanField(default=True)
     display_all_reviews = models.BooleanField(default=True)
     name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'Group'
+        verbose_name_plural = 'Groups'
 
     def __str__(self):
         return self.name

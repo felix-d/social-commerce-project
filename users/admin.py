@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from .models import UserStep, User, Friendship, UserImage,\
     MutualLikes, MutualFriends, Tab, ControlGroup, UserControlGroup
 
@@ -24,6 +25,7 @@ class TabAdmin(admin.ModelAdmin):
 
 
 admin.site.unregister(User)
+admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 admin.site.register(ControlGroup, ControlGroupAdmin)
 admin.site.register(Tab, TabAdmin)
