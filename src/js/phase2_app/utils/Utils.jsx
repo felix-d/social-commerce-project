@@ -8,5 +8,5 @@ exports.getPic = function getPic(url, isProfile = false, alt = '') {
 };
 
 exports.getLocation = function getLocation() {
-  return window.location.hash.substring(1);
+  return window.location.href;
 };
