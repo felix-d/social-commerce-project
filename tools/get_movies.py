@@ -21,7 +21,6 @@ def main():
     write_to_csv(['name', 'description', 'image', 'release_date', 'popularity',
                   'tags'], "w")
 
-    # We want 10 pages with 20 movies each
     for p_number in range(1, 16):
         p_number = str(p_number)
         print("Processing page "+p_number+"\n************************\n")

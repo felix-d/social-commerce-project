@@ -40,11 +40,11 @@ function setNumReviewers(products) {
         v.numReviewers = fofr ? fofr.length : 0;
         break;
       case MF:
-        var mf = v.mutual_f_reviewers;
+        var mf = v.mf_reviewers;
         v.numReviewers = mf ? mf.length : 0;
         break;
       case ML:
-        var ml = v.mutual_l_reviewers;
+        var ml = v.ml_reviewers;
         v.numReviewers = ml ? ml.length : 0;
         break;
       default:
@@ -157,7 +157,7 @@ export default Reflux.createStore({
       case MF:
         tabSubset = _productsOriginal.filter(e => {
           let res = null;
-          if (e.mutual_f_reviewers && e.mutual_f_reviewers.length > 0) {
+          if (e.mf_reviewers && e.mf_reviewers.length > 0) {
             res = true;
           } else {
             res = false;
@@ -170,7 +170,7 @@ export default Reflux.createStore({
       case ML:
         tabSubset = _productsOriginal.filter(e => {
           let res = null;
-          if (e.mutual_l_reviewers && e.mutual_l_reviewers.length > 0) {
+          if (e.ml_reviewers && e.ml_reviewers.length > 0) {
             res = true;
           } else {
             res = false;
